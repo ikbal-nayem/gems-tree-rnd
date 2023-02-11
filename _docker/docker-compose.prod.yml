@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  oms:
+    build:
+      context: ../
+      args:
+        - ENV_TYPE=prod
+    image: gems/oms:project-gems
+    container_name: gems-oms
+    # ports:
+    #   - 3301:80
+    networks:
+      - gems_net
+
+networks:
+  gems_net:

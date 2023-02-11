@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  oms:
+    build:
+      context: ../
+      args:
+        - ENV_TYPE=dev
+    image: gems/oms:project-gems
+    container_name: gems-oms
+    networks:
+      - gems_net
+
+networks:
+  gems_net:
