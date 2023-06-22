@@ -6,5 +6,6 @@ export const defaultDef: TDocumentDefinitions = {
 	content: [],
 	defaultStyle: {
 		font: "Nikosh",
+		fontSize: 10,
 	},
 };
