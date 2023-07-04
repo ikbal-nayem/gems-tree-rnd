@@ -4,7 +4,7 @@ import { IAuthInfo } from "@interface/auth.interface";
 import { LocalStorageService } from "@services/utils/localStorage.service";
 import axios from "axios";
 import { ENV } from "./ENV.config";
-import { AUTH_INFO, HOME_URL } from "@gems-web/utils";
+import { AUTH_INFO, HOME_URL, getResponseStatusMessage } from "@gems-web/utils";
 
 const axiosIns = axios.create({
 	baseURL: ENV.getway,
@@ -57,13 +57,13 @@ axiosIns.interceptors.response.use(
 		if (error?.response) {
 			if (error.response?.status === 401) logout();
 			if (error.response?.status === 413) {
-				toast.error(error.response?.status);
+				toast.error(getResponseStatusMessage(error.response?.status));
 				return;
 			}
 			if (error.response?.data) {
 				return Promise.reject({
 					status: error.response?.status,
-					message: error.response?.data?.message,
+					message: error.response?.data?.message || error.response?.data?.error,
 					body: {},
 				});
 			}
