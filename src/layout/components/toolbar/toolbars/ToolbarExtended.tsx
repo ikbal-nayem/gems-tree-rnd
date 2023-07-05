@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {FC, useEffect, useState} from 'react'
 import { KTSVG } from "helpers";
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const ToolbarExtended: FC = () => {
   const [progress, setProgress] = useState<string>('1')

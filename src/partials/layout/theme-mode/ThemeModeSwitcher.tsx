@@ -4,7 +4,7 @@ import {
 	ThemeModeType,
 	useThemeMode,
 } from "../../../@context/ThemeModeProvider";
-import { Icon } from "@gems-web/components";
+import { Icon } from "@gems/components";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 type Props = {

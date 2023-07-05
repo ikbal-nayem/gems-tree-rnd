@@ -1,4 +1,4 @@
-import { AUTH_SERVICE } from "@gems-web/utils";
+import { AUTH_SERVICE } from "@gems/utils";
 import { axiosIns } from "config/api.config";
 
 export const AuthService = {

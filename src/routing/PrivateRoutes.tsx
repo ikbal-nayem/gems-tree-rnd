@@ -1,4 +1,4 @@
-import { TopProgressCom } from "@gems-web/components";
+import { TopProgressCom } from "@gems/components";
 import { IAppRoutes } from "@interface/common.interface";
 import MasterLayout from "layout/MasterLayout";
 import { Suspense } from "react";

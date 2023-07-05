@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import {Link, useNavigate} from 'react-router-dom'
 import {useLayout} from '../../../core'
 import {usePageData} from '@context/PageData'
-import { IconButton } from "@gems-web/components";
+import { IconButton } from "@gems/components";
 
 const PageTitle = () => {
   const {pageTitle, pageDescription, pageBreadcrumbs, hasBack, backLink} = usePageData()

@@ -1,4 +1,4 @@
-import { GEMSApp } from "@gems-web/components";
+import { GEMSApp } from "@gems/components";
 import RouteChangeTracker from "@services/helper/tracker.helper";
 import { I18nProvider } from "i18n/i18nProvider";
 import { LayoutProvider, LayoutSplashScreen } from "layout/core";

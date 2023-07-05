@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import {Outlet} from 'react-router-dom'
 import {useThemeMode} from 'partials'
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const BODY_CLASSES = ['bgi-size-cover', 'bgi-position-center', 'bgi-no-repeat']
 const ErrorsLayout = () => {

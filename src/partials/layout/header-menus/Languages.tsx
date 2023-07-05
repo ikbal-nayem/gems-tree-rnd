@@ -2,7 +2,7 @@
 import clsx from 'clsx'
 import { FC } from "react";
 import { useLang, setLanguage } from "../../../@context/i18n";
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const languages = [
   {

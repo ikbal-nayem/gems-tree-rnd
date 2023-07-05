@@ -5,8 +5,8 @@ import HeaderModules from "./header-menus/HeaderModules";
 // import { HeaderNotificationsMenu } from "./header-menus/HeaderNotificationsMenu";
 import { HeaderUserMenu } from "./header-menus/HeaderUserMenu";
 import { ReactComponent as ModuleIcon } from "assets/svg/modules.svg";
-import { Icon, MenuWrapper, Thumb } from "@gems-web/components";
-import { makePreviewUrl, toAbsoluteUrl } from "@gems-web/utils";
+import { Icon, MenuWrapper, Thumb } from "@gems/components";
+import { makePreviewUrl, toAbsoluteUrl } from "@gems/utils";
 
 const itemClass = "ms-1 ms-lg-3";
 const btnClass =

@@ -2,7 +2,7 @@
 import {FC} from 'react'
 import { Link } from "react-router-dom";
 import {useLayout} from '../../../core'
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const MegaMenu: FC = () => {
   const {setLayoutType, setToolbarType} = useLayout()

@@ -4,8 +4,8 @@ import { FC, ReactNode } from "react";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { useLayout } from "../../../core";
-import { checkIsActive } from "@gems-web/utils";
-import { Icon } from "@gems-web/components";
+import { checkIsActive } from "@gems/utils";
+import { Icon } from "@gems/components";
 
 type Props = {
 	to: string;

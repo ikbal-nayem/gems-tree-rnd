@@ -1,4 +1,4 @@
-import { EMSPMIS_SERVICE, OMS_SERVICE } from "@gems-web/utils";
+import { EMSPMIS_SERVICE, OMS_SERVICE } from "@gems/utils";
 import { axiosIns } from "config/api.config";
 
 export const CommonService = {

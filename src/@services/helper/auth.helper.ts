@@ -1,4 +1,4 @@
-import { AUTH_INFO, USER_INFO } from "@gems-web/utils";
+import { AUTH_INFO, USER_INFO } from "@gems/utils";
 import { IAuthInfo, IUserInfo } from "@interface/auth.interface";
 import { LocalStorageService } from "@services/utils/localStorage.service";
 import { setAuthHeader } from "config/api.config";

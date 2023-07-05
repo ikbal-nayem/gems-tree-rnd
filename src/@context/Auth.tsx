@@ -1,4 +1,4 @@
-import { HOME_URL, isExpiredToken } from "@gems-web/utils";
+import { HOME_URL, isExpiredToken } from "@gems/utils";
 import { IAuthInfo, IUserInfo } from "@interface/auth.interface";
 import { AuthService } from "@services/api/Auth.service";
 import * as authHelper from "@services/helper/auth.helper";

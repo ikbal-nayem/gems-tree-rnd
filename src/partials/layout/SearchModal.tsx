@@ -2,7 +2,7 @@
 import React from 'react'
 import {Modal} from 'react-bootstrap'
 import { KTSVG } from "helpers";
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 // import {ListsWidget4, ListsWidget5} from '../widgets'
 
 type Props = {

@@ -1,10 +1,10 @@
-import { toast } from "@gems-web/components";
+import { toast } from "@gems/components";
 import { IAuthInfo } from "@interface/auth.interface";
 // import { deviceSignature } from "@services/helper/auth.helper";
 import { LocalStorageService } from "@services/utils/localStorage.service";
 import axios from "axios";
 import { ENV } from "./ENV.config";
-import { AUTH_INFO, HOME_URL, getResponseStatusMessage } from "@gems-web/utils";
+import { AUTH_INFO, HOME_URL, getResponseStatusMessage } from "@gems/utils";
 
 const axiosIns = axios.create({
 	baseURL: ENV.getway,

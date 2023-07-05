@@ -2,7 +2,7 @@ import { FC, useRef, useEffect, ReactNode } from "react";
 import { useLocation } from "react-router";
 import clsx from "clsx";
 import {  KTSVG } from "helpers";
-import { checkIsActive } from "@gems-web/utils";
+import { checkIsActive } from "@gems/utils";
 
 type Props = {
 	to: string;

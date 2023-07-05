@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react'
 import { SearchComponent } from "assets/ts/components";
 import { KTSVG } from "helpers";
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const Search: FC = () => {
   const [menuState, setMenuState] = useState<'main' | 'advanced' | 'preferences'>('main')

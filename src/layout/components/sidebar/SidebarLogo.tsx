@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import {KTSVG} from 'helpers'
 import {Link} from 'react-router-dom'
 import {useLayout} from '../../core'
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const SidebarLogo = () => {
   const {config} = useLayout()

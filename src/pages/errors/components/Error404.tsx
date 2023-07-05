@@ -1,5 +1,5 @@
 import { DASHBOARD } from "@constants/internal-route.constant";
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 const Landing = () => {
 	return (

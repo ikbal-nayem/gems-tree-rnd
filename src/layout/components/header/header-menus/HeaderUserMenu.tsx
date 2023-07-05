@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useAuth } from "@context/Auth";
-import { Icon, Thumb } from "@gems-web/components";
+import { Icon, Thumb } from "@gems/components";
 import {
 	PROFILE_URL,
 	SETTINGS_URL,
 	makePreviewUrl,
 	toAbsoluteUrl,
-} from "@gems-web/utils";
+} from "@gems/utils";
 import { FC } from "react";
 
 const HeaderUserMenu: FC = () => {

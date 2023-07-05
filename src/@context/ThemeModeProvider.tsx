@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ThemeModeComponent} from 'assets/ts/layout'
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 
 export type ThemeModeType = 'dark' | 'light' | 'system'
 export const themeModelSKey = 'theme_mode_value'

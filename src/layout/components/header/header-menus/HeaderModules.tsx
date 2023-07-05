@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import ACLWrapper from "@acl/ACLWrapper";
 import { FC } from "react";
-import { HOME_URL, moduleList, toAbsoluteUrl } from "@gems-web/utils";
-import { Icon } from "@gems-web/components";
+import { HOME_URL, moduleList, toAbsoluteUrl } from "@gems/utils";
+import { Icon } from "@gems/components";
 
 const HeaderModules: FC = () => {
 	return (

@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { useLayout } from "../../core";
 import { Header } from "./Header";
 import { Navbar } from "./Navbar";
-import { Icon } from "@gems-web/components";
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { Icon } from "@gems/components";
+import { toAbsoluteUrl } from "@gems/utils";
 
 export function HeaderWrapper() {
 	const { config, classes } = useLayout();

@@ -1,4 +1,4 @@
-import { toAbsoluteUrl } from "@gems-web/utils";
+import { toAbsoluteUrl } from "@gems/utils";
 import { FC } from "react";
 
 type ServerMaintananceProps = {

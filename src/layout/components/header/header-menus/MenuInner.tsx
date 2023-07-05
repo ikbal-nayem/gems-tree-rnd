@@ -1,5 +1,5 @@
-import { Button, Icon } from "@gems-web/components";
-import { HOME_URL } from "@gems-web/utils";
+import { Button, Icon } from "@gems/components";
+import { HOME_URL } from "@gems/utils";
 
 export function MenuInner() {
 	return (
