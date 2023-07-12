@@ -20,7 +20,7 @@ body {
   font-weight: 400;
 }
 
-.splash-screen span {
+.splash-screen h4 {
   color: #5E6278;
   transition: none !important;
   text-size-adjust: 100%;
@@ -30,7 +30,7 @@ body {
 .splash-screen img {
   margin-left: calc(100vw - 100%);
   margin-bottom: 30px;
-  height: 80px !important;
+  height: 100px !important;
 }
 
 [data-theme="dark"] .splash-screen {
