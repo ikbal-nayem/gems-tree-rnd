@@ -1,4 +1,4 @@
-import { HOME_URL, isExpiredToken } from "@gems/utils";
+import { AUTH_SERVICE, HOME_URL, isExpiredToken } from "@gems/utils";
 import { IAuthInfo, IUserInfo } from "@interface/auth.interface";
 import { AuthService } from "@services/api/Auth.service";
 import * as authHelper from "@services/helper/auth.helper";
@@ -6,6 +6,7 @@ import {
 	disableSplashScreen,
 	enableSplashScreen,
 } from "@services/helper/splashScreen.helper";
+import { axiosIns } from "config/api.config";
 import {
 	createContext,
 	Dispatch,
@@ -86,9 +87,11 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	};
 
 	const logout = () => {
-		authHelper.removeAuth();
-		makeAuthenticated(false);
-		window.location.replace(HOME_URL);
+		axiosIns.post(AUTH_SERVICE + "auth/sign-out").then((res) => {
+			authHelper.removeAuth();
+			makeAuthenticated(false);
+			window.location.replace(HOME_URL);
+		});
 	};
 
 	isLoading ? enableSplashScreen() : disableSplashScreen();
