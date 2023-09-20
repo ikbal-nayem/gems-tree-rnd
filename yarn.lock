@@ -1604,10 +1604,10 @@
     intl-messageformat "9.12.0"
     tslib "^2.1.0"
 
-"@gems/components@^1.0.0":
-  version "1.0.0"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/32/packages/npm/@gems/components/-/@gems/components-1.0.0.tgz#3f7a590e92292df51814a5404c1e76b7143dd9f6"
-  integrity sha1-P3pZDpIpLfUYFKVATB52txQ92fY=
+"@gems/components@^1.3.9":
+  version "1.3.9"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/32/packages/npm/@gems/components/-/@gems/components-1.3.9.tgz#519bfdfc231b76e94ff64bb7ff3541d91ee425b3"
+  integrity sha1-UZv9/CMbdulP9ku3/zVB2R7kJbM=
   dependencies:
     clsx "^1.2.1"
     react-cropper "^2.3.3"
@@ -1619,14 +1619,15 @@
     react-toastify "^9.1.1"
     topbar "^2.0.1"
 
-"@gems/utils@^1.0.2":
-  version "1.0.2"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/33/packages/npm/@gems/utils/-/@gems/utils-1.0.2.tgz#165fc205fb1b28097e31e8b67aa499b467ab8659"
-  integrity sha1-Fl/CBfsbKAl+Mei2eqSZtGerhlk=
+"@gems/utils@^1.2.7":
+  version "1.2.9"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/33/packages/npm/@gems/utils/-/@gems/utils-1.2.9.tgz#2970522d201dc51682e9e9d5422105b4972e41ef"
+  integrity sha1-KXBSLSAdxRaC6enVQiEFtJcuQe8=
   dependencies:
     browser-image-compression "^2.0.2"
     jwt-decode "^3.1.2"
     moment "^2.29.4"
+    pdfmake "^0.2.7"
     ua-parser-js "^1.0.35"
     uuid "^9.0.0"
     xlsx "^0.18.5"
