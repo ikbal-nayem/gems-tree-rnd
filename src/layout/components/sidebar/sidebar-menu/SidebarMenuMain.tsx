@@ -1,10 +1,18 @@
-import { DASHBOARD } from "@constants/internal-route.constant";
+import { DASHBOARD, ORG_TREE } from "@constants/internal-route.constant";
 // import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { useAuth } from "@context/Auth";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
+import { ROUTE_KEY } from "@constants/route-keys.constant";
 
-const menuData = [];
+const menuData = [
+  {
+    routeKey: ROUTE_KEY.OMS_ORG_TREE,
+    link: ORG_TREE,
+    title: "ট্রি",
+    icon: "history",
+  },
+];
 
 const ParentNode = ({ item }) => {
   if (item?.childrens?.length)
