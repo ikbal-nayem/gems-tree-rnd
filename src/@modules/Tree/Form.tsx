@@ -1,5 +1,5 @@
 import { Button, Input, Modal, ModalBody, ModalFooter } from "@gems/components";
-import { COMMON_LABELS } from "@gems/utils";
+import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -7,17 +7,10 @@ interface INodeForm {
 	isOpen: boolean;
 	onClose: () => void;
 	onSubmit: (data) => void;
-	updateData?: { item: any; idx?: number };
-	isSubmitting?: boolean;
+	updateData?: IObject;
 }
 
-const NodeForm = ({
-	isOpen,
-	onClose,
-	onSubmit,
-	isSubmitting,
-	updateData,
-}: INodeForm) => {
+const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
 	const {
 		register,
 		handleSubmit,
@@ -26,13 +19,13 @@ const NodeForm = ({
 	} = useForm();
 
 	useEffect(() => {
-		if (isOpen && updateData?.item) {
-			reset({ ...updateData?.item });
+		if (isOpen && !isObjectNull(updateData)) {
+			reset({ ...updateData });
 		} else reset({});
 	}, [isOpen, updateData, reset]);
 
 	return (
-		<Modal title="Node" isOpen={isOpen} handleClose={onClose} holdOn size="lg" >
+		<Modal title="Node" isOpen={isOpen} handleClose={onClose} holdOn size="lg">
 			<form onSubmit={handleSubmit(onSubmit)} noValidate>
 				<ModalBody>
 					<div className="row">
@@ -42,12 +35,12 @@ const NodeForm = ({
 								placeholder="বাংলা নাম লিখুন"
 								isRequired
 								registerProperty={{
-									...register("titleBn", {
+									...register("nameBn", {
 										required: "বাংলা নাম লিখুন",
 									}),
 								}}
-								isError={!!errors?.titleBn}
-								errorMessage={errors?.titleBn?.message as string}
+								isError={!!errors?.nameBn}
+								errorMessage={errors?.nameBn?.message as string}
 							/>
 						</div>
 						<div className="col-md-6 col-12">
@@ -56,12 +49,12 @@ const NodeForm = ({
 								placeholder="ইংরেজি নাম লিখুন"
 								isRequired
 								registerProperty={{
-									...register("titleEn", {
+									...register("nameEn", {
 										required: "ইংরেজি নাম লিখুন",
 									}),
 								}}
-								isError={!!errors?.titleEn}
-								errorMessage={errors?.titleEn?.message as string}
+								isError={!!errors?.nameEn}
+								errorMessage={errors?.nameEn?.message as string}
 							/>
 						</div>
 					</div>
@@ -69,20 +62,10 @@ const NodeForm = ({
 
 				<ModalFooter>
 					<div className="d-flex gap-3 justify-content-end">
-						<Button
-							size="sm"
-							color="secondary"
-							onClick={onClose}
-							isDisabled={isSubmitting}
-						>
+						<Button color="secondary" onClick={onClose}>
 							{COMMON_LABELS.CANCEL}
 						</Button>
-						<Button
-							size="sm"
-							color="primary"
-							type="submit"
-							isLoading={isSubmitting}
-						>
+						<Button color="primary" type="submit">
 							{COMMON_LABELS.SAVE}
 						</Button>
 					</div>
