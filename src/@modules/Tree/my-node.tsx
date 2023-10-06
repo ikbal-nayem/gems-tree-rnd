@@ -1,5 +1,5 @@
-import { Dropdown, DropdownItem, Icon } from "@gems/components";
-import { useState } from "react";
+import { Icon } from "@gems/components";
+// import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
 // import { Dropdown, DropdownItem } from "../Dropdown";
 // import { Button, Modal } from "react-bootstrap";
@@ -8,29 +8,26 @@ import "./my-node.css";
 // };
 
 const MyNode = ({ nodeData, treeDispatch }) => {
-	const [show, setShow] = useState(false);
-	const selectNode = () => {
-		alert(
-			"Hi All. I'm " +
-				nodeData.nameBn +
-				". I'm a " +
-				nodeData.organization.nameBn +
-				"."
-		);
-	};
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
 
-	// const [show, setShow] = useState(false);
-
-	// const handleClose = () => setShow(false);
-	// const handleShow = () => setShow(true);
-
-	return (
-		// <div onClick={selectNode}>
-		<div>
-			<div className="position">
-				<div className="d-flex justify-content-between">
-					<span className="me-1">{nodeData.nameBn}</span>
-					<Dropdown
+  return (
+    // <div onClick={selectNode}>
+    <div>
+      <div className="position rounded">
+        <div className="d-flex justify-content-between">
+          {/* <IconButton iconName="more_vert" color="warning" iconSize={16}/> */}
+          <Icon
+            icon="edit_square"
+            size={22}
+            color="warning"
+            onClick={() => treeDispatch("EDIT", nodeData)}
+          />
+          <div>
+            <h5 className="p-1">{nodeData.nameBn}</h5>
+          </div>
+          {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
+          {/* <Dropdown
 						btnContent={<Icon icon="more_vert" size={20} />}
 						btnIcon
 						btnColor="dark"
@@ -47,12 +44,27 @@ const MyNode = ({ nodeData, treeDispatch }) => {
 							<Icon icon="person_remove" color="danger" />
 							&nbsp; বিলুপ্ত করুন
 						</DropdownItem>
-					</Dropdown>
-				</div>
-			</div>
-			{/* {show && <div className="fullname">{nodeData.organization.nameBn}</div>} */}
-		</div>
-	);
+					</Dropdown> */}
+          <div>
+            <Icon
+              icon="add_circle"
+              size={22}
+              color="success"
+              onClick={() => treeDispatch("ADD", nodeData)}
+            />
+            <Icon
+              icon="remove_circle"
+              size={22}
+              color="danger"
+              onClick={() => treeDispatch("REMOVE", nodeData)}
+            />
+          </div>
+        </div>
+        <div className="bg-light">Responsibility</div>
+      </div>
+      {/* {show && <div className="fullname">{nodeData.organization.nameBn}</div>} */}
+    </div>
+  );
 };
 
 // MyNode.propTypes = propTypes;

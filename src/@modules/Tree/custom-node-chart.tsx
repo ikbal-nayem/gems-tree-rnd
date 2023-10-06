@@ -137,7 +137,7 @@ const deleteNode = (nd, nodeId) => {
 
 const CustomNodeChart = () => {
 	const [formOpen, setFormOpen] = useState<boolean>(false);
-	const [isSaving, setSaving] = useState<boolean>(false);
+	// const [isSaving, setSaving] = useState<boolean>(false);
 	const [test, setTest] = useState<IObject>(orgData);
 	const selectedNode = useRef<IObject>(null);
 	const updateNodeData = useRef<IObject>(null);
@@ -167,6 +167,8 @@ const CustomNodeChart = () => {
 	};
 
 	const onSubmit = (formData: IObject) => {
+		console.log(formData);
+		
 		const ad = isObjectNull(updateNodeData.current)
 			? addNode(test, selectedNode.current?.id, formData)
 			: editNode(test, updateNodeData.current?.id, formData);
