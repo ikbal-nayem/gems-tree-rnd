@@ -50,7 +50,18 @@ const PermissionMenus = ({ data = menuData }) => {
               (d) => d?.routeKey === item?.routeKey
             )
           )
-            return <ParentNode key={i} item={item} />;
+            return (
+              <ParentNode
+                key={i}
+                item={{
+                  ...item,
+                  title:
+                    currentUser?.userPermissionDTO?.sitemapList?.find(
+                      (d) => d?.routeKey === item?.routeKey
+                    )?.nameBn || item?.title,
+                }}
+              />
+            );
           return null;
         })}
     </>
