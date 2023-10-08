@@ -60,10 +60,18 @@ const MyNode = ({ nodeData, treeDispatch }) => {
             />
           </div>
         </div>
-        <div className="bg-light">
-          {nodeData?.functionality?.length > 0 &&
-            nodeData?.functionality?.map((item, i) => {
-              return <p className="mb-0" key={i}>{item?.responsibility || null}</p>;
+        <div className="bg-light text-start">
+          {nodeData?.employee?.length > 0 &&
+            nodeData?.employee?.map((item, i) => {
+              return (
+                <>
+                  {item?.employeeNumber || item?.rank ? (
+                    <p className="mb-0 p-3" key={i}>
+                      {item?.employeeNumber || null} x {item?.rank || null}
+                    </p>
+                  ) : null}
+                </>
+              );
             })}
         </div>
       </div>
