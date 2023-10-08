@@ -24,7 +24,7 @@ const MyNode = ({ nodeData, treeDispatch }) => {
             onClick={() => treeDispatch("EDIT", nodeData)}
           />
           <div>
-            <h5 className="p-1">{nodeData.nameBn}</h5>
+            <h5 className="p-1 mb-0">{nodeData.nameBn}</h5>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
           {/* <Dropdown
@@ -60,7 +60,12 @@ const MyNode = ({ nodeData, treeDispatch }) => {
             />
           </div>
         </div>
-        <div className="bg-light">Responsibility</div>
+        <div className="bg-light">
+          {nodeData?.functionality?.length > 0 &&
+            nodeData?.functionality?.map((item, i) => {
+              return <p className="mb-0" key={i}>{item?.responsibility || null}</p>;
+            })}
+        </div>
       </div>
       {/* {show && <div className="fullname">{nodeData.organization.nameBn}</div>} */}
     </div>
