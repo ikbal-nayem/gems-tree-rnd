@@ -1,4 +1,8 @@
-import { DASHBOARD, ORG_TREE } from "@constants/internal-route.constant";
+import {
+  DASHBOARD,
+  ORG_TEMPLATE,
+  ORG_TEMPLATE_CREATE,
+} from "@constants/internal-route.constant";
 // import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { useAuth } from "@context/Auth";
 import { SidebarMenuItem } from "./SidebarMenuItem";
@@ -7,10 +11,18 @@ import { ROUTE_KEY } from "@constants/route-keys.constant";
 
 const menuData = [
   {
-    routeKey: ROUTE_KEY.OMS_ORG_TREE,
-    link: ORG_TREE,
-    title: "ট্রি",
+    routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE,
+    link: ORG_TEMPLATE,
+    title: "অর্গানোগ্রাম টেমপ্লেট",
     icon: "history",
+    childrens: [
+      {
+        routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
+        link: ORG_TEMPLATE_CREATE,
+        title: "টেমপ্লেট তৈরি",
+        hasBullet: true,
+      },
+    ],
   },
 ];
 

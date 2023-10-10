@@ -8,11 +8,7 @@ import "./my-node.css";
 // };
 
 const MyNode = ({ nodeData, treeDispatch }) => {
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
   return (
-    // <div onClick={selectNode}>
     <div>
       <div className="position rounded">
         <div className="d-flex justify-content-between">
@@ -60,13 +56,17 @@ const MyNode = ({ nodeData, treeDispatch }) => {
             />
           </div>
         </div>
-        <div className="bg-light text-start">
+        <div
+          className={`bg-light text-start ${
+            nodeData?.employee?.length ? "p-3" : ""
+          }`}
+        >
           {nodeData?.employee?.length > 0 &&
             nodeData?.employee?.map((item, i) => {
               return (
                 <>
                   {item?.employeeNumber || item?.rank ? (
-                    <p className="mb-0 p-3" key={i}>
+                    <p className="mb-0" key={i}>
                       {item?.employeeNumber || null} x {item?.rank || null}
                     </p>
                   ) : null}
@@ -75,11 +75,8 @@ const MyNode = ({ nodeData, treeDispatch }) => {
             })}
         </div>
       </div>
-      {/* {show && <div className="fullname">{nodeData.organization.nameBn}</div>} */}
     </div>
   );
 };
-
-// MyNode.propTypes = propTypes;
 
 export default MyNode;

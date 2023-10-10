@@ -46,3 +46,21 @@
 .orgchart{
   background: none;
 }
+
+/* Yellow Node Border */
+.orgchart ul li .oc-node {
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  padding: 3px;
+  border: 2px dashed transparent;
+  margin-bottom: 20px;
+}
+
+/* Yellow Node Border */
+/* .orgchart ul li .oc-node:hover {
+  background-color: #fff !important;
+}
+.orgchart ul li .oc-node.selected {
+  background-color: #fff !important;
+} */
