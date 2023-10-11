@@ -64,13 +64,13 @@ const MyNode = ({ nodeData, treeDispatch }) => {
           {nodeData?.employee?.length > 0 &&
             nodeData?.employee?.map((item, i) => {
               return (
-                <>
+                <div key={i}>
                   {item?.employeeNumber || item?.rank ? (
-                    <p className="mb-0" key={i}>
+                    <p className="mb-0">
                       {item?.employeeNumber || null} x {item?.rank || null}
                     </p>
                   ) : null}
-                </>
+                </div>
               );
             })}
         </div>
