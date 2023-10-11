@@ -12,7 +12,9 @@ export const AppRouteList: IAppRoutes[] = [
   },
   {
     link: ORG_TEMPLATE_CREATE,
-    element: lazy(() => import("@modules/organogram-template/Tree/index")),
+    element: lazy(
+      () => import("@modules/organogram-template/template-tree/index")
+    ),
   },
   {
     link: "*",

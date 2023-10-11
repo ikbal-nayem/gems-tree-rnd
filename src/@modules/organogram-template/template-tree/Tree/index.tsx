@@ -1,27 +1,8 @@
 import OrganizationChart from "@dabeng/react-orgchart";
 import { IObject, generateUUID, isObjectNull } from "@gems/utils";
-import { useRef, useState } from "react";
-import MyNode from "../template-tree/Tree/my-node";
-import NodeForm from "../template-tree/Tree/Form";
-
-const orgData = {
-	id: "a7c4a37c-a9cf-4399-9d77-6478552ce01d",
-	children: [],
-	nameBn: "জনপ্রশাসন মন্ত্রণালয়",
-	nameEn: "Ministry Of Public Administration",
-	organization: {
-		id: "77848f4b-3874-4cd5-b0a3-660660c046b3",
-		nameEn: "Ministry Of Public Administration",
-		nameBn: "জনপ্রশাসন মন্ত্রণালয়",
-		officeType: "INSTITUTION_TYPE_GOVERNMENT",
-		orgType: "ORG_TYPE_MINISTRY",
-		address: "New Eskaton, Dhaka-1000",
-		locationId: "1f5e315a-1965-4726-87b8-d597eed4488d",
-		email: "info@gems.org.bd",
-		fax: "++12333444",
-		isActive: true,
-	},
-};
+import { useEffect, useRef, useState } from "react";
+import NodeForm from "./Form";
+import MyNode from "./my-node";
 
 const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
   if (nd.id === parentId) {
@@ -62,10 +43,17 @@ const deleteNode = (nd, nodeId) => {
   return { ...nd };
 };
 
-const CustomNodeChart = () => {
+interface IOrganizationTemplateTree {
+  treeData: IObject;
+  setTreeData: (data) => void;
+}
+
+const OrganizationTemplateTree = ({
+  treeData,
+  setTreeData,
+}: IOrganizationTemplateTree) => {
   const [formOpen, setFormOpen] = useState<boolean>(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
-  const [test, setTest] = useState<IObject>(orgData);
   const selectedNode = useRef<IObject>(null);
   const updateNodeData = useRef<IObject>(null);
 
@@ -80,7 +68,7 @@ const CustomNodeChart = () => {
         setFormOpen(true);
         break;
       case "REMOVE":
-        setTest(deleteNode(test, data.id));
+        setTreeData(deleteNode(treeData, data.id));
         break;
       default:
         return;
@@ -94,12 +82,10 @@ const CustomNodeChart = () => {
   };
 
   const onSubmit = (formData: IObject) => {
-    console.log(formData);
-
     const ad = isObjectNull(updateNodeData.current)
-      ? addNode(test, selectedNode.current?.id, formData)
-      : editNode(test, updateNodeData.current?.id, formData);
-    setTest(ad);
+      ? addNode(treeData, selectedNode.current?.id, formData)
+      : editNode(treeData, updateNodeData.current?.id, formData);
+    setTreeData(ad);
     onFormClose();
   };
 
@@ -141,7 +127,7 @@ const CustomNodeChart = () => {
       <div>
         <OrganizationChart
           // ref={orgchart}
-          datasource={test}
+          datasource={treeData}
           chartClass="myChart"
           NodeTemplate={({ nodeData }) => (
             <MyNode nodeData={nodeData} treeDispatch={treeDispatch} />
@@ -160,4 +146,4 @@ const CustomNodeChart = () => {
   );
 };
 
-export default CustomNodeChart;
+export default OrganizationTemplateTree;
