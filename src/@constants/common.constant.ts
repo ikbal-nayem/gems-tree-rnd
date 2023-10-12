@@ -62,5 +62,26 @@ export const COMMON_LABELS = {
 	ACTIVE: "সক্রিয়",
 	INACTIVE: "নিষ্ক্রিয়",
   NOT_ASSIGN: "তথ্য নেই",
+};
 
+export const LABELS = {
+	EN:{
+    MAIN_ACTIVITIES: 'MAIN ACTIVITIES',
+    EQUIPMENTS: 'EQUIPMENTS', 
+    ABBREVIATIONS: 'ABBREVIATIONS', 
+    ATTACHED_OFFICE: 'ATTACHED_OFFICE', 
+    SUMMARY_OF_MANPOWER: 'SUMMARY_OF_MANPOWER', 
+    ALLOCATION_OF_BUSINESS: 'Allocation of Business', 
+  },
+
+  BN:{
+    MAIN_ACTIVITIES: 'মূল কার্যক্রম',
+    EQUIPMENTS: 'সরঞ্জামাদি', 
+    ABBREVIATIONS: 'সংক্ষিপ্তরূপ সমূহ', 
+    ATTACHED_OFFICE: 'সংযুক্ত অফিসসমূহ', 
+    SUMMARY_OF_MANPOWER: 'জনবলের তালিকা',
+    ALLOCATION_OF_BUSINESS: 'Allocation of Business',
+
+
+  }
 };
