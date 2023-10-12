@@ -25,7 +25,7 @@ const TemplateTree = () => {
 				<div className="col-4">
 					<Activities data={data?.activities} onOtherDataSet={onOtherDataSet} />
 				</div>
-				<div className="col-2">
+				<div className="col-8">
 					<Equipments data={data} onOtherDataSet={onOtherDataSet} />
 				</div>
 			</div>
