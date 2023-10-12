@@ -1,6 +1,6 @@
 import OrganizationChart from "@dabeng/react-orgchart";
 import { IObject, generateUUID, isObjectNull } from "@gems/utils";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
 
