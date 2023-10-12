@@ -5,6 +5,7 @@ import { orgData } from "./Tree/data";
 import { Button } from "@gems/components";
 import Activities from "./activities";
 import Equipments from "./equipments";
+import Abbreviations from "./abbreviation";
 
 const TemplateTree = () => {
 	const [treeData, setTreeData] = useState<IObject>(orgData);
@@ -18,6 +19,9 @@ const TemplateTree = () => {
 		console.log("ddddddd", treeData);
 	};
 
+	console.log('Shoronjam: ', data);
+	
+
 	return (
 		<div>
 			<OrganizationTemplateTree treeData={treeData} setTreeData={setTreeData} />
@@ -27,6 +31,9 @@ const TemplateTree = () => {
 				</div>
 				<div className="col-8">
 					<Equipments data={data} onOtherDataSet={onOtherDataSet} />
+				</div>
+				<div className="col-4">
+					<Abbreviations data={data} onOtherDataSet={onOtherDataSet} />
 				</div>
 			</div>
 			<div className="d-flex gap-3 justify-content-center mt-5">

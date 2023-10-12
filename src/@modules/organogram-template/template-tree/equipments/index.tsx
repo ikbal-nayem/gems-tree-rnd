@@ -7,9 +7,8 @@ import { useState } from "react";
 const Equipments = ({ data, onOtherDataSet }) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const onSubmit = (formData) => {
-		onOtherDataSet("transport", formData?.transport);
-		onOtherDataSet("officeEquipments", formData?.officeEquipments);
-		console.log(formData);
+		onOtherDataSet("equipment", formData);
+		// console.log(formData);
 		setOpen(false);
 	};
 
@@ -22,18 +21,18 @@ const Equipments = ({ data, onOtherDataSet }) => {
 			<Separator className="mt-1 mb-2" />
 			<div className="row">
 				<div className="col-6">
-					<h2 className="mb-0 mt-3"><u>পরিবহণ</u></h2>
+					<h4 className="mb-0 mt-3"><u>পরিবহণ</u></h4>
 					<ol className="ol">
-						{data?.transport?.map((d) => (
+						{data?.equipment?.transport?.map((d) => (
 							<li key={d}>{d.name + ' X' + d.number}</li>
 						))}
 					</ol>
 				</div>
 
 				<div className="col-6">
-					<h2 className="mb-0 mt-3"><u>{'অফিস ' + LABELS.BN.EQUIPMENTS}</u></h2>
+					<h4 className="mb-0 mt-3"><u>{'অফিস ' + LABELS.BN.EQUIPMENTS}</u></h4>
 					<ol className="ol">
-						{data?.officeEquipments?.map((eq) => (
+						{data?.equipment?.officeEquipments?.map((eq) => (
 							<li key={eq}>{eq.name + ' X' + eq.number}</li>
 						))}
 					</ol>
