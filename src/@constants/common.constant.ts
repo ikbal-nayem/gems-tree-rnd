@@ -66,11 +66,11 @@ export const COMMON_LABELS = {
 
 export const LABELS = {
 	EN:{
-    MAIN_ACTIVITIES: 'MAIN ACTIVITIES',
-    EQUIPMENTS: 'EQUIPMENTS', 
-    ABBREVIATIONS: 'ABBREVIATIONS', 
-    ATTACHED_OFFICE: 'ATTACHED_OFFICE', 
-    SUMMARY_OF_MANPOWER: 'SUMMARY_OF_MANPOWER', 
+    MAIN_ACTIVITIES: 'Main Activities',
+    EQUIPMENTS: 'Equipments', 
+    ABBREVIATIONS: 'Abbreviations', 
+    ATTACHED_OFFICE: 'Attached Offices', 
+    SUMMARY_OF_MANPOWER: 'Summary of Manpower', 
     ALLOCATION_OF_BUSINESS: 'Allocation of Business', 
   },
 
