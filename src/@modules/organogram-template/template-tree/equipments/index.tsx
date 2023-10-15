@@ -37,6 +37,17 @@ const Equipments = ({ data, onOtherDataSet }) => {
 						))}
 					</ol>
 				</div>
+				
+				<Separator />
+
+				<div className="col-12">
+					<h4 className="mb-0 mt-3"><u>{LABELS.BN.MISCELLANEOUS}</u></h4>
+					<ol className="ol">
+						{data?.equipment?.miscellaneous?.map((m) => (
+							<li key={m}>{m.name}</li>
+						))}
+					</ol>
+				</div>
 
 				<div className="col-6">
 

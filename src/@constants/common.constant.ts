@@ -72,6 +72,7 @@ export const LABELS = {
     ATTACHED_OFFICE: 'Attached Offices', 
     SUMMARY_OF_MANPOWER: 'Summary of Manpower', 
     ALLOCATION_OF_BUSINESS: 'Allocation of Business', 
+    MISCELLANEOUS: 'Miscellaneous', 
   },
 
   BN:{
@@ -81,6 +82,7 @@ export const LABELS = {
     ATTACHED_OFFICE: 'সংযুক্ত অফিসসমূহ', 
     SUMMARY_OF_MANPOWER: 'জনবলের তালিকা',
     ALLOCATION_OF_BUSINESS: 'Allocation of Business',
+    MISCELLANEOUS: 'বিবিধ',
 
 
   }
