@@ -1,4 +1,4 @@
-import { DASHBOARD } from "@constants/internal-route.constant";
+import { ROUTE } from "@constants/internal-route.constant";
 import { toAbsoluteUrl } from "@gems/utils";
 import { FC } from "react";
 import { Link } from "react-router-dom";
@@ -26,7 +26,7 @@ const Error404: FC = () => {
 			</div>
 
 			<div className="mt-5">
-				<Link to={DASHBOARD} className="btn btn-sm btn-primary">
+				<Link to={ROUTE.DASHBOARD} className="btn btn-sm btn-primary">
 					Return Home
 				</Link>
 			</div>

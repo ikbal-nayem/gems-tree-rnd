@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { DASHBOARD } from "@constants/internal-route.constant";
+import { ROUTE } from "@constants/internal-route.constant";
 import clsx from "clsx";
 import { useThemeMode } from "partials";
 import { Link } from "react-router-dom";
@@ -39,7 +39,7 @@ export function HeaderWrapper() {
 								<Icon icon="view_headline" size={25} className="svg-icon-1" />
 							</div>
 							<div className="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-								<Link to={DASHBOARD} className="d-lg-none">
+								<Link to={ROUTE.DASHBOARD} className="d-lg-none">
 									<img
 										alt="Logo"
 										src={
@@ -57,7 +57,7 @@ export function HeaderWrapper() {
 
 				{!config.app.sidebar?.display && (
 					<div className="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
-						<Link to={DASHBOARD}>
+						<Link to={ROUTE.DASHBOARD}>
 							{config.layoutType !== "dark-header" ? (
 								<img
 									alt="Logo"
