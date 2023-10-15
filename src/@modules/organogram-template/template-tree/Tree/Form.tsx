@@ -119,11 +119,14 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       label="দায়িত্ব"
                       placeholder="দায়িত্ব লিখুন"
                       registerProperty={{
-                        ...register(`functionality.${index}.responsibility`, {
-                          required: "দায়িত্ব লিখুন",
-                        }),
+                        ...register(
+                          `functionality.${index}.responsibility`
+                          // {
+                          //   required: "দায়িত্ব লিখুন",
+                          // }
+                        ),
                       }}
-                      isRequired
+                      // isRequired
                       isError={!!errors?.functionality?.[index]?.responsibility}
                       errorMessage={
                         errors?.functionality?.[index]?.responsibility
@@ -168,11 +171,14 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       label="পদ"
                       placeholder="পদ লিখুন"
                       registerProperty={{
-                        ...register(`employee.${index}.rank`, {
-                          required: "পদ লিখুন",
-                        }),
+                        ...register(
+                          `employee.${index}.rank`
+                          // {
+                          //   required: "পদ লিখুন",
+                          // }
+                        ),
                       }}
-                      isRequired
+                      // isRequired
                       isError={!!errors?.employee?.[index]?.rank}
                       errorMessage={
                         errors?.employee?.[index]?.rank?.message as string
@@ -185,11 +191,14 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       placeholder="জনবল সংখ্যা লিখুন"
                       type="number"
                       registerProperty={{
-                        ...register(`employee.${index}.employeeNumber`, {
-                          required: "জনবল সংখ্যা লিখুন",
-                        }),
+                        ...register(
+                          `employee.${index}.employeeNumber`
+                          //  {
+                          //   required: "জনবল সংখ্যা লিখুন",
+                          // }
+                        ),
                       }}
-                      isRequired
+                      // isRequired
                       isError={!!errors?.employee?.[index]?.employeeNumber}
                       errorMessage={
                         errors?.employee?.[index]?.employeeNumber
