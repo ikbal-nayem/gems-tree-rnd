@@ -1,6 +1,6 @@
 import { LABELS } from "@constants/common.constant";
-import { Button, IconButton, Input, Modal, ModalBody } from "@gems/components";
-import { COMMON_LABELS } from "@gems/utils";
+import { Button, IconButton, Input, Modal, ModalBody, Separator } from "@gems/components";
+import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 import { useFieldArray, useForm } from "react-hook-form";
 
 const Form = ({ onSubmit, isOpen, setOpen }) => {
@@ -31,6 +31,15 @@ const Form = ({ onSubmit, isOpen, setOpen }) => {
 	} = useFieldArray({
 		control,
 		name: "officeEquipments",
+	});
+
+	const {
+		fields: miscellFields,
+		append: miscellAppend,
+		remove: miscellRemove,
+	} = useFieldArray({
+		control,
+		name: "miscellaneous",
 	});
 
 	return (
@@ -73,7 +82,7 @@ const Form = ({ onSubmit, isOpen, setOpen }) => {
 										<div className="row w-100">
 											<div className="col-md-6">
 												<Input
-													label="পরিবহণ"
+													label={numEnToBn(index+1) + '. পরিবহণ'}
 													placeholder="পরিবহণ লিখুন"
 													registerProperty={{
 														...register(`transport.${index}.name`, {
@@ -135,7 +144,7 @@ const Form = ({ onSubmit, isOpen, setOpen }) => {
 										<div className="row w-100">
 											<div className="col-md-6">
 												<Input
-													label={LABELS.BN.EQUIPMENTS}
+													label={numEnToBn(index+1) + '. ' + LABELS.BN.EQUIPMENTS}
 													placeholder={LABELS.BN.EQUIPMENTS + " লিখুন"}
 													registerProperty={{
 														...register(`officeEquipments.${index}.name`, {
@@ -169,6 +178,53 @@ const Form = ({ onSubmit, isOpen, setOpen }) => {
 												color="danger"
 												rounded={false}
 												onClick={() => oeRemove(index)}
+											/>
+										</div>
+									</div>
+								))}
+							</div>
+							<Separator />
+							<div className="col-12 px-5">
+								<div className="d-flex justify-content-between">
+									<h5 className="mb-0 mt-3"><u>{LABELS.BN.MISCELLANEOUS}</u></h5>
+									<div className="mt-2">
+										<IconButton
+											iconName="add"
+											color="success"
+											rounded={false}
+											onClick={() => {
+												miscellAppend({});
+											}}
+										/>
+									</div>
+								</div>
+								{miscellFields.map((field, index) => (
+									<div
+										className="d-flex align-items-center gap-3 w-100"
+										key={field?.id}
+									>
+										<div className="row w-100">
+											<div className="col-12">
+												<Input
+													label={numEnToBn(index+1) + '. ' + LABELS.BN.MISCELLANEOUS}
+													placeholder={LABELS.BN.MISCELLANEOUS + " লিখুন"}
+													registerProperty={{
+														...register(`miscellaneous.${index}.name`, {
+															required: LABELS.BN.EQUIPMENTS + " লিখুন",
+														}),
+													}}
+													isRequired
+													isError={!!errors?.officeEquipments?.[index]?.name}
+													errorMessage={errors?.officeEquipments?.[index]?.name?.message as string}
+												/>
+											</div>
+										</div>
+										<div className="mt-2">
+											<IconButton
+												iconName="delete"
+												color="danger"
+												rounded={false}
+												onClick={() => miscellRemove(index)}
 											/>
 										</div>
 									</div>
