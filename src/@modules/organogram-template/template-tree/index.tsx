@@ -6,6 +6,7 @@ import { Button, Input, Separator } from "@gems/components";
 import Activities from "./activities";
 import Equipments from "./equipments";
 import Abbreviations from "./abbreviation";
+import AllocationOfBusiness from "./allocationOfBusiness";
 
 const TemplateTree = () => {
   const [title, setTitle] = useState<string>("");
@@ -22,7 +23,7 @@ const TemplateTree = () => {
 
   console.log("Shoronjam: ", data);
 
-    // console.log("t", title);
+  // console.log("t", title);
 
   return (
     <div>
@@ -31,13 +32,13 @@ const TemplateTree = () => {
         <div className="col-md-6">
           <div className="card border p-3">
             <div className="card-head d-flex justify-content-between align-items-center">
-              <h4 className="m-0">শিরোনাম লিখুন</h4>
+              <h4 className="m-0">টেমপ্লেট নাম</h4>
             </div>
             <Separator className="mt-1 mb-2" />
             <Input
               type="search"
               noMargin
-              placeholder="শিরোনাম লিখুন"
+              placeholder="টেমপ্লেট নাম"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -47,6 +48,9 @@ const TemplateTree = () => {
               data={data?.activities}
               onOtherDataSet={onOtherDataSet}
             />
+          </div>
+          <div className="mt-3">
+            <AllocationOfBusiness data={data} onOtherDataSet={onOtherDataSet} />
           </div>
         </div>
         <div className="col-md-6">
