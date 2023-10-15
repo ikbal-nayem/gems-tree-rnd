@@ -14,6 +14,12 @@ export const AppRouteList: IAppRoutes[] = [
     ),
   },
   {
+    link: ROUTE.ORG_TEMPLATE_LIST,
+    element: lazy(
+      () => import("@modules/organogram-template/template-list")
+    ),
+  },
+  {
     link: ROUTE.OMS_ORG_EMPLOYEE_LIST,
     element: lazy(
       () => import("@modules/employee-list")

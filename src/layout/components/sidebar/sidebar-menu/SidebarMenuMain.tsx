@@ -18,6 +18,12 @@ const menuData = [
         title: MENU.BN.TEMPLATE_CREATE,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_LIST,
+        link: ROUTE.ORG_TEMPLATE_LIST,
+        title: MENU.BN.TEMPLATE_LIST,
+        hasBullet: true,
+      },
     ],
   },
   {

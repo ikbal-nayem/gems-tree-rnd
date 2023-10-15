@@ -3,11 +3,13 @@ export const MENU = {
     TEMPLATE: "অর্গানোগ্রাম টেমপ্লেট",
     TEMPLATE_CREATE: "টেমপ্লেট তৈরি",
     EMPLOYEE_LIST: "কর্মকর্তা/কর্মচারী",
+    TEMPLATE_LIST: "টেমপ্লেটের তালিকা",
   },
 
   EN: {
     TEMPLATE: "Organogram Template",
     TEMPLATE_CREATE: "Create Template",
     EMPLOYEE_LIST: "Employee",
+    TEMPLATE_LIST: "Template List",
   },
 };
