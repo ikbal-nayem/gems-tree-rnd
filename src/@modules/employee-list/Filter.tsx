@@ -28,7 +28,7 @@ const Filter = ({ onFilter }) => {
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} noValidate>
 			<div className="row">
-				<div className="col-md-3 col-sm-6">
+				{/* <div className="col-md-3 col-sm-6">
 					<DateInput
 						noMargin
 						label="নির্ধারিত তারিখ"
@@ -37,7 +37,7 @@ const Filter = ({ onFilter }) => {
 						isRequired
 						isError={!!errors?.toDate}
 					/>
-				</div>
+				</div> */}
 				<div className="col-md-3 col-sm-6">
 					<Autocomplete
 						noMargin
@@ -52,7 +52,7 @@ const Filter = ({ onFilter }) => {
 						isError={!!errors?.batchToDto}
 					/>
 				</div>
-				<div className="col d-flex justify-content-end align-items-end mt-3">
+				<div className="col d-flex justify-content-start align-items-end mt-3">
 					<IconButton
 						iconName="search"
 						type="submit"
