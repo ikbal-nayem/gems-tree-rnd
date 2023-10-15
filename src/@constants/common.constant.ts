@@ -81,7 +81,7 @@ export const LABELS = {
     ABBREVIATIONS: 'সংক্ষিপ্তরূপ সমূহ', 
     ATTACHED_OFFICE: 'সংযুক্ত অফিসসমূহ', 
     SUMMARY_OF_MANPOWER: 'জনবলের তালিকা',
-    ALLOCATION_OF_BUSINESS: 'Allocation of Business',
+    ALLOCATION_OF_BUSINESS: 'ব্যবসার বরাদ্দ',
     MISCELLANEOUS: 'বিবিধ',
 
 

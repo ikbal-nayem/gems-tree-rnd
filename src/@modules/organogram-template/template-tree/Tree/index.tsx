@@ -3,6 +3,7 @@ import { IObject, generateUUID, isObjectNull } from "@gems/utils";
 import { useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
+import { Input } from "@gems/components";
 
 const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
   if (nd.id === parentId) {
@@ -91,8 +92,6 @@ const OrganizationTemplateTree = ({
 
   return (
     <div>
-      <h6 className="text-center mb-4">MOPA INTERNAL OFFICE TREE</h6>
-
       {/* <section className="toolbar">
         <label htmlFor="txt-filename">Filename:</label>
         <input
