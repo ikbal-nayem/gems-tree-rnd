@@ -27,6 +27,12 @@ const menuData = [
     ],
   },
   {
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
+    link: ROUTE.OMS_ORGANOGRAM_LIST,
+    title: MENU.BN.ORGANOGRAM_LIST,
+    icon: "list",
+  },
+  {
     routeKey: ROUTE_KEY.OMS_ORG_EMPLOYEE_LIST,
     link: ROUTE.OMS_ORG_EMPLOYEE_LIST,
     title: MENU.BN.EMPLOYEE_LIST,

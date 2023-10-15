@@ -4,6 +4,7 @@ export const MENU = {
     TEMPLATE_CREATE: "টেমপ্লেট তৈরি",
     EMPLOYEE_LIST: "কর্মকর্তা/কর্মচারী",
     TEMPLATE_LIST: "টেমপ্লেটের তালিকা",
+    ORGANOGRAM_LIST: "অর্গানোগ্রামের তালিকা",
   },
 
   EN: {
@@ -11,5 +12,6 @@ export const MENU = {
     TEMPLATE_CREATE: "Create Template",
     EMPLOYEE_LIST: "Employee",
     TEMPLATE_LIST: "Template List",
+    ORGANOGRAM_LIST: "Organogram List",
   },
 };
