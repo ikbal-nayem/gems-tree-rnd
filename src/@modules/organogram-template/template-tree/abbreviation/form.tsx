@@ -19,7 +19,7 @@ const Form = ({ data, onOtherDataSet }) => {
   });
 
   useEffect(() => {
-    data ? reset({ abbreviations: data }) : append("");
+    data ? reset({ ...data?.abbreviations }) : append("");
   }, [data]);
 
   const onDataChange = () => {

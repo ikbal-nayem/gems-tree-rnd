@@ -20,7 +20,7 @@ const Form = ({ data, onOtherDataSet }) => {
   });
 
   useEffect(() => {
-    data ? reset({ activities: data }) : append("");
+    data ? reset({ ...data?.activities }) : append("");
   }, [data]);
 
   const onDataChange = () => {

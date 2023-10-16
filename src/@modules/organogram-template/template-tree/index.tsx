@@ -7,6 +7,7 @@ import Activities from "./activities";
 import Equipments from "./equipments";
 import Abbreviations from "./abbreviation";
 import AllocationOfBusiness from "./allocationOfBusiness";
+import CheckList from "./checkList";
 
 const TemplateTree = () => {
   const [title, setTitle] = useState<string>("");
@@ -23,7 +24,7 @@ const TemplateTree = () => {
 
   console.log("Shoronjam: ", data);
 
-  // console.log("t", title);
+  console.log("tree", treeData);
 
   return (
     <div>
@@ -51,6 +52,9 @@ const TemplateTree = () => {
           </div>
           <div className="mt-3">
             <AllocationOfBusiness data={data} onOtherDataSet={onOtherDataSet} />
+          </div>
+          <div className="mt-3">
+            <CheckList data={data} onOtherDataSet={onOtherDataSet} />
           </div>
         </div>
         <div className="col-md-6">

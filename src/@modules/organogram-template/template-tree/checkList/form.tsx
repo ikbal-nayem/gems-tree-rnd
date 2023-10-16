@@ -11,47 +11,47 @@ const Form = ({ data, onOtherDataSet }) => {
     reset,
     getValues,
   } = useForm<any>({
-    defaultValues: { allocationOfBusiness: [""] },
+    defaultValues: { checkList: [""] },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "allocationOfBusiness",
+    name: "checkList",
   });
 
   useEffect(() => {
     data
-      ? reset({ ...data?.allocationOfBusiness })
+      ? reset({ ...data?.checkList })
       : append("");
   }, [data]);
 
   const onDataChange = () => {
-    onOtherDataSet("allocationOfBusiness", getValues()?.allocationOfBusiness);
+    onOtherDataSet("checkList", getValues()?.checkList);
   };
 
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
-        <h5 className="m-0">বরাদ্দ</h5>
+        <h5 className="m-0">তালিকা</h5>
         <IconButton iconName="add" color="primary" onClick={() => append("")} />
       </div>
       <form>
         {fields.map((f, idx) => (
           <div key={idx} className="d-flex gap-3 mt-3">
             <Input
-              placeholder={`বরাদ্দ ${numEnToBn(idx + 1)}`}
+              placeholder={`তালিকা ${numEnToBn(idx + 1)}`}
               isRequired
               noMargin
               autoFocus
               registerProperty={{
-                ...register(`allocationOfBusiness.${idx}`, {
-                  required: "বরাদ্দ যুক্ত করুন",
+                ...register(`checkList.${idx}`, {
+                  required: "তালিকা যুক্ত করুন",
                   onChange: onDataChange,
                 }),
               }}
-              isError={!!errors?.allocationOfBusiness?.[idx]}
+              isError={!!errors?.checkList?.[idx]}
               errorMessage={
-                errors?.allocationOfBusiness?.[idx]?.message as string
+                errors?.checkList?.[idx]?.message as string
               }
             />
             <IconButton
