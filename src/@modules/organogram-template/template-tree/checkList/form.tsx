@@ -21,7 +21,7 @@ const Form = ({ data, onOtherDataSet }) => {
 
   useEffect(() => {
     data
-      ? reset({ ...data?.checkList })
+      ? reset({ ...data })
       : append("");
   }, [data]);
 
@@ -40,24 +40,24 @@ const Form = ({ data, onOtherDataSet }) => {
           <div key={idx} className="d-flex gap-3 mt-3">
             <Input
               placeholder={`তালিকা ${numEnToBn(idx + 1)}`}
-              isRequired
+              // isRequired
               noMargin
               autoFocus
               registerProperty={{
                 ...register(`checkList.${idx}`, {
-                  required: "তালিকা যুক্ত করুন",
+                  // required: "তালিকা যুক্ত করুন",
                   onChange: onDataChange,
                 }),
               }}
-              isError={!!errors?.checkList?.[idx]}
-              errorMessage={
-                errors?.checkList?.[idx]?.message as string
-              }
+              // isError={!!errors?.checkList?.[idx]}
+              // errorMessage={
+              //   errors?.checkList?.[idx]?.message as string
+              // }
             />
             <IconButton
               iconName="delete"
               color="danger"
-              isDisabled={fields.length === 1}
+              // isDisabled={fields.length === 1}
               iconSize={15}
               rounded={false}
               onClick={() => {

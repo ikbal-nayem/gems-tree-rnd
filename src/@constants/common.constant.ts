@@ -78,7 +78,7 @@ export const LABELS = {
 
   BN:{
     MAIN_ACTIVITIES: 'মূল কার্যক্রম',
-    EQUIPMENTS: 'সরঞ্জামাদি', 
+    EQUIPMENTS: 'সরঞ্জামাদি সমূহ', 
     ABBREVIATIONS: 'সংক্ষিপ্তরূপ সমূহ', 
     ATTACHED_OFFICE: 'সংযুক্ত অফিসসমূহ', 
     SUMMARY_OF_MANPOWER: 'জনবলের তালিকা',

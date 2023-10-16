@@ -21,7 +21,7 @@ const Form = ({ data, onOtherDataSet }) => {
 
   useEffect(() => {
     data
-      ? reset({ ...data?.allocationOfBusiness })
+      ? reset({ ...data })
       : append("");
   }, [data]);
 
@@ -40,24 +40,24 @@ const Form = ({ data, onOtherDataSet }) => {
           <div key={idx} className="d-flex gap-3 mt-3">
             <Input
               placeholder={`বরাদ্দ ${numEnToBn(idx + 1)}`}
-              isRequired
+              // isRequired
               noMargin
               autoFocus
               registerProperty={{
                 ...register(`allocationOfBusiness.${idx}`, {
-                  required: "বরাদ্দ যুক্ত করুন",
+                  // required: "বরাদ্দ যুক্ত করুন",
                   onChange: onDataChange,
                 }),
               }}
-              isError={!!errors?.allocationOfBusiness?.[idx]}
-              errorMessage={
-                errors?.allocationOfBusiness?.[idx]?.message as string
-              }
+              // isError={!!errors?.allocationOfBusiness?.[idx]}
+              // errorMessage={
+              //   errors?.allocationOfBusiness?.[idx]?.message as string
+              // }
             />
             <IconButton
               iconName="delete"
               color="danger"
-              isDisabled={fields.length === 1}
+              // isDisabled={fields.length === 1}
               iconSize={15}
               rounded={false}
               onClick={() => {

@@ -51,16 +51,22 @@ const TemplateTree = () => {
             />
           </div>
           <div className="mt-3">
-            <AllocationOfBusiness data={data} onOtherDataSet={onOtherDataSet} />
+            <AllocationOfBusiness
+              data={data?.allocationOfBusiness}
+              onOtherDataSet={onOtherDataSet}
+            />
           </div>
           <div className="mt-3">
-            <CheckList data={data} onOtherDataSet={onOtherDataSet} />
+            <CheckList data={data?.checkList} onOtherDataSet={onOtherDataSet} />
           </div>
         </div>
         <div className="col-md-6">
-          <Equipments data={data} onOtherDataSet={onOtherDataSet} />
+          <Equipments data={data?.inventory} onOtherDataSet={onOtherDataSet} />
           <div className="mt-3">
-            <Abbreviations data={data} onOtherDataSet={onOtherDataSet} />
+            <Abbreviations
+              data={data?.abbreviations}
+              onOtherDataSet={onOtherDataSet}
+            />
           </div>
         </div>
       </div>

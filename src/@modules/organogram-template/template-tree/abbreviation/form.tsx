@@ -36,10 +36,9 @@ const Form = ({ data, onOtherDataSet }) => {
           <div className="mt-2">
             <IconButton
               iconName="add"
-              color="success"
-              rounded={false}
+              color="primary"
               onClick={() => {
-                append({});
+                append("");
               }}
             />
           </div>
@@ -56,15 +55,15 @@ const Form = ({ data, onOtherDataSet }) => {
                   placeholder="সংক্ষিপ্তরূপ লিখুন"
                   registerProperty={{
                     ...register(`abbreviations.${index}.short`, {
-                      required: "সংক্ষিপ্তরূপ লিখুন",
+                      // required: "সংক্ষিপ্তরূপ লিখুন",
                       onChange: onDataChange,
                     }),
                   }}
-                  isRequired
-                  isError={!!errors?.abbreviations?.[index]?.short}
-                  errorMessage={
-                    errors?.abbreviations?.[index]?.short?.message as string
-                  }
+                  // isRequired
+                  // isError={!!errors?.abbreviations?.[index]?.short}
+                  // errorMessage={
+                  //   errors?.abbreviations?.[index]?.short?.message as string
+                  // }
                 />
               </div>
               <div className="col-md-6">
@@ -73,15 +72,15 @@ const Form = ({ data, onOtherDataSet }) => {
                   placeholder="বিস্তারিত লিখুন"
                   registerProperty={{
                     ...register(`abbreviations.${index}.details`, {
-                      required: "বিস্তারিত লিখুন",
+                      // required: "বিস্তারিত লিখুন",
                       onChange: onDataChange,
                     }),
                   }}
-                  isRequired
-                  isError={!!errors?.abbreviations?.[index]?.details}
-                  errorMessage={
-                    errors?.abbreviations?.[index]?.details?.message as string
-                  }
+                  // isRequired
+                  // isError={!!errors?.abbreviations?.[index]?.details}
+                  // errorMessage={
+                  //   errors?.abbreviations?.[index]?.details?.message as string
+                  // }
                 />
               </div>
             </div>
@@ -89,6 +88,7 @@ const Form = ({ data, onOtherDataSet }) => {
               <IconButton
                 iconName="delete"
                 color="danger"
+                // isDisabled={fields.length === 1}
                 rounded={false}
                 onClick={() => {
                   remove(index);
