@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   IconButton,
   Input,
@@ -7,7 +8,7 @@ import {
   ModalFooter,
 } from "@gems/components";
 import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 interface INodeForm {
@@ -47,6 +48,24 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
     control,
     name: "employee",
   });
+
+  const [rankList, setRankList] = useState<IObject[]>([
+    {
+      id: 1,
+      nameBn: "Test",
+      nameEn: "test",
+    },
+    {
+      id: 2,
+      nameBn: "Test2",
+      nameEn: "test",
+    },
+    {
+      id: 3,
+      nameBn: "Test3",
+      nameEn: "test",
+    },
+  ]);
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
@@ -167,23 +186,39 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
               >
                 <div className="row w-100">
                   <div className="col-md-6">
-                    <Input
+                    <Autocomplete
+                      label="পদ"
+                      placeholder="পদ বাছাই করুন"
+                      control={control}
+                      options={rankList || []}
+                      getOptionLabel={(op) => op?.nameBn}
+                      getOptionValue={(op) => op?.id}
+                      name={`employee.${index}.rank`}
+                      // onChange={onDataChange}
+                      // isDisabled={!watch("type")}
+                      //   isRequired
+                      //   isError={!!errors?.inventory?.[idx]?.type}
+                      //   errorMessage={
+                      //     errors?.inventory?.[idx]?.type?.message as string
+                      //   }
+                    />
+                    {/* <Input
                       label="পদ"
                       placeholder="পদ লিখুন"
                       registerProperty={{
                         ...register(
-                          `employee.${index}.rank`
-                          // {
-                          //   required: "পদ লিখুন",
-                          // }
+                          `employee.${index}.rank`,
+                          {
+                            required: "পদ লিখুন",
+                          }
                         ),
                       }}
-                      // isRequired
+                      isRequired
                       isError={!!errors?.employee?.[index]?.rank}
                       errorMessage={
                         errors?.employee?.[index]?.rank?.message as string
                       }
-                    />
+                    /> */}
                   </div>
                   <div className="col-md-6">
                     <Input

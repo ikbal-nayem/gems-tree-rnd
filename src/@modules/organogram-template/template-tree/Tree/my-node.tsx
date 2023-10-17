@@ -67,7 +67,8 @@ const MyNode = ({ nodeData, treeDispatch }) => {
                 <div key={i}>
                   {item?.employeeNumber || item?.rank ? (
                     <p className="mb-0">
-                      {item?.employeeNumber || null} x {item?.rank || null}
+                      {item?.employeeNumber || null} x{" "}
+                      {item?.rank || item?.rank?.nameBn || null}
                     </p>
                   ) : null}
                 </div>

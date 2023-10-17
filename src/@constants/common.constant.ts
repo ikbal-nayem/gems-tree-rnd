@@ -77,14 +77,14 @@ export const LABELS = {
   },
 
   BN:{
-    MAIN_ACTIVITIES: 'মূল কার্যক্রম',
-    EQUIPMENTS: 'সরঞ্জামাদি সমূহ', 
-    ABBREVIATIONS: 'সংক্ষিপ্তরূপ সমূহ', 
+    MAIN_ACTIVITIES: 'প্রধান কার্যাবলি',
+    EQUIPMENTS: 'যানবহন, অফিস সরঞ্জাম ইত্যাদি', 
+    ABBREVIATIONS: 'শব্দসংক্ষেপ', 
     ATTACHED_OFFICE: 'সংযুক্ত অফিসসমূহ', 
     SUMMARY_OF_MANPOWER: 'জনবলের তালিকা',
-    ALLOCATION_OF_BUSINESS: 'ব্যবসার বরাদ্দ',
+    ALLOCATION_OF_BUSINESS: 'কর্মবন্টন',
     MISCELLANEOUS: 'বিবিধ',
-    CHECK_LIST:"চেক লিস্ট"
+    CHECK_LIST:"চেকলিস্ট"
 
 
   }

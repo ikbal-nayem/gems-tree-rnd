@@ -29,27 +29,25 @@ const TemplateTree = () => {
   return (
     <div>
       <OrganizationTemplateTree treeData={treeData} setTreeData={setTreeData} />
+      <div className="card col-md-6 border p-3 mb-4">
+        <h4 className="m-0">টেমপ্লেট নাম</h4>
+        <Separator className="mt-1 mb-2" />
+        <Input
+          type="search"
+          noMargin
+          placeholder="টেমপ্লেট নাম"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
       <div className="row">
         <div className="col-md-6">
-          <div className="card border p-3">
-            <div className="card-head d-flex justify-content-between align-items-center">
-              <h4 className="m-0">টেমপ্লেট নাম</h4>
-            </div>
-            <Separator className="mt-1 mb-2" />
-            <Input
-              type="search"
-              noMargin
-              placeholder="টেমপ্লেট নাম"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="mt-3">
+          {/* <div className="mt-3"> */}
             <Activities
               data={data?.activities}
               onOtherDataSet={onOtherDataSet}
             />
-          </div>
+          {/* </div> */}
           <div className="mt-3">
             <AllocationOfBusiness
               data={data?.allocationOfBusiness}
