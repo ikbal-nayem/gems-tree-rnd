@@ -4,6 +4,7 @@ import { IObject } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import "../style.scss";
+import { OMSService } from "@services/api/OMS.service";
 
 const Equipments = ({ data, onOtherDataSet }) => {
   const {
@@ -12,36 +13,37 @@ const Equipments = ({ data, onOtherDataSet }) => {
     getValues,
     formState: { errors },
     reset,
-  } = useForm<any>({
-    defaultValues: { inventory: [""] },
-  });
+    watch,
+    setValue,
+  } = useForm<any>();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "inventory",
   });
 
-  const [inventoryTypeList, setInventoryTypeList] = useState<IObject[]>([
-    {
-      id: 1,
-      nameBn: "Test",
-      nameEn: "test",
-    },
-    {
-      id: 2,
-      nameBn: "Test2",
-      nameEn: "test",
-    },
-    {
-      id: 3,
-      nameBn: "Test3",
-      nameEn: "test",
-    },
-  ]);
+  const [inventoryTypeList, setInventoryTypeList] = useState<IObject[]>([]);
+  const [inventoryItemList, setInventoryItemList] = useState<IObject[]>([]);
 
   useEffect(() => {
-    data ? reset({ ...data }) : append("");
+    OMSService.getInventoryTypeList().then((resp) =>
+      setInventoryTypeList(resp.body || [])
+    );
   }, []);
+
+  useEffect(() => {
+    data ? reset({ ...data }) : append({});
+  }, []);
+
+  const onInventoryTypeChange = (e, idx) => {
+    setValue(`inventory.[${idx}].item`, null);
+    if (e?.id) {
+      OMSService.getInventoryItemListByType(e?.id).then((resp) =>
+        setInventoryItemList(resp.body || [])
+      );
+    } else setInventoryItemList([]);
+    onDataChange();
+  };
 
   const onDataChange = () => {
     onOtherDataSet("inventory", getValues()?.inventory);
@@ -65,10 +67,12 @@ const Equipments = ({ data, onOtherDataSet }) => {
                   placeholder="টাইপ বাছাই করুন"
                   control={control}
                   options={inventoryTypeList || []}
-                  getOptionLabel={(op) => op?.nameBn}
+                  getOptionLabel={(op) => op?.inventoryTypeBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventory.${idx}.type`}
-                  onChange={onDataChange}
+                  onChange={(e) => {
+                    onInventoryTypeChange(e, idx);
+                  }}
                   // isDisabled={!watch("type")}
                   //   isRequired
                   //   isError={!!errors?.inventory?.[idx]?.type}
@@ -78,37 +82,23 @@ const Equipments = ({ data, onOtherDataSet }) => {
                 />
               </div>
               <div className="col-md-4">
-              <Autocomplete
+                <Autocomplete
                   label="সরঞ্জামাদি"
                   placeholder="সরঞ্জামাদি বাছাই করুন"
                   control={control}
-                  options={inventoryTypeList || []}
-                  getOptionLabel={(op) => op?.nameBn}
+                  options={inventoryItemList || []}
+                  getOptionLabel={(op) => op?.itemTitleBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventory.${idx}.item`}
                   onChange={onDataChange}
-                  // isDisabled={!watch("type")}
+                  key={watch(`inventory.${idx}.type`)}
+                  isDisabled={!watch(`inventory.${idx}.type`)}
                   //   isRequired
                   //   isError={!!errors?.inventory?.[idx]?.type}
                   //   errorMessage={
                   //     errors?.inventory?.[idx]?.type?.message as string
                   //   }
                 />
-                {/* <Input
-                  label="সরঞ্জামাদির নাম"
-                  placeholder="সরঞ্জামাদির নাম লিখুন"
-                  registerProperty={{
-                    ...register(`inventory.${idx}.item`, {
-                      required: "সরঞ্জামাদির নাম লিখুন",
-                      onChange: onDataChange,
-                    }),
-                  }}
-                    isRequired
-                    isError={!!errors?.inventory?.[idx]?.item}
-                    errorMessage={
-                      errors?.inventory?.[idx]?.item?.message as string
-                    }
-                /> */}
               </div>
               <div className="col-md-4">
                 <Input

@@ -10,6 +10,7 @@ import {
 import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { OMSService } from "@services/api/OMS.service";
 
 interface INodeForm {
   isOpen: boolean;
@@ -49,23 +50,11 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
     name: "employee",
   });
 
-  const [rankList, setRankList] = useState<IObject[]>([
-    {
-      id: 1,
-      nameBn: "Test",
-      nameEn: "test",
-    },
-    {
-      id: 2,
-      nameBn: "Test2",
-      nameEn: "test",
-    },
-    {
-      id: 3,
-      nameBn: "Test3",
-      nameEn: "test",
-    },
-  ]);
+  const [postList, setPostist] = useState<IObject[]>([]);
+
+  useEffect(() => {
+    OMSService.getPostList().then((resp) => setPostist(resp.body || []));
+  }, []);
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
@@ -187,13 +176,13 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                 <div className="row w-100">
                   <div className="col-md-6">
                     <Autocomplete
-                      label="পদ"
-                      placeholder="পদ বাছাই করুন"
+                      label="পদবি"
+                      placeholder="পদবি বাছাই করুন"
                       control={control}
-                      options={rankList || []}
+                      options={postList || []}
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
-                      name={`employee.${index}.rank`}
+                      name={`employee.${index}.post`}
                       // onChange={onDataChange}
                       // isDisabled={!watch("type")}
                       //   isRequired
