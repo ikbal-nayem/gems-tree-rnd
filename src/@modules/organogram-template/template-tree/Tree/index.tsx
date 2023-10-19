@@ -3,7 +3,6 @@ import { IObject, generateUUID, isObjectNull } from "@gems/utils";
 import { useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
-import { Input } from "@gems/components";
 
 const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
   if (nd.id === parentId) {
@@ -126,7 +125,11 @@ const OrganizationTemplateTree = ({
       <div>
         <OrganizationChart
           // ref={orgchart}
-          datasource={treeData}
+          datasource={
+            !isObjectNull(treeData)
+              ? treeData
+              : { id: 1, nameBn: "হালনাগাদ করে শুরু করুন" }
+          }
           chartClass="myChart"
           NodeTemplate={({ nodeData }) => (
             <MyNode nodeData={nodeData} treeDispatch={treeDispatch} />

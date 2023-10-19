@@ -1,21 +1,17 @@
 import { LABELS } from "@constants/common.constant";
 import { Autocomplete, IconButton, Input, Separator } from "@gems/components";
 import { IObject } from "@gems/utils";
-import { useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import "../style.scss";
 import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
+import { useFieldArray } from "react-hook-form";
+import "../style.scss";
 
-const Equipments = ({ data, onOtherDataSet }) => {
-  const {
-    register,
-    control,
-    getValues,
-    formState: { errors },
-    reset,
-    watch,
-    setValue,
-  } = useForm<any>();
+interface IEquipmentsForm {
+  formProps: any;
+}
+
+const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
+  const { register, control, watch, setValue } = formProps;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -31,10 +27,6 @@ const Equipments = ({ data, onOtherDataSet }) => {
     );
   }, []);
 
-  useEffect(() => {
-    data ? reset({ ...data }) : append({});
-  }, []);
-
   const onInventoryTypeChange = (e, idx) => {
     setValue(`inventory.[${idx}].item`, null);
     if (e?.id) {
@@ -42,11 +34,6 @@ const Equipments = ({ data, onOtherDataSet }) => {
         setInventoryItemList(resp.body || [])
       );
     } else setInventoryItemList([]);
-    onDataChange();
-  };
-
-  const onDataChange = () => {
-    onOtherDataSet("inventory", getValues()?.inventory);
   };
 
   return (
@@ -56,8 +43,7 @@ const Equipments = ({ data, onOtherDataSet }) => {
         <IconButton iconName="add" color="primary" onClick={() => append("")} />
       </div>
       <Separator className="mt-1 mb-2" />
-      {/* <Form data={data} onOtherDataSet={onOtherDataSet} /> */}
-      <form>
+      <div>
         {fields.map((f, idx) => (
           <div className="d-flex align-items-center gap-3 mt-3" key={idx}>
             <div className="row w-100">
@@ -90,7 +76,6 @@ const Equipments = ({ data, onOtherDataSet }) => {
                   getOptionLabel={(op) => op?.itemTitleBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventory.${idx}.item`}
-                  onChange={onDataChange}
                   key={watch(`inventory.${idx}.type`)}
                   isDisabled={!watch(`inventory.${idx}.type`)}
                   //   isRequired
@@ -108,7 +93,6 @@ const Equipments = ({ data, onOtherDataSet }) => {
                   registerProperty={{
                     ...register(`inventory.${idx}.number`, {
                       required: "সংখ্যা লিখুন",
-                      onChange: onDataChange,
                     }),
                   }}
                   //   isRequired
@@ -127,15 +111,14 @@ const Equipments = ({ data, onOtherDataSet }) => {
                 rounded={false}
                 onClick={() => {
                   remove(idx);
-                  onDataChange();
                 }}
               />
             </div>
           </div>
         ))}
-      </form>
+      </div>
     </div>
   );
 };
 
-export default Equipments;
+export default EquipmentsForm;
