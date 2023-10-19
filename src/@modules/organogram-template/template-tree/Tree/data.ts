@@ -13,14 +13,29 @@ export const orgData = {
         {
           rank: "অতিরিক্ত-সচিব",
           employeeNumber: "1",
+          post: {
+            id: "4a38183f-6ec5-4a0d-8576-966ff83d62e3",
+            nameEn: "Additional Secretary",
+            nameBn: "অতিরিক্ত সচিব",
+          },
         },
         {
           rank: "ব্যক্তিগত কর্মকর্তা",
           employeeNumber: "1",
+          post: {
+            id: "e2e7234d-aba1-4372-be02-c7a83ebbf913",
+            nameEn: "Personal Officer",
+            nameBn: "ব্যক্তিগত কর্মকর্তা",
+          },
         },
         {
           rank: "অফিস সহায়ক",
           employeeNumber: "1",
+          post: {
+            id: "6ffbf22f-165b-4deb-ae5e-400589bfcb99",
+            nameEn: "Office Support Staff",
+            nameBn: "অফিস সহায়ক",
+          },
         },
       ],
       id: "a7700df2-e96e-44d2-987a-ce366bc8b5a2",
@@ -505,22 +520,47 @@ export const orgData = {
     {
       rank: "সচিব",
       employeeNumber: "1",
+      post: {
+        id: "0fe66fdf-f1a0-4e3a-ab4e-5ac9bb2436f8",
+        nameEn: "Secretary",
+        nameBn: "সচিব",
+      },
     },
     {
       rank: "একান্ত সচিব",
       employeeNumber: "1",
+      post: {
+        id: "e6eaf605-40d5-431e-9ee1-2c5fd04173ed",
+        nameEn: "Private Secretary To Secretary",
+        nameBn: "সচিবের একান্ত সচিব",
+      },
     },
     {
       rank: "ব্যক্তিগত কর্মকর্তা",
       employeeNumber: "1",
+      post: {
+        id: "3bcda942-f709-4b8c-8680-f2442e3abefb",
+        nameEn: "Personal Officer",
+        nameBn: "ব্যক্তিগত কর্মকর্তা",
+      },
     },
     {
       rank: "অফিস সহকারী কাম কম্পিউটার মুদ্রাক্ষরিক",
       employeeNumber: "1",
+      post: {
+        id: "9d1834a6-6974-4016-8e23-a275949aad04",
+        nameEn: "Office Assistant Cum Comp. Typist",
+        nameBn: "অফিস সহকারী কাম কম্পিউটার টাইপিস্ট",
+      },
     },
     {
       rank: "অফিস সহায়ক",
       employeeNumber: "2",
+      post: {
+        id: "6ffbf22f-165b-4deb-ae5e-400589bfcb99",
+        nameEn: "Office Support Staff",
+        nameBn: "অফিস সহায়ক",
+      },
     },
   ],
 };
