@@ -13,7 +13,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "activities",
+    name: "mainActivitiesDtoList",
   });
   return (
     <div className="card border p-3">
@@ -31,13 +31,13 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
               noMargin
               autoFocus
               registerProperty={{
-                ...register(`activities.${idx}`, {
+                ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
                   // required: "কার্যক্রম যুক্ত করুন",
                   // onChange: onDataChange,
                 }),
               }}
-              // isError={!!errors?.activities?.[idx]}
-              // errorMessage={errors?.activities?.[idx]?.message as string}
+              // isError={!!errors?.mainActivitiesDtoList?.[idx]?.mainActivity}
+              // errorMessage={errors?.mainActivitiesDtoList?.[idx]?.mainActivity?.message as string}
             />
             <IconButton
               iconName="delete"

@@ -13,7 +13,7 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "allocationOfBusiness",
+    name: "businessAllocationDtoList",
   });
   return (
     <div className="card border p-3">
@@ -31,13 +31,13 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
               noMargin
               autoFocus
               registerProperty={{
-                ...register(`allocationOfBusiness.${idx}`, {
+                ...register(`businessAllocationDtoList.${idx}.businessOfAllocation`, {
                   // required: "বরাদ্দ যুক্ত করুন",
                 }),
               }}
-              // isError={!!errors?.allocationOfBusiness?.[idx]}
+              // isError={!!errors?.businessAllocationDtoList?.[idx].businessOfAllocation}
               // errorMessage={
-              //   errors?.allocationOfBusiness?.[idx]?.message as string
+              //   errors?.businessAllocationDtoList?.[idx].businessOfAllocation?.message as string
               // }
             />
             <IconButton

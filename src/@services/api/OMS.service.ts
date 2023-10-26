@@ -11,5 +11,5 @@ export const OMSService = {
       OMS_SERVICE + "inventory-item/get-by-inventory-type-id/" + inventoryTypeId
     ),
   templateCreate: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organization/create", payload),
+    await axiosIns.post(OMS_SERVICE + "organogram-template/save", payload),
 };

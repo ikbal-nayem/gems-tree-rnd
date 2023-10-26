@@ -4,23 +4,24 @@ import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
-import { orgData } from "./Tree/data";
+// import { orgData } from "./Tree/data2";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import CheckListForm from "./components/CheckListForm";
 import EquipmentsForm from "./components/EquipmentsForm";
+import { bnCheck, enCheck } from "utility/checkValidation";
 
 const TemplateTree = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [treeData, setTreeData] = useState<IObject>(orgData);
+  const [treeData, setTreeData] = useState<IObject>({});
   const formProps = useForm<any>({
     defaultValues: {
-      abbreviations: [],
-      activities: [],
-      allocationOfBusiness: [],
-      checkList: [],
-      inventory: [],
+      abbreviationDtoList: [],
+      mainActivitiesDtoList: [],
+      businessAllocationDtoList: [],
+      attachmentDtoList: [],
+      inventoryDtoList: [],
     },
   });
   const {
@@ -32,7 +33,7 @@ const TemplateTree = () => {
   const onFinalSubmit = (data) => {
     const reqPayload = {
       ...data,
-      tree: treeData,
+      organizationStructureDto: treeData,
     };
     console.log("data", reqPayload);
     setIsSubmitLoading(false);
@@ -49,26 +50,48 @@ const TemplateTree = () => {
 
   return (
     <div>
-      <OrganizationTemplateTree treeData={treeData} setTreeData={setTreeData} />
+      <div className="border border-secondary mb-3">
+        <OrganizationTemplateTree
+          treeData={treeData}
+          setTreeData={setTreeData}
+        />
+      </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate>
         <div className="card col-md-6 border p-3 mb-4">
           <h4 className="m-0">টেমপ্লেট</h4>
           <Separator className="mt-1 mb-2" />
-          <Input
-            placeholder="টেমপ্লেট শিরোনাম"
-            label="শিরোনাম"
-            isRequired
-            noMargin
-            autoFocus
-            registerProperty={{
-              ...register("title", {
-                required: "টেমপ্লেট শিরোনাম যুক্ত করুন",
-                // onChange: onDataChange,
-              }),
-            }}
-            isError={!!errors?.title}
-            // errorMessage={errors?.title?.message as string}
-          />
+          <div className="row">
+            <div className="col-md-6 col-12">
+              <Input
+                label="শিরোনাম বাংলা"
+                placeholder="শিরোনাম বাংলা লিখুন"
+                isRequired
+                registerProperty={{
+                  ...register("titleBn", {
+                    required: "শিরোনাম বাংলা লিখুন",
+                    validate: bnCheck,
+                  }),
+                }}
+                isError={!!errors?.titleBn}
+                errorMessage={errors?.titleBn?.message as string}
+              />
+            </div>
+            <div className="col-md-6 col-12">
+              <Input
+                label="শিরোনাম ইংরেজি"
+                placeholder="শিরোনাম ইংরেজি লিখুন"
+                isRequired
+                registerProperty={{
+                  ...register("titleEn", {
+                    required: "শিরোনাম ইংরেজি লিখুন",
+                    validate: enCheck,
+                  }),
+                }}
+                isError={!!errors?.titleEn}
+                errorMessage={errors?.titleEn?.message as string}
+              />
+            </div>
+          </div>
         </div>
         <div className="row">
           <div className="col-md-6">
@@ -81,7 +104,9 @@ const TemplateTree = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <EquipmentsForm formProps={formProps} />
+            <div className="mt-md-0 mt-3">
+              <EquipmentsForm formProps={formProps} />
+            </div>
             <div className="mt-3">
               <AbbreviationForm formProps={formProps} />
             </div>

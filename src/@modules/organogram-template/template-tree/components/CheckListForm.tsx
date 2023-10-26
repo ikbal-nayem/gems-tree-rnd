@@ -13,7 +13,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "checkList",
+    name: "attachmentDtoList",
   });
 
   return (
@@ -32,13 +32,13 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
               noMargin
               autoFocus
               registerProperty={{
-                ...register(`checkList.${idx}`, {
+                ...register(`attachmentDtoList.${idx}.titleBn`, {
                   // required: "তালিকা যুক্ত করুন",
                 }),
               }}
-              // isError={!!errors?.checkList?.[idx]}
+              // isError={!!errors?.attachmentDtoList?.[idx].titleBn}
               // errorMessage={
-              //   errors?.checkList?.[idx]?.message as string
+              //   errors?.attachmentDtoList?.[idx]?.titleBn?.message as string
               // }
             />
             <IconButton

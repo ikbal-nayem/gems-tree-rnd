@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Button,
+  Checkbox,
   IconButton,
   Input,
   Modal,
@@ -28,26 +29,26 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
-      functionality: [{}],
-      employee: [{}],
+      postFunctionalityDtoList: [{}],
+      organizationManpowerDtoList: [{}],
     },
   });
 
   const {
-    fields: functionalityFields,
-    append: functionalityAppend,
-    remove: functionalityRemove,
+    fields: postFunctionalityDtoListFields,
+    append: postFunctionalityDtoListAppend,
+    remove: postFunctionalityDtoListRemove,
   } = useFieldArray({
     control,
-    name: "functionality",
+    name: "postFunctionalityDtoList",
   });
   const {
-    fields: employeeFields,
-    append: employeeAppend,
-    remove: employeeRemove,
+    fields: organizationManpowerDtoListFields,
+    append: organizationManpowerDtoListAppend,
+    remove: organizationManpowerDtoListRemove,
   } = useFieldArray({
     control,
-    name: "employee",
+    name: "organizationManpowerDtoList",
   });
 
   const [postList, setPostist] = useState<IObject[]>([]);
@@ -72,19 +73,19 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
-          <div className="row">
+          <div className="row border rounded p-3 my-2 bg-gray-100">
             <div className="col-md-6 col-12">
               <Input
                 label="বাংলা নাম"
                 placeholder="বাংলা নাম লিখুন"
                 isRequired
                 registerProperty={{
-                  ...register("nameBn", {
+                  ...register("titleBn", {
                     required: "বাংলা নাম লিখুন",
                   }),
                 }}
-                isError={!!errors?.nameBn}
-                errorMessage={errors?.nameBn?.message as string}
+                isError={!!errors?.titleBn}
+                errorMessage={errors?.titleBn?.message as string}
               />
             </div>
             <div className="col-md-6 col-12">
@@ -93,12 +94,12 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                 placeholder="ইংরেজি নাম লিখুন"
                 isRequired
                 registerProperty={{
-                  ...register("nameEn", {
+                  ...register("titleEn", {
                     required: "ইংরেজি নাম লিখুন",
                   }),
                 }}
-                isError={!!errors?.nameEn}
-                errorMessage={errors?.nameEn?.message as string}
+                isError={!!errors?.titleEn}
+                errorMessage={errors?.titleEn?.message as string}
               />
             </div>
           </div>
@@ -111,14 +112,14 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    functionalityAppend({});
+                    postFunctionalityDtoListAppend({});
                   }}
                 />
               </div>
             </div>
-            {functionalityFields.map((field, index) => (
+            {postFunctionalityDtoListFields.map((field, index) => (
               <div
-                className="d-flex align-items-center gap-3 w-100"
+                className="d-flex align-items-center gap-3 w-100 border rounded p-3 my-2 bg-gray-100"
                 key={field?.id}
               >
                 <div className="row w-100">
@@ -128,16 +129,16 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       placeholder="দায়িত্ব লিখুন"
                       registerProperty={{
                         ...register(
-                          `functionality.${index}.responsibility`
+                          `postFunctionalityDtoList.${index}.functionality`
                           // {
                           //   required: "দায়িত্ব লিখুন",
                           // }
                         ),
                       }}
                       // isRequired
-                      isError={!!errors?.functionality?.[index]?.responsibility}
+                      isError={!!errors?.postFunctionalityDtoList?.[index]?.functionality}
                       errorMessage={
-                        errors?.functionality?.[index]?.responsibility
+                        errors?.postFunctionalityDtoList?.[index]?.functionality
                           ?.message as string
                       }
                     />
@@ -148,7 +149,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() => functionalityRemove(index)}
+                    onClick={() => postFunctionalityDtoListRemove(index)}
                   />
                 </div>
               </div>
@@ -163,18 +164,18 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    employeeAppend({});
+                    organizationManpowerDtoListAppend({});
                   }}
                 />
               </div>
             </div>
-            {employeeFields.map((field, index) => (
+            {organizationManpowerDtoListFields.map((field, index) => (
               <div
-                className="d-flex align-items-center gap-3 w-100"
+                className="d-flex align-items-center gap-3 w-100 border rounded p-3 my-2 bg-gray-100"
                 key={field?.id}
               >
                 <div className="row w-100">
-                  <div className="col-md-6">
+                  <div className="col-md-6 col-xl-5">
                     <Autocomplete
                       label="পদবি"
                       placeholder="পদবি বাছাই করুন"
@@ -182,7 +183,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       options={postList || []}
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
-                      name={`employee.${index}.post`}
+                      name={`organizationManpowerDtoList.${index}.postDto`}
                       // onChange={onDataChange}
                       // isDisabled={!watch("type")}
                       //   isRequired
@@ -191,41 +192,32 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       //     errors?.inventory?.[idx]?.type?.message as string
                       //   }
                     />
-                    {/* <Input
-                      label="পদ"
-                      placeholder="পদ লিখুন"
-                      registerProperty={{
-                        ...register(
-                          `employee.${index}.rank`,
-                          {
-                            required: "পদ লিখুন",
-                          }
-                        ),
-                      }}
-                      isRequired
-                      isError={!!errors?.employee?.[index]?.rank}
-                      errorMessage={
-                        errors?.employee?.[index]?.rank?.message as string
-                      }
-                    /> */}
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 col-xl-2 d-flex align-items-center">
+                    <Checkbox
+                      label="প্রধান ?"
+                      registerProperty={{
+                        ...register(`organizationManpowerDtoList.${index}.isHead`),
+                      }}
+                    />
+                  </div>
+                  <div className="col-md-6 col-xl-5">
                     <Input
                       label="জনবল সংখ্যা"
                       placeholder="জনবল সংখ্যা লিখুন"
                       type="number"
                       registerProperty={{
                         ...register(
-                          `employee.${index}.employeeNumber`
+                          `organizationManpowerDtoList.${index}.numberOfEmployee`
                           //  {
                           //   required: "জনবল সংখ্যা লিখুন",
                           // }
                         ),
                       }}
                       // isRequired
-                      isError={!!errors?.employee?.[index]?.employeeNumber}
+                      isError={!!errors?.organizationManpowerDtoList?.[index]?.numberOfEmployee}
                       errorMessage={
-                        errors?.employee?.[index]?.employeeNumber
+                        errors?.organizationManpowerDtoList?.[index]?.numberOfEmployee
                           ?.message as string
                       }
                     />
@@ -236,7 +228,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() => employeeRemove(index)}
+                    onClick={() => organizationManpowerDtoListRemove(index)}
                   />
                 </div>
               </div>

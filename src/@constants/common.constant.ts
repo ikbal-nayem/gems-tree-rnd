@@ -62,6 +62,9 @@ export const COMMON_LABELS = {
 	ACTIVE: "সক্রিয়",
 	INACTIVE: "নিষ্ক্রিয়",
   NOT_ASSIGN: "তথ্য নেই",
+  NUMERIC_ONLY: "শুধুমাত্র সংখ্যা লিখুন",
+  EN_ONLY: "ইংরেজিতে লিখুন",
+	BN_ONLY: "বাংলায় লিখুন",
 };
 
 export const LABELS = {
