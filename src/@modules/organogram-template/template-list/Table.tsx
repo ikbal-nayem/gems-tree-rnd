@@ -43,8 +43,8 @@ const TemplateTable: FC<TableProps> = ({
                 verticalAlign="top"
               />
               <TableCell
-                text={item?.version || COMMON_LABELS.NOT_ASSIGN}
-                verticalAlign="top"
+                text={item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
               />
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown

@@ -5,12 +5,15 @@ import {
   ListDownload,
   Pagination,
   Separator,
+  toast,
+  topProgress,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
   IMeta,
   IObject,
+  exportXLSX,
   generateDateFormat,
   numEnToBn,
   searchParamsToObject,
@@ -21,6 +24,7 @@ import { useSearchParams } from "react-router-dom";
 import { downloadAsPDF } from "./downloads";
 import { MENU } from "@constants/menu-titles.constant";
 import TemplateTable from "./Table";
+import { OMSService } from "@services/api/OMS.service";
 
 const initPayload = {
   meta: {
@@ -43,7 +47,6 @@ const TemplateList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const reqPayload = useRef(initPayload);
-  const filterProps = useRef<IObject>({});
   const params: any = searchParamsToObject(searchParams);
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
@@ -62,22 +65,22 @@ const TemplateList = () => {
   }, [searchParams]);
 
   const getDataList = () => {
-    // 	topProgress.show();
-    // 	setLoading(true);
-    // 	ReportService.getDCPromotableEmployeeList(reqPayload.current)
-    // 		.then((resp) => {
-    // 			setEmployeeList(resp?.body);
-    // 			setRespMeta(resp?.meta);
-    // 		})
-    // 		.catch((err) => {
-    // 			toast.error(err?.message);
-    // 			setEmployeeList([]);
-    // 			setRespMeta({});
-    // 		})
-    // 		.finally(() => {
-    // 			topProgress.hide();
-    // 			setLoading(false);
-    // 		});
+    	topProgress.show();
+    	setLoading(true);
+    	OMSService.getTemplateList(reqPayload.current)
+    		.then((resp) => {
+    			setDataList(resp?.body);
+    			setRespMeta(resp?.meta);
+    		})
+    		.catch((err) => {
+    			toast.error(err?.message);
+    			setDataList([]);
+    			setRespMeta({});
+    		})
+    		.finally(() => {
+    			topProgress.hide();
+    			setLoading(false);
+    		});
   };
 
   const getXLSXStoreList = (reqMeta = null) => {
@@ -88,20 +91,18 @@ const TemplateList = () => {
       },
     };
 
-    // OMSService.getInventoryList(payload)
-    //   .then((res) => {
-    //     exportXLSX(exportData(res?.body || []), "Template list");
-    //   })
-    //   .catch((err) => toast.error(err?.message))
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //   });
+    OMSService.getTemplateList(payload)
+      .then((res) => {
+        exportXLSX(exportData(res?.body || []), "Template list");
+      })
+      .catch((err) => toast.error(err?.message))
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       [COMMON_LABELS.SL_NO]: numEnToBn(i+1) || COMMON_LABELS.NOT_ASSIGN,
-      "টেমপ্লেটের নাম": d?.inventoryTypeBn || COMMON_LABELS.NOT_ASSIGN,
+      "টেমপ্লেটের নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "টেমপ্লেটের নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (

@@ -12,4 +12,7 @@ export const OMSService = {
     ),
   templateCreate: async (payload): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organization/create", payload),
+
+  getTemplateList: async (payload): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "organogram-template/get-list", payload),
 };
