@@ -26,27 +26,22 @@ import { MENU } from "@constants/menu-titles.constant";
 import TemplateTable from "./Table";
 import { OMSService } from "@services/api/OMS.service";
 
-const initPayload = {
-  meta: {
-    page: 0,
-    limit: 10,
-    sort: [
-      {
-        order: "desc",
-        field: "createdOn",
-      },
-    ],
-  },
-  body: { searchKey: "" },
+const initMeta: IMeta = {
+  page: 0,
+  limit: 10,
+  sort: [
+    {
+      field: "createdOn",
+      order: "desc",
+    },
+  ],
 };
 
 const TemplateList = () => {
   const [dataList, setDataList] = useState<IObject[]>();
-  const [respMeta, setRespMeta] = useState<IMeta>();
+  const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const reqPayload = useRef(initPayload);
   const params: any = searchParamsToObject(searchParams);
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
@@ -64,23 +59,37 @@ const TemplateList = () => {
     getDataList();
   }, [searchParams]);
 
-  const getDataList = () => {
-    	topProgress.show();
-    	setLoading(true);
-    	OMSService.getTemplateList(reqPayload.current)
-    		.then((resp) => {
-    			setDataList(resp?.body);
-    			setRespMeta(resp?.meta);
-    		})
-    		.catch((err) => {
-    			toast.error(err?.message);
-    			setDataList([]);
-    			setRespMeta({});
-    		})
-    		.finally(() => {
-    			topProgress.hide();
-    			setLoading(false);
-    		});
+  const getDataList = (reqMeta = null) => {
+    topProgress.show();
+    setLoading(true);
+
+    const payload = {
+      meta: searchKey
+        ? reqMeta
+          ? { ...reqMeta, sort: null }
+          : { ...respMeta, page: 0, sort: null }
+        : reqMeta || { ...respMeta, page: 0 },
+      body: {
+        searchKey: searchKey || null,
+      },
+    };
+
+    const reqData = { ...payload, body: payload?.body };
+
+    OMSService.getTemplateList(reqData)
+      .then((resp) => {
+        setDataList(resp?.body);
+        setRespMeta(resp?.meta);
+      })
+      .catch((err) => {
+        toast.error(err?.message);
+        setDataList([]);
+        setRespMeta({});
+      })
+      .finally(() => {
+        topProgress.hide();
+        setLoading(false);
+      });
   };
 
   const getXLSXStoreList = (reqMeta = null) => {
@@ -95,12 +104,12 @@ const TemplateList = () => {
       .then((res) => {
         exportXLSX(exportData(res?.body || []), "Template list");
       })
-      .catch((err) => toast.error(err?.message))
+      .catch((err) => toast.error(err?.message));
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
-      [COMMON_LABELS.SL_NO]: numEnToBn(i+1) || COMMON_LABELS.NOT_ASSIGN,
+      [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
       "টেমপ্লেটের নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
       "টেমপ্লেটের নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
     }));

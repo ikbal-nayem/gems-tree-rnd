@@ -53,6 +53,10 @@ const TemplateTable: FC<TableProps> = ({
                   id={item?.id}
                 >
                   <DropdownItem onClick={() => null}>
+                    <Icon size={19} icon="visibility" />
+                    <h6 className="mb-0 ms-3">দেখুন</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem>
