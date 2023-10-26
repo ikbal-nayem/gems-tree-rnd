@@ -10,7 +10,7 @@ import {
 } from "@gems/utils";
 import { LABELS } from "./labels";
 
-export const promotableEmployeePDFcontent = (
+export const TemplateListPDFcontent = (
 	data,
 	reqPayload
 ): TDocumentDefinitions => {

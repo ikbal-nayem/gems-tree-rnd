@@ -99,7 +99,8 @@ const TemplateList = () => {
   };
 
   const exportData = (data: any[]) =>
-    data.map((d) => ({
+    data.map((d, i) => ({
+      [COMMON_LABELS.SL_NO]: numEnToBn(i+1) || COMMON_LABELS.NOT_ASSIGN,
       "টেমপ্লেটের নাম": d?.inventoryTypeBn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
@@ -143,7 +144,7 @@ const TemplateList = () => {
 
         <div className="p-4">
           <TemplateTable
-              dataList={dataList}
+            dataList={dataList}
             // dataList={[
             //   { version: "name A" },
             //   { version: "name B" },
