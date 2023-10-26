@@ -128,7 +128,7 @@ const OrganizationTemplateTree = ({
           datasource={
             !isObjectNull(treeData)
               ? treeData
-              : { id: 1, nameBn: "হালনাগাদ করে শুরু করুন" }
+              : { id: 1, titleBn: "হালনাগাদ করে শুরু করুন" }
           }
           chartClass="myChart"
           NodeTemplate={({ nodeData }) => (

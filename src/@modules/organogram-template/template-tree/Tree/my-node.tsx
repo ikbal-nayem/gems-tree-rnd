@@ -20,7 +20,7 @@ const MyNode = ({ nodeData, treeDispatch }) => {
             onClick={() => treeDispatch("EDIT", nodeData)}
           />
           <div>
-            <h5 className="p-1 mb-0">{nodeData.nameBn}</h5>
+            <h5 className="p-1 mb-0">{nodeData.titleBn}</h5>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
           {/* <Dropdown
@@ -58,17 +58,17 @@ const MyNode = ({ nodeData, treeDispatch }) => {
         </div>
         <div
           className={`bg-light text-start ${
-            nodeData?.employee?.length ? "p-3" : ""
+            nodeData?.organizationManpowerDtoList?.length ? "p-3" : ""
           }`}
         >
-          {nodeData?.employee?.length > 0 &&
-            nodeData?.employee?.map((item, i) => {
+          {nodeData?.organizationManpowerDtoList?.length > 0 &&
+            nodeData?.organizationManpowerDtoList?.map((item, i) => {
               return (
                 <div key={i}>
-                  {item?.employeeNumber || item?.post?.nameBn ? (
+                  {item?.numberOfEmployee || item?.postDto?.nameBn ? (
                     <p className="mb-0">
-                      {item?.employeeNumber || null} x{" "}
-                      {item?.post?.nameBn || null}
+                      {item?.numberOfEmployee || null} x{" "}
+                      {item?.postDto?.nameBn || null}
                     </p>
                   ) : null}
                 </div>

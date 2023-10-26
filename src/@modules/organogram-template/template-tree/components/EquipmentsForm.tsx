@@ -15,7 +15,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "inventory",
+    name: "inventoryDtoList",
   });
 
   const [inventoryTypeList, setInventoryTypeList] = useState<IObject[]>([]);
@@ -28,7 +28,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
   }, []);
 
   const onInventoryTypeChange = (e, idx) => {
-    setValue(`inventory.[${idx}].item`, null);
+    setValue(`inventoryDtoList.[${idx}].item`, null);
     if (e?.id) {
       OMSService.getInventoryItemListByType(e?.id).then((resp) =>
         setInventoryItemList(resp.body || [])
@@ -55,15 +55,15 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   options={inventoryTypeList || []}
                   getOptionLabel={(op) => op?.inventoryTypeBn}
                   getOptionValue={(op) => op?.id}
-                  name={`inventory.${idx}.type`}
+                  name={`inventoryDtoList.${idx}.type`}
                   onChange={(e) => {
                     onInventoryTypeChange(e, idx);
                   }}
                   // isDisabled={!watch("type")}
                   //   isRequired
-                  //   isError={!!errors?.inventory?.[idx]?.type}
+                  //   isError={!!errors?.inventoryDtoList?.[idx]?.type}
                   //   errorMessage={
-                  //     errors?.inventory?.[idx]?.type?.message as string
+                  //     errors?.inventoryDtoList?.[idx]?.type?.message as string
                   //   }
                 />
               </div>
@@ -75,13 +75,13 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   options={inventoryItemList || []}
                   getOptionLabel={(op) => op?.itemTitleBn}
                   getOptionValue={(op) => op?.id}
-                  name={`inventory.${idx}.item`}
-                  key={watch(`inventory.${idx}.type`)}
-                  isDisabled={!watch(`inventory.${idx}.type`)}
+                  name={`inventoryDtoList.${idx}.item`}
+                  key={watch(`inventoryDtoList.${idx}.type`)}
+                  isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
                   //   isRequired
-                  //   isError={!!errors?.inventory?.[idx]?.type}
+                  //   isError={!!errors?.inventoryDtoList?.[idx]?.type}
                   //   errorMessage={
-                  //     errors?.inventory?.[idx]?.type?.message as string
+                  //     errors?.inventoryDtoList?.[idx]?.type?.message as string
                   //   }
                 />
               </div>
@@ -91,14 +91,14 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   placeholder="সংখ্যা লিখুন"
                   type="number"
                   registerProperty={{
-                    ...register(`inventory.${idx}.number`, {
+                    ...register(`inventoryDtoList.${idx}.quantity`, {
                       required: "সংখ্যা লিখুন",
                     }),
                   }}
                   //   isRequired
-                  //   isError={!!errors?.inventory?.[idx]?.number}
+                  //   isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
                   //   errorMessage={
-                  //     errors?.inventory?.[idx]?.number?.message as string
+                  //     errors?.inventoryDtoList?.[idx]?.quantity?.message as string
                   //   }
                 />
               </div>
