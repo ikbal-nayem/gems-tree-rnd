@@ -19,5 +19,5 @@
 		"baseUrl": "src",
 		"outDir": "./../dist"
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "src/@modules/organogram-template/template-tree/Tree/custom-node-chart.jsx"]
+	"include": ["src/**/*.ts", "src/**/*.tsx", "src/@modules/organogram-template/templateComponent/Tree/custom-node-chart.jsx"]
 }

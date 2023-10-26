@@ -12,6 +12,8 @@ import {
 import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
 import { LABELS } from "./labels";
+import { useNavigate } from "react-router-dom";
+import { ROUTE } from "@constants/internal-route.constant";
 
 type TableProps = {
   children: ReactNode;
@@ -27,10 +29,15 @@ const TemplateTable: FC<TableProps> = ({
   respMeta,
 }) => {
   const columns: ITableHeadColumn[] = [
-    { title: COMMON_LABELS.SL_NO, width: 50},
+    { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.NAME, width: 250 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
+
+  const navigate = useNavigate();
+  const navigateToDetails = (id: string) => {
+    navigate(ROUTE.ORG_TEMPLATE_UPDATE + "?id=" + id);
+  };
 
   return (
     <>
@@ -56,7 +63,7 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => null}>
+                  <DropdownItem onClick={() => navigateToDetails(item?.id)}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem>

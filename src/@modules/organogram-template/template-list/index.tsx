@@ -1,30 +1,25 @@
+import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
 import {
-  DownloadMenu,
   Input,
   ListDownload,
   Pagination,
-  Separator,
   toast,
   topProgress,
 } from "@gems/components";
 import {
   COMMON_LABELS,
-  DATE_PATTERN,
   IMeta,
   IObject,
   exportXLSX,
-  generateDateFormat,
   numEnToBn,
   searchParamsToObject,
   useDebounce,
 } from "@gems/utils";
-import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { downloadAsPDF } from "./downloads";
-import { MENU } from "@constants/menu-titles.constant";
-import TemplateTable from "./Table";
 import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import TemplateTable from "./Table";
 
 const initMeta: IMeta = {
   page: 0,

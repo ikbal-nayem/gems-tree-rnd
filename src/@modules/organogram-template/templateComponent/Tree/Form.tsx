@@ -8,10 +8,17 @@ import {
   ModalBody,
   ModalFooter,
 } from "@gems/components";
-import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  IObject,
+  isObjectNull,
+  numBnToEn,
+  numericCheck,
+} from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { OMSService } from "@services/api/OMS.service";
+import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface INodeForm {
   isOpen: boolean;
@@ -82,6 +89,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                 registerProperty={{
                   ...register("titleBn", {
                     required: "বাংলা নাম লিখুন",
+                    validate: bnCheck,
                   }),
                 }}
                 isError={!!errors?.titleBn}
@@ -96,6 +104,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                 registerProperty={{
                   ...register("titleEn", {
                     required: "ইংরেজি নাম লিখুন",
+                    validate: enCheck,
                   }),
                 }}
                 isError={!!errors?.titleEn}
@@ -136,7 +145,10 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                         ),
                       }}
                       // isRequired
-                      isError={!!errors?.postFunctionalityDtoList?.[index]?.functionality}
+                      isError={
+                        !!errors?.postFunctionalityDtoList?.[index]
+                          ?.functionality
+                      }
                       errorMessage={
                         errors?.postFunctionalityDtoList?.[index]?.functionality
                           ?.message as string
@@ -197,7 +209,9 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     <Checkbox
                       label="প্রধান ?"
                       registerProperty={{
-                        ...register(`organizationManpowerDtoList.${index}.isHead`),
+                        ...register(
+                          `organizationManpowerDtoList.${index}.isHead`
+                        ),
                       }}
                     />
                   </div>
@@ -205,20 +219,23 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     <Input
                       label="জনবল সংখ্যা"
                       placeholder="জনবল সংখ্যা লিখুন"
-                      type="number"
                       registerProperty={{
                         ...register(
-                          `organizationManpowerDtoList.${index}.numberOfEmployee`
-                          //  {
-                          //   required: "জনবল সংখ্যা লিখুন",
-                          // }
+                          `organizationManpowerDtoList.${index}.numberOfEmployee`,
+                          {
+                            setValueAs: (v) => numBnToEn(v),
+                            validate: numericCheck,
+                          }
                         ),
                       }}
                       // isRequired
-                      isError={!!errors?.organizationManpowerDtoList?.[index]?.numberOfEmployee}
+                      isError={
+                        !!errors?.organizationManpowerDtoList?.[index]
+                          ?.numberOfEmployee
+                      }
                       errorMessage={
-                        errors?.organizationManpowerDtoList?.[index]?.numberOfEmployee
-                          ?.message as string
+                        errors?.organizationManpowerDtoList?.[index]
+                          ?.numberOfEmployee?.message as string
                       }
                     />
                   </div>

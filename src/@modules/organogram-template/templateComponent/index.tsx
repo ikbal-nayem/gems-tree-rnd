@@ -1,24 +1,42 @@
-import { Button, Input, Separator, toast } from "@gems/components";
-import { COMMON_LABELS, IObject, generateUUID } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
-import { useState } from "react";
+import { Button, Input, Separator } from "@gems/components";
+import {
+  COMMON_LABELS,
+  IObject,
+  generateUUID,
+  isObjectNull,
+} from "@gems/utils";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
+import { bnCheck, enCheck } from "../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import CheckListForm from "./components/CheckListForm";
 import EquipmentsForm from "./components/EquipmentsForm";
-import { bnCheck, enCheck } from "utility/checkValidation";
 
-const TemplateTree = () => {
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [treeData, setTreeData] = useState<IObject>({
-    id: generateUUID(),
-    titleBn: "হালনাগাদ করে শুরু করুন",
-    children: [],
-  });
+interface ITemplateComponent {
+  updateData?: IObject;
+  onSubmit: (data) => void;
+  isSubmitLoading: boolean;
+}
+
+const TemplateComponent = ({
+  updateData,
+  onSubmit,
+  isSubmitLoading,
+}: ITemplateComponent) => {
+  const [treeData, setTreeData] = useState<IObject>(
+    !isObjectNull(updateData) &&
+      !isObjectNull(updateData?.organizationStructureDto)
+      ? updateData?.organizationStructureDto
+      : {
+          id: generateUUID(),
+          titleBn: "হালনাগাদ করে শুরু করুন",
+          children: [],
+        }
+  );
   const formProps = useForm<any>({
     defaultValues: {
       abbreviationDtoList: [],
@@ -31,26 +49,31 @@ const TemplateTree = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = formProps;
+
+  useEffect(() => {
+    if (!isObjectNull(updateData)) {
+      reset({
+        titleBn: updateData?.titleBn,
+        titleEn: updateData?.titleEn,
+        abbreviationDtoList: updateData?.abbreviationDtoList,
+        mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
+        businessAllocationDtoList: updateData?.businessAllocationDtoList,
+        attachmentDtoList: updateData?.attachmentDtoList,
+        inventoryDtoList: updateData?.inventoryDtoList,
+      });
+    }
+  }, [updateData]);
 
   const onFinalSubmit = (data) => {
     const reqPayload = {
       ...data,
       organizationStructureDto: treeData,
     };
-    console.log("data", reqPayload);
-    setIsSubmitLoading(false);
-
-    OMSService.templateCreate(reqPayload)
-      .then((res) => {
-        toast.success(res?.message);
-      })
-      .catch((error) => toast.error(error?.message))
-      .finally(() => setIsSubmitLoading(false));
+    onSubmit(reqPayload);
   };
-
-  // console.log("tree", treeData);
 
   return (
     <div>
@@ -126,4 +149,4 @@ const TemplateTree = () => {
   );
 };
 
-export default TemplateTree;
+export default TemplateComponent;
