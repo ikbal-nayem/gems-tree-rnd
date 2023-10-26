@@ -1,5 +1,5 @@
 import { Button, Input, Separator, toast } from "@gems/components";
-import { COMMON_LABELS, IObject } from "@gems/utils";
+import { COMMON_LABELS, IObject, generateUUID } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,7 +14,11 @@ import { bnCheck, enCheck } from "utility/checkValidation";
 
 const TemplateTree = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [treeData, setTreeData] = useState<IObject>({});
+  const [treeData, setTreeData] = useState<IObject>({
+    id: generateUUID(),
+    titleBn: "হালনাগাদ করে শুরু করুন",
+    children: [],
+  });
   const formProps = useForm<any>({
     defaultValues: {
       abbreviationDtoList: [],

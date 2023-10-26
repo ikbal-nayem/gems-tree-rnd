@@ -125,11 +125,7 @@ const OrganizationTemplateTree = ({
       <div>
         <OrganizationChart
           // ref={orgchart}
-          datasource={
-            !isObjectNull(treeData)
-              ? treeData
-              : { id: 1, titleBn: "হালনাগাদ করে শুরু করুন" }
-          }
+          datasource={treeData}
           chartClass="myChart"
           NodeTemplate={({ nodeData }) => (
             <MyNode nodeData={nodeData} treeDispatch={treeDispatch} />
