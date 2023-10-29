@@ -32,7 +32,7 @@ const TemplateUpdate = () => {
     setIsSubmitLoading(true);
     console.log("data", templateData);
 
-    OMSService.templateUpdate(templateData)
+    OMSService.templateUpdate(templateData, templateId)
       .then((res) => {
         toast.success(res?.message);
       })
@@ -50,7 +50,9 @@ const TemplateUpdate = () => {
           updateData={data}
         />
       )}
-      {!isLoading && isObjectNull(data) && <NoData details="কোনো টেমপ্লেট তথ্য খুঁজে পাওয়া যায় নি !!"/>}
+      {!isLoading && isObjectNull(data) && (
+        <NoData details="কোনো টেমপ্লেট তথ্য খুঁজে পাওয়া যায় নি !!" />
+      )}
     </>
   );
 };

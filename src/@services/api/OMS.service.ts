@@ -26,14 +26,18 @@ export const OMSService = {
         templateId
     ),
 
-  templateUpdate: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organogram-template/save", payload),
-
-
   duplicateTemplateTitleCheck: async (title: string): Promise<any> =>
   await axiosIns.get(
     OMS_SERVICE +
       "organogram-template/get-0rganogram-template-by-id/" +
       title
   ),
+  
+  templateUpdate: async (payload, templateId): Promise<any> =>
+    await axiosIns.put(
+      OMS_SERVICE +
+        "organogram-template/update-0rganogram-template-by-id/" +
+        templateId,
+      payload
+    ),
 };
