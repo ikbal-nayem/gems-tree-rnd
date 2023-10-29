@@ -102,14 +102,13 @@ const TemplateComponent = ({
     //     ? "uniqueCheck : PASS "
     //     : "uniqueCheck : FAIL"
     // );
-    uniqueCheck(data.inventoryDtoList, "inventoryDtoList")
-    if (!!errors) return;
+
+    if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
 
     const reqPayload = {
       ...data,
       organizationStructureDto: treeData,
     };
-    console.log(reqPayload);
 
     onSubmit(reqPayload);
   };
