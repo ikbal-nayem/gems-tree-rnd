@@ -72,14 +72,37 @@ const TemplateComponent = ({
 
   const onTitleEnChange = (data) => {};
 
+  const uniqueCheck = (list, listName: string) => {
+    let isUnique = true;
+    switch (listName) {
+      case "inventoryDtoList":
+        for (let i = 0; 0 < list.length && i < list.length; i++) {
+          for (let j = 0; j < list.length; j++) {
+            if (i !== j && list[i]?.item?.id === list[j]?.item?.id) {
+              isUnique = false;
+              setError(`inventoryDtoList.[${j}].item`, {
+                type: "manaul",
+                message:
+                  "'" + list[j]?.item?.itemTitleBn + "' আইটেমটি অনন্য নয় !",
+              });
+            }
+          }
+        }
+        break;
+      default:
+      // code block
+    }
+    return isUnique;
+  };
+
   const onFinalSubmit = (data) => {
-    console.log("Inventory Dto List: ", data.inventoryDtoList);
-
-    setError(`inventoryDtoList.[${0}].item`, {
-      type: "manual",
-      message: "আইটেমটি অনন্য নয় !",
-    });
-
+    // console.log("Inventory Dto List: ", data.inventoryDtoList);
+    // console.log(
+    //   uniqueCheck(data.inventoryDtoList, "inventoryDtoList")
+    //     ? "uniqueCheck : PASS "
+    //     : "uniqueCheck : FAIL"
+    // );
+    uniqueCheck(data.inventoryDtoList, "inventoryDtoList")
     if (!!errors) return;
 
     const reqPayload = {
@@ -88,7 +111,7 @@ const TemplateComponent = ({
     };
     console.log(reqPayload);
 
-    // onSubmit(reqPayload);
+    onSubmit(reqPayload);
   };
 
   return (

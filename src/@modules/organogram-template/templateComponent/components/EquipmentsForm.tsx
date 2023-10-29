@@ -56,11 +56,14 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
       const inventoryDtoList = getValues("inventoryDtoList") || [];
       for (let i = 0; i < inventoryDtoList.length; i++) {
         if (i !== idx && inventoryDtoList[i]?.item?.id === obj?.id) {
-          toast.error("Oi Already ase");
+          toast.error(
+            "'" + inventoryDtoList[i]?.item?.itemTitleBn + "' আইটেমটি অনন্য নয়"
+          );
 
           setError(`inventoryDtoList.[${idx}].item`, {
             type: "manaul",
-            message: inventoryDtoList[i]?.item?.itemTitleBn + " আইটেমটি অনন্য নয় !",
+            message:
+            "'" + inventoryDtoList[i]?.item?.itemTitleBn + "' আইটেমটি অনন্য নয় !",
           });
           break;
         }
@@ -69,7 +72,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
     } else clearErrors(`inventoryDtoList.[${idx}].item`);
   };
 
-  console.log("Inventory List Errors: ", errors?.inventoryDtoList);
+  // console.log("Inventory List Errors: ", errors?.inventoryDtoList);
 
   return (
     <div className="card border p-3">
@@ -126,6 +129,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   label="সংখ্যা"
                   placeholder="সংখ্যা লিখুন"
                   type="number"
+                  defaultValue={0}
                   registerProperty={{
                     ...register(`inventoryDtoList.${idx}.quantity`, {
                       // required: "সংখ্যা লিখুন",
