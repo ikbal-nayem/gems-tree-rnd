@@ -1,5 +1,11 @@
 import { LABELS } from "@constants/common.constant";
-import { Autocomplete, IconButton, Input, Separator } from "@gems/components";
+import {
+  Autocomplete,
+  IconButton,
+  Input,
+  Separator,
+  toast,
+} from "@gems/components";
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
@@ -11,7 +17,16 @@ interface IEquipmentsForm {
 }
 
 const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
-  const { register, control, watch, setValue } = formProps;
+  const {
+    register,
+    control,
+    watch,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = formProps;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -36,6 +51,26 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
     } else setInventoryItemList([]);
   };
 
+  const onInventoryChange = (obj, idx) => {
+    if (obj?.id) {
+      const inventoryDtoList = getValues("inventoryDtoList") || [];
+      for (let i = 0; i < inventoryDtoList.length; i++) {
+        if (i !== idx && inventoryDtoList[i]?.item?.id === obj?.id) {
+          toast.error("Oi Already ase");
+
+          setError(`inventoryDtoList.[${idx}].item`, {
+            type: "manaul",
+            message: inventoryDtoList[i]?.item?.itemTitleBn + " আইটেমটি অনন্য নয় !",
+          });
+          break;
+        }
+        clearErrors(`inventoryDtoList.[${idx}].item`);
+      }
+    } else clearErrors(`inventoryDtoList.[${idx}].item`);
+  };
+
+  console.log("Inventory List Errors: ", errors?.inventoryDtoList);
+
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
@@ -56,9 +91,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   getOptionLabel={(op) => op?.inventoryTypeBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventoryDtoList.${idx}.type`}
-                  onChange={(e) => {
-                    onInventoryTypeChange(e, idx);
-                  }}
+                  onChange={(e) => onInventoryTypeChange(e, idx)}
                   // isDisabled={!watch("type")}
                   //   isRequired
                   //   isError={!!errors?.inventoryDtoList?.[idx]?.type}
@@ -78,11 +111,14 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   name={`inventoryDtoList.${idx}.item`}
                   key={watch(`inventoryDtoList.${idx}.type`)}
                   isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
+                  onChange={(obj) => {
+                    onInventoryChange(obj, idx);
+                  }}
                   //   isRequired
-                  //   isError={!!errors?.inventoryDtoList?.[idx]?.type}
-                  //   errorMessage={
-                  //     errors?.inventoryDtoList?.[idx]?.type?.message as string
-                  //   }
+                  isError={!!errors?.inventoryDtoList?.[idx]?.item}
+                  errorMessage={
+                    errors?.inventoryDtoList?.[idx]?.item?.message as string
+                  }
                 />
               </div>
               <div className="col-md-4">
@@ -92,7 +128,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   type="number"
                   registerProperty={{
                     ...register(`inventoryDtoList.${idx}.quantity`, {
-                      required: "সংখ্যা লিখুন",
+                      // required: "সংখ্যা লিখুন",
                     }),
                   }}
                   //   isRequired

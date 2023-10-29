@@ -50,6 +50,7 @@ const TemplateComponent = ({
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = formProps;
 
@@ -67,12 +68,27 @@ const TemplateComponent = ({
     }
   }, [updateData]);
 
+  const onTitleBnChange = (data) => {};
+
+  const onTitleEnChange = (data) => {};
+
   const onFinalSubmit = (data) => {
+    console.log("Inventory Dto List: ", data.inventoryDtoList);
+
+    setError(`inventoryDtoList.[${0}].item`, {
+      type: "manual",
+      message: "আইটেমটি অনন্য নয় !",
+    });
+
+    if (!!errors) return;
+
     const reqPayload = {
       ...data,
       organizationStructureDto: treeData,
     };
-    onSubmit(reqPayload);
+    console.log(reqPayload);
+
+    // onSubmit(reqPayload);
   };
 
   return (
@@ -99,6 +115,7 @@ const TemplateComponent = ({
                     validate: bnCheck,
                   }),
                 }}
+                onChange={(val) => onTitleBnChange(val)}
                 isError={!!errors?.titleBn}
                 errorMessage={errors?.titleBn?.message as string}
               />
@@ -114,6 +131,7 @@ const TemplateComponent = ({
                     validate: enCheck,
                   }),
                 }}
+                onChange={(val) => onTitleEnChange(val)}
                 isError={!!errors?.titleEn}
                 errorMessage={errors?.titleEn?.message as string}
               />
