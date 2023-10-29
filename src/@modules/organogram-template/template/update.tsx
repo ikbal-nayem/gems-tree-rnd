@@ -1,40 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TemplateComponent from "../templateComponent";
 // import { OMSService } from "@services/api/OMS.service";
-import { toast } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { ContentPreloader, NoData, toast } from "@gems/components";
+import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "../../../@services/api/OMS.service";
+import { useSearchParams } from "react-router-dom";
 
 const TemplateUpdate = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
-  // const [searchParam] = useSearchParams();
+  const [searchParam] = useSearchParams();
 
-  // const templateId = searchParam.get("id") || "";
+  const templateId = searchParam.get("id") || "";
 
-  // useEffect(() => {
-  //   getRoleDetailsById();
-  // }, []);
+  useEffect(() => {
+    getTemplateDetailsDetailsById();
+  }, []);
 
-  // const getRoleDetailsById = () => {
-  //   setLoading(true);
-  //   CoreService.getRoleById(templateId)
-  //     .then((resp) => {
-  //       setRoleDetails({ ...resp?.body } || {});
-  //       if (resp?.body?.moduleDTOList) {
-  //         reset({
-  //           modules: resp?.body?.moduleDTOList || [],
-  //         });
-  //       }
-  //     })
-  //     .finally(() => setLoading(false));
-  // };
+  const getTemplateDetailsDetailsById = () => {
+    setIsLoading(true);
+    OMSService.getTemplateDetailsByTemplateId(templateId)
+      .then((resp) => {
+        setData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
 
   const onSubmit = (templateData) => {
     setIsSubmitLoading(true);
     console.log("data", templateData);
 
-    OMSService.templateCreate(templateData)
+    OMSService.templateUpdate(templateData)
       .then((res) => {
         toast.success(res?.message);
       })
@@ -43,11 +41,17 @@ const TemplateUpdate = () => {
   };
 
   return (
-    <TemplateComponent
-      onSubmit={onSubmit}
-      isSubmitLoading={isSubmitLoading}
-      updateData={data}
-    />
+    <>
+      {isLoading && <ContentPreloader />}
+      {!isLoading && !isObjectNull(data) && (
+        <TemplateComponent
+          onSubmit={onSubmit}
+          isSubmitLoading={isSubmitLoading}
+          updateData={data}
+        />
+      )}
+      {!isLoading && isObjectNull(data) && <NoData details="কোনো টেমপ্লেট তথ্য খুঁজে পাওয়া যায় নি !!"/>}
+    </>
   );
 };
 

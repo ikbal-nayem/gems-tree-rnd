@@ -36,26 +36,26 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
-      postFunctionalityDtoList: [{}],
-      organizationManpowerDtoList: [{}],
+      postFunctionalityList: [{}],
+      manpowerList: [{}],
     },
   });
 
   const {
-    fields: postFunctionalityDtoListFields,
-    append: postFunctionalityDtoListAppend,
-    remove: postFunctionalityDtoListRemove,
+    fields: postFunctionalityListFields,
+    append: postFunctionalityListAppend,
+    remove: postFunctionalityListRemove,
   } = useFieldArray({
     control,
-    name: "postFunctionalityDtoList",
+    name: "postFunctionalityList",
   });
   const {
-    fields: organizationManpowerDtoListFields,
-    append: organizationManpowerDtoListAppend,
-    remove: organizationManpowerDtoListRemove,
+    fields: manpowerListFields,
+    append: manpowerListAppend,
+    remove: manpowerListRemove,
   } = useFieldArray({
     control,
-    name: "organizationManpowerDtoList",
+    name: "manpowerList",
   });
 
   const [postList, setPostist] = useState<IObject[]>([]);
@@ -121,12 +121,12 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    postFunctionalityDtoListAppend({});
+                    postFunctionalityListAppend({});
                   }}
                 />
               </div>
             </div>
-            {postFunctionalityDtoListFields.map((field, index) => (
+            {postFunctionalityListFields.map((field, index) => (
               <div
                 className="d-flex align-items-center gap-3 w-100 border rounded p-3 my-2 bg-gray-100"
                 key={field?.id}
@@ -138,7 +138,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       placeholder="দায়িত্ব লিখুন"
                       registerProperty={{
                         ...register(
-                          `postFunctionalityDtoList.${index}.functionality`
+                          `postFunctionalityList.${index}.functionality`
                           // {
                           //   required: "দায়িত্ব লিখুন",
                           // }
@@ -146,11 +146,10 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       }}
                       // isRequired
                       isError={
-                        !!errors?.postFunctionalityDtoList?.[index]
-                          ?.functionality
+                        !!errors?.postFunctionalityList?.[index]?.functionality
                       }
                       errorMessage={
-                        errors?.postFunctionalityDtoList?.[index]?.functionality
+                        errors?.postFunctionalityList?.[index]?.functionality
                           ?.message as string
                       }
                     />
@@ -161,7 +160,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() => postFunctionalityDtoListRemove(index)}
+                    onClick={() => postFunctionalityListRemove(index)}
                   />
                 </div>
               </div>
@@ -176,12 +175,12 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    organizationManpowerDtoListAppend({});
+                    manpowerListAppend({});
                   }}
                 />
               </div>
             </div>
-            {organizationManpowerDtoListFields.map((field, index) => (
+            {manpowerListFields.map((field, index) => (
               <div
                 className="d-flex align-items-center gap-3 w-100 border rounded p-3 my-2 bg-gray-100"
                 key={field?.id}
@@ -195,7 +194,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       options={postList || []}
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
-                      name={`organizationManpowerDtoList.${index}.postDto`}
+                      name={`manpowerList.${index}.postDto`}
                       // onChange={onDataChange}
                       // isDisabled={!watch("type")}
                       //   isRequired
@@ -209,9 +208,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     <Checkbox
                       label="প্রধান ?"
                       registerProperty={{
-                        ...register(
-                          `organizationManpowerDtoList.${index}.isHead`
-                        ),
+                        ...register(`manpowerList.${index}.isHead`),
                       }}
                     />
                   </div>
@@ -220,22 +217,18 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       label="জনবল সংখ্যা"
                       placeholder="জনবল সংখ্যা লিখুন"
                       registerProperty={{
-                        ...register(
-                          `organizationManpowerDtoList.${index}.numberOfEmployee`,
-                          {
-                            setValueAs: (v) => numBnToEn(v),
-                            validate: numericCheck,
-                          }
-                        ),
+                        ...register(`manpowerList.${index}.numberOfEmployee`, {
+                          setValueAs: (v) => numBnToEn(v),
+                          validate: numericCheck,
+                        }),
                       }}
                       // isRequired
                       isError={
-                        !!errors?.organizationManpowerDtoList?.[index]
-                          ?.numberOfEmployee
+                        !!errors?.manpowerList?.[index]?.numberOfEmployee
                       }
                       errorMessage={
-                        errors?.organizationManpowerDtoList?.[index]
-                          ?.numberOfEmployee?.message as string
+                        errors?.manpowerList?.[index]?.numberOfEmployee
+                          ?.message as string
                       }
                     />
                   </div>
@@ -245,7 +238,7 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() => organizationManpowerDtoListRemove(index)}
+                    onClick={() => manpowerListRemove(index)}
                   />
                 </div>
               </div>
