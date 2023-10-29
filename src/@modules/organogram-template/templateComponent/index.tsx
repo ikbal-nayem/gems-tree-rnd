@@ -15,6 +15,7 @@ import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import CheckListForm from "./components/CheckListForm";
 import EquipmentsForm from "./components/EquipmentsForm";
+import { OMSService } from "@services/api/OMS.service";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -68,7 +69,13 @@ const TemplateComponent = ({
     }
   }, [updateData]);
 
-  const onTitleBnChange = (data) => {};
+  const onTitleBnChange = (data) => {
+    console.log("Title Bn  : " + data)
+
+    // OMSService.duplicateTemplateTitleCheck(data).then((res) => {
+    //   console.log("res : " + res);
+    // });
+  };
 
   const onTitleEnChange = (data) => {};
 
@@ -134,10 +141,10 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleBn", {
                     required: "শিরোনাম বাংলা লিখুন",
+                    onChange: (val) => onTitleBnChange(val),
                     validate: bnCheck,
                   }),
                 }}
-                onChange={(val) => onTitleBnChange(val)}
                 isError={!!errors?.titleBn}
                 errorMessage={errors?.titleBn?.message as string}
               />
