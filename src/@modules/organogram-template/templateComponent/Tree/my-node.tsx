@@ -58,11 +58,11 @@ const MyNode = ({ nodeData, treeDispatch }) => {
         </div>
         <div
           className={`bg-light text-start ${
-            nodeData?.organizationManpowerDtoList?.length ? "p-3" : ""
+            nodeData?.manpowerList?.length ? "p-3" : ""
           }`}
         >
-          {nodeData?.organizationManpowerDtoList?.length > 0 &&
-            nodeData?.organizationManpowerDtoList?.map((item, i) => {
+          {nodeData?.manpowerList?.length > 0 &&
+            nodeData?.manpowerList?.map((item, i) => {
               return (
                 <div key={i}>
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (

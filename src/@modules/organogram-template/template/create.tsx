@@ -8,7 +8,6 @@ const TemplateCreate = () => {
 
   const onSubmit = (data) => {
     setIsSubmitLoading(true);
-    console.log("data", data);
 
     OMSService.templateCreate(data)
       .then((res) => {
