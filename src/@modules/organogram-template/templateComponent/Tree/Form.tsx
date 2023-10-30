@@ -25,9 +25,16 @@ interface INodeForm {
   onClose: () => void;
   onSubmit: (data) => void;
   updateData?: IObject;
+  postList: IObject[];
 }
 
-const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
+const NodeForm = ({
+  isOpen,
+  postList,
+  onClose,
+  onSubmit,
+  updateData,
+}: INodeForm) => {
   const {
     register,
     handleSubmit,
@@ -58,15 +65,26 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
     name: "manpowerList",
   });
 
-  const [postList, setPostist] = useState<IObject[]>([]);
-
-  useEffect(() => {
-    OMSService.getPostList().then((resp) => setPostist(resp.body || []));
-  }, []);
-
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
-      reset({ ...updateData });
+      let resetData = updateData;
+      if (!isObjectNull(updateData?.manpowerList)) {
+        resetData = {
+          ...updateData,
+          manpowerList: updateData?.manpowerList?.map((item) => {
+            return {
+              ...item,
+              organizationPost:
+                (postList?.length > 0 &&
+                  postList?.find((d) => d?.id === item.organizationPost.id)) ||
+                null,
+            };
+          }),
+        };
+      }
+      reset({
+        ...resetData,
+      });
     } else reset({});
   }, [isOpen, updateData, reset]);
 
@@ -190,18 +208,22 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                     <Autocomplete
                       label="পদবি"
                       placeholder="পদবি বাছাই করুন"
+                      isRequired="পদবি বাছাই করুন"
                       control={control}
                       options={postList || []}
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.postDto`}
+                      name={`manpowerList.${index}.organizationPost`}
                       // onChange={onDataChange}
                       // isDisabled={!watch("type")}
                       //   isRequired
-                      //   isError={!!errors?.inventory?.[idx]?.type}
-                      //   errorMessage={
-                      //     errors?.inventory?.[idx]?.type?.message as string
-                      //   }
+                      isError={
+                        !!errors?.manpowerList?.[index]?.organizationPost
+                      }
+                      errorMessage={
+                        errors?.manpowerList?.[index]?.organizationPost
+                          ?.message as string
+                      }
                     />
                   </div>
                   <div className="col-md-6 col-xl-2 d-flex align-items-center">
@@ -218,11 +240,12 @@ const NodeForm = ({ isOpen, onClose, onSubmit, updateData }: INodeForm) => {
                       placeholder="জনবল সংখ্যা লিখুন"
                       registerProperty={{
                         ...register(`manpowerList.${index}.numberOfEmployee`, {
+                          required: "জনবল সংখ্যা লিখুন",
                           setValueAs: (v) => numBnToEn(v),
                           validate: numericCheck,
                         }),
                       }}
-                      // isRequired
+                      isRequired
                       isError={
                         !!errors?.manpowerList?.[index]?.numberOfEmployee
                       }

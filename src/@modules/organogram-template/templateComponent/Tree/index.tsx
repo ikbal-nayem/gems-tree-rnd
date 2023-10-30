@@ -1,8 +1,9 @@
 import OrganizationChart from "@dabeng/react-orgchart";
 import { IObject, generateUUID, isObjectNull } from "@gems/utils";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
+import { OMSService } from "@services/api/OMS.service";
 
 const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
   if (nd.id === parentId) {
@@ -56,6 +57,12 @@ const OrganizationTemplateTree = ({
   // const [isSaving, setSaving] = useState<boolean>(false);
   const selectedNode = useRef<IObject>(null);
   const updateNodeData = useRef<IObject>(null);
+
+  const [postList, setPostist] = useState<IObject[]>([]);
+
+  useEffect(() => {
+    OMSService.getPostList().then((resp) => setPostist(resp.body || []));
+  }, []);
 
   const treeDispatch = (actionType, data: IObject) => {
     switch (actionType) {
@@ -128,13 +135,18 @@ const OrganizationTemplateTree = ({
           datasource={treeData}
           chartClass="myChart"
           NodeTemplate={({ nodeData }) => (
-            <MyNode nodeData={nodeData} treeDispatch={treeDispatch} />
+            <MyNode
+              nodeData={nodeData}
+              treeDispatch={treeDispatch}
+              postList={postList}
+            />
           )}
           // draggable={true}
           // zoom={true}
         />
         <NodeForm
           isOpen={formOpen}
+          postList={postList}
           updateData={updateNodeData.current}
           onClose={onFormClose}
           onSubmit={onSubmit}

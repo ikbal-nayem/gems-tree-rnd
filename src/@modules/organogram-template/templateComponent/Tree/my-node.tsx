@@ -1,13 +1,14 @@
 import { Icon } from "@gems/components";
 // import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
+import { COMMON_LABELS } from "@gems/utils";
 // import { Dropdown, DropdownItem } from "../Dropdown";
 // import { Button, Modal } from "react-bootstrap";
 // const propTypes = {
 //   nodeData: PropTypes.object.isRequired
 // };
 
-const MyNode = ({ nodeData, treeDispatch }) => {
+const MyNode = ({ nodeData, treeDispatch, postList }) => {
   return (
     <div>
       <div className="position rounded">
@@ -68,7 +69,12 @@ const MyNode = ({ nodeData, treeDispatch }) => {
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (
                     <p className="mb-0">
                       {item?.numberOfEmployee || null} x{" "}
-                      {item?.postDto?.nameBn || null}
+                      {(postList?.length > 0 &&
+                        item?.organizationPost?.id &&
+                        postList?.find(
+                          (d) => d?.id === item?.organizationPost?.id
+                        )?.nameBn) ||
+                        COMMON_LABELS.NOT_ASSIGN}
                     </p>
                   ) : null}
                 </div>
