@@ -1,5 +1,5 @@
 import { LABELS } from "@constants/common.constant";
-import { IconButton, Input, Separator } from "@gems/components";
+import { IconButton, Input, Separator, Textarea } from "@gems/components";
 import { useFieldArray } from "react-hook-form";
 import "../style.scss";
 
@@ -52,7 +52,7 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                 />
               </div>
               <div className="col-md-6">
-                <Input
+                <Textarea
                   label="বিস্তারিত"
                   placeholder="বিস্তারিত লিখুন"
                   registerProperty={{
