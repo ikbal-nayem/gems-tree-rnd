@@ -69,15 +69,16 @@ const TemplateComponent = ({
     }
   }, [updateData]);
 
-  const onTitleBnChange = (data) => {
-    console.log("Title Bn  : " + data)
+  const onTitleChange = (title) => {
+    console.log("Title  : " + title)
 
-    // OMSService.duplicateTemplateTitleCheck(data).then((res) => {
-    //   console.log("res : " + res);
-    // });
+    OMSService.duplicateTemplateTitleCheck(title)
+      .then((res) => {
+        console.log("Resposne : " + JSON.stringify(res));
+        // console.log(res.error)
+      })
+      .catch((e) => console.log(e));
   };
-
-  const onTitleEnChange = (data) => {};
 
   const uniqueCheck = (list, listName: string) => {
     let isUnique = true;
@@ -141,7 +142,7 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleBn", {
                     required: "শিরোনাম বাংলা লিখুন",
-                    onChange: (val) => onTitleBnChange(val),
+                    onChange: (e) => onTitleChange(e.target.value),
                     validate: bnCheck,
                   }),
                 }}
@@ -157,10 +158,10 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleEn", {
                     required: "শিরোনাম ইংরেজি লিখুন",
+                    onChange: (e) => onTitleChange(e.target.value),
                     validate: enCheck,
                   }),
                 }}
-                onChange={(val) => onTitleEnChange(val)}
                 isError={!!errors?.titleEn}
                 errorMessage={errors?.titleEn?.message as string}
               />
