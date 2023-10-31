@@ -34,7 +34,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
   });
 
   const [inventoryTypeList, setInventoryTypeList] = useState<IObject[]>([]);
-  const [inventoryItemList, setInventoryItemList] = useState<IObject[]>([]);
+  const [inventoryItemList, setInventoryItemList] = useState<IObject[][]>([]);
 
   useEffect(() => {
     OMSService.getInventoryTypeList().then((resp) =>
@@ -42,12 +42,30 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
     );
   }, []);
 
+  const inventoryDtoList = watch("inventoryDtoList");
+
+  useEffect(() => {
+    Promise.all(
+      inventoryDtoList?.map((item) =>
+        OMSService.getInventoryItemListByType(item?.type?.id)
+      )
+    ).then((resp) => {
+      let cInventoryItemList = [...inventoryItemList];
+      resp?.forEach((item, i) => {
+        cInventoryItemList[i] = [...item?.body];
+      });
+      setInventoryItemList(cInventoryItemList);
+    });
+  }, [inventoryDtoList]);
+
   const onInventoryTypeChange = (e, idx) => {
     setValue(`inventoryDtoList.[${idx}].item`, null);
     if (e?.id) {
-      OMSService.getInventoryItemListByType(e?.id).then((resp) =>
-        setInventoryItemList(resp.body || [])
-      );
+      OMSService.getInventoryItemListByType(e?.id).then((resp) => {
+        const cInventoryItemList = [...inventoryItemList];
+        cInventoryItemList[idx] = [...resp?.body];
+        setInventoryItemList(cInventoryItemList);
+      });
     } else setInventoryItemList([]);
   };
 
@@ -63,7 +81,9 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
           setError(`inventoryDtoList.[${idx}].item`, {
             type: "manaul",
             message:
-            "'" + inventoryDtoList[i]?.item?.itemTitleBn + "' আইটেমটি অনন্য নয় !",
+              "'" +
+              inventoryDtoList[i]?.item?.itemTitleBn +
+              "' আইটেমটি অনন্য নয় !",
           });
           break;
         }
@@ -71,8 +91,6 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
       }
     } else clearErrors(`inventoryDtoList.[${idx}].item`);
   };
-
-  // console.log("Inventory List Errors: ", errors?.inventoryDtoList);
 
   return (
     <div className="card border p-3">
@@ -108,11 +126,11 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   label="সরঞ্জামাদি"
                   placeholder="সরঞ্জামাদি বাছাই করুন"
                   control={control}
-                  options={inventoryItemList || []}
+                  options={inventoryItemList?.[idx] || []}
                   getOptionLabel={(op) => op?.itemTitleBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventoryDtoList.${idx}.item`}
-                  key={watch(`inventoryDtoList.${idx}.type`)}
+                  key={watch(`inventoryDtoList.${idx}.item`)}
                   isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
                   onChange={(obj) => {
                     onInventoryChange(obj, idx);

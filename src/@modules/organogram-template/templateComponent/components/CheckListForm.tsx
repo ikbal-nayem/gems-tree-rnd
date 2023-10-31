@@ -1,5 +1,5 @@
 import { LABELS } from "@constants/common.constant";
-import { IconButton, Input, Separator } from "@gems/components";
+import { Checkbox, IconButton, Input, Separator } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import "../style.scss";
@@ -25,22 +25,35 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
       <Separator className="mt-1 mb-2" />
       <div>
         {fields.map((f, idx) => (
-          <div key={idx} className="d-flex gap-3 mt-3">
-            <Input
-              placeholder={`তালিকা ${numEnToBn(idx + 1)}`}
-              // isRequired
-              noMargin
-              autoFocus
-              registerProperty={{
-                ...register(`attachmentDtoList.${idx}.titleBn`, {
-                  // required: "তালিকা যুক্ত করুন",
-                }),
-              }}
-              // isError={!!errors?.attachmentDtoList?.[idx].titleBn}
-              // errorMessage={
-              //   errors?.attachmentDtoList?.[idx]?.titleBn?.message as string
-              // }
-            />
+          <div key={idx} className="d-flex gap-3 mt-3 w-100">
+            <div className="row w-100">
+              <div className="col-xl-9">
+                <Input
+                  placeholder={`তালিকা ${numEnToBn(idx + 1)}`}
+                  // isRequired
+                  noMargin
+                  autoFocus
+                  registerProperty={{
+                    ...register(`attachmentDtoList.${idx}.titleBn`, {
+                      // required: "তালিকা যুক্ত করুন",
+                    }),
+                  }}
+                  // isError={!!errors?.attachmentDtoList?.[idx].titleBn}
+                  // errorMessage={
+                  //   errors?.attachmentDtoList?.[idx]?.titleBn?.message as string
+                  // }
+                />
+              </div>
+              <div className="col-xl-3 d-flex align-items-center">
+                <Checkbox
+                  label="বাধ্যতামূলক ?"
+                  registerProperty={{
+                    ...register(`manpowerList.${idx}.isMandatory`),
+                  }}
+                />
+              </div>
+            </div>
+
             <IconButton
               iconName="delete"
               color="danger"
