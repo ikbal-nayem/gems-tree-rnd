@@ -48,7 +48,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                 <Checkbox
                   label="বাধ্যতামূলক ?"
                   registerProperty={{
-                    ...register(`manpowerList.${idx}.isMandatory`),
+                    ...register(`attachmentDtoList.${idx}.isMandatory`),
                   }}
                 />
               </div>

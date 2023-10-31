@@ -129,16 +129,20 @@ const TemplateComponent = ({
     console.log("titleEn : " + data?.titleEn);
 
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
-    duplicateTitleCheck(data?.titleEn, true);
-    duplicateTitleCheck(data?.titleBn, false);
+    if (isObjectNull(updateData)) {
+      duplicateTitleCheck(data?.titleEn, true);
+      duplicateTitleCheck(data?.titleBn, false);
 
-    if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
+      if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
+    }
 
     const reqPayload = {
       ...data,
       organizationStructureDto: treeData,
     };
-    console.log(" ======================= TEST PASSED !!! ==========================");
+    console.log(
+      " ======================= TEST PASSED !!! =========================="
+    );
 
     onSubmit(reqPayload);
   };
