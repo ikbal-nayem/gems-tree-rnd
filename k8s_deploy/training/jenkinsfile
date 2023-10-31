@@ -23,8 +23,8 @@ pipeline {
         DEPLOYMENT_DIRECTORY="./k8s_deploy/training"
 
        //Application configurations and credentials
-        K8S_CONFIGMAP_NAME="web-oms-config"
-        K8S_SECRET_NAME="web-oms-secret"
+     //   K8S_CONFIGMAP_NAME="web-oms-config"
+     //   K8S_SECRET_NAME="web-oms-secret"
 
         //k8s cluster specific configuration
         K8S_SERVICE_NAME="$PROJECT_NAME"
