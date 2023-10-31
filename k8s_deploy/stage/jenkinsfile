@@ -49,7 +49,7 @@ pipeline {
         DOCKER_REGISTRY_URL="https://$REGISTRY"
 
 
-       INSIGHT_HOSTNAME="stage-ems.gems.gov.bd"
+       INSIGHT_HOSTNAME="stage-oms.gems.gov.bd"
                 
     }
 

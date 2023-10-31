@@ -7,7 +7,7 @@ COPY package.json package-lock.json ./
 RUN npm install --immutable --immutable-cache
 
 COPY . .
-RUN ng build:dev
+RUN mpm build:dev
 
 ### STAGE 2: Run ###
 FROM nginx
