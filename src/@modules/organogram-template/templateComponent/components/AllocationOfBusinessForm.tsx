@@ -9,7 +9,11 @@ interface IAllocationOfBusinessForm {
 }
 
 const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
-  const { register, control } = formProps;
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = formProps;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -31,14 +35,20 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
               noMargin
               autoFocus
               registerProperty={{
-                ...register(`businessAllocationDtoList.${idx}.businessOfAllocation`, {
-                  // required: "বরাদ্দ যুক্ত করুন",
-                }),
+                ...register(
+                  `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                  {
+                    required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
+                  }
+                ),
               }}
-              // isError={!!errors?.businessAllocationDtoList?.[idx].businessOfAllocation}
-              // errorMessage={
-              //   errors?.businessAllocationDtoList?.[idx].businessOfAllocation?.message as string
-              // }
+              isError={
+                !!errors?.businessAllocationDtoList?.[idx].businessOfAllocation
+              }
+              errorMessage={
+                errors?.businessAllocationDtoList?.[idx].businessOfAllocation
+                  ?.message as string
+              }
             />
             <IconButton
               iconName="delete"
