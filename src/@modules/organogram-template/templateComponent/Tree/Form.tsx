@@ -15,9 +15,8 @@ import {
   numBnToEn,
   numericCheck,
 } from "@gems/utils";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { OMSService } from "@services/api/OMS.service";
 import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface INodeForm {

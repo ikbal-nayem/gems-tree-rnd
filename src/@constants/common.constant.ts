@@ -18,7 +18,7 @@ export const META_TYPE = {
   LOCATION: "LOCATION",
   LANGUAGE_ENGLISH: "LANGUAGE_ENGLISH",
   LOCATION_COUNTRY: "LOCATION_COUNTRY",
-  LOCATION_DISTRICT:"LOCATION_DISTRICT",
+  LOCATION_DISTRICT: "LOCATION_DISTRICT",
   MARITAL_STATUS: "MARITAL_STATUS",
   MINORITIES: "MINORITIES",
   NOMINEE_TYPE: "NOMINEE_TYPE",
@@ -49,46 +49,45 @@ export const META_TYPE = {
   FAMILY_RELATIONSHIP: "FAMILY_RELATIONSHIP",
 };
 
-
 export const COMMON_LABELS = {
-	SL_NO: "ক্রমিক নং", // Column Header
-	ACTION: "কার্যক্রম", // Column Header
-	DETAILS: "বিস্তারিত", // Table Action Button
-	EDIT: "সম্পাদনা", // Table Action Button
-	DELETE: "মুছে ফেলুন", // Table Action Button
-	SAVE: "সংরক্ষণ করুন", // Form  Button
-	CANCEL: "বাতিল করুন", // Form  Button
-	ACTIVE_STATUS: "প্রকৃতি",
-	ACTIVE: "সক্রিয়",
-	INACTIVE: "নিষ্ক্রিয়",
+  SL_NO: "ক্রমিক নং", // Column Header
+  ACTION: "কার্যক্রম", // Column Header
+  DETAILS: "বিস্তারিত", // Table Action Button
+  EDIT: "সম্পাদনা", // Table Action Button
+  DELETE: "মুছে ফেলুন", // Table Action Button
+  SAVE: "সংরক্ষণ করুন", // Form  Button
+  CANCEL: "বাতিল করুন", // Form  Button
+  ACTIVE_STATUS: "প্রকৃতি",
+  ACTIVE: "সক্রিয়",
+  INACTIVE: "নিষ্ক্রিয়",
   NOT_ASSIGN: "তথ্য নেই",
   NUMERIC_ONLY: "শুধুমাত্র সংখ্যা লিখুন",
   EN_ONLY: "ইংরেজিতে লিখুন",
-	BN_ONLY: "বাংলায় লিখুন",
+  BN_ONLY: "বাংলায় লিখুন",
 };
 
 export const LABELS = {
-	EN:{
-    MAIN_ACTIVITIES: 'Main Activities',
-    EQUIPMENTS: 'Equipments', 
-    ABBREVIATIONS: 'Abbreviations', 
-    ATTACHED_OFFICE: 'Attached Offices', 
-    SUMMARY_OF_MANPOWER: 'Summary of Manpower', 
-    ALLOCATION_OF_BUSINESS: 'Allocation of Business', 
-    MISCELLANEOUS: 'Miscellaneous', 
-    CHECK_LIST:"Check list"
+  EN: {
+    MAIN_ACTIVITIES: "Main Activities",
+    EQUIPMENTS: "Equipments",
+    MISCELLANEOUS_POINTS: "MISCELLANEOUS_POINTS",
+    ABBREVIATIONS: "Abbreviations",
+    ATTACHED_OFFICE: "Attached Offices",
+    SUMMARY_OF_MANPOWER: "Summary of Manpower",
+    ALLOCATION_OF_BUSINESS: "Allocation of Business",
+    MISCELLANEOUS: "Miscellaneous",
+    CHECK_LIST: "Check list",
   },
 
-  BN:{
-    MAIN_ACTIVITIES: 'প্রধান কার্যাবলি',
-    EQUIPMENTS: 'যানবহন, অফিস সরঞ্জাম ইত্যাদি', 
-    ABBREVIATIONS: 'শব্দসংক্ষেপ', 
-    ATTACHED_OFFICE: 'সংযুক্ত অফিসসমূহ', 
-    SUMMARY_OF_MANPOWER: 'জনবলের তালিকা',
-    ALLOCATION_OF_BUSINESS: 'কর্মবন্টন',
-    MISCELLANEOUS: 'বিবিধ',
-    CHECK_LIST:"চেকলিস্ট"
-
-
-  }
+  BN: {
+    MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
+    EQUIPMENTS: "যানবহন, অফিস সরঞ্জাম ইত্যাদি",
+    MISCELLANEOUS_POINTS: "বিবিধ পয়েন্ট",
+    ABBREVIATIONS: "শব্দসংক্ষেপ",
+    ATTACHED_OFFICE: "সংযুক্ত অফিসসমূহ",
+    SUMMARY_OF_MANPOWER: "জনবলের তালিকা",
+    ALLOCATION_OF_BUSINESS: "কর্মবন্টন",
+    MISCELLANEOUS: "বিবিধ",
+    CHECK_LIST: "চেকলিস্ট",
+  },
 };

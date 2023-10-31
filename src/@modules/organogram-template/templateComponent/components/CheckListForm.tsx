@@ -44,7 +44,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                   // }
                 />
               </div>
-              <div className="col-xl-3 d-flex align-items-center">
+              <div className="col-xl-3">
                 <Checkbox
                   label="বাধ্যতামূলক ?"
                   registerProperty={{
