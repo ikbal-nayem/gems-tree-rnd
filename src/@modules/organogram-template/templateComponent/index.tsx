@@ -69,12 +69,12 @@ const TemplateComponent = ({
     }
   }, [updateData]);
 
-  const onTitleChange = (title) => {
-    console.log("Title  : " + title)
+  const onTitleChange = (title, isEn: boolean) => {
+    console.log("Title  : " + title);
 
-    OMSService.duplicateTemplateTitleCheck(title)
+    OMSService.duplicateTemplateTitleCheck(title, isEn)
       .then((res) => {
-        console.log("Resposne : " + JSON.stringify(res));
+        console.log("Resposne Body: " + res?.body);
         // console.log(res.error)
       })
       .catch((e) => console.log(e));
@@ -104,13 +104,6 @@ const TemplateComponent = ({
   };
 
   const onFinalSubmit = (data) => {
-    // console.log("Inventory Dto List: ", data.inventoryDtoList);
-    // console.log(
-    //   uniqueCheck(data.inventoryDtoList, "inventoryDtoList")
-    //     ? "uniqueCheck : PASS "
-    //     : "uniqueCheck : FAIL"
-    // );
-
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
 
     const reqPayload = {
@@ -142,7 +135,7 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleBn", {
                     required: "শিরোনাম বাংলা লিখুন",
-                    onChange: (e) => onTitleChange(e.target.value),
+                    onChange: (e) => onTitleChange(e.target.value, false),
                     validate: bnCheck,
                   }),
                 }}
@@ -158,7 +151,7 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleEn", {
                     required: "শিরোনাম ইংরেজি লিখুন",
-                    onChange: (e) => onTitleChange(e.target.value),
+                    onChange: (e) => onTitleChange(e.target.value, true),
                     validate: enCheck,
                   }),
                 }}
