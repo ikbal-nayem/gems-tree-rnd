@@ -4,10 +4,10 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install --immutable --immutable-cache
+RUN npm install --immutable --immutable-cache
 
 COPY . .
-RUN yarn build:dev
+RUN ng build:dev
 
 ### STAGE 2: Run ###
 FROM nginx
