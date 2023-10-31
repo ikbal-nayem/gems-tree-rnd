@@ -125,14 +125,8 @@ const TemplateComponent = ({
   };
 
   const onFinalSubmit = (data) => {
-    console.log("titleBn : " + data?.titleBn);
-    console.log("titleEn : " + data?.titleEn);
-
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
     if (isObjectNull(updateData)) {
-      duplicateTitleCheck(data?.titleEn, true);
-      duplicateTitleCheck(data?.titleBn, false);
-
       if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
     }
 
@@ -144,7 +138,7 @@ const TemplateComponent = ({
       " ======================= TEST PASSED !!! =========================="
     );
 
-    onSubmit(reqPayload);
+    // onSubmit(reqPayload);
   };
 
   return (

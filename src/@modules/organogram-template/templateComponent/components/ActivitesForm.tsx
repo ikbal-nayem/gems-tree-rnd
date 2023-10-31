@@ -9,7 +9,11 @@ interface IActivitiesForm {
   formProps: any;
 }
 const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
-  const { register, control } = formProps;
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = formProps;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -32,12 +36,15 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
               autoFocus
               registerProperty={{
                 ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
-                  // required: "কার্যক্রম যুক্ত করুন",
+                  required: "কার্যক্রম " + numEnToBn(idx + 1) + " যুক্ত করুন",
                   // onChange: onDataChange,
                 }),
               }}
-              // isError={!!errors?.mainActivitiesDtoList?.[idx]?.mainActivity}
-              // errorMessage={errors?.mainActivitiesDtoList?.[idx]?.mainActivity?.message as string}
+              isError={!!errors?.mainActivitiesDtoList?.[idx]?.mainActivity}
+              errorMessage={
+                errors?.mainActivitiesDtoList?.[idx]?.mainActivity
+                  ?.message as string
+              }
             />
             <IconButton
               iconName="delete"
