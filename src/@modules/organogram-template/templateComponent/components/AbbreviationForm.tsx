@@ -8,7 +8,11 @@ interface IAbbreviationForm {
 }
 
 const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
-  const { register, control } = formProps;
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = formProps;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -40,15 +44,16 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                   placeholder="সংক্ষিপ্তরূপ লিখুন"
                   registerProperty={{
                     ...register(`abbreviationDtoList.${index}.shortForm`, {
-                      // required: "সংক্ষিপ্তরূপ লিখুন",
+                      required: "সংক্ষিপ্তরূপ লিখুন",
                       // onChange: onDataChange,
                     }),
                   }}
                   // isRequired
-                  // isError={!!errors?.abbreviationDtoList?.[index]?.shortForm}
-                  // errorMessage={
-                  //   errors?.abbreviationDtoList?.[index]?.shortForm?.message as string
-                  // }
+                  isError={!!errors?.abbreviationDtoList?.[index]?.shortForm}
+                  errorMessage={
+                    errors?.abbreviationDtoList?.[index]?.shortForm
+                      ?.message as string
+                  }
                 />
               </div>
               <div className="col-md-6">
@@ -57,15 +62,16 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                   placeholder="বিস্তারিত লিখুন"
                   registerProperty={{
                     ...register(`abbreviationDtoList.${index}.fullForm`, {
-                      // required: "বিস্তারিত লিখুন",
+                      required: "বিস্তারিত লিখুন",
                       // onChange: onDataChange,
                     }),
                   }}
                   // isRequired
-                  // isError={!!errors?.abbreviationDtoList?.[index]?.fullForm}
-                  // errorMessage={
-                  //   errors?.abbreviationDtoList?.[index]?.fullForm?.message as string
-                  // }
+                  isError={!!errors?.abbreviationDtoList?.[index]?.fullForm}
+                  errorMessage={
+                    errors?.abbreviationDtoList?.[index]?.fullForm
+                      ?.message as string
+                  }
                 />
               </div>
             </div>

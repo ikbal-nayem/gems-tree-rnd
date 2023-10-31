@@ -1,5 +1,4 @@
 import { IconButton, Input, Separator } from "@gems/components";
-// import Form from "./form";
 import { LABELS } from "@constants/common.constant";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
@@ -36,7 +35,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
               autoFocus
               registerProperty={{
                 ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
-                  required: "কার্যক্রম " + numEnToBn(idx + 1) + " যুক্ত করুন",
+                  required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
                   // onChange: onDataChange,
                 }),
               }}
