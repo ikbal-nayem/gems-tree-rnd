@@ -5,7 +5,7 @@ pipeline {
         REGISTRY="imagerepo.gems.gov.bd"
         DEPLOYMENT_ENV="prod"
         IMAGE_CREATED_BY="jenkins"
-        PROJECT_NAME="web-ems"
+        PROJECT_NAME="web-oms"
         K8S_NAMESPACE="gems-prod"
 
         GIT_TAG=sh(returnStdout: true, script: '''
@@ -23,8 +23,8 @@ pipeline {
         DEPLOYMENT_DIRECTORY="./k8s_deploy/prod"
 
        //Application configurations and credentials
-       // K8S_CONFIGMAP_NAME="web-ems-config"
-      //  K8S_SECRET_NAME="web-ems-secret"
+       // K8S_CONFIGMAP_NAME="web-oms-config"
+      //  K8S_SECRET_NAME="web-oms-secret"
 
         //k8s cluster specific configuration
         K8S_SERVICE_NAME="$PROJECT_NAME"
@@ -36,7 +36,7 @@ pipeline {
         K8S_CONTAINER_PORT="80"
         K8S_PORT_NAME="http"
 
-        K8S_NODE_PORT="30152"
+        K8S_NODE_PORT="30153"
                 
 
         //Health check uri
