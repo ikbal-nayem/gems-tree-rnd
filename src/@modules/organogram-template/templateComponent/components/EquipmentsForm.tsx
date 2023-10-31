@@ -175,7 +175,6 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
           </div>
         ))}
       </div>
-      <Separator className="mt-1 mb-2" />
     </div>
   );
 };

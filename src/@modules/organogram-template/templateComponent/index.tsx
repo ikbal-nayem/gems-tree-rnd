@@ -138,7 +138,7 @@ const TemplateComponent = ({
       " ======================= TEST PASSED !!! =========================="
     );
 
-    // onSubmit(reqPayload);
+    onSubmit(reqPayload);
   };
 
   return (
