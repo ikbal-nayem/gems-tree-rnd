@@ -38,6 +38,10 @@ const TemplateComponent = ({
           children: [],
         }
   );
+  const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
+    useState<boolean>(false);
+  const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
+    useState<boolean>(false);
   const formProps = useForm<any>({
     defaultValues: {
       abbreviationDtoList: [],
@@ -52,6 +56,7 @@ const TemplateComponent = ({
     handleSubmit,
     reset,
     setError,
+    clearErrors,
     formState: { errors },
   } = formProps;
 
@@ -69,15 +74,31 @@ const TemplateComponent = ({
     }
   }, [updateData]);
 
-  const onTitleChange = (title, isEn: boolean) => {
-    console.log("Title  : " + title);
-
+  const duplicateTitleCheck = (title, isEn: boolean) => {
+    // console.log("Title  : " + title);
+    const field = isEn ? "titleEn" : "titleBn";
     OMSService.duplicateTemplateTitleCheck(title, isEn)
       .then((res) => {
-        console.log("Resposne Body: " + res?.body);
-        // console.log(res.error)
+        // console.log("Resposne Body: " + res?.body);
+        if (res?.body) {
+          const msg = (isEn ? "ইংরেজি" : "বাংলা") + " শিরোনামটি অনন্য নয় !";
+
+          setError(field, {
+            type: "manaul",
+            message: msg,
+          });
+
+          isEn
+            ? setDuplicateTitleEnDitected(true)
+            : setDuplicateTitleBnDitected(true);
+        } else {
+          clearErrors(field);
+          isEn
+            ? setDuplicateTitleEnDitected(false)
+            : setDuplicateTitleBnDitected(false);
+        }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e.message));
   };
 
   const uniqueCheck = (list, listName: string) => {
@@ -104,12 +125,20 @@ const TemplateComponent = ({
   };
 
   const onFinalSubmit = (data) => {
+    console.log("titleBn : " + data?.titleBn);
+    console.log("titleEn : " + data?.titleEn);
+
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
+    duplicateTitleCheck(data?.titleEn, true);
+    duplicateTitleCheck(data?.titleBn, false);
+
+    if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
 
     const reqPayload = {
       ...data,
       organizationStructureDto: treeData,
     };
+    console.log(" ======================= TEST PASSED !!! ==========================");
 
     onSubmit(reqPayload);
   };
@@ -135,7 +164,7 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleBn", {
                     required: "শিরোনাম বাংলা লিখুন",
-                    onChange: (e) => onTitleChange(e.target.value, false),
+                    onChange: (e) => duplicateTitleCheck(e.target.value, false),
                     validate: bnCheck,
                   }),
                 }}
@@ -151,7 +180,7 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("titleEn", {
                     required: "শিরোনাম ইংরেজি লিখুন",
-                    onChange: (e) => onTitleChange(e.target.value, true),
+                    onChange: (e) => duplicateTitleCheck(e.target.value, true),
                     validate: enCheck,
                   }),
                 }}
