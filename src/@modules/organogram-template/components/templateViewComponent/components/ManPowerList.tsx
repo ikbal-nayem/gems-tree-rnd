@@ -9,19 +9,20 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
-import { ROUTE } from "@constants/internal-route.constant";
+// import { useNavigate } from "react-router-dom";
+// import { ROUTE } from "@constants/internal-route.constant";
 import { LABELS } from "@constants/common.constant";
 
 type TableProps = {
   dataList: any[];
+  total: any;
   isLoading: boolean;
 };
 
-const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
+const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
   const columns: ITableHeadColumn[] = [
     { title: "Name of Posts", width: 50 },
-    { title: "No of Posts", width: 80, align: "end" },
+    { title: "No of Posts", width: 80 },
   ];
 
   // const navigate = useNavigate();
@@ -29,10 +30,41 @@ const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
   //   navigate(ROUTE.ORG_TEMPLATE_UPDATE + "?id=" + id);
   // };
 
+  dataList = [
+    {
+      titleBn: "Class-I",
+      manPowerList: [
+        {
+          postTitle: "Deputy Secretary",
+          manpower: "4",
+        },
+        {
+          postTitle: "Senior Assis Secretary",
+          manpower: "16",
+        },
+      ],
+      classTotal: "20",
+    },
+    {
+      titleBn: "Class-II",
+      manPowerList: [
+        {
+          postTitle: "Transport Superintendent",
+          manpower: "20",
+        },
+        {
+          postTitle: "Comptroller",
+          manpower: "60",
+        },
+      ],
+      classTotal: "80",
+    },
+  ];
+
   return (
     <div className="card border p-3">
       <h4 className="m-0">{LABELS.BN.SUM_OF_MANPOWER}</h4>
-      <Separator />
+      <Separator className="mt-1 mb-0" />
       {dataList?.length ? (
         <Table columns={columns}>
           <>
@@ -41,6 +73,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
                 <>
                   <TableRow>
                     <TableCell
+                      textClassName="fw-bold fs-5"
                       text={classs?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
@@ -55,41 +88,33 @@ const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
                     </TableRow>
                   ))}
                   <TableRow>
-                    <TableCell>
-                      <Separator />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell text="Total" />
+                    <TableCell textClassName="fw-bold" text="Total" />
                     <TableCell
+                      textClassName="fw-bold"
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <Separator />
-                    </TableCell>
                   </TableRow>
                 </>
               );
             })}
             <TableRow>
-              <TableCell text="Total" />
+              <TableCell textClassName="fw-bold fs-4" text="GRAND TOTAL" />
               <TableCell
-                // text={dataList?.grandTotal || COMMON_LABELS.NOT_ASSIGN}
+                textClassName="fw-bold fs-3"
+                text={total || COMMON_LABELS.NOT_ASSIGN}
               />
             </TableRow>
             <TableRow>
-              <TableCell>
-                <Separator />
-              </TableCell>
+              <TableCell> </TableCell>
             </TableRow>
           </>
         </Table>
       ) : isLoading ? (
         <ContentPreloader />
       ) : (
-        <NoData details=" এর কোনো তথ্য পাওয়া যায়নি!" />
+        <NoData
+          details={LABELS.BN.SUM_OF_MANPOWER + " এর কোনো তথ্য পাওয়া যায়নি!"}
+        />
       )}
     </div>
   );

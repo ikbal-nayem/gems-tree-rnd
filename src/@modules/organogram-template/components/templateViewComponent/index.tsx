@@ -73,10 +73,10 @@ const TemplateViewComponent = ({
         <div className="mt-3">
           <EquipmentsForm data={updateData} />
         </div>
-        <div className="mt-3">
-          <ManPowerList
-          isLoading={false}
-          dataList={[]} />
+        <div className="col-md-6">
+          <div className="mt-3">
+            <ManPowerList isLoading={false} total={100} dataList={[]} />
+          </div>
         </div>
       </div>
       <div className="d-flex gap-3 justify-content-center mt-5">
