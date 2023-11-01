@@ -41,10 +41,6 @@ const ManPowerList: FC<TableProps> = ({
           {dataList?.map((clsList) =>
             clsList?.manPowerList?.map((itr, idx) => (
               <TableRow key={idx}>
-                <TableCell
-                  text={generateRowNumBn(idx, respMeta)}
-                  verticalAlign="top"
-                />
                 <TableCell text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN} />
                 <TableCell text={itr?.manpower || COMMON_LABELS.NOT_ASSIGN} />
               </TableRow>
