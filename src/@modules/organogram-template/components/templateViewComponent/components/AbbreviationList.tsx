@@ -17,8 +17,9 @@ const AbbreviationForm = ({ data }: IAbbreviationForm) => {
       <div className="mt-3">
         {data?.map((item, i) => {
           return (
-            <p className="fs-6">
-              {item?.shortForm || COMMON_LABELS.NOT_ASSIGN} ={" "}
+            <p key={i}>
+              {item?.shortForm || COMMON_LABELS.NOT_ASSIGN}
+              &nbsp;&nbsp;=&nbsp;&nbsp;
               {item?.fullForm || COMMON_LABELS.NOT_ASSIGN}
             </p>
           );

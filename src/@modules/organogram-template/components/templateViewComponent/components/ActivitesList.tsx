@@ -13,7 +13,7 @@ const ActivitiesForm = ({ data }: IActivitiesForm) => {
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
-        <ol>
+        <ol className="bn_ol">
           {data?.length > 0 &&
             data?.map((item, i) => {
               return <li key={i}>&nbsp;&nbsp;{item?.mainActivity}</li>;
