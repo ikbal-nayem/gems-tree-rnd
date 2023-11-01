@@ -40,10 +40,10 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                 }),
               }}
               isError={!!errors?.mainActivitiesDtoList?.[idx]?.mainActivity}
-              errorMessage={
-                errors?.mainActivitiesDtoList?.[idx]?.mainActivity
-                  ?.message as string
-              }
+              // errorMessage={
+              //   errors?.mainActivitiesDtoList?.[idx]?.mainActivity
+              //     ?.message as string
+              // }
             />
             <IconButton
               iconName="delete"
