@@ -10,7 +10,6 @@ import { IObject, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 
 interface IEquipmentsForm {
   formProps: any;

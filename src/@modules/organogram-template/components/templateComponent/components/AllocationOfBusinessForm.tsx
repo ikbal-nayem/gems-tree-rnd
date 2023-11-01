@@ -2,7 +2,6 @@ import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Separator } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 
 interface IAllocationOfBusinessForm {
   formProps: any;

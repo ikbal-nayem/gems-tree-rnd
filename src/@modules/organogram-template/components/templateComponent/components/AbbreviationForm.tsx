@@ -1,7 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Separator, Textarea } from "@gems/components";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 
 interface IAbbreviationForm {
   formProps: any;

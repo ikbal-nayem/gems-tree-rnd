@@ -8,7 +8,6 @@ import {
 } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface ICheckListForm {

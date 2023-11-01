@@ -2,7 +2,6 @@ import { IconButton, Input, Separator } from "@gems/components";
 import { LABELS } from "@constants/common.constant";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 
 interface IActivitiesForm {
   formProps: any;
