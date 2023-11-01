@@ -3,6 +3,7 @@ import {
   Autocomplete,
   IconButton,
   Input,
+  Label,
   Separator,
   toast,
 } from "@gems/components";
@@ -10,7 +11,7 @@ import { IObject, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
+import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface IEquipmentsForm {
   formProps: any;
@@ -118,11 +119,17 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
       <Separator className="mt-1 mb-2" />
       <div>
         {inventoryDtoListFields.map((f, idx) => (
-          <div className="d-flex align-items-center gap-3 mt-3" key={idx}>
+          <div
+            className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
+            key={idx}
+          >
+            <div className={idx < 1 ? "mt-8" : "mt-2"}>
+              <Label> {numEnToBn(idx + 1) + "।"} </Label>
+            </div>
             <div className="row w-100">
               <div className="col-md-4">
                 <Autocomplete
-                  label="টাইপ"
+                  label={idx < 1 ? "টাইপ" : ""}
                   placeholder="টাইপ বাছাই করুন"
                   control={control}
                   options={inventoryTypeList || []}
@@ -130,11 +137,16 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   getOptionValue={(op) => op?.id}
                   name={`inventoryDtoList.${idx}.type`}
                   onChange={(e) => onInventoryTypeChange(e, idx)}
+                  isRequired
+                  isError={!!errors?.inventoryDtoList?.[idx]?.type}
+                  errorMessage={
+                    errors?.inventoryDtoList?.[idx]?.type?.message as string
+                  }
                 />
               </div>
               <div className="col-md-4">
                 <Autocomplete
-                  label="সরঞ্জামাদি"
+                  label={idx < 1 ? "সরঞ্জামাদি" : ""}
                   placeholder="সরঞ্জামাদি বাছাই করুন"
                   control={control}
                   options={inventoryItemList?.[idx] || []}
@@ -146,7 +158,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   onChange={(obj) => {
                     onInventoryChange(obj, idx);
                   }}
-                  //   isRequired
+                  isRequired
                   isError={!!errors?.inventoryDtoList?.[idx]?.item}
                   errorMessage={
                     errors?.inventoryDtoList?.[idx]?.item?.message as string
@@ -155,19 +167,20 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
               </div>
               <div className="col-md-4">
                 <Input
-                  label="সংখ্যা"
+                  label={idx < 1 ? "সংখ্যা" : ""}
                   placeholder="সংখ্যা লিখুন"
                   type="number"
                   defaultValue={0}
                   registerProperty={{
                     ...register(`inventoryDtoList.${idx}.quantity`, {
-                      // required: "সংখ্যা লিখুন",
+                      required: "সংখ্যা লিখুন",
                     }),
                   }}
+                  isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
                 />
               </div>
             </div>
-            <div className="mt-1">
+            <div className={idx < 1 ? "mt-6" : ""}>
               <IconButton
                 iconName="delete"
                 color="danger"
@@ -181,7 +194,9 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
           </div>
         ))}
       </div>
-      <Separator className="mt-1 mb-2" />
+
+      <Separator className="mt-4 mb-2" />
+
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABELS.BN.MISCELLANEOUS}</h4>
         <IconButton
@@ -192,43 +207,74 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
-        {miscellaneousPointDtoListFields.map((f, idx) => (
-          <div className="d-flex align-items-center gap-3 mt-3" key={idx}>
-            <div className="row w-100">
-              <div className="col-xl-6 col-12">
-                <Input
-                  label="বিবিধ (বাংলা)"
-                  placeholder={`বিবিধ বাংলা ${numEnToBn(idx + 1)}`}
-                  autoFocus
-                  registerProperty={{
-                    ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {}),
-                  }}
-                />
+        {miscellaneousPointDtoListFields.map((f, idx) => {
+          const label = "বিবিধ";
+          const labelBn = label + " (বাংলা)";
+          const labelEn = label + " (ইংরেজি)";
+          return (
+            <div
+              className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
+              key={idx}
+            >
+              <div className={idx < 1 ? "mt-8" : "mt-2"}>
+                <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
-              <div className="col-xl-6 col-12">
-                <Input
-                  label="বিবিধ (ইংরেজি)"
-                  placeholder={`বিবিধ ইংরেজি ${numEnToBn(idx + 1)}`}
-                  autoFocus
-                  registerProperty={{
-                    ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {}),
+              <div className="row w-100">
+                <div className="col-xl-6 col-12">
+                  <Input
+                    label={idx < 1 ? labelBn : ""}
+                    placeholder={labelBn + " লিখুন"}
+                    autoFocus
+                    registerProperty={{
+                      ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {
+                        required: " ",
+                        validate: bnCheck,
+                      }),
+                    }}
+                    isError={
+                      !!errors?.miscellaneousPointDtoList?.[idx]?.titleBn
+                    }
+                    errorMessage={
+                      errors?.miscellaneousPointDtoList?.[idx]?.titleBn
+                        ?.message as string
+                    }
+                  />
+                </div>
+                <div className="col-xl-6 col-12">
+                  <Input
+                    label={idx < 1 ? labelEn : ""}
+                    placeholder={labelEn + " লিখুন"}
+                    autoFocus
+                    registerProperty={{
+                      ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {
+                        required: " ",
+                        validate: enCheck,
+                      }),
+                    }}
+                    isError={
+                      !!errors?.miscellaneousPointDtoList?.[idx]?.titleEn
+                    }
+                    errorMessage={
+                      errors?.miscellaneousPointDtoList?.[idx]?.titleEn
+                        ?.message as string
+                    }
+                  />
+                </div>
+              </div>
+              <div className={idx < 1 ? "mt-6" : ""}>
+                <IconButton
+                  iconName="delete"
+                  color="danger"
+                  // isDisabled={fields.length === 1}
+                  rounded={false}
+                  onClick={() => {
+                    miscellaneousPointDtoListRemove(idx);
                   }}
                 />
               </div>
             </div>
-            <div className="mt-1">
-              <IconButton
-                iconName="delete"
-                color="danger"
-                // isDisabled={fields.length === 1}
-                rounded={false}
-                onClick={() => {
-                  miscellaneousPointDtoListRemove(idx);
-                }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

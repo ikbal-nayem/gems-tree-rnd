@@ -1,7 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Separator, Textarea } from "@gems/components";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 
 interface IAbbreviationForm {
   formProps: any;
@@ -34,7 +33,7 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
       <div className="mt-3">
         {fields.map((field, index) => (
           <div
-            className="d-flex align-items-center gap-3 w-100"
+            className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
             key={field?.id}
           >
             <div className="row w-100">
@@ -44,11 +43,10 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                   placeholder="সংক্ষিপ্তরূপ লিখুন"
                   registerProperty={{
                     ...register(`abbreviationDtoList.${index}.shortForm`, {
-                      required: "সংক্ষিপ্তরূপ লিখুন",
+                      required: " ",
                       // onChange: onDataChange,
                     }),
                   }}
-                  // isRequired
                   isError={!!errors?.abbreviationDtoList?.[index]?.shortForm}
                   errorMessage={
                     errors?.abbreviationDtoList?.[index]?.shortForm
@@ -62,11 +60,10 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                   placeholder="বিস্তারিত লিখুন"
                   registerProperty={{
                     ...register(`abbreviationDtoList.${index}.fullForm`, {
-                      required: "বিস্তারিত লিখুন",
+                      required: " ",
                       // onChange: onDataChange,
                     }),
                   }}
-                  // isRequired
                   isError={!!errors?.abbreviationDtoList?.[index]?.fullForm}
                   errorMessage={
                     errors?.abbreviationDtoList?.[index]?.fullForm

@@ -8,7 +8,6 @@ import {
 } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import "../style.scss";
 import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface ICheckListForm {
@@ -56,7 +55,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleBn`, {
-                        required: labelBn + " লিখুন",
+                        required: " ",
                         validate: bnCheck,
                       }),
                     }}
@@ -74,7 +73,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
-                        required: labelEn + " লিখুন",
+                        required: " ",
                         validate: enCheck,
                       }),
                     }}
