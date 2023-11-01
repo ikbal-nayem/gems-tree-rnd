@@ -67,7 +67,7 @@ const TemplateViewComponent = ({
             />
           </div>
           <div className="mt-3">
-            <AbbreviationForm data={updateData} />
+            <AbbreviationForm data={updateData?.abbreviationDtoList || []} />
           </div>
         </div>
         <div className="mt-3">
