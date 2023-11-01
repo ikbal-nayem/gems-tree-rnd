@@ -53,15 +53,17 @@ const TemplateViewComponent = ({
       </div>
       <div className="row">
         <div className="col-md-6">
-          <ActivitiesForm data={updateData?.mainActivitiesDtoList} />
+          <ActivitiesForm data={updateData?.mainActivitiesDtoList || []} />
 
           <div className="mt-3">
-            <CheckListForm data={updateData} />
+            <CheckListForm data={updateData?.attachmentDtoList || []} />
           </div>
         </div>
         <div className="col-md-6">
           <div className="mt-md-0 mt-3">
-            <AllocationOfBusinessForm data={updateData} />
+            <AllocationOfBusinessForm
+              data={updateData?.businessAllocationDtoList || []}
+            />
           </div>
           <div className="mt-3">
             <AbbreviationForm data={updateData} />
