@@ -13,7 +13,14 @@ const AllocationOfBusinessForm = ({ data }: IAllocationOfBusinessForm) => {
         <h4 className="m-0">{LABELS.BN.ALLOCATION_OF_BUSINESS}</h4>
       </div>
       <Separator className="mt-1 mb-2" />
-      <div></div>
+      <div>
+      <ol>
+          {data?.length > 0 &&
+            data?.map((item, i) => {
+              return <li key={i}>&nbsp;&nbsp;{item?.businessOfAllocation}</li>;
+            })}
+        </ol>
+      </div>
     </div>
   );
 };
