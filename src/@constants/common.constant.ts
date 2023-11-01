@@ -70,7 +70,6 @@ export const LABELS = {
   EN: {
     MAIN_ACTIVITIES: "Main Activities",
     EQUIPMENTS: "Equipments",
-    MISCELLANEOUS_POINTS: "MISCELLANEOUS_POINTS",
     ABBREVIATIONS: "Abbreviations",
     ATTACHED_OFFICE: "Attached Offices",
     SUMMARY_OF_MANPOWER: "Summary of Manpower",
@@ -82,7 +81,6 @@ export const LABELS = {
   BN: {
     MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
     EQUIPMENTS: "যানবহন, অফিস সরঞ্জাম ইত্যাদি",
-    MISCELLANEOUS_POINTS: "বিবিধ পয়েন্ট",
     ABBREVIATIONS: "শব্দসংক্ষেপ",
     ATTACHED_OFFICE: "সংযুক্ত অফিসসমূহ",
     SUMMARY_OF_MANPOWER: "জনবলের তালিকা",
