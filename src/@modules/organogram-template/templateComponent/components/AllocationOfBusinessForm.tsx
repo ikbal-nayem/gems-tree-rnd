@@ -45,10 +45,10 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
               isError={
                 !!errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
               }
-              errorMessage={
-                errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
-                  ?.message as string
-              }
+              // errorMessage={
+              //   errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
+              //     ?.message as string
+              // }
             />
             <IconButton
               iconName="delete"

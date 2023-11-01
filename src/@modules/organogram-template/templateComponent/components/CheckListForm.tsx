@@ -61,10 +61,10 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                       }),
                     }}
                     isError={!!errors?.attachmentDtoList?.[idx]?.titleBn}
-                    errorMessage={
-                      errors?.attachmentDtoList?.[idx]?.titleBn
-                        ?.message as string
-                    }
+                    // errorMessage={
+                    //   errors?.attachmentDtoList?.[idx]?.titleBn
+                    //     ?.message as string
+                    // }
                   />
                 </div>
                 <div className="col-xl-4 col-12">
@@ -79,10 +79,10 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                       }),
                     }}
                     isError={!!errors?.attachmentDtoList?.[idx]?.titleEn}
-                    errorMessage={
-                      errors?.attachmentDtoList?.[idx]?.titleEn
-                        ?.message as string
-                    }
+                    // errorMessage={
+                    //   errors?.attachmentDtoList?.[idx]?.titleEn
+                    //     ?.message as string
+                    // }
                   />
                 </div>
                 <div
