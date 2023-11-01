@@ -56,7 +56,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleBn`, {
-                        // required: labelBn + " লিখুন",
+                        required: labelBn + " লিখুন",
                         validate: bnCheck,
                       }),
                     }}
@@ -74,7 +74,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
-                        // required: labelEn + " লিখুন",
+                        required: labelEn + " লিখুন",
                         validate: enCheck,
                       }),
                     }}
