@@ -38,6 +38,9 @@ const TemplateTable: FC<TableProps> = ({
   const navigateToDetails = (id: string) => {
     navigate(ROUTE.ORG_TEMPLATE_UPDATE + "?id=" + id);
   };
+  const navigateToView = (id: string) => {
+    navigate(ROUTE.ORG_TEMPLATE_VIEW + "?id=" + id);
+  };
 
   return (
     <>
@@ -59,7 +62,7 @@ const TemplateTable: FC<TableProps> = ({
                   btnContent={<Icon icon="more_vert" size={20} />}
                   id={item?.id}
                 >
-                  <DropdownItem onClick={() => null}>
+                  <DropdownItem onClick={() => navigateToView(item?.id)}>
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>

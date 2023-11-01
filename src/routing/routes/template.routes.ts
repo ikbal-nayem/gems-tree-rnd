@@ -40,6 +40,11 @@ export const TemplateRoutes: IAppRoutes = {
         () => import("@modules/organogram-template/template/update")
       ),
     },
+    {
+      link: ROUTE.ORG_TEMPLATE_VIEW,
+      routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_VIEW,
+      element: lazy(() => import("@modules/organogram-template/template/view")),
+    },
     ...permissionRouteList,
   ],
 };
