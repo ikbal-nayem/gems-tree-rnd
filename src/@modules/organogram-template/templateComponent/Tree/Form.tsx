@@ -89,7 +89,7 @@ const NodeForm = ({
 
   return (
     <Modal
-      title={`তথ্য ${isObjectNull(updateData) ? "যুক্ত" : "হালনাগাদ"} করুন`}
+      title={`পদ/স্তর ${!isObjectNull(updateData) ? "সম্পাদনা" : "তৈরি"} করুন`}
       isOpen={isOpen}
       handleClose={onClose}
       holdOn

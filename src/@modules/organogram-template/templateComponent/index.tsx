@@ -34,7 +34,7 @@ const TemplateComponent = ({
       ? updateData?.organizationStructureDto
       : {
           id: generateUUID(),
-          titleBn: "হালনাগাদ করে শুরু করুন",
+          titleBn: "অর্গানোগ্রাম তৈরি শুরু করুন",
           children: [],
         }
   );
@@ -49,7 +49,7 @@ const TemplateComponent = ({
       businessAllocationDtoList: [],
       attachmentDtoList: [],
       inventoryDtoList: [],
-      miscellaneousDtoList: [],
+      miscellaneousPointDtoList: [],
     },
   });
   const {
@@ -71,6 +71,7 @@ const TemplateComponent = ({
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
         inventoryDtoList: updateData?.inventoryDtoList,
+        miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
       });
     }
   }, [updateData]);

@@ -38,12 +38,12 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
   });
 
   const {
-    fields: miscellaneousDtoListFields,
-    append: miscellaneousDtoListAppend,
-    remove: miscellaneousDtoListRemove,
+    fields: miscellaneousPointDtoListFields,
+    append: miscellaneousPointDtoListAppend,
+    remove: miscellaneousPointDtoListRemove,
   } = useFieldArray({
     control,
-    name: "miscellaneousDtoList",
+    name: "miscellaneousPointDtoList",
   });
 
   const [inventoryTypeList, setInventoryTypeList] = useState<IObject[]>([]);
@@ -187,29 +187,34 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
         <IconButton
           iconName="add"
           color="primary"
-          onClick={() => miscellaneousDtoListAppend("")}
+          onClick={() => miscellaneousPointDtoListAppend("")}
         />
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
-        {miscellaneousDtoListFields.map((f, idx) => (
+        {miscellaneousPointDtoListFields.map((f, idx) => (
           <div className="d-flex align-items-center gap-3 mt-3" key={idx}>
             <div className="row w-100">
-              <Input
-                label="তালিকা"
-                placeholder={`তালিকা ${numEnToBn(idx + 1)}`}
-                autoFocus
-                registerProperty={{
-                  ...register(`miscellaneousDtoList.${idx}.titleBn`, {
-                    // required: "তালিকা যুক্ত করুন",
-                  }),
-                }}
-                isError={!!errors?.miscellaneousDtoList?.[idx].titleBn}
-                errorMessage={
-                  errors?.miscellaneousDtoList?.[idx]?.titleBn
-                    ?.message as string
-                }
-              />
+              <div className="col-xl-6 col-12">
+                <Input
+                  label="বিবিধ (বাংলা)"
+                  placeholder={`বিবিধ বাংলা ${numEnToBn(idx + 1)}`}
+                  autoFocus
+                  registerProperty={{
+                    ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {}),
+                  }}
+                />
+              </div>
+              <div className="col-xl-6 col-12">
+                <Input
+                  label="বিবিধ (ইংরেজি)"
+                  placeholder={`বিবিধ ইংরেজি ${numEnToBn(idx + 1)}`}
+                  autoFocus
+                  registerProperty={{
+                    ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {}),
+                  }}
+                />
+              </div>
             </div>
             <div className="mt-1">
               <IconButton
@@ -218,7 +223,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                 // isDisabled={fields.length === 1}
                 rounded={false}
                 onClick={() => {
-                  miscellaneousDtoListRemove(idx);
+                  miscellaneousPointDtoListRemove(idx);
                 }}
               />
             </div>
