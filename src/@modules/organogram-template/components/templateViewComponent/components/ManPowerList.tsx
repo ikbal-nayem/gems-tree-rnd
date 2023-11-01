@@ -1,9 +1,6 @@
 import {
   ContentPreloader,
-  Dropdown,
-  DropdownItem,
   ITableHeadColumn,
-  Icon,
   NoData,
   Table,
   TableCell,
