@@ -67,16 +67,14 @@ const TemplateViewComponent = ({
             />
           </div>
           <div className="mt-3">
-            <AbbreviationForm data={updateData} />
+            <AbbreviationForm data={updateData?.abbreviationDtoList || []} />
           </div>
         </div>
         <div className="mt-3">
           <EquipmentsForm data={updateData} />
         </div>
         <div className="mt-3">
-          <ManPowerList
-          isLoading={false}
-          dataList={[]} />
+          <ManPowerList isLoading={false} dataList={[]} />
         </div>
       </div>
       <div className="d-flex gap-3 justify-content-center mt-5">
