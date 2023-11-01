@@ -60,7 +60,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                         validate: bnCheck,
                       }),
                     }}
-                    isError={!!errors?.attachmentDtoList?.[idx].titleBn}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.titleBn}
                     errorMessage={
                       errors?.attachmentDtoList?.[idx]?.titleBn
                         ?.message as string
@@ -78,7 +78,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                         validate: enCheck,
                       }),
                     }}
-                    isError={!!errors?.attachmentDtoList?.[idx].titleEn}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.titleEn}
                     errorMessage={
                       errors?.attachmentDtoList?.[idx]?.titleEn
                         ?.message as string

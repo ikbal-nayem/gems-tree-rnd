@@ -43,10 +43,10 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                 ),
               }}
               isError={
-                !!errors?.businessAllocationDtoList?.[idx].businessOfAllocation
+                !!errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
               }
               errorMessage={
-                errors?.businessAllocationDtoList?.[idx].businessOfAllocation
+                errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
                   ?.message as string
               }
             />
