@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
-import { bnCheck, enCheck } from "../../../utility/checkValidation";
+import { bnCheck, enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";

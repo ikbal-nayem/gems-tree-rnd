@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TemplateComponent from "../templateComponent";
+import TemplateComponent from "../components/templateComponent";
 import { OMSService } from "@services/api/OMS.service";
 import { toast } from "@gems/components";
 

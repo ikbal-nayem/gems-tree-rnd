@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import TemplateComponent from "../templateComponent";
+import TemplateComponent from "../components/templateComponent";
 // import { OMSService } from "@services/api/OMS.service";
 import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
