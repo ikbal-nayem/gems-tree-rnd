@@ -76,6 +76,7 @@ export const LABELS = {
     ALLOCATION_OF_BUSINESS: "Allocation of Business",
     MISCELLANEOUS: "Miscellaneous",
     CHECK_LIST: "Check list",
+    SUM_OF_MANPOWER: "Summary of Manpower",
   },
 
   BN: {
@@ -87,5 +88,6 @@ export const LABELS = {
     ALLOCATION_OF_BUSINESS: "কর্মবন্টন",
     MISCELLANEOUS: "বিবিধ",
     CHECK_LIST: "চেকলিস্ট",
+    SUM_OF_MANPOWER: "জনবলের তালিকা",
   },
 };
