@@ -12,17 +12,13 @@ import { useNavigate } from "react-router-dom";
 import { ROUTE } from "@constants/internal-route.constant";
 
 type TableProps = {
-  children: ReactNode;
   dataList: any[];
   isLoading: boolean;
-  respMeta?: IMeta;
 };
 
 const ManPowerList: FC<TableProps> = ({
-  children,
   dataList,
   isLoading,
-  respMeta,
 }) => {
   const columns: ITableHeadColumn[] = [
     { title: "Name of Posts", width: 50 },
@@ -38,13 +34,16 @@ const ManPowerList: FC<TableProps> = ({
     <>
       {dataList?.length ? (
         <Table columns={columns}>
-          {dataList?.map((clsList) =>
-            clsList?.manPowerList?.map((itr, idx) => (
+          {dataList?.map((classs) =>
+
+            classs?.manPowerList?.map(
+              (itr, idx) => (
               <TableRow key={idx}>
                 <TableCell text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN} />
                 <TableCell text={itr?.manpower || COMMON_LABELS.NOT_ASSIGN} />
               </TableRow>
             ))
+
           )}
         </Table>
       ) : isLoading ? (
@@ -52,7 +51,6 @@ const ManPowerList: FC<TableProps> = ({
       ) : (
         <NoData details="কোনো তথ্য পাওয়া যায়নি!" />
       )}
-      {children}
     </>
   );
 };

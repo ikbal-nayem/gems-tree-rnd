@@ -12,6 +12,7 @@ import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import CheckListForm from "./components/CheckListForm";
 import EquipmentsForm from "./components/EquipmentsForm";
+import ManPowerList from "./components/ManPowerList";
 
 interface ITemplateViewComponent {
   updateData?: IObject;
@@ -63,6 +64,11 @@ const TemplateViewComponent = ({
         </div>
         <div className="mt-3">
           <EquipmentsForm data={updateData} />
+        </div>
+        <div className="mt-3">
+          <ManPowerList
+          isLoading={false}
+          dataList={[]} />
         </div>
       </div>
       <div className="d-flex gap-3 justify-content-center mt-5">
