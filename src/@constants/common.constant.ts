@@ -88,6 +88,6 @@ export const LABELS = {
     ALLOCATION_OF_BUSINESS: "কর্মবন্টন",
     MISCELLANEOUS: "বিবিধ",
     CHECK_LIST: "চেকলিস্ট",
-    SUM_OF_MANPOWER: "জনবলের তালিকা",
+    SUM_OF_MANPOWER: "জনবল",
   },
 };
