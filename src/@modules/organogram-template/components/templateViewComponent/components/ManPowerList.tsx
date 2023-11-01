@@ -22,7 +22,7 @@ type TableProps = {
 const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
   const columns: ITableHeadColumn[] = [
     { title: "Name of Posts", width: 50 },
-    { title: "No of Posts", width: 80 },
+    { title: "No of Posts", width: 80, align: "end" },
   ];
 
   // const navigate = useNavigate();
@@ -83,6 +83,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
                         text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN}
                       />
                       <TableCell
+                        textAlign="end"
                         text={itr?.manpower || COMMON_LABELS.NOT_ASSIGN}
                       />
                     </TableRow>
@@ -90,6 +91,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
                   <TableRow>
                     <TableCell textClassName="fw-bold" text="Total" />
                     <TableCell
+                      textAlign="end"
                       textClassName="fw-bold"
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
@@ -100,6 +102,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
             <TableRow>
               <TableCell textClassName="fw-bold fs-4" text="GRAND TOTAL" />
               <TableCell
+                textAlign="end"
                 textClassName="fw-bold fs-3"
                 text={total || COMMON_LABELS.NOT_ASSIGN}
               />
