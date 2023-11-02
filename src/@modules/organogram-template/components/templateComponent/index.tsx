@@ -195,13 +195,13 @@ const TemplateComponent = ({
             <ActivitiesForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-md-0 mt-3">
-            <CheckListForm formProps={formProps} />
+            <AllocationOfBusinessForm formProps={formProps} />
           </div>
           <div className="col-12 mt-3">
             <EquipmentsForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-3">
-            <AllocationOfBusinessForm formProps={formProps} />
+            <CheckListForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-3">
             <AbbreviationForm formProps={formProps} />
