@@ -71,7 +71,7 @@ const TemplateViewComponent = ({ updateData }: ITemplateViewComponent) => {
             <AbbreviationList data={updateData?.abbreviationDtoList || []} />
           </div>
           <div className="mt-3">
-            <ManPowerList isLoading={false} total={100} dataList={[]} />
+            <ManPowerList isLoading={false} data={null} />
           </div>
         </div>
       </div>

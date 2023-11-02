@@ -14,12 +14,11 @@ import { FC, ReactNode } from "react";
 import { LABELS } from "@constants/common.constant";
 
 type TableProps = {
-  dataList: any[];
-  total: any;
+  data: any;
   isLoading: boolean;
 };
 
-const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
+const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
   const columns: ITableHeadColumn[] = [
     { title: "Name of Posts", width: 50 },
     { title: "No of Posts", width: 80, align: "end" },
@@ -30,8 +29,8 @@ const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
   //   navigate(ROUTE.ORG_TEMPLATE_UPDATE + "?id=" + id);
   // };
 
-  const data = {
-    total: '100',
+  data = {
+    total: "100",
     classList: [
       {
         titleBn: "Class-I",
@@ -74,6 +73,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
             {data?.classList?.map((classs) => {
               return (
                 <>
+                  {/* <br /> */}
                   <TableRow>
                     <TableCell
                       textClassName="fw-bold fs-5"
@@ -99,6 +99,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, isLoading }) => {
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
+                  {/* <br /> */}
                 </>
               );
             })}
