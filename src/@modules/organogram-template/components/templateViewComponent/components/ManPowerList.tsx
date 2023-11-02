@@ -52,10 +52,10 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                     </TableRow>
                   ))}
                   <TableRow key={idx++}>
-                    <TableCell textClassName="fw-bold mb-3" text="Total" />
+                    <TableCell textClassName="fw-bold fs-4 mb-3" text={LOCAL_LABELS.BN.Total} />
                     <TableCell
                       textAlign="end"
-                      textClassName="fw-bold mb-3"
+                      textClassName="fw-bold fs-4 mb-3"
                       text={numEnToBn(classs?.totalClassManpower) || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
@@ -63,7 +63,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
               );
             })}
             <TableRow key={idx++}>
-              <TableCell textClassName="fw-bold fs-4" text="GRAND TOTAL" />
+              <TableCell textClassName="fw-bold fs-3" text={LOCAL_LABELS.BN.GRAND_TOTAL} />
               <TableCell
                 textAlign="end"
                 textClassName="fw-bold fs-3"
