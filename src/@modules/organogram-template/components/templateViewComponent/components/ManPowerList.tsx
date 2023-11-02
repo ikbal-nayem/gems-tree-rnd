@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@gems/components";
 import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
-import { FC, ReactNode } from "react";
+import { FC, Fragment, ReactNode } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { ROUTE } from "@constants/internal-route.constant";
 import { LABELS } from "@constants/common.constant";
@@ -62,7 +62,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
       },
     ],
   };
-
+  let idx = 1000; // lets take a common index for both parent-child list
   return (
     <div className="card border p-3">
       <h4 className="m-0">{LABELS.BN.SUM_OF_MANPOWER}</h4>
@@ -70,17 +70,17 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
       {data?.classList?.length ? (
         <Table columns={columns}>
           <>
-            {data?.classList?.map((classs, pinx) => {
+            {data?.classList?.map((classs) => {
               return (
-                <>
-                  <TableRow key={pinx}>
+                <Fragment key={idx++}>
+                  <TableRow key={idx++}>
                     <TableCell
                       textClassName="fw-bold fs-5"
                       text={classs?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
-                  {classs?.manPowerList?.map((itr, idx) => (
-                    <TableRow key={pinx + idx}>
+                  {classs?.manPowerList?.map((itr) => (
+                    <TableRow key={idx++}>
                       <TableCell
                         text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN}
                       />
@@ -90,7 +90,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                       />
                     </TableRow>
                   ))}
-                  <TableRow key={pinx}>
+                  <TableRow key={idx++}>
                     <TableCell textClassName="fw-bold mb-3" text="Total" />
                     <TableCell
                       textAlign="end"
@@ -98,10 +98,10 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
-                </>
+                </Fragment>
               );
             })}
-            <TableRow>
+            <TableRow key={idx++}>
               <TableCell textClassName="fw-bold fs-4" text="GRAND TOTAL" />
               <TableCell
                 textAlign="end"
@@ -109,7 +109,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                 text={data?.total || COMMON_LABELS.NOT_ASSIGN}
               />
             </TableRow>
-            <TableRow>
+            <TableRow key={idx++}>
               <TableCell> </TableCell>
             </TableRow>
           </>
