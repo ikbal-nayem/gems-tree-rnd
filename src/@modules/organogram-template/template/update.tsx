@@ -4,13 +4,15 @@ import TemplateComponent from "../components/templateComponent";
 import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "../../../@services/api/OMS.service";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { ROUTE } from "@constants/internal-route.constant";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
   const [searchParam] = useSearchParams();
+  const navigate = useNavigate();
 
   const templateId = searchParam.get("id") || "";
 
@@ -30,11 +32,11 @@ const TemplateUpdate = () => {
 
   const onSubmit = (templateData) => {
     setIsSubmitLoading(true);
-    console.log("data", templateData);
 
     OMSService.templateUpdate(templateData, templateId)
       .then((res) => {
         toast.success(res?.message);
+        navigate(ROUTE.ORG_TEMPLATE_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));

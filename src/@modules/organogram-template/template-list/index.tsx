@@ -26,8 +26,8 @@ const initMeta: IMeta = {
   limit: 10,
   sort: [
     {
-      field: "createdOn",
       order: "desc",
+      field: "createdOn",
     },
   ],
 };
