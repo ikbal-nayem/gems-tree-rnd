@@ -17,12 +17,14 @@ import ManPowerList from "./components/ManPowerList";
 interface ITemplateViewComponent {
   updateData?: IObject;
   inventoryData?: IObject[];
+  manpowerData?: IObject;
   isSubmitLoading?: boolean;
 }
 
 const TemplateViewComponent = ({
   updateData,
   inventoryData,
+  manpowerData,
 }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
@@ -74,7 +76,7 @@ const TemplateViewComponent = ({
             />
           </div>
           <div className="mt-3">
-            <ManPowerList isLoading={false} data={null} />
+            <ManPowerList isLoading={false} data={manpowerData} />
           </div>
           <div className="mt-3">
             <AbbreviationList data={updateData?.abbreviationDtoList || []} />

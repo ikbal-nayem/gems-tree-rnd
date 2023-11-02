@@ -10,7 +10,7 @@ const TemplateView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
-  const [manpowerData, setManpowerData] = useState<IObject[]>([]);
+  const [manpowerData, setManpowerData] = useState<IObject>();
   const [searchParam] = useSearchParams();
 
   const templateId = searchParam.get("id") || "";
@@ -49,9 +49,8 @@ const TemplateView = () => {
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
   };
-  console.log('Manpower Data');
-  console.log(manpowerData);
-  console.log(templateId);
+  // console.log('Manpower Data');
+  // console.log(manpowerData);
 
   return (
     <>
@@ -60,6 +59,7 @@ const TemplateView = () => {
         <TemplateViewComponent
           updateData={data}
           inventoryData={inventoryData}
+          manpowerData={manpowerData}
         />
       )}
       {!isLoading && isObjectNull(data) && (
