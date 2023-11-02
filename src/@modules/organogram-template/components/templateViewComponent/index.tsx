@@ -56,14 +56,15 @@ const TemplateViewComponent = ({
       <div className="row">
         <div className="col-md-6">
           <ActivitiesList data={updateData?.mainActivitiesDtoList || []} />
-          <div className="mt-3">
-            <CheckListList data={updateData?.attachmentDtoList || []} />
-          </div>
+
           <div className="mt-3">
             <EquipmentsList
               data={updateData?.miscellaneousPointDtoList || []}
               inventoryData={inventoryData || []}
             />
+          </div>
+          <div className="mt-3">
+            <CheckListList data={updateData?.attachmentDtoList || []} />
           </div>
         </div>
         <div className="col-md-6">
@@ -73,10 +74,10 @@ const TemplateViewComponent = ({
             />
           </div>
           <div className="mt-3">
-            <AbbreviationList data={updateData?.abbreviationDtoList || []} />
+            <ManPowerList isLoading={false} data={null} />
           </div>
           <div className="mt-3">
-            <ManPowerList isLoading={false} data={null} />
+            <AbbreviationList data={updateData?.abbreviationDtoList || []} />
           </div>
         </div>
       </div>
