@@ -70,18 +70,17 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
       {data?.classList?.length ? (
         <Table columns={columns}>
           <>
-            {data?.classList?.map((classs) => {
+            {data?.classList?.map((classs, pinx) => {
               return (
                 <>
-                  {/* <br /> */}
-                  <TableRow>
+                  <TableRow key={pinx}>
                     <TableCell
                       textClassName="fw-bold fs-5"
                       text={classs?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
                   {classs?.manPowerList?.map((itr, idx) => (
-                    <TableRow key={idx}>
+                    <TableRow key={pinx + idx}>
                       <TableCell
                         text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN}
                       />
@@ -91,7 +90,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                       />
                     </TableRow>
                   ))}
-                  <TableRow>
+                  <TableRow key={pinx}>
                     <TableCell textClassName="fw-bold mb-3" text="Total" />
                     <TableCell
                       textAlign="end"
@@ -99,7 +98,6 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
-                  {/* <br /> */}
                 </>
               );
             })}
