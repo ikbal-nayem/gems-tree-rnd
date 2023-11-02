@@ -7,11 +7,11 @@ import {
 } from "@gems/utils";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
-import AbbreviationForm from "./components/AbbreviationForm";
-import ActivitiesForm from "./components/ActivitesForm";
-import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
-import CheckListForm from "./components/CheckListForm";
-import EquipmentsForm from "./components/EquipmentsForm";
+import AbbreviationList from "./components/AbbreviationList";
+import ActivitiesList from "./components/ActivitesList";
+import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
+import CheckListList from "./components/CheckListList";
+import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
 
 interface ITemplateViewComponent {
@@ -19,10 +19,7 @@ interface ITemplateViewComponent {
   isSubmitLoading: boolean;
 }
 
-const TemplateViewComponent = ({
-  updateData,
-  isSubmitLoading,
-}: ITemplateViewComponent) => {
+const TemplateViewComponent = ({ updateData }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
     !isObjectNull(updateData?.organizationStructureDto)
@@ -54,37 +51,29 @@ const TemplateViewComponent = ({
       </div>
       <div className="row">
         <div className="col-md-6">
-          <ActivitiesForm data={updateData?.mainActivitiesDtoList || []} />
-
+          <ActivitiesList data={updateData?.mainActivitiesDtoList || []} />
           <div className="mt-3">
-            <CheckListForm data={updateData?.attachmentDtoList || []} />
+            <CheckListList data={updateData?.attachmentDtoList || []} />
+          </div>
+          <div className="mt-3">
+            <EquipmentsList
+              data={updateData?.miscellaneousPointDtoList || []}
+            />
           </div>
         </div>
         <div className="col-md-6">
           <div className="mt-md-0 mt-3">
-            <AllocationOfBusinessForm
+            <AllocationOfBusinessList
               data={updateData?.businessAllocationDtoList || []}
             />
           </div>
           <div className="mt-3">
-            <AbbreviationForm data={updateData?.abbreviationDtoList || []} />
+            <AbbreviationList data={updateData?.abbreviationDtoList || []} />
           </div>
-        </div>
-        <div className="mt-3">
-          <EquipmentsForm data={updateData} />
-        </div>
-        <div className="col-md-6">
           <div className="mt-3">
             <ManPowerList isLoading={false} total={100} dataList={[]} />
           </div>
         </div>
-      </div>
-      <div className="d-flex gap-3 justify-content-center mt-5">
-        <Button color="primary" type="submit" isLoading={isSubmitLoading}>
-          {!isObjectNull(updateData)
-            ? COMMON_LABELS.UPDATE
-            : COMMON_LABELS.SAVE}
-        </Button>
       </div>
     </div>
   );
