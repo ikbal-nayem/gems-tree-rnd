@@ -14,12 +14,11 @@ import { FC, ReactNode } from "react";
 import { LABELS } from "@constants/common.constant";
 
 type TableProps = {
-  dataList: any[];
-  total: any;
+  data: any;
   isLoading: boolean;
 };
 
-const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
+const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
   const columns: ITableHeadColumn[] = [
     { title: "Name of Posts", width: 50 },
     { title: "No of Posts", width: 80, align: "end" },
@@ -30,55 +29,58 @@ const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
   //   navigate(ROUTE.ORG_TEMPLATE_UPDATE + "?id=" + id);
   // };
 
-  dataList = [
-    {
-      titleBn: "Class-I",
-      manPowerList: [
-        {
-          postTitle: "Deputy Secretary",
-          manpower: "4",
-        },
-        {
-          postTitle: "Senior Assis Secretary",
-          manpower: "16",
-        },
-      ],
-      classTotal: "20",
-    },
-    {
-      titleBn: "Class-II",
-      manPowerList: [
-        {
-          postTitle: "Transport Superintendent",
-          manpower: "20",
-        },
-        {
-          postTitle: "Comptroller",
-          manpower: "60",
-        },
-      ],
-      classTotal: "80",
-    },
-  ];
+  data = {
+    total: "100",
+    classList: [
+      {
+        titleBn: "Class-I",
+        manPowerList: [
+          {
+            postTitle: "Deputy Secretary",
+            manpower: "4",
+          },
+          {
+            postTitle: "Senior Assis Secretary",
+            manpower: "16",
+          },
+        ],
+        classTotal: "20",
+      },
+      {
+        titleBn: "Class-II",
+        manPowerList: [
+          {
+            postTitle: "Transport Superintendent",
+            manpower: "20",
+          },
+          {
+            postTitle: "Comptroller",
+            manpower: "60",
+          },
+        ],
+        classTotal: "80",
+      },
+    ],
+  };
 
   return (
     <div className="card border p-3">
       <h4 className="m-0">{LABELS.BN.SUM_OF_MANPOWER}</h4>
       <Separator className="mt-1 mb-0" />
-      {dataList?.length ? (
+      {data?.classList?.length ? (
         <Table columns={columns}>
           <>
-            {dataList?.map((classs) => {
+            {data?.classList?.map((classs, pinx) => {
               return (
                 <>
-                  <TableRow>
+                  <TableRow key={pinx}>
                     <TableCell
                       textClassName="fw-bold fs-5"
                       text={classs?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
                   {classs?.manPowerList?.map((itr, idx) => (
-                    <TableRow key={idx}>
+                    <TableRow key={pinx + idx}>
                       <TableCell
                         text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN}
                       />
@@ -88,11 +90,11 @@ const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
                       />
                     </TableRow>
                   ))}
-                  <TableRow>
-                    <TableCell textClassName="fw-bold" text="Total" />
+                  <TableRow key={pinx}>
+                    <TableCell textClassName="fw-bold mb-3" text="Total" />
                     <TableCell
                       textAlign="end"
-                      textClassName="fw-bold"
+                      textClassName="fw-bold mb-3"
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
@@ -104,7 +106,7 @@ const ManPowerList: FC<TableProps> = ({ dataList, total, isLoading }) => {
               <TableCell
                 textAlign="end"
                 textClassName="fw-bold fs-3"
-                text={total || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.total || COMMON_LABELS.NOT_ASSIGN}
               />
             </TableRow>
             <TableRow>
