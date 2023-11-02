@@ -193,21 +193,18 @@ const TemplateComponent = ({
         <div className="row">
           <div className="col-md-6">
             <ActivitiesForm formProps={formProps} />
-
-            <div className="mt-3">
-              <CheckListForm formProps={formProps} />
-            </div>
           </div>
-          <div className="col-md-6">
-            <div className="mt-md-0 mt-3">
-              <AllocationOfBusinessForm formProps={formProps} />
-            </div>
-            <div className="mt-3">
-              <AbbreviationForm formProps={formProps} />
-            </div>
+          <div className="col-md-6 mt-md-0 mt-3">
+            <CheckListForm formProps={formProps} />
           </div>
-          <div className="mt-3">
+          <div className="col-12 mt-3">
             <EquipmentsForm formProps={formProps} />
+          </div>
+          <div className="col-md-6 mt-3">
+            <AllocationOfBusinessForm formProps={formProps} />
+          </div>
+          <div className="col-md-6 mt-3">
+            <AbbreviationForm formProps={formProps} />
           </div>
         </div>
         <div className="d-flex gap-3 justify-content-center mt-5">
