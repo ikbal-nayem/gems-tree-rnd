@@ -26,12 +26,23 @@ export const OMSService = {
         templateId
     ),
 
+  getTemplateInventoryByTemplateId: async (templateId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-organogram-inventory-list-group-by-type/" +
+        templateId
+    ),
+
   duplicateTemplateTitleCheck: async (
     title: string,
     isEn: boolean
   ): Promise<any> =>
     await axiosIns.get(
-      OMS_SERVICE + "organogram-template/get-0rganogram-template-is-exist/" + isEn +  "/" +  title
+      OMS_SERVICE +
+        "organogram-template/get-0rganogram-template-is-exist/" +
+        isEn +
+        "/" +
+        title
     ),
 
   templateUpdate: async (payload, templateId): Promise<any> =>

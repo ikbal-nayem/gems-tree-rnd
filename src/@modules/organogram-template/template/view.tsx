@@ -8,14 +8,15 @@ import TemplateViewComponent from "../components/templateViewComponent";
 
 const TemplateView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
+  const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [searchParam] = useSearchParams();
 
   const templateId = searchParam.get("id") || "";
 
   useEffect(() => {
     getTemplateDetailsDetailsById();
+    getTemplateInventoryById()
   }, []);
 
   const getTemplateDetailsDetailsById = () => {
@@ -27,14 +28,23 @@ const TemplateView = () => {
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
   };
+  const getTemplateInventoryById = () => {
+    setIsLoading(true);
+    OMSService.getTemplateInventoryByTemplateId(templateId)
+      .then((resp) => {
+        setInventoryData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <>
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(data) && (
         <TemplateViewComponent
-          isSubmitLoading={isSubmitLoading}
           updateData={data}
+          inventoryData={inventoryData}
         />
       )}
       {!isLoading && isObjectNull(data) && (

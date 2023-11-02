@@ -1,4 +1,4 @@
-import { Button, Label, Separator } from "@gems/components";
+import { Separator } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -16,10 +16,14 @@ import ManPowerList from "./components/ManPowerList";
 
 interface ITemplateViewComponent {
   updateData?: IObject;
-  isSubmitLoading: boolean;
+  inventoryData?: IObject[];
+  isSubmitLoading?: boolean;
 }
 
-const TemplateViewComponent = ({ updateData }: ITemplateViewComponent) => {
+const TemplateViewComponent = ({
+  updateData,
+  inventoryData,
+}: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
     !isObjectNull(updateData?.organizationStructureDto)
@@ -58,6 +62,7 @@ const TemplateViewComponent = ({ updateData }: ITemplateViewComponent) => {
           <div className="mt-3">
             <EquipmentsList
               data={updateData?.miscellaneousPointDtoList || []}
+              inventoryData={inventoryData || []}
             />
           </div>
         </div>
