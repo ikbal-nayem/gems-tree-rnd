@@ -92,10 +92,10 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                     </TableRow>
                   ))}
                   <TableRow>
-                    <TableCell textClassName="fw-bold" text="Total" />
+                    <TableCell textClassName="fw-bold mb-3" text="Total" />
                     <TableCell
                       textAlign="end"
-                      textClassName="fw-bold"
+                      textClassName="fw-bold mb-3"
                       text={classs?.classTotal || COMMON_LABELS.NOT_ASSIGN}
                     />
                   </TableRow>
