@@ -29,29 +29,31 @@ const CheckListForm = ({ data }: ICheckListForm) => {
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
-        <Table columns={columns}>
-          {data?.map((data, i) => {
-            return (
-              <TableRow key={i}>
-                <TableCell>{generateRowNumBn(i)}</TableCell>
-                <TableCell>
-                  {data?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-                </TableCell>
-                <TableCell>
-                  {data?.titleEn || COMMON_LABELS.NOT_ASSIGN}
-                </TableCell>
+        {data?.length > 0 && (
+          <Table columns={columns}>
+            {data?.map((data, i) => {
+              return (
+                <TableRow key={i}>
+                  <TableCell>{generateRowNumBn(i)}</TableCell>
+                  <TableCell>
+                    {data?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                  </TableCell>
+                  <TableCell>
+                    {data?.titleEn || COMMON_LABELS.NOT_ASSIGN}
+                  </TableCell>
 
-                <TableCell>
-                  {data?.isMandatory ? (
-                    <Icon icon="done" color="success" size={16} />
-                  ) : (
-                    <Icon icon="close" color="danger" size={16} />
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </Table>
+                  <TableCell>
+                    {data?.isMandatory ? (
+                      <Icon icon="done" color="success" size={16} />
+                    ) : (
+                      <Icon icon="close" color="danger" size={16} />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </Table>
+        )}
       </div>
     </div>
   );
