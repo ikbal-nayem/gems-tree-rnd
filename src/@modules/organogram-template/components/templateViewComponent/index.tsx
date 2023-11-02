@@ -19,10 +19,7 @@ interface ITemplateViewComponent {
   isSubmitLoading: boolean;
 }
 
-const TemplateViewComponent = ({
-  updateData,
-  isSubmitLoading,
-}: ITemplateViewComponent) => {
+const TemplateViewComponent = ({ updateData }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
     !isObjectNull(updateData?.organizationStructureDto)
@@ -55,9 +52,13 @@ const TemplateViewComponent = ({
       <div className="row">
         <div className="col-md-6">
           <ActivitiesList data={updateData?.mainActivitiesDtoList || []} />
-
           <div className="mt-3">
             <CheckListList data={updateData?.attachmentDtoList || []} />
+          </div>
+          <div className="mt-3">
+            <EquipmentsList
+              data={updateData?.miscellaneousPointDtoList || []}
+            />
           </div>
         </div>
         <div className="col-md-6">
@@ -69,22 +70,10 @@ const TemplateViewComponent = ({
           <div className="mt-3">
             <AbbreviationList data={updateData?.abbreviationDtoList || []} />
           </div>
-        </div>
-        <div className="mt-3">
-          <EquipmentsList data={updateData?.miscellaneousPointDtoList || []} />
-        </div>
-        <div className="col-md-6">
           <div className="mt-3">
             <ManPowerList isLoading={false} total={100} dataList={[]} />
           </div>
         </div>
-      </div>
-      <div className="d-flex gap-3 justify-content-center mt-5">
-        <Button color="primary" type="submit" isLoading={isSubmitLoading}>
-          {!isObjectNull(updateData)
-            ? COMMON_LABELS.UPDATE
-            : COMMON_LABELS.SAVE}
-        </Button>
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ const EquipmentsForm = ({ data }: IEquipmentsForm) => {
       <div className="row">
         {test?.map((item, i) => {
           return (
-            <div className="col-xl-4 col-md-6 col-12" key={i}>
+            <div className="col-md-6 col-12" key={i}>
               <p className="fs-5 fw-bold mb-0">{item?.inventoryTypeBn}</p>
               <ol type="a">
                 {item?.itemList.map((d, idx) => {
