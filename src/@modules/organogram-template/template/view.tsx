@@ -10,13 +10,15 @@ const TemplateView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
+  const [manpowerData, setManpowerData] = useState<IObject[]>([]);
   const [searchParam] = useSearchParams();
 
   const templateId = searchParam.get("id") || "";
 
   useEffect(() => {
     getTemplateDetailsDetailsById();
-    getTemplateInventoryById()
+    getTemplateInventoryById();
+    getManpowerSummaryById();
   }, []);
 
   const getTemplateDetailsDetailsById = () => {
@@ -37,6 +39,19 @@ const TemplateView = () => {
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
   };
+
+  const getManpowerSummaryById = () => {
+    setIsLoading(true);
+    OMSService.getTemplateManpowerSummaryById(templateId)
+      .then((resp) => {
+        setManpowerData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+  console.log('Manpower Data');
+  console.log(manpowerData);
+  console.log(templateId);
 
   return (
     <>

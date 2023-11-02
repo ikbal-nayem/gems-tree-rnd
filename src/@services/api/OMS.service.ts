@@ -33,6 +33,13 @@ export const OMSService = {
         templateId
     ),
 
+  getTemplateManpowerSummaryById: async (templateId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-summary-manpower-list-by-organogramId/" +
+        templateId
+    ),
+
   duplicateTemplateTitleCheck: async (
     title: string,
     isEn: boolean
