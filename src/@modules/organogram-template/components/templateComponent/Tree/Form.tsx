@@ -1,9 +1,11 @@
+import { LABELS } from "@constants/common.constant";
 import {
   Autocomplete,
   Button,
   Checkbox,
   IconButton,
   Input,
+  Label,
   Modal,
   ModalBody,
   ModalFooter,
@@ -13,9 +15,10 @@ import {
   IObject,
   isObjectNull,
   numBnToEn,
+  numEnToBn,
   numericCheck,
 } from "@gems/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { bnCheck, enCheck } from "utility/checkValidation";
 
@@ -47,6 +50,9 @@ const NodeForm = ({
     },
   });
 
+  const langEn = false;
+  const LABEL = langEn ? LABELS.EN : LABELS.BN;
+  const [isHeadChosen, setIsHeadChosen] = useState<boolean>(false);
   const {
     fields: postFunctionalityListFields,
     append: postFunctionalityListAppend,
@@ -131,7 +137,7 @@ const NodeForm = ({
           </div>
           <div className="mt-3">
             <div className="d-flex justify-content-between">
-              <h3 className="mt-3">কার্যকারিতা</h3>
+              <h3 className="mt-3">{LABEL.ACTIVITIES}</h3>
               <div className="mt-2">
                 <IconButton
                   iconName="add"
@@ -143,15 +149,18 @@ const NodeForm = ({
                 />
               </div>
             </div>
-            {postFunctionalityListFields.map((field, index) => (
-              <div
-                className="d-flex align-items-center gap-3 w-100 border rounded p-3 my-2 bg-gray-100"
-                key={field?.id}
-              >
-                <div className="row w-100">
-                  <div>
+            <div className="bg-gray-100 p-3 rounded my-1">
+              {postFunctionalityListFields.map((field, index) => (
+                <div
+                  // className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-1 my-1 bg-gray-100"
+                  className="d-flex align-items-top gap-3 w-100 py-1"
+                  key={field?.id}
+                >
+                  <div className="w-100">
+                    {/* <div> */}
                     <Input
-                      label="দায়িত্ব"
+                      // label="দায়িত্ব"
+                      noMargin
                       placeholder="দায়িত্ব লিখুন"
                       registerProperty={{
                         ...register(
@@ -170,18 +179,19 @@ const NodeForm = ({
                           ?.message as string
                       }
                     />
+                    {/* </div> */}
+                  </div>
+                  <div className="my-0">
+                    <IconButton
+                      iconName="delete"
+                      color="danger"
+                      rounded={false}
+                      onClick={() => postFunctionalityListRemove(index)}
+                    />
                   </div>
                 </div>
-                <div className="mt-2">
-                  <IconButton
-                    iconName="delete"
-                    color="danger"
-                    rounded={false}
-                    onClick={() => postFunctionalityListRemove(index)}
-                  />
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           <div className="mt-3">
             <div className="d-flex justify-content-between">
@@ -199,13 +209,16 @@ const NodeForm = ({
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className="d-flex align-items-center gap-3 w-100 border rounded p-3 my-2 bg-gray-100"
+                className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-2 my-2 bg-gray-100"
                 key={field?.id}
               >
+                <div className={index < 1 ? "mt-10" : "mt-3"}>
+                  <Label> {numEnToBn(index + 1) + "।"} </Label>
+                </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-5">
+                  <div className="col-md-6 col-xl-5 my-1">
                     <Autocomplete
-                      label="পদবি"
+                      label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
                       isRequired="পদবি বাছাই করুন"
                       control={control}
@@ -216,6 +229,7 @@ const NodeForm = ({
                       // onChange={onDataChange}
                       // isDisabled={!watch("type")}
                       //   isRequired
+                      noMargin
                       isError={
                         !!errors?.manpowerList?.[index]?.organizationPost
                       }
@@ -225,25 +239,23 @@ const NodeForm = ({
                       }
                     />
                   </div>
-                  <div className="col-md-6 col-xl-2 d-flex align-items-center">
-                    <Checkbox
-                      label="প্রধান ?"
-                      registerProperty={{
-                        ...register(`manpowerList.${index}.isHead`),
-                      }}
-                    />
-                  </div>
-                  <div className="col-md-6 col-xl-5">
+
+                  <div className="col-md-6 col-xl-5 my-1">
                     <Input
-                      label="জনবল সংখ্যা"
+                      label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
                       registerProperty={{
                         ...register(`manpowerList.${index}.numberOfEmployee`, {
                           required: "জনবল সংখ্যা লিখুন",
                           setValueAs: (v) => numBnToEn(v),
                           validate: numericCheck,
+                          min: 1,
                         }),
                       }}
+                      min={1}
+                      type="number"
+                      defaultValue={1}
+                      noMargin
                       isRequired
                       isError={
                         !!errors?.manpowerList?.[index]?.numberOfEmployee
@@ -254,8 +266,23 @@ const NodeForm = ({
                       }
                     />
                   </div>
+
+                  <div
+                    className={
+                      "col-md-6 col-xl-2 d-flex align-items-center  " +
+                      (index < 1 ? "mt-8" : "my-1")
+                    }
+                  >
+                    <Checkbox
+                      label="প্রধান ?"
+                      noMargin
+                      registerProperty={{
+                        ...register(`manpowerList.${index}.isHead`),
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="mt-2">
+                <div className={index < 1 ? "mt-6" : ""}>
                   <IconButton
                     iconName="delete"
                     color="danger"
