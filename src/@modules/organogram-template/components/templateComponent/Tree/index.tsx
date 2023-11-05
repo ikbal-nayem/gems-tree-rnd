@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
 import { OMSService } from "@services/api/OMS.service";
+import { ConfirmationModal } from "@gems/components";
 
 const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
   if (nd.id === parentId) {
@@ -59,6 +60,8 @@ const OrganizationTemplateTree = ({
   const updateNodeData = useRef<IObject>(null);
 
   const [postList, setPostist] = useState<IObject[]>([]);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
 
   useEffect(() => {
     OMSService.getPostList().then((resp) => setPostist(resp.body || []));
@@ -75,11 +78,20 @@ const OrganizationTemplateTree = ({
         setFormOpen(true);
         break;
       case "REMOVE":
-        setTreeData(deleteNode(treeData, data.id));
+        setIsDeleteModal(true);
+        setDeleteData(data);
         break;
       default:
         return;
     }
+  };
+
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+  };
+  const onConfirmDelete = () => {
+    setTreeData(deleteNode(treeData, deleteData.id));
+    setIsDeleteModal(false);
   };
 
   const onFormClose = () => {
@@ -152,6 +164,14 @@ const OrganizationTemplateTree = ({
           onSubmit={onSubmit}
         />
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModal}
+        onClose={onCancelDelete}
+        onConfirm={onConfirmDelete}
+        onConfirmLabel={"মুছে ফেলুন"}
+      >
+        আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+      </ConfirmationModal>
     </div>
   );
 };
