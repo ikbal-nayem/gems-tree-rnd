@@ -1,13 +1,13 @@
-import { Icon } from "@gems/components";
+import { Icon, Tag } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 
 const OrgList = ({ selectedOrgList, onOrgCancle }) => {
 	return (
-		<div>
-			<ul className="list-group list-group-flush">
+		<div className="mt-3">
+			<div className="d-flex flex-wrap gap-2">
 				{selectedOrgList?.map((org, i) => (
-					<li
-						className="list-group-item d-flex justify-content-between align-items-center"
+					<div
+						className="border rounded px-3 py-1 d-flex gap-2 justify-content-between align-items-center bg-light"
 						key={org?.id}
 					>
 						{`${numEnToBn(i + 1)}. ${org?.nameBn}`}
@@ -17,9 +17,9 @@ const OrgList = ({ selectedOrgList, onOrgCancle }) => {
 							color="danger"
 							onClick={() => onOrgCancle(i)}
 						/>
-					</li>
+					</div>
 				))}
-			</ul>
+			</div>
 		</div>
 	);
 };
