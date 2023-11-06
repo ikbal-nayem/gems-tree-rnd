@@ -95,15 +95,11 @@ const NodeForm = ({
   }, [isOpen, updateData, reset]);
 
   const manpowerNumberCheck = (val) => {
-    console.log("Val: ",val);
-    
-    const s =
-      numericCheck(val) === true
-        ? val < 1
-          ? ERR.MIN_NUM_1
-          : true
-        : COMMON_LABELS.NUMERIC_ONLY;
-    return s;
+    return numericCheck(val) === true
+      ? val < 1
+        ? ERR.MIN_NUM_1
+        : true
+      : COMMON_LABELS.NUMERIC_ONLY;
   };
 
   return (
@@ -116,15 +112,16 @@ const NodeForm = ({
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
-          <div className="row border rounded p-3 my-2 bg-gray-100">
+          <div className="row border rounded p-2 my-1 bg-gray-100">
             <div className="col-md-6 col-12">
               <Input
                 label="বাংলা নাম"
                 placeholder="বাংলা নাম লিখুন"
                 isRequired
+                noMargin
                 registerProperty={{
                   ...register("titleBn", {
-                    required: "বাংলা নাম লিখুন",
+                    required: " ",
                     validate: bnCheck,
                   }),
                 }}
@@ -137,9 +134,10 @@ const NodeForm = ({
                 label="ইংরেজি নাম"
                 placeholder="ইংরেজি নাম লিখুন"
                 isRequired
+                noMargin
                 registerProperty={{
                   ...register("titleEn", {
-                    required: "ইংরেজি নাম লিখুন",
+                    required: " ",
                     validate: enCheck,
                   }),
                 }}
@@ -162,49 +160,80 @@ const NodeForm = ({
                 />
               </div>
             </div>
-            <div className="bg-gray-100 p-3 rounded my-1">
-              {postFunctionalityListFields.map((field, index) => (
-                <div
-                  // className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-1 my-1 bg-gray-100"
-                  className="d-flex align-items-top gap-3 w-100 py-1"
-                  key={field?.id}
-                >
-                  <div className="w-100">
-                    {/* <div> */}
+            {/* <div className="bg-gray-100 p-3 rounded my-1"> */}
+            {postFunctionalityListFields.map((field, index) => (
+              <div
+                className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-1 my-1 bg-gray-100"
+                // className="d-flex align-items-top gap-3 w-100 py-1"
+                key={field?.id}
+              >
+                <div className={index < 1 ? "mt-10" : "mt-3"}>
+                  <Label> {numEnToBn(index + 1) + "।"} </Label>
+                </div>
+                <div className="row w-100">
+                  <div className="col-md-6">
                     <Input
-                      // label="দায়িত্ব"
+                      label={index < 1 ? "দায়িত্ব (বাংলা)" : ""}
                       noMargin
-                      placeholder="দায়িত্ব লিখুন"
+                      placeholder="দায়িত্ব বাংলায় লিখুন"
                       registerProperty={{
                         ...register(
-                          `postFunctionalityList.${index}.functionality`
-                          // {
-                          //   required: "দায়িত্ব লিখুন",
-                          // }
+                          `postFunctionalityList.${index}.functionalityBn`,
+                          {
+                            required: " ",
+                            validate: bnCheck,
+                          }
                         ),
                       }}
                       // isRequired
                       isError={
-                        !!errors?.postFunctionalityList?.[index]?.functionality
+                        !!errors?.postFunctionalityList?.[index]
+                          ?.functionalityBn
                       }
                       errorMessage={
-                        errors?.postFunctionalityList?.[index]?.functionality
+                        errors?.postFunctionalityList?.[index]?.functionalityBn
                           ?.message as string
                       }
                     />
-                    {/* </div> */}
                   </div>
-                  <div className="my-0">
-                    <IconButton
-                      iconName="delete"
-                      color="danger"
-                      rounded={false}
-                      onClick={() => postFunctionalityListRemove(index)}
+
+                  <div className="col-md-6">
+                    <Input
+                      label={index < 1 ? "দায়িত্ব (ইংরেজি)" : ""}
+                      noMargin
+                      placeholder="দায়িত্ব ইংরেজিতে লিখুন"
+                      registerProperty={{
+                        ...register(
+                          `postFunctionalityList.${index}.functionalityEn`,
+                          {
+                            required: " ",
+                            validate: enCheck,
+                          }
+                        ),
+                      }}
+                      // isRequired
+                      isError={
+                        !!errors?.postFunctionalityList?.[index]
+                          ?.functionalityEn
+                      }
+                      errorMessage={
+                        errors?.postFunctionalityList?.[index]?.functionalityEn
+                          ?.message as string
+                      }
                     />
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className={index < 1 ? "mt-6" : ""}>
+                  <IconButton
+                    iconName="delete"
+                    color="danger"
+                    rounded={false}
+                    onClick={() => postFunctionalityListRemove(index)}
+                  />
+                </div>
+              </div>
+            ))}
+            {/* </div> */}
           </div>
           <div className="mt-3">
             <div className="d-flex justify-content-between">
@@ -222,7 +251,7 @@ const NodeForm = ({
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-2 my-2 bg-gray-100"
+                className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-1 my-1 bg-gray-100"
                 key={field?.id}
               >
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
@@ -233,7 +262,7 @@ const NodeForm = ({
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
-                      isRequired="পদবি বাছাই করুন"
+                      isRequired=" "
                       control={control}
                       options={postList || []}
                       getOptionLabel={(op) => op?.nameBn}
