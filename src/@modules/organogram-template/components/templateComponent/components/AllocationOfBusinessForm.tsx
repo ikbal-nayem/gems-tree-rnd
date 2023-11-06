@@ -48,7 +48,7 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(
-                        `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                        `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
                         {
                           required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
                         }
@@ -69,7 +69,7 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(
-                        `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                        `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
                         {
                           required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
                         }

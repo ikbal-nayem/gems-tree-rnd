@@ -46,7 +46,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     noMargin
                     autoFocus
                     registerProperty={{
-                      ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
+                      ...register(`mainActivitiesDtoList.${idx}.mainActivityBn`, {
                         required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
                       }),
                     }}
@@ -63,7 +63,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     noMargin
                     autoFocus
                     registerProperty={{
-                      ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
+                      ...register(`mainActivitiesDtoList.${idx}.mainActivityEn`, {
                         required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
                       }),
                     }}
