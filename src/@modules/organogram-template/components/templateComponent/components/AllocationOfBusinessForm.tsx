@@ -1,5 +1,5 @@
 import { LABELS } from "@constants/common.constant";
-import { IconButton, Input, Separator } from "@gems/components";
+import { IconButton, Input, Label, Separator } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 
@@ -26,41 +26,76 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
-        {fields.map((f, idx) => (
-          <div key={idx} className="d-flex gap-3 mt-3">
-            <Input
-              placeholder={`বরাদ্দ ${numEnToBn(idx + 1)}`}
-              // isRequired
-              noMargin
-              autoFocus
-              registerProperty={{
-                ...register(
-                  `businessAllocationDtoList.${idx}.businessOfAllocation`,
-                  {
-                    required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
-                  }
-                ),
-              }}
-              isError={
-                !!errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
-              }
-              // errorMessage={
-              //   errors?.businessAllocationDtoList?.[idx]?.businessOfAllocation
-              //     ?.message as string
-              // }
-            />
-            <IconButton
-              iconName="delete"
-              color="danger"
-              // isDisabled={fields.length === 1}
-              iconSize={15}
-              rounded={false}
-              onClick={() => {
-                remove(idx);
-              }}
-            />
-          </div>
-        ))}
+        {fields.map((f, idx) => {
+          const label = "বরাদ্দ";
+          const labelBn = label + " (বাংলা)";
+          const labelEn = label + " (ইংরেজি)";
+          return (
+            <div
+              key={idx}
+              className="d-flex align-items-top gap-3 mt-3 w-100 border rounded py-1 px-3 my-1 bg-gray-100"
+            >
+              <div className={idx < 1 ? "mt-8" : "mt-2"}>
+                <Label> {numEnToBn(idx + 1) + "।"} </Label>
+              </div>
+              <div className="row w-100">
+                <div className="col-xl-6 col-12">
+                  <Input
+                    label={idx < 1 ? labelBn : ""}
+                    placeholder={labelBn + " লিখুন"}
+                    isRequired
+                    noMargin
+                    autoFocus
+                    registerProperty={{
+                      ...register(
+                        `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                        {
+                          required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
+                        }
+                      ),
+                    }}
+                    isError={
+                      !!errors?.businessAllocationDtoList?.[idx]
+                        ?.businessOfAllocation
+                    }
+                  />
+                </div>
+                <div className="col-xl-6 col-12 mt-1 mt-xl-0">
+                  <Input
+                    label={idx < 1 ? labelEn : ""}
+                    placeholder={labelEn + " লিখুন"}
+                    isRequired
+                    noMargin
+                    autoFocus
+                    registerProperty={{
+                      ...register(
+                        `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                        {
+                          required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
+                        }
+                      ),
+                    }}
+                    isError={
+                      !!errors?.businessAllocationDtoList?.[idx]
+                        ?.businessOfAllocation
+                    }
+                  />
+                </div>
+              </div>
+              <div className={idx < 1 ? "mt-6" : ""}>
+                <IconButton
+                  iconName="delete"
+                  color="danger"
+                  iconSize={15}
+                  rounded={false}
+                  onClick={() => {
+                    remove(idx);
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

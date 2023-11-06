@@ -95,3 +95,13 @@ export const LABELS = {
 		ORGANIZATION: "প্রতিষ্ঠান",
 	},
 };
+
+export const ERR_MSG = {
+  EN: {
+    MIN_NUM_1: "Minimum value 1",
+  },
+
+  BN: {
+    MIN_NUM_1: "সর্বনিম্ন ১ হবে",
+  },
+};
