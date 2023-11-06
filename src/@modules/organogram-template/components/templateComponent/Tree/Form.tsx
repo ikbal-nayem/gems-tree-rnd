@@ -77,7 +77,9 @@ const NodeForm = ({
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
           ...updateData,
-          manpowerList: updateData?.manpowerList?.map((item) => {
+          manpowerList: updateData?.manpowerList?.map((item, index) => {
+            if (item?.isHead) setIsHeadIndex(index);
+
             return {
               ...item,
               organizationPost:
@@ -102,15 +104,25 @@ const NodeForm = ({
       : COMMON_LABELS.NUMERIC_ONLY;
   };
 
+  const onFormSubmit = (data) => {
+    setIsHeadIndex(null)
+    onSubmit(data)
+  };
+
+  const onFormClose = () => {
+    setIsHeadIndex(null)
+    onClose();
+  };
+
   return (
     <Modal
       title={`পদ/স্তর ${!isObjectNull(updateData) ? "সম্পাদনা" : "তৈরি"} করুন`}
       isOpen={isOpen}
-      handleClose={onClose}
+      handleClose={onFormClose}
       holdOn
       size="lg"
     >
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
           <div className="row border rounded p-2 my-1 bg-gray-100">
             <div className="col-md-6 col-12">
@@ -346,7 +358,7 @@ const NodeForm = ({
 
         <ModalFooter>
           <div className="d-flex gap-3 justify-content-end">
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={onFormClose}>
               {COMMON_LABELS.CANCEL}
             </Button>
             <Button color="primary" type="submit">
