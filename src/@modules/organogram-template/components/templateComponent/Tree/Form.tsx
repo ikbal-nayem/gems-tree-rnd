@@ -175,7 +175,7 @@ const NodeForm = ({
             {/* <div className="bg-gray-100 p-3 rounded my-1"> */}
             {postFunctionalityListFields.map((field, index) => (
               <div
-                className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-1 my-1 bg-gray-100"
+                className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
                 // className="d-flex align-items-top gap-3 w-100 py-1"
                 key={field?.id}
               >
@@ -197,7 +197,7 @@ const NodeForm = ({
                           }
                         ),
                       }}
-                      // isRequired
+                      isRequired
                       isError={
                         !!errors?.postFunctionalityList?.[index]
                           ?.functionalityBn
@@ -209,7 +209,7 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-1 mt-xl-0">
                     <Input
                       label={index < 1 ? "দায়িত্ব (ইংরেজি)" : ""}
                       noMargin
@@ -239,6 +239,7 @@ const NodeForm = ({
                   <IconButton
                     iconName="delete"
                     color="danger"
+                    iconSize={15}
                     rounded={false}
                     onClick={() => postFunctionalityListRemove(index)}
                   />
@@ -263,14 +264,14 @@ const NodeForm = ({
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className="d-flex align-items-top gap-3 w-100 border rounded px-3 py-1 my-1 bg-gray-100"
+                className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
                 key={field?.id}
               >
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-5 my-1">
+                  <div className="col-md-6 col-xl-5">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
@@ -294,7 +295,7 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-5 my-1">
+                  <div className="col-md-6 col-xl-5">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"

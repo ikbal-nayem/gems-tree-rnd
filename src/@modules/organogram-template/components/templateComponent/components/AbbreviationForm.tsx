@@ -60,8 +60,8 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                 </div>
                 <div className="col-md-6 mt-1 mt-xl-0">
                   <Textarea
-                    label={index < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
+                    label={index < 1 ? labelEn : ""}
+                    placeholder={labelEn + " লিখুন"}
                     noMargin
                     registerProperty={{
                       ...register(`abbreviationDtoList.${index}.fullForm`, {
