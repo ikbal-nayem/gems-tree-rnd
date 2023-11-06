@@ -1,4 +1,4 @@
-import { LABELS } from "@constants/common.constant";
+import { ERR_MSG, LABELS } from "@constants/common.constant";
 import {
   Autocomplete,
   Button,
@@ -52,7 +52,8 @@ const NodeForm = ({
 
   const langEn = false;
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
-  const [isHeadChosen, setIsHeadChosen] = useState<boolean>(false);
+  const ERR = langEn ? ERR_MSG.EN : ERR_MSG.BN;
+  const [isHeadIndex, setIsHeadIndex] = useState<number>(null);
   const {
     fields: postFunctionalityListFields,
     append: postFunctionalityListAppend,
@@ -92,6 +93,18 @@ const NodeForm = ({
       });
     } else reset({});
   }, [isOpen, updateData, reset]);
+
+  const manpowerNumberCheck = (val) => {
+    console.log("Val: ",val);
+    
+    const s =
+      numericCheck(val) === true
+        ? val < 1
+          ? ERR.MIN_NUM_1
+          : true
+        : COMMON_LABELS.NUMERIC_ONLY;
+    return s;
+  };
 
   return (
     <Modal
@@ -248,12 +261,9 @@ const NodeForm = ({
                         ...register(`manpowerList.${index}.numberOfEmployee`, {
                           required: "জনবল সংখ্যা লিখুন",
                           setValueAs: (v) => numBnToEn(v),
-                          validate: numericCheck,
-                          min: 1,
+                          validate: manpowerNumberCheck,
                         }),
                       }}
-                      min={1}
-                      type="number"
                       defaultValue={1}
                       noMargin
                       isRequired
@@ -273,13 +283,23 @@ const NodeForm = ({
                       (index < 1 ? "mt-8" : "my-1")
                     }
                   >
-                    <Checkbox
-                      label="প্রধান ?"
-                      noMargin
-                      registerProperty={{
-                        ...register(`manpowerList.${index}.isHead`),
-                      }}
-                    />
+                    {isHeadIndex === null || isHeadIndex === index ? (
+                      <Checkbox
+                        noMargin
+                        label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
+                        // label='প্রধান ?'
+                        isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                        registerProperty={{
+                          ...register(`manpowerList.${index}.isHead`, {
+                            onChange: (e) => {
+                              e.target.checked
+                                ? setIsHeadIndex(index)
+                                : setIsHeadIndex(null);
+                            },
+                          }),
+                        }}
+                      />
+                    ) : null}
                   </div>
                 </div>
                 <div className={index < 1 ? "mt-6" : ""}>
