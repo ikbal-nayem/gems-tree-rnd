@@ -32,7 +32,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
           return (
             <div
               key={idx}
-              className="d-flex align-items-top gap-3 mt-3 w-100 border rounded py-1 px-3 my-1 bg-gray-100"
+              className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100"
             >
               <div className={idx < 1 ? "mt-8" : "mt-2"}>
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
@@ -46,7 +46,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     noMargin
                     autoFocus
                     registerProperty={{
-                      ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
+                      ...register(`mainActivitiesDtoList.${idx}.mainActivityBn`, {
                         required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
                       }),
                     }}
@@ -63,7 +63,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     noMargin
                     autoFocus
                     registerProperty={{
-                      ...register(`mainActivitiesDtoList.${idx}.mainActivity`, {
+                      ...register(`mainActivitiesDtoList.${idx}.mainActivityEn`, {
                         required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
                       }),
                     }}

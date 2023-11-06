@@ -16,7 +16,7 @@ const ActivitiesForm = ({ data }: IActivitiesForm) => {
         <ol className="bn_ol">
           {data?.length > 0 &&
             data?.map((item, i) => {
-              return <li key={i}>&nbsp;&nbsp;{item?.mainActivity}</li>;
+              return <li key={i}>&nbsp;&nbsp;{item?.mainActivityBn}&nbsp;&nbsp;({item?.mainActivityEn})</li>;
             })}
         </ol>
       </div>

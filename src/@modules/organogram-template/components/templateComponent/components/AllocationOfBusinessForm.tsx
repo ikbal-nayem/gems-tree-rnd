@@ -33,7 +33,7 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
           return (
             <div
               key={idx}
-              className="d-flex align-items-top gap-3 mt-3 w-100 border rounded py-1 px-3 my-1 bg-gray-100"
+              className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100"
             >
               <div className={idx < 1 ? "mt-8" : "mt-2"}>
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
@@ -48,7 +48,7 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(
-                        `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                        `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
                         {
                           required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
                         }
@@ -69,7 +69,7 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                     autoFocus
                     registerProperty={{
                       ...register(
-                        `businessAllocationDtoList.${idx}.businessOfAllocation`,
+                        `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
                         {
                           required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
                         }

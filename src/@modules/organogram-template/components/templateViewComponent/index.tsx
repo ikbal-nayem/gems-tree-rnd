@@ -1,4 +1,4 @@
-import { Separator } from "@gems/components";
+import { Label, Separator } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -13,6 +13,7 @@ import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
 import CheckListList from "./components/CheckListList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
+import { LABELS } from "@constants/common.constant";
 
 interface ITemplateViewComponent {
   updateData?: IObject;
@@ -42,15 +43,32 @@ const TemplateViewComponent = ({
         <OrganizationTemplateTree treeData={treeData} />
       </div>
       <div className="card col-md-6 border p-3 mb-4">
-        <h4 className="m-0">টেমপ্লেট</h4>
+        <div className="row">
+          <div className="col-6">
+            <Label className="fs-3 fw-bolder mb-0">টেমপ্লেট</Label>
+          </div>
+          <div className="col-6">
+            <div className="d-flex justify-content-end ">
+              <Label className="mb-0 text-info">
+                <span className="mb-0 fw-bold">{LABELS.BN.VERSION}: </span>
+                {updateData?.version || COMMON_LABELS.NOT_ASSIGN}
+              </Label>
+            </div>
+          </div>
+        </div>
+
         <Separator className="mt-1 mb-2" />
         <div className="row">
           <div className="col-md-6 col-12">
-            <p className="fs-6 fw-bolder mb-0">শিরোনাম বাংলা: </p>
+            <p className="fs-6 fw-bolder mb-0">
+              {LABELS.BN.TEMPLATE_TITLE_BN}:{" "}
+            </p>
             <p>{updateData?.titleBn || COMMON_LABELS.NOT_ASSIGN}</p>
           </div>
           <div className="col-md-6 col-12">
-            <p className="fs-6 fw-bolder mb-0">শিরোনাম ইংরেজি: </p>
+            <p className="fs-6 fw-bolder mb-0">
+              {LABELS.BN.TEMPLATE_TITLE_EN}:{" "}
+            </p>
             <p>{updateData?.titleEn || COMMON_LABELS.NOT_ASSIGN}</p>
           </div>
         </div>

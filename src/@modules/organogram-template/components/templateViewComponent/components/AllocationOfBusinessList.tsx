@@ -17,7 +17,7 @@ const AllocationOfBusinessForm = ({ data }: IAllocationOfBusinessForm) => {
       <ol className="bn_ol">
           {data?.length > 0 &&
             data?.map((item, i) => {
-              return <li key={i}>&nbsp;&nbsp;{item?.businessOfAllocation}</li>;
+              return <li key={i}>&nbsp;&nbsp;{item?.businessOfAllocationBn}&nbsp;&nbsp;({item?.businessOfAllocationEn})</li>;
             })}
         </ol>
       </div>

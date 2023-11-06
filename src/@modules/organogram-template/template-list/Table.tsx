@@ -10,10 +10,11 @@ import {
   TableRow,
 } from "@gems/components";
 import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import { LABELS } from "./labels";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "@constants/internal-route.constant";
+import TemplateClone from "./clone";
 
 type TableProps = {
   children: ReactNode;
@@ -28,6 +29,14 @@ const TemplateTable: FC<TableProps> = ({
   isLoading,
   respMeta,
 }) => {
+  const [templateId, setTemplateId] = useState<any>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onClose = () => setIsOpen(false);
+  const onClone = (id) => {
+    setTemplateId(id);
+    setIsOpen(true);
+  };
+
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.NAME, width: 250 },
@@ -70,6 +79,10 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem>
+                  {/* <DropdownItem onClick={() => onClone(item?.id)}>
+                    <Icon size={19} icon="file_copy" />
+                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
+                  </DropdownItem> */}
                   <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
@@ -92,6 +105,12 @@ const TemplateTable: FC<TableProps> = ({
         // </Table>
       )}
       {children}
+
+      <TemplateClone
+        isOpen={isOpen}
+        onClose={onClose}
+        templateId={templateId}
+      />
     </>
   );
 };

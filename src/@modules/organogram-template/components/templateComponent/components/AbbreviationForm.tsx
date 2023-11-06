@@ -31,59 +31,65 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
       </div>
       <Separator className="mt-1 mb-2" />
       <div className="mt-3">
-        {fields.map((field, index) => (
-          <div
-            className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
-            key={field?.id}
-          >
-            <div className="row w-100">
-              <div className="col-md-6">
-                <Input
-                  label="সংক্ষিপ্তরূপ"
-                  placeholder="সংক্ষিপ্তরূপ লিখুন"
-                  registerProperty={{
-                    ...register(`abbreviationDtoList.${index}.shortForm`, {
-                      required: " ",
-                      // onChange: onDataChange,
-                    }),
-                  }}
-                  isError={!!errors?.abbreviationDtoList?.[index]?.shortForm}
-                  errorMessage={
-                    errors?.abbreviationDtoList?.[index]?.shortForm
-                      ?.message as string
-                  }
-                />
+        {fields.map((field, index) => {
+          const labelBn = "সংক্ষিপ্তরূপ";
+          const labelEn = "বিস্তারিত";
+          return (
+            <div
+              className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100 pb-3 pb-xl-0"
+              key={field?.id}
+            >
+              <div className="row w-100">
+                <div className="col-md-6">
+                  <Input
+                    label={index < 1 ? labelBn : ""}
+                    placeholder={labelBn + " লিখুন"}
+                    noMargin
+                    registerProperty={{
+                      ...register(`abbreviationDtoList.${index}.shortForm`, {
+                        required: " ",
+                        // onChange: onDataChange,
+                      }),
+                    }}
+                    isError={!!errors?.abbreviationDtoList?.[index]?.shortForm}
+                    errorMessage={
+                      errors?.abbreviationDtoList?.[index]?.shortForm
+                        ?.message as string
+                    }
+                  />
+                </div>
+                <div className="col-md-6 mt-1 mt-xl-0">
+                  <Textarea
+                    label={index < 1 ? labelEn : ""}
+                    placeholder={labelEn + " লিখুন"}
+                    noMargin
+                    registerProperty={{
+                      ...register(`abbreviationDtoList.${index}.fullForm`, {
+                        required: " ",
+                        // onChange: onDataChange,
+                      }),
+                    }}
+                    isError={!!errors?.abbreviationDtoList?.[index]?.fullForm}
+                    errorMessage={
+                      errors?.abbreviationDtoList?.[index]?.fullForm
+                        ?.message as string
+                    }
+                  />
+                </div>
               </div>
-              <div className="col-md-6">
-                <Textarea
-                  label="বিস্তারিত"
-                  placeholder="বিস্তারিত লিখুন"
-                  registerProperty={{
-                    ...register(`abbreviationDtoList.${index}.fullForm`, {
-                      required: " ",
-                      // onChange: onDataChange,
-                    }),
+              <div className="mt-2">
+                <IconButton
+                  iconName="delete"
+                  color="danger"
+                  rounded={false}
+                  onClick={() => {
+                    remove(index);
                   }}
-                  isError={!!errors?.abbreviationDtoList?.[index]?.fullForm}
-                  errorMessage={
-                    errors?.abbreviationDtoList?.[index]?.fullForm
-                      ?.message as string
-                  }
                 />
               </div>
             </div>
-            <div className="mt-2">
-              <IconButton
-                iconName="delete"
-                color="danger"
-                rounded={false}
-                onClick={() => {
-                  remove(index);
-                }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

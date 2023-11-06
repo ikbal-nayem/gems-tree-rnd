@@ -66,6 +66,7 @@ const TemplateComponent = ({
 			reset({
 				titleBn: updateData?.titleBn,
 				titleEn: updateData?.titleEn,
+				version: updateData?.version,
 				abbreviationDtoList: updateData?.abbreviationDtoList,
 				mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
 				businessAllocationDtoList: updateData?.businessAllocationDtoList,
@@ -149,7 +150,7 @@ const TemplateComponent = ({
 				/>
 			</div>
 			<form onSubmit={handleSubmit(onFinalSubmit)} noValidate>
-				<div className="card col-md-6 border p-3 mb-4">
+				<div className="card col-md-12 border p-3 mb-4">
 					<h4 className="m-0">টেমপ্লেট</h4>
 					<Separator className="mt-1 mb-2" />
 					<div className="row">
@@ -169,6 +170,7 @@ const TemplateComponent = ({
 								errorMessage={errors?.titleBn?.message as string}
 							/>
 						</div>
+
 						<div className="col-md-6 col-12">
 							<Input
 								label="শিরোনাম ইংরেজি"
@@ -185,6 +187,20 @@ const TemplateComponent = ({
 								errorMessage={errors?.titleEn?.message as string}
 							/>
 						</div>
+            <div className="col-md-6 col-12">
+              <Input
+                label="ভার্শন"
+                placeholder="ভার্শন লিখুন"
+                isRequired
+                registerProperty={{
+                  ...register("version", {
+                    required: "ভার্শন লিখুন",
+                  }),
+                }}
+                isError={!!errors?.version}
+                errorMessage={errors?.version?.message as string}
+              />
+            </div>
 					</div>
 				</div>
 				<div className="row">
