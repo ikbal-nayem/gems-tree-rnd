@@ -120,7 +120,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
       <div>
         {inventoryDtoListFields.map((f, idx) => (
           <div
-            className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
+            className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100 pb-3 pb-xl-0"
             key={idx}
           >
             <div className={idx < 1 ? "mt-8" : "mt-2"}>
@@ -133,6 +133,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   placeholder="টাইপ বাছাই করুন"
                   control={control}
                   options={inventoryTypeList || []}
+                  noMargin
                   getOptionLabel={(op) => op?.inventoryTypeBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventoryDtoList.${idx}.type`}
@@ -144,12 +145,13 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   }
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mt-1 mt-xl-0">
                 <Autocomplete
                   label={idx < 1 ? "সরঞ্জামাদি" : ""}
                   placeholder="সরঞ্জামাদি বাছাই করুন"
                   control={control}
                   options={inventoryItemList?.[idx] || []}
+                  noMargin
                   getOptionLabel={(op) => op?.itemTitleBn}
                   getOptionValue={(op) => op?.id}
                   name={`inventoryDtoList.${idx}.item`}
@@ -165,10 +167,11 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   }
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mt-1 mt-xl-0">
                 <Input
                   label={idx < 1 ? "সংখ্যা" : ""}
                   placeholder="সংখ্যা লিখুন"
+                  noMargin
                   type="number"
                   defaultValue={0}
                   registerProperty={{
@@ -213,7 +216,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
           const labelEn = label + " (ইংরেজি)";
           return (
             <div
-              className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
+              className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100"
               key={idx}
             >
               <div className={idx < 1 ? "mt-8" : "mt-2"}>
@@ -225,6 +228,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                     label={idx < 1 ? labelBn : ""}
                     placeholder={labelBn + " লিখুন"}
                     autoFocus
+                    noMargin
                     registerProperty={{
                       ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {
                         required: " ",
@@ -240,11 +244,12 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                     }
                   />
                 </div>
-                <div className="col-xl-6 col-12">
+                <div className="col-xl-6 col-12 mt-1 mt-xl-0">
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
                     autoFocus
+                    noMargin
                     registerProperty={{
                       ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {
                         required: " ",
@@ -265,7 +270,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                 <IconButton
                   iconName="delete"
                   color="danger"
-                  // isDisabled={fields.length === 1}
+                  iconSize={15}
                   rounded={false}
                   onClick={() => {
                     miscellaneousPointDtoListRemove(idx);
