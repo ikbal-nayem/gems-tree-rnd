@@ -69,6 +69,8 @@ export const COMMON_LABELS = {
 export const LABELS = {
 	EN: {
 		ACTIVITIES: "Activities",
+    MANPOWER: "Manpower",
+
 		MAIN_ACTIVITIES: "Main Activities",
 		EQUIPMENTS: "Equipments",
 		ABBREVIATIONS: "Abbreviations",
@@ -83,6 +85,8 @@ export const LABELS = {
 
 	BN: {
 		ACTIVITIES: "কার্যাবলি",
+    MANPOWER: "কর্মকর্তা",
+
 		MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
 		EQUIPMENTS: "যানবহন, অফিস সরঞ্জাম ইত্যাদি",
 		ABBREVIATIONS: "শব্দসংক্ষেপ",

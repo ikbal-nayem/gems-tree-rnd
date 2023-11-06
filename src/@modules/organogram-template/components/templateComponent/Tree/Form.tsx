@@ -237,7 +237,7 @@ const NodeForm = ({
           </div>
           <div className="mt-3">
             <div className="d-flex justify-content-between">
-              <h3 className="mb-0 mt-3">কর্মকর্তা</h3>
+              <h3 className="mb-0 mt-3">{LABEL.MANPOWER}</h3>
               <div className="mt-2">
                 <IconButton
                   iconName="add"
