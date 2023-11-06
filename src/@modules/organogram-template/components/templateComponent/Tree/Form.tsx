@@ -77,7 +77,9 @@ const NodeForm = ({
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
           ...updateData,
-          manpowerList: updateData?.manpowerList?.map((item) => {
+          manpowerList: updateData?.manpowerList?.map((item, index) => {
+            if (item?.isHead) setIsHeadIndex(index);
+
             return {
               ...item,
               organizationPost:
