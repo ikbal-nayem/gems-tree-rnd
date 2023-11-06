@@ -52,7 +52,7 @@ const NodeForm = ({
 
   const langEn = false;
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
-  const [isHeadChosen, setIsHeadChosen] = useState<boolean>(false);
+  const [isHeadIndex, setIsHeadIndex] = useState<number>(null);
   const {
     fields: postFunctionalityListFields,
     append: postFunctionalityListAppend,
@@ -92,6 +92,9 @@ const NodeForm = ({
       });
     } else reset({});
   }, [isOpen, updateData, reset]);
+
+  console.log("isHead Index: ");
+  console.log(isHeadIndex);
 
   return (
     <Modal
@@ -273,13 +276,23 @@ const NodeForm = ({
                       (index < 1 ? "mt-8" : "my-1")
                     }
                   >
-                    <Checkbox
-                      label="প্রধান ?"
-                      noMargin
-                      registerProperty={{
-                        ...register(`manpowerList.${index}.isHead`),
-                      }}
-                    />
+                    {isHeadIndex === null || isHeadIndex === index ? (
+                      <Checkbox
+                        noMargin
+                        label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
+                        // label='প্রধান ?'
+                        isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                        registerProperty={{
+                          ...register(`manpowerList.${index}.isHead`, {
+                            onChange: (e) => {
+                              e.target.checked
+                                ? setIsHeadIndex(index)
+                                : setIsHeadIndex(null);
+                            },
+                          }),
+                        }}
+                      />
+                    ) : null}
                   </div>
                 </div>
                 <div className={index < 1 ? "mt-6" : ""}>
