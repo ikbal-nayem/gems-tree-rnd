@@ -8,8 +8,8 @@
 		"@dabeng/react-orgchart": "^1.0.3",
 		"@formatjs/intl-pluralrules": "4.3.3",
 		"@formatjs/intl-relativetimeformat": "10.0.1",
-		"@gems/components": "^1.3.9",
-		"@gems/utils": "^1.2.9",
+		"@gems/components": "^1.4.3",
+		"@gems/utils": "^1.3.4",
 		"@hookform/resolvers": "^2.9.10",
 		"animate.css": "4.1.1",
 		"axios": "0.27.2",
@@ -34,6 +34,7 @@
 		"yup": "0.32.11"
 	},
 	"devDependencies": {
+		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
 		"@testing-library/jest-dom": "5.16.4",
 		"@testing-library/react": "13.1.1",
 		"@testing-library/user-event": "13.5.0",

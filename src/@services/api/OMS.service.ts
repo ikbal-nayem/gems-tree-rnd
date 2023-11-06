@@ -1,62 +1,65 @@
-import { OMS_SERVICE } from "@gems/utils";
+import { IObject, OMS_SERVICE } from "@gems/utils";
 import { axiosIns } from "config/api.config";
 
 export const OMSService = {
-  getPostList: async (): Promise<any> =>
-    await axiosIns.get(OMS_SERVICE + "org-post/get-post-list"),
+	getPostList: async (): Promise<any> =>
+		await axiosIns.get(OMS_SERVICE + "org-post/get-post-list"),
 
-  getInventoryTypeList: async (): Promise<any> =>
-    await axiosIns.get(OMS_SERVICE + "inventory-type/list"),
+	getInventoryTypeList: async (): Promise<any> =>
+		await axiosIns.get(OMS_SERVICE + "inventory-type/list"),
 
-  getInventoryItemListByType: async (inventoryTypeId: string): Promise<any> =>
-    await axiosIns.get(
-      OMS_SERVICE + "inventory-item/get-by-inventory-type-id/" + inventoryTypeId
-    ),
+	getInventoryItemListByType: async (inventoryTypeId: string): Promise<any> =>
+		await axiosIns.get(
+			OMS_SERVICE + "inventory-item/get-by-inventory-type-id/" + inventoryTypeId
+		),
 
-  templateCreate: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organogram-template/save", payload),
+	templateCreate: async (payload): Promise<any> =>
+		await axiosIns.post(OMS_SERVICE + "organogram-template/save", payload),
 
-  getTemplateList: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organogram-template/get-list", payload),
+	getTemplateList: async (payload): Promise<any> =>
+		await axiosIns.post(OMS_SERVICE + "organogram-template/get-list", payload),
 
-  getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
-    await axiosIns.get(
-      OMS_SERVICE +
-        "organogram-template/get-0rganogram-template-by-id/" +
-        templateId
-    ),
+	getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
+		await axiosIns.get(
+			OMS_SERVICE +
+				"organogram-template/get-0rganogram-template-by-id/" +
+				templateId
+		),
 
-  getTemplateInventoryByTemplateId: async (templateId: string): Promise<any> =>
-    await axiosIns.get(
-      OMS_SERVICE +
-        "organogram-template/get-organogram-inventory-list-group-by-type/" +
-        templateId
-    ),
+	getTemplateInventoryByTemplateId: async (templateId: string): Promise<any> =>
+		await axiosIns.get(
+			OMS_SERVICE +
+				"organogram-template/get-organogram-inventory-list-group-by-type/" +
+				templateId
+		),
 
-  getTemplateManpowerSummaryById: async (templateId: string): Promise<any> =>
-    await axiosIns.get(
-      OMS_SERVICE +
-        "organogram-template/get-summary-manpower-list-by-organogramId/" +
-        templateId
-    ),
+	getTemplateManpowerSummaryById: async (templateId: string): Promise<any> =>
+		await axiosIns.get(
+			OMS_SERVICE +
+				"organogram-template/get-summary-manpower-list-by-organogramId/" +
+				templateId
+		),
 
-  duplicateTemplateTitleCheck: async (
-    title: string,
-    isEn: boolean
-  ): Promise<any> =>
-    await axiosIns.get(
-      OMS_SERVICE +
-        "organogram-template/get-0rganogram-template-is-exist/" +
-        isEn +
-        "/" +
-        title
-    ),
+	duplicateTemplateTitleCheck: async (
+		title: string,
+		isEn: boolean
+	): Promise<any> =>
+		await axiosIns.get(
+			OMS_SERVICE +
+				"organogram-template/get-0rganogram-template-is-exist/" +
+				isEn +
+				"/" +
+				title
+		),
 
-  templateUpdate: async (payload, templateId): Promise<any> =>
-    await axiosIns.put(
-      OMS_SERVICE +
-        "organogram-template/update-0rganogram-template-by-id/" +
-        templateId,
-      payload
-    ),
+	templateUpdate: async (payload, templateId): Promise<any> =>
+		await axiosIns.put(
+			OMS_SERVICE +
+				"organogram-template/update-0rganogram-template-by-id/" +
+				templateId,
+			payload
+		),
+
+	getOrganizationList: async (payload: IObject): Promise<any> =>
+		await axiosIns.post(OMS_SERVICE + "organization/get-list", payload),
 };
