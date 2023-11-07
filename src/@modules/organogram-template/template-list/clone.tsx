@@ -7,11 +7,7 @@ import {
   ModalFooter,
   toast,
 } from "@gems/components";
-import {
-  COMMON_LABELS,
-  numBnToEn,
-  numericCheck,
-} from "@gems/utils";
+import { COMMON_LABELS } from "@gems/utils";
 import { OMSService } from "../../../@services/api/OMS.service";
 import { useForm } from "react-hook-form";
 import { bnCheck, enCheck } from "utility/checkValidation";
@@ -37,7 +33,6 @@ const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
     clearErrors,
     formState: { errors },
   } = useForm<any>();
-
 
   useEffect(() => {
     reset({});

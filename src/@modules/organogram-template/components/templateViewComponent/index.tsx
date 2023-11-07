@@ -10,14 +10,12 @@ import OrganizationTemplateTree from "./Tree";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
-import CheckListList from "./components/CheckListList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
 import {
   LABELS,
   COMMON_LABELS as COMN_LABELS,
 } from "@constants/common.constant";
-import { Footer } from "layout/components/footer/Footer";
 import OrgList from "./components/SelectedOrganization";
 
 interface ITemplateViewComponent {
