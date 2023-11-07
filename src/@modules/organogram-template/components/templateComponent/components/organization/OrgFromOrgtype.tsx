@@ -5,6 +5,7 @@ import {
 	Icon,
 	Modal,
 	ModalBody,
+	NoData,
 	topProgress,
 } from "@gems/components";
 import { IObject } from "@gems/utils";
@@ -38,6 +39,7 @@ const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect }) => {
 		orgType.current = ot;
 		OMSService.getOrganizationByType(ot?.metaKey)
 			.then((resp) => setOrgListFromType(resp?.body))
+			.catch((err) => console.log(err.message))
 			.finally(() => {
 				topProgress.hide();
 				setLoading(false);
@@ -61,7 +63,7 @@ const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect }) => {
 				handleClose={onModalClose}
 				scrollBody
 			>
-				<ModalBody className="p-0">
+				<ModalBody className="min-h-200px p-0">
 					<ul className="list-group list-group-flush">
 						{orgListFormType?.map((org) => {
 							const isSelected =
@@ -88,6 +90,9 @@ const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect }) => {
 						})}
 					</ul>
 					<ContentPreloader show={isLoading} />
+					{!orgListFormType?.length && !isLoading && (
+						<NoData details="কোনো অফিস পাওয়া যায়নি!" />
+					)}
 				</ModalBody>
 			</Modal>
 		</>

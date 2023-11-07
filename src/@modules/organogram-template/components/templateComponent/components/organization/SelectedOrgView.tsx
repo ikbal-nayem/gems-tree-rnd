@@ -1,4 +1,4 @@
-import { Icon, Tag } from "@gems/components";
+import { Icon } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 
 const OrgList = ({ selectedOrgList, onOrgCancle }) => {
