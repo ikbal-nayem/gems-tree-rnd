@@ -20,6 +20,7 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import TemplateTable from "./Table";
+import { LABELS } from "./labels";
 
 const initMeta: IMeta = {
   page: 0,
@@ -71,7 +72,7 @@ const TemplateList = () => {
 
     const reqData = { ...payload, body: payload?.body };
 
-    OMSService.getTemplateList(reqData)
+    OMSService.getOrganizationOrganogramList(reqData)
       .then((resp) => {
         setDataList(resp?.body);
         setRespMeta(resp?.meta);
@@ -95,7 +96,7 @@ const TemplateList = () => {
       },
     };
 
-    OMSService.getTemplateList(payload)
+    OMSService.getOrganizationOrganogramList(payload)
       .then((res) => {
         exportXLSX(exportData(res?.body || []), "Template list");
       })
@@ -105,8 +106,9 @@ const TemplateList = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
-      "টেমপ্লেটের নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-      "টেমপ্লেটের নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.NAME]: d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.ORGANIZATION_NAME]: d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.VERSION]: d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (

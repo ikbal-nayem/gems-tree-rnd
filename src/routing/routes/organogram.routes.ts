@@ -26,5 +26,12 @@ let permissionRouteList =
 
 export const OrganogramRoutes: IAppRoutes = {
   link: ROUTE_L1.OMS_ORGANOGRAM,
-  childrens: [...permissionRouteList],
+  childrens: [
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_VIEW,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_VIEW,
+      element: lazy(() => import("@modules/organogram/view")),
+    },
+    ...permissionRouteList,
+  ],
 };
