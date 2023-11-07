@@ -22,6 +22,18 @@ const tabs = [
     label: "Test",
     key: "Test",
   },
+  // {
+  //   label: "Test",
+  //   key: "Test",
+  // },
+  // {
+  //   label: "Test",
+  //   key: "Test",
+  // },
+  // {
+  //   label: "Test",
+  //   key: "Test",
+  // },
 ];
 
 const OrganogramView = () => {

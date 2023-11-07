@@ -179,7 +179,7 @@ const NodeForm = ({
                 // className="d-flex align-items-top gap-3 w-100 py-1"
                 key={field?.id}
               >
-                <div className={index < 1 ? "mt-10" : "mt-3"}>
+                <div className={index < 1 ? "mt-9" : "mt-2"}>
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">

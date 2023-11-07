@@ -2,6 +2,7 @@ import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Label, Separator } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
+import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface IAllocationOfBusinessForm {
   formProps: any;
@@ -51,12 +52,13 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                         `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
                         {
                           required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
+                          validate: bnCheck,
                         }
                       ),
                     }}
                     isError={
                       !!errors?.businessAllocationDtoList?.[idx]
-                        ?.businessOfAllocation
+                        ?.businessOfAllocationBn
                     }
                   />
                 </div>
@@ -72,12 +74,13 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                         `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
                         {
                           required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
+                          validate: enCheck,
                         }
                       ),
                     }}
                     isError={
                       !!errors?.businessAllocationDtoList?.[idx]
-                        ?.businessOfAllocation
+                        ?.businessOfAllocationEn
                     }
                   />
                 </div>

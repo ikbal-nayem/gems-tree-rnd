@@ -2,6 +2,7 @@ import { IconButton, Input, Label, Separator } from "@gems/components";
 import { LABELS } from "@constants/common.constant";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
+import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface IActivitiesForm {
   formProps: any;
@@ -46,12 +47,17 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     noMargin
                     autoFocus
                     registerProperty={{
-                      ...register(`mainActivitiesDtoList.${idx}.mainActivityBn`, {
-                        required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
-                      }),
+                      ...register(
+                        `mainActivitiesDtoList.${idx}.mainActivityBn`,
+                        {
+                          required:
+                            "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
+                          validate: bnCheck,
+                        }
+                      ),
                     }}
                     isError={
-                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivity
+                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityBn
                     }
                   />
                 </div>
@@ -63,12 +69,17 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     noMargin
                     autoFocus
                     registerProperty={{
-                      ...register(`mainActivitiesDtoList.${idx}.mainActivityEn`, {
-                        required: "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
-                      }),
+                      ...register(
+                        `mainActivitiesDtoList.${idx}.mainActivityEn`,
+                        {
+                          required:
+                            "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
+                          validate: enCheck,
+                        }
+                      ),
                     }}
                     isError={
-                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivity
+                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityEn
                     }
                   />
                 </div>

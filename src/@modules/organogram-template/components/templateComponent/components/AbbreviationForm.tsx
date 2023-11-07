@@ -44,6 +44,7 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                   <Input
                     label={index < 1 ? labelBn : ""}
                     placeholder={labelBn + " লিখুন"}
+                    isRequired
                     noMargin
                     registerProperty={{
                       ...register(`abbreviationDtoList.${index}.shortForm`, {
@@ -63,6 +64,7 @@ const AbbreviationForm = ({ formProps }: IAbbreviationForm) => {
                     label={index < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
                     noMargin
+                    isRequired
                     registerProperty={{
                       ...register(`abbreviationDtoList.${index}.fullForm`, {
                         required: " ",
