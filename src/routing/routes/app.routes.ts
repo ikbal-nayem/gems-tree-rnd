@@ -1,24 +1,22 @@
-import { ROUTE } from "@constants/internal-route.constant";
+import { ROUTE_L1 } from "@constants/internal-route.constant";
 import { IAppRoutes } from "@interface/common.interface";
-import { TemplateRoutes } from "./template.routes";
 import { lazy } from "react";
+import { OrganogramRoutes } from "./organogram.routes";
+import { TemplateRoutes } from "./template.routes";
 
 export const AppRouteList: IAppRoutes[] = [
   {
-    link: ROUTE.DASHBOARD,
+    link: ROUTE_L1.DASHBOARD,
     element: lazy(() => import("pages/dashboard/DashboardWrapper")),
   },
   { ...TemplateRoutes },
+  { ...OrganogramRoutes },
   {
-    link: ROUTE.OMS_ORG_EMPLOYEE_LIST,
+    link: ROUTE_L1.OMS_ORG_EMPLOYEE_LIST,
     element: lazy(() => import("@modules/employee-list")),
   },
   {
-    link: ROUTE.OMS_ORGANOGRAM_LIST,
-    element: lazy(() => import("@modules/organogram-list")),
-  },
-  {
     link: "*",
-    redirect: ROUTE.DASHBOARD,
+    redirect: ROUTE_L1.DASHBOARD,
   },
 ];

@@ -1,9 +1,9 @@
-import { ROUTE } from '@constants/internal-route.constant'
 import clsx from 'clsx'
 import { KTSVG } from 'helpers'
 import { Link } from 'react-router-dom'
 import { useLayout } from '../../core'
 import { toAbsoluteUrl } from "@gems/utils";
+import { ROUTE_L1 } from '@constants/internal-route.constant';
 
 const SidebarLogo = () => {
 	const { config } = useLayout()
@@ -21,7 +21,7 @@ const SidebarLogo = () => {
 	return (
 		<div className="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
 			<Link
-				to={ROUTE.DASHBOARD}
+				to={ROUTE_L1.DASHBOARD}
 				className="d-flex align-items-center gap-3 fs-2 text-white"
 			>
 				{config.layoutType === "dark-sidebar" ? (

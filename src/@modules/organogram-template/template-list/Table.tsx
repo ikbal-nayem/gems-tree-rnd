@@ -13,8 +13,8 @@ import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode, useState } from "react";
 import { LABELS } from "./labels";
 import { useNavigate } from "react-router-dom";
-import { ROUTE } from "@constants/internal-route.constant";
 import TemplateClone from "./clone";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 type TableProps = {
   children: ReactNode;
@@ -45,10 +45,10 @@ const TemplateTable: FC<TableProps> = ({
 
   const navigate = useNavigate();
   const navigateToDetails = (id: string) => {
-    navigate(ROUTE.ORG_TEMPLATE_UPDATE + "?id=" + id);
+    navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id);
   };
   const navigateToView = (id: string) => {
-    navigate(ROUTE.ORG_TEMPLATE_VIEW + "?id=" + id);
+    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
   };
 
   return (
