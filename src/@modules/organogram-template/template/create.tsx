@@ -1,9 +1,9 @@
-import { useState } from "react";
-import TemplateComponent from "../components/templateComponent";
-import { OMSService } from "@services/api/OMS.service";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { toast } from "@gems/components";
+import { OMSService } from "@services/api/OMS.service";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ROUTE } from "@constants/internal-route.constant";
+import TemplateComponent from "../components/templateComponent";
 
 const TemplateCreate = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
@@ -15,7 +15,7 @@ const TemplateCreate = () => {
     OMSService.templateCreate(data)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE.ORG_TEMPLATE_LIST);
+        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));

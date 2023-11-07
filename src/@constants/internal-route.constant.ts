@@ -1,11 +1,14 @@
-export const ROUTE = {
+export const ROUTE_L1 = {
   DASHBOARD: "/dashboard",
   ORG_TEMPLATE: "/template-organogram",
-  ORG_TEMPLATE_CREATE: "/template-organogram/create",
-  ORG_TEMPLATE_UPDATE: "/template-organogram/update",
-  ORG_TEMPLATE_VIEW: "/template-organogram/view",
-  ORG_TEMPLATE_LIST: "/template-organogram/list",
   OMS_ORGANOGRAM: "/organogram",
-  OMS_ORGANOGRAM_LIST: "/organogram-list",
   OMS_ORG_EMPLOYEE_LIST: "/employee-list",
+};
+export const ROUTE_L2 = {
+  ORG_TEMPLATE_CREATE: ROUTE_L1.ORG_TEMPLATE + "/create",
+  ORG_TEMPLATE_UPDATE: ROUTE_L1.ORG_TEMPLATE + "/update",
+  ORG_TEMPLATE_VIEW: ROUTE_L1.ORG_TEMPLATE + "/view",
+  ORG_TEMPLATE_LIST: ROUTE_L1.ORG_TEMPLATE + "/list",
+  OMS_ORGANOGRAM_LIST: ROUTE_L1.OMS_ORGANOGRAM + "/list",
+  OMS_ORGANOGRAM_VIEW: ROUTE_L1.OMS_ORGANOGRAM + "/view",
 };

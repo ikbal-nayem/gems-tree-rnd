@@ -1,26 +1,26 @@
 import { useAuth } from "@context/Auth";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
-import { ROUTE } from "@constants/internal-route.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { MENU } from "@constants/menu-titles.constant";
+import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 
 const menuData = [
   {
     routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE,
-    link: ROUTE.ORG_TEMPLATE,
+    link: ROUTE_L1.ORG_TEMPLATE,
     title: MENU.BN.TEMPLATE,
     icon: "history",
     childrens: [
       {
         routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
-        link: ROUTE.ORG_TEMPLATE_CREATE,
+        link: ROUTE_L2.ORG_TEMPLATE_CREATE,
         title: MENU.BN.TEMPLATE_CREATE,
         hasBullet: true,
       },
       {
         routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_LIST,
-        link: ROUTE.ORG_TEMPLATE_LIST,
+        link: ROUTE_L2.ORG_TEMPLATE_LIST,
         title: MENU.BN.TEMPLATE_LIST,
         hasBullet: true,
       },
@@ -28,13 +28,13 @@ const menuData = [
   },
   {
     routeKey: ROUTE_KEY.OMS_ORGANOGRAM,
-    link: ROUTE.OMS_ORGANOGRAM,
+    link: ROUTE_L1.OMS_ORGANOGRAM,
     title: MENU.BN.ORGANOGRAM,
     icon: "account_tree",
     childrens: [
       {
         routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
-        link: ROUTE.OMS_ORGANOGRAM_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
         title: MENU.BN.ORGANOGRAM_LIST,
         hasBullet: true,
       },
@@ -42,7 +42,7 @@ const menuData = [
   },
   {
     routeKey: ROUTE_KEY.OMS_ORG_EMPLOYEE_LIST,
-    link: ROUTE.OMS_ORG_EMPLOYEE_LIST,
+    link: ROUTE_L1.OMS_ORG_EMPLOYEE_LIST,
     title: MENU.BN.EMPLOYEE_LIST,
     icon: "groups",
   },
@@ -105,7 +105,11 @@ const PermissionMenus = ({ data = menuData }) => {
 const SidebarMenuMain = () => {
   return (
     <>
-      <SidebarMenuItem to={ROUTE.DASHBOARD} title="ড্যাশবোর্ড" fontIcon="dashboard" />
+      <SidebarMenuItem
+        to={ROUTE_L1.DASHBOARD}
+        title="ড্যাশবোর্ড"
+        fontIcon="dashboard"
+      />
       <PermissionMenus />
     </>
   );

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ROUTE } from "@constants/internal-route.constant";
 import clsx from "clsx";
 import { useThemeMode } from "partials";
 import { Link } from "react-router-dom";
@@ -8,6 +7,7 @@ import { Header } from "./Header";
 import { Navbar } from "./Navbar";
 import { Icon } from "@gems/components";
 import { toAbsoluteUrl } from "@gems/utils";
+import { ROUTE_L1 } from "@constants/internal-route.constant";
 
 export function HeaderWrapper() {
 	const { config, classes } = useLayout();
@@ -39,7 +39,7 @@ export function HeaderWrapper() {
 								<Icon icon="view_headline" size={25} className="svg-icon-1" />
 							</div>
 							<div className="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-								<Link to={ROUTE.DASHBOARD} className="d-lg-none">
+								<Link to={ROUTE_L1.DASHBOARD} className="d-lg-none">
 									<img
 										alt="Logo"
 										src={
@@ -57,7 +57,7 @@ export function HeaderWrapper() {
 
 				{!config.app.sidebar?.display && (
 					<div className="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
-						<Link to={ROUTE.DASHBOARD}>
+						<Link to={ROUTE_L1.DASHBOARD}>
 							{config.layoutType !== "dark-header" ? (
 								<img
 									alt="Logo"

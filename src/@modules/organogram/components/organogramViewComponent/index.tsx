@@ -1,4 +1,4 @@
-import { Button, Icon, Label, Separator } from "@gems/components";
+import { Label, Separator } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -7,30 +7,26 @@ import {
 } from "@gems/utils";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
+import { LABELS } from "../../../../@constants/common.constant";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
 import CheckListList from "./components/CheckListList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
-import {
-  LABELS,
-  COMMON_LABELS as COMN_LABELS,
-} from "@constants/common.constant";
-import { Footer } from "layout/components/footer/Footer";
 
-interface ITemplateViewComponent {
+interface IOrganogramViewComponent {
   updateData?: IObject;
   inventoryData?: IObject[];
   manpowerData?: IObject;
   isSubmitLoading?: boolean;
 }
 
-const TemplateViewComponent = ({
+const OrganogramViewComponent = ({
   updateData,
   inventoryData,
   manpowerData,
-}: ITemplateViewComponent) => {
+}: IOrganogramViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
     !isObjectNull(updateData?.organizationStructureDto)
@@ -101,18 +97,18 @@ const TemplateViewComponent = ({
           </div>
         </div>
       </div>
-      <div className="d-flex justify-content-center gap-5 mt-12">
+      {/* <div className="d-flex justify-content-center gap-5 mt-12">
         <Button className="rounded-pill" color="success" onClick={() => null}>
-          <Icon icon="check" className="fw-bold me-2"/>
+          <Icon icon="check" className="fw-bold me-2" />
           <span> {COMN_LABELS.APPROVE} </span>
         </Button>
         <Button className="rounded-pill" color="danger" onClick={() => null}>
-          <Icon icon="reply" className="fw-bold me-2"/>
+          <Icon icon="reply" className="fw-bold me-2" />
           <span> {COMN_LABELS.SEND_BACK} </span>
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default TemplateViewComponent;
+export default OrganogramViewComponent;

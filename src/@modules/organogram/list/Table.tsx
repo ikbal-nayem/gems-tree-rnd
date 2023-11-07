@@ -1,3 +1,4 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   ContentPreloader,
   Dropdown,
@@ -10,11 +11,9 @@ import {
   TableRow,
 } from "@gems/components";
 import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
-import { FC, ReactNode, useState } from "react";
-import { LABELS } from "./labels";
+import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import TemplateClone from "./clone";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { LABELS } from "./labels";
 
 type TableProps = {
   children: ReactNode;
@@ -23,32 +22,26 @@ type TableProps = {
   respMeta?: IMeta;
 };
 
-const TemplateTable: FC<TableProps> = ({
+const OrganogramTable: FC<TableProps> = ({
   children,
   dataList,
   isLoading,
   respMeta,
 }) => {
-  const [templateId, setTemplateId] = useState<any>();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const onClose = () => setIsOpen(false);
-  const onClone = (id) => {
-    setTemplateId(id);
-    setIsOpen(true);
-  };
-
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.NAME, width: 250 },
+    { title: LABELS.ORGANIZATION_NAME, width: 250 },
+    { title: LABELS.VERSION, width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
   const navigate = useNavigate();
-  const navigateToDetails = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id);
-  };
+  //   const navigateToDetails = (id: string) => {
+  //     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
+  //   };
   const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
+    navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
   };
 
   return (
@@ -57,13 +50,18 @@ const TemplateTable: FC<TableProps> = ({
         <Table columns={columns}>
           {dataList?.map((item, idx) => (
             <TableRow key={idx}>
-              <TableCell
-                text={generateRowNumBn(idx, respMeta)}
-                verticalAlign="top"
-              />
+              <TableCell text={generateRowNumBn(idx, respMeta)} />
               <TableCell
                 text={item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                 subText={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
+              />
+              <TableCell
+                text={item?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.organization?.nameEn || COMMON_LABELS.NOT_ASSIGN}
+              />
+              <TableCell
+                text={item?.versionBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.versionEn || COMMON_LABELS.NOT_ASSIGN}
               />
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
@@ -75,18 +73,14 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => navigateToDetails(item?.id)}>
+                  {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
-                  </DropdownItem>
-                  {/* <DropdownItem onClick={() => onClone(item?.id)}>
-                    <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
                   </DropdownItem> */}
-                  <DropdownItem onClick={() => null}>
+                  {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-                  </DropdownItem>
+                  </DropdownItem> */}
                 </Dropdown>
               </TableCell>
             </TableRow>
@@ -95,24 +89,11 @@ const TemplateTable: FC<TableProps> = ({
       ) : isLoading ? (
         <ContentPreloader />
       ) : (
-        // <Table columns={columns}>
-        //   <TableRow>
-        //     <TableCell />
-        //     <TableCell>
-        <NoData details="কোনো টেমপ্লেটের তথ্য পাওয়া যায়নি!" />
-        //     </TableCell>
-        //   </TableRow>
-        // </Table>
+        <NoData details="কোনো অর্গানোগ্রামের তথ্য পাওয়া যায়নি!" />
       )}
       {children}
-
-      <TemplateClone
-        isOpen={isOpen}
-        onClose={onClose}
-        templateId={templateId}
-      />
     </>
   );
 };
 
-export default TemplateTable;
+export default OrganogramTable;

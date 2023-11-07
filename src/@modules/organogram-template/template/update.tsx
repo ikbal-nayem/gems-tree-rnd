@@ -5,7 +5,7 @@ import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "../../../@services/api/OMS.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ROUTE } from "@constants/internal-route.constant";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const TemplateUpdate = () => {
     OMSService.templateUpdate(templateData, templateId)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE.ORG_TEMPLATE_LIST);
+        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));
