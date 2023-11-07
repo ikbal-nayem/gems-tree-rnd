@@ -45,7 +45,8 @@ const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
     const payload = {
       cloneTitleBn: cloneData.titleBn,
       cloneTitleEn: cloneData.titleEn,
-      cloneVersion: cloneData.version,
+      cloneVersionBn: cloneData.versionBn,
+      cloneVersionEn: cloneData.versionEn,
       refTemplateId: templateId,
     };
     OMSService.templateClone(payload)
@@ -95,8 +96,8 @@ const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
           <div className="row">
             <div className="col-md-6 col-12">
               <Input
-                label="শিরোনাম বাংলা"
-                placeholder="শিরোনাম বাংলা লিখুন"
+                label="শিরোনাম (বাংলা)"
+                placeholder="বাংলায় শিরোনাম লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("titleBn", {
@@ -111,8 +112,8 @@ const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
             </div>
             <div className="col-md-6 col-12">
               <Input
-                label="শিরোনাম ইংরেজি"
-                placeholder="শিরোনাম ইংরেজি লিখুন"
+                label="শিরোনাম (ইংরেজি)"
+                placeholder="ইংরেজিতে শিরোনাম লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("titleEn", {
@@ -127,16 +128,32 @@ const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
             </div>
             <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন"
-                placeholder="ভার্শন লিখুন"
+                label="ভার্শন (বাংলা)"
+                placeholder="বাংলায় ভার্শন লিখুন"
                 isRequired
                 registerProperty={{
-                  ...register("version", {
-                    required: "ভার্শন লিখুন",
+                  ...register("versionBn", {
+                    required: " ",
+                    validate: bnCheck,
                   }),
                 }}
-                isError={!!errors?.version}
-                errorMessage={errors?.version?.message as string}
+                isError={!!errors?.versionBn}
+                errorMessage={errors?.versionBn?.message as string}
+              />
+            </div>
+            <div className="col-md-6 col-12">
+              <Input
+                label="ভার্শন (ইংরেজি)"
+                placeholder="ইংরেজিতে ভার্শন লিখুন"
+                isRequired
+                registerProperty={{
+                  ...register("versionEn", {
+                    required: " ",
+                    validate: enCheck,
+                  }),
+                }}
+                isError={!!errors?.versionEn}
+                errorMessage={errors?.versionEn?.message as string}
               />
             </div>
           </div>
