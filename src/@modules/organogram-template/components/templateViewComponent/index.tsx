@@ -10,14 +10,12 @@ import OrganizationTemplateTree from "./Tree";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
-import CheckListList from "./components/CheckListList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
 import {
   LABELS,
   COMMON_LABELS as COMN_LABELS,
 } from "@constants/common.constant";
-import { Footer } from "layout/components/footer/Footer";
 import OrgList from "./components/SelectedOrganization";
 
 interface ITemplateViewComponent {
@@ -57,7 +55,7 @@ const TemplateViewComponent = ({
 					<div className="col-6 d-flex justify-content-end">
 						<Label className="mb-0 text-info">
 							<span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
-							{updateData?.version || COMMON_LABELS.NOT_ASSIGN}
+							{updateData?.versionBn || COMMON_LABELS.NOT_ASSIGN}
 						</Label>
 					</div>
 				</div>

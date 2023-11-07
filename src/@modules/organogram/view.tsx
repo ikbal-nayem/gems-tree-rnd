@@ -19,21 +19,9 @@ const tabs = [
     key: "ORGANOGRAM",
   },
   {
-    label: "Test",
-    key: "Test",
+    label: "জনবল",
+    key: "Manpower",
   },
-  // {
-  //   label: "Test",
-  //   key: "Test",
-  // },
-  // {
-  //   label: "Test",
-  //   key: "Test",
-  // },
-  // {
-  //   label: "Test",
-  //   key: "Test",
-  // },
 ];
 
 const OrganogramView = () => {
@@ -88,7 +76,7 @@ const OrganogramView = () => {
               />
             </TabBlock>
             <TabBlock index={1} activeIndex={activeTab}>
-              Tree
+              Manpower
             </TabBlock>
           </div>
         </div>

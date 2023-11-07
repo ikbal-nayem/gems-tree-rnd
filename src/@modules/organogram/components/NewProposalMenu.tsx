@@ -25,6 +25,25 @@ export const NewProposalMenu = () => {
           <div className="menu-item px-2">
             <div className="menu-link">পদের মেয়াদ সংরক্ষণ</div>
           </div>
+          <div className="menu-item px-2">
+            <div className="menu-link">পদ স্থায়ীকরণ</div>
+          </div>
+          <div className="menu-item px-2">
+            <div className="menu-link">পদ বিলুপ্ত করুন</div>
+          </div>
+          <div className="menu-item px-2">
+            <div className="menu-link">
+              যানবাহন, অফিস সরঞ্জাম টিওএন্ডই-তে অন্তর্ভুক্তিকরণ
+            </div>
+          </div>
+          <div className="menu-item px-2">
+            <div className="menu-link">
+              পদবি/পদনাম পরিবর্তন এবং পদমর্যাদা/বেতন স্কেল উন্নীতকরণ
+            </div>
+          </div>
+          <div className="menu-item px-2">
+            <div className="menu-link">১০% সংরক্ষিত শূন্যপদ পূরণ</div>
+          </div>
         </div>
       </div>
     </div>
