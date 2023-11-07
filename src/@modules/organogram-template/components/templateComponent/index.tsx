@@ -66,7 +66,8 @@ const TemplateComponent = ({
 			reset({
 				titleBn: updateData?.titleBn,
 				titleEn: updateData?.titleEn,
-				version: updateData?.version,
+				versionBn: updateData?.versionBn,
+				versionEn: updateData?.versionEn,
 				abbreviationDtoList: updateData?.abbreviationDtoList,
 				mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
 				businessAllocationDtoList: updateData?.businessAllocationDtoList,
@@ -157,11 +158,11 @@ const TemplateComponent = ({
 						<div className="col-md-6 col-12">
 							<Input
 								label="শিরোনাম বাংলা"
-								placeholder="শিরোনাম বাংলা লিখুন"
+								placeholder="বাংলায় শিরোনাম লিখুন"
 								isRequired
 								registerProperty={{
 									...register("titleBn", {
-										required: "শিরোনাম বাংলা লিখুন",
+										required: " ",
 										onChange: (e) => duplicateTitleCheck(e.target.value, false),
 										validate: bnCheck,
 									}),
@@ -174,11 +175,11 @@ const TemplateComponent = ({
 						<div className="col-md-6 col-12">
 							<Input
 								label="শিরোনাম ইংরেজি"
-								placeholder="শিরোনাম ইংরেজি লিখুন"
+								placeholder="ইংরেজিতে শিরোনাম লিখুন"
 								isRequired
 								registerProperty={{
 									...register("titleEn", {
-										required: "শিরোনাম ইংরেজি লিখুন",
+										required: " ",
 										onChange: (e) => duplicateTitleCheck(e.target.value, true),
 										validate: enCheck,
 									}),
@@ -189,16 +190,32 @@ const TemplateComponent = ({
 						</div>
             <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন"
-                placeholder="ভার্শন লিখুন"
+                label="ভার্শন (বাংলা)"
+                placeholder="বাংলায় ভার্শন লিখুন"
                 isRequired
                 registerProperty={{
-                  ...register("version", {
-                    required: "ভার্শন লিখুন",
+                  ...register("versionBn", {
+                    required: " ",
+                    validate: bnCheck,
                   }),
                 }}
-                isError={!!errors?.version}
-                errorMessage={errors?.version?.message as string}
+                isError={!!errors?.versionBn}
+                errorMessage={errors?.versionBn?.message as string}
+              />
+            </div>
+            <div className="col-md-6 col-12">
+              <Input
+                label="ভার্শন (ইংরেজি)"
+                placeholder="ইংরেজিতে ভার্শন লিখুন"
+                isRequired
+                registerProperty={{
+                  ...register("versionEn", {
+                    required: " ",
+                    validate: enCheck,
+                  }),
+                }}
+                isError={!!errors?.versionEn}
+                errorMessage={errors?.versionEn?.message as string}
               />
             </div>
 					</div>
