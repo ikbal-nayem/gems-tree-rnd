@@ -8,10 +8,10 @@ import {
   toast,
 } from "@gems/components";
 import { IObject, isObjectNull, searchParamsToObject } from "@gems/utils";
+import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { useSearchParams } from "react-router-dom";
 import { OMSService } from "../../@services/api/OMS.service";
 import { NewProposalMenu } from "./components/NewProposalMenu";
-import OrganogramViewComponent from "./components/organogramViewComponent";
 
 const tabs = [
   {
@@ -91,10 +91,11 @@ const OrganogramView = () => {
           </div>
           <div className="mt-3">
             <TabBlock index={0} activeIndex={activeTab}>
-              <OrganogramViewComponent
+              <TemplateViewComponent
                 updateData={data}
                 inventoryData={inventoryData}
                 manpowerData={manpowerData}
+                organogramView={true}
               />
             </TabBlock>
           </div>
