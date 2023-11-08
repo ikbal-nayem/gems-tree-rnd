@@ -29,20 +29,20 @@ const Organizations = ({ formProps }: IOrganizations) => {
 	};
 
 	const onOrgSelect = (selected: IObject, toggle: boolean = false) => {
-		const currentOrg = getValues("organizationList") || [];
+		const currentOrg = getValues("templateOrganizationsDtoList") || [];
 		const cIdx = currentOrg?.findIndex((co) => co?.id === selected?.id);
 		if (cIdx < 0) currentOrg.push(selected);
 		else if (toggle) currentOrg.splice(cIdx, 1);
-		setValue("organizationList", [...currentOrg]);
+		setValue("templateOrganizationsDtoList", [...currentOrg]);
 	};
 
 	const onOrgCancle = (idx) => {
-		const currentOrg = getValues("organizationList") || [];
+		const currentOrg = getValues("templateOrganizationsDtoList") || [];
 		currentOrg?.splice(idx, 1);
-		setValue("organizationList", [...currentOrg]);
+		setValue("templateOrganizationsDtoList", [...currentOrg]);
 	};
 
-	const selectedOrgList = watch("organizationList");
+	const selectedOrgList = watch("templateOrganizationsDtoList");
 
 	return (
 		<div className="card border p-3">

@@ -131,6 +131,10 @@ const TemplateComponent = ({
 			if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
 		}
 
+		data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
+			(d) => ({ id: d?.id, nameEn: d?.nameEn, nameBn: d?.nameBn })
+		);
+
 		const reqPayload = {
 			...data,
 			organizationStructureDto: treeData,

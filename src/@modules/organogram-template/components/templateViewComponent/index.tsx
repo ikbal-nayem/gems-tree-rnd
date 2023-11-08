@@ -16,7 +16,7 @@ import {
   LABELS,
   COMMON_LABELS as COMN_LABELS,
 } from "@constants/common.constant";
-import OrgList from "./components/SelectedOrganization";
+import OrgList from "./components/Organization";
 
 interface ITemplateViewComponent {
 	updateData?: IObject;
@@ -83,7 +83,7 @@ const TemplateViewComponent = ({
 						/>
 					</div>
 					<div className="mt-3">
-						<OrgList data={updateData?.selectedOrgList || []} />
+						<OrgList data={updateData?.templateOrganizationsDtoList || []} />
 						{/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
 					</div>
 				</div>
