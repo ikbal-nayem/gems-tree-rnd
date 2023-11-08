@@ -1,15 +1,14 @@
 import { LABELS } from "@constants/common.constant";
-import { Autocomplete, Separator } from "@gems/components";
-import { IObject, debounce } from "@gems/utils";
+import { Separator, Autocomplete } from "@gems/components";
+import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useCallback, useRef } from "react";
 import OrgFromOrgtype from "./OrgFromOrgtype";
 import OrgList from "./SelectedOrgView";
 
 const initPayload = {
 	meta: {
 		page: 0,
-		limit: 50,
+		limit: 25,
 		sort: [{ order: "asc", field: "serialNo" }],
 	},
 	body: { searchKey: "" },
@@ -20,21 +19,14 @@ interface IOrganizations {
 }
 
 const Organizations = ({ formProps }: IOrganizations) => {
-	const prevOrg = useRef({ searchKey: null, orgList: [] });
 	const { setValue, getValues, watch } = formProps;
 
-	const getOrgList = useCallback(
-		debounce((searchKey, callback) => {
-			if (prevOrg.current.searchKey !== searchKey) {
-				initPayload.body = { searchKey };
-				OMSService.getOrganizationList(initPayload).then((resp) => {
-					prevOrg.current = { searchKey, orgList: resp?.body };
-					callback(resp?.body);
-				});
-			} else callback(prevOrg.current.orgList);
-		}),
-		[]
-	);
+	const getOrgList = (searchKey, callback) => {
+		initPayload.body = { searchKey };
+		OMSService.getOrganizationList(initPayload).then((resp) =>
+			callback(resp?.body)
+		);
+	};
 
 	const onOrgSelect = (selected: IObject, toggle: boolean = false) => {
 		const currentOrg = getValues("organizationList") || [];
