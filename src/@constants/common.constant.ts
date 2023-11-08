@@ -1,5 +1,5 @@
 export const META_TYPE = {
-	ORG_TYPE: "ORG_TYPE",
+  ORG_TYPE: "ORG_TYPE",
 };
 
 export const COMMON_LABELS = {
@@ -17,6 +17,7 @@ export const COMMON_LABELS = {
   CANCEL: "বাতিল করুন",
   SAVE: "সংরক্ষণ করুন",
   SEND_BACK: "ফেরত পাঠান",
+  CONFIRM: "নিশ্চিত করুন",
 
   // ========= Others =============
   ACTIVE_STATUS: "প্রকৃতি",

@@ -115,27 +115,41 @@ const TemplateViewComponent = ({
           </div>
         </div>
       </div>
-      <ACLWrapper visibleToRoles={[ROLES.OFFICE_ADMIN, ROLES.APPROVER]}>
-        <div className="d-flex justify-content-center gap-8 mt-12">
-          <Button
-            className="rounded-pill fw-bold pe-8"
-            color="danger"
-            onClick={() => null}
-          >
-            <Icon icon="arrow_back" className="fw-bold me-2" />
-            <span> {COMN_LABELS.SEND_BACK} </span>
-          </Button>
 
+      {organogramView ? (
+        <ACLWrapper visibleToRoles={[ROLES.OFFICE_ADMIN, ROLES.APPROVER]}>
+          <div className="d-flex justify-content-center gap-8 mt-12">
+            <Button
+              className="rounded-pill fw-bold pe-8"
+              color="danger"
+              onClick={() => null}
+            >
+              <Icon icon="arrow_back" className="fw-bold me-2" />
+              <span> {COMN_LABELS.SEND_BACK} </span>
+            </Button>
+
+            <Button
+              className="rounded-pill px-8 fw-bold"
+              color="success"
+              onClick={() => null}
+            >
+              <span> {COMN_LABELS.APPROVE} </span>
+              <Icon icon="check" size={15} className="fw-bold ms-1" />
+            </Button>
+          </div>
+        </ACLWrapper>
+      ) : (
+        <div className="d-flex justify-content-center gap-8 mt-12">
           <Button
             className="rounded-pill px-8 fw-bold"
             color="success"
             onClick={() => null}
           >
-            <span> {COMN_LABELS.APPROVE} </span>
+            <span> {COMN_LABELS.CONFIRM} </span>
             <Icon icon="check" size={15} className="fw-bold ms-1" />
           </Button>
         </div>
-      </ACLWrapper>
+      )}
     </div>
   );
 };
