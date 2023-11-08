@@ -49,12 +49,12 @@ const OrganogramViewComponent = ({
           <div className="col-6">
             <Label className="fs-3 fw-bolder mb-0">টেমপ্লেট</Label>
           </div>
-          <div className="col-6 d-flex justify-content-end">
+          {/* <div className="col-6 d-flex justify-content-end">
             <Label className="mb-0 text-info">
               <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
               {updateData?.versionBn || COMMON_LABELS.NOT_ASSIGN}
             </Label>
-          </div>
+          </div> */}
         </div>
 
         <Separator className="mt-1 mb-2" />
@@ -66,6 +66,16 @@ const OrganogramViewComponent = ({
           <div className="col-md-6 col-12">
             <p className="fs-6 fw-bolder mb-0">{LABEL.TEMPLATE_TITLE_EN}: </p>
             <p>{updateData?.titleEn || COMMON_LABELS.NOT_ASSIGN}</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6 col-12">
+            <p className="fs-6 fw-bolder mb-0">{LABEL.VERSION + ' (বাংলা)'}: </p>
+            <p>{updateData?.versionBn || COMMON_LABELS.NOT_ASSIGN}</p>
+          </div>
+          <div className="col-md-6 col-12">
+            <p className="fs-6 fw-bolder mb-0">{LABEL.VERSION + ' (ইংরেজি)'}: </p>
+            <p>{updateData?.versionEn || COMMON_LABELS.NOT_ASSIGN}</p>
           </div>
         </div>
       </div>
