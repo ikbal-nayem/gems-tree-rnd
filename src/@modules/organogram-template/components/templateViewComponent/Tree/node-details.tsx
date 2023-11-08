@@ -1,4 +1,4 @@
-import { COMMON_LABELS } from "@constants/common.constant";
+import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import {
   Button,
   Modal,
@@ -17,11 +17,12 @@ interface ICard {
 
 const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
   const list = data?.postFunctionalityList;
-  const LABELS = isEn ? COMMON_LABELS.EN : COMMON_LABELS;
+  const COM_LABELS = isEn ? COMMON_LABELS.EN : COMMON_LABELS;
+  const LABEL = isEn ? LABELS.EN : LABELS.BN;
 
   return (
     <Modal
-      title={isEn ? "Job Responsibility" : "কার্যাবলি"}
+      title={LABEL.ACTIVITIES}
       isOpen={isOpen}
       handleClose={onClose}
       holdOn
@@ -40,7 +41,7 @@ const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
                 );
               })
             ) : (
-              <NoData details={LABELS.NOT_ASSIGN} />
+              <NoData details={COM_LABELS.NOT_ASSIGN} />
             )}
           </ol>
         </div>
@@ -49,7 +50,7 @@ const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
       <ModalFooter>
         <div className="d-flex gap-3 justify-content-end">
           <Button color="secondary" onClick={onClose}>
-            {LABELS.CLOSE}
+            {COM_LABELS.CLOSE}
           </Button>
         </div>
       </ModalFooter>

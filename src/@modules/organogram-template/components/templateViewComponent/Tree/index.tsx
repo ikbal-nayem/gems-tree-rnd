@@ -36,7 +36,7 @@ const OrganizationTemplateTree = ({ treeData }: IOrganizationTemplateTree) => {
         datasource={treeData}
         chartClass="myChart"
         NodeTemplate={({ nodeData }) => (
-          <MyNode nodeData={nodeData} postList={postList} onView={onView} />
+          <MyNode isEn={isEn} nodeData={nodeData} postList={postList} onView={onView} />
         )}
       />
       <NodeDetails isEn={isEn} data={selectedNode.current} isOpen={formOpen} onClose={onFormClose} />

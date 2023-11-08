@@ -1,8 +1,10 @@
 import { COMMON_LABELS } from "@gems/utils";
 import "./my-node.css";
 import { Icon } from "@gems/components";
+import { LABELS } from "@constants/common.constant";
 
-const MyNode = ({ nodeData, postList, onView }) => {
+const MyNode = ({ isEn, nodeData, postList, onView }) => {
+  const LABEL = isEn ? LABELS.EN : LABELS.BN;
   return (
     <div>
       <div className="position rounded">
@@ -14,6 +16,7 @@ const MyNode = ({ nodeData, postList, onView }) => {
             <div className="d-flex justify-content-end">
               <Icon
                 icon="visibility"
+                hoverTitle={LABEL.ACTIVITIES}
                 size={20}
                 color="primary"
                 onClick={() => onView(nodeData)}
