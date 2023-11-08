@@ -79,10 +79,10 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem>
-                  {/* <DropdownItem onClick={() => onClone(item?.id)}>
+                  <DropdownItem onClick={() => onClone(item?.id)}>
                     <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
-                  </DropdownItem> */}
+                  </DropdownItem>
                   <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
