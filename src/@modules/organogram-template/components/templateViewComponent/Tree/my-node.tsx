@@ -1,19 +1,27 @@
-// import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import { COMMON_LABELS } from "@gems/utils";
 import "./my-node.css";
-// import { Dropdown, DropdownItem } from "../Dropdown";
-// import { Button, Modal } from "react-bootstrap";
-// const propTypes = {
-//   nodeData: PropTypes.object.isRequired
-// };
+import { Icon } from "@gems/components";
 
-const MyNode = ({ nodeData, postList }) => {
+const MyNode = ({ nodeData, postList, onView }) => {
   return (
     <div>
       <div className="position rounded">
-        <div className="d-flex justify-content-center">
+        <div className="row">
+          <div className="col-11 d-flex justify-content-center">
             <h5 className="p-1 mb-0">{nodeData.titleBn}</h5>
+          </div>
+          <div className="col-1 d-flex justify-content-end">
+            <div className="d-flex justify-content-end">
+              <Icon
+                icon="visibility"
+                size={20}
+                color="primary"
+                onClick={() => onView(nodeData)}
+              />
+            </div>
+          </div>
         </div>
+
         <div
           className={`bg-light text-start ${
             nodeData?.manpowerList?.length ? "p-3" : ""

@@ -1,8 +1,9 @@
 import OrganizationChart from "@dabeng/react-orgchart";
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MyNode from "./my-node";
+import NodeDetails from "./node-details";
 
 interface IOrganizationTemplateTree {
   treeData: IObject;
@@ -10,55 +11,36 @@ interface IOrganizationTemplateTree {
 
 const OrganizationTemplateTree = ({ treeData }: IOrganizationTemplateTree) => {
   const [postList, setPostist] = useState<IObject[]>([]);
+  const [formOpen, setFormOpen] = useState<boolean>(false);
+  const selectedNode = useRef<IObject>(null);
+  const isEn = false;
 
   useEffect(() => {
     OMSService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
+  const onView = (data: IObject) => {
+    selectedNode.current = data;
+    setFormOpen(true);
+  };
+
+  const onFormClose = () => {
+    selectedNode.current = null;
+    setFormOpen(false);
+  };
+
   return (
-    <div>
-      {/* <section className="toolbar">
-        <label htmlFor="txt-filename">Filename:</label>
-        <input
-          id="txt-filename"
-          type="text"
-          value={filename}
-          onChange={onNameChange}
-          style={{ fontSize: "1rem", marginRight: "2rem" }}
-        />
-        <span>Fileextension: </span>
-        <input
-          id="rd-png"
-          type="radio"
-          value="png"
-          checked={fileextension === "png"}
-          onChange={onExtensionChange}
-        />
-        <label htmlFor="rd-png">png</label>
-        <input
-          style={{ marginLeft: "1rem" }}
-          id="rd-pdf"
-          type="radio"
-          value="pdf"
-          checked={fileextension === "pdf"}
-          onChange={onExtensionChange}
-        />
-        <label htmlFor="rd-pdf">pdf</label>
-        <button onClick={exportTot} style={{ marginLeft: "2rem" }}>
-          Export
-        </button>
-      </section> */}
-      <div>
-        <OrganizationChart
-          // ref={orgchart}
-          datasource={treeData}
-          chartClass="myChart"
-          NodeTemplate={({ nodeData }) => (
-            <MyNode nodeData={nodeData} postList={postList} />
-          )}
-        />
-      </div>
-    </div>
+    <>
+      <OrganizationChart
+        // ref={orgchart}
+        datasource={treeData}
+        chartClass="myChart"
+        NodeTemplate={({ nodeData }) => (
+          <MyNode nodeData={nodeData} postList={postList} onView={onView} />
+        )}
+      />
+      <NodeDetails isEn={isEn} data={selectedNode.current} isOpen={formOpen} onClose={onFormClose} />
+    </>
   );
 };
 
