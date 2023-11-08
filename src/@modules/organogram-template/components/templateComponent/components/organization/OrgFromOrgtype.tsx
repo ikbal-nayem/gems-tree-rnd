@@ -1,10 +1,12 @@
 import { META_TYPE } from "@constants/common.constant";
 import {
 	Autocomplete,
+	Checkbox,
 	ContentPreloader,
 	Icon,
 	Modal,
 	ModalBody,
+	ModalHeader,
 	NoData,
 	topProgress,
 } from "@gems/components";
@@ -14,7 +16,7 @@ import { OMSService } from "@services/api/OMS.service";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 
-const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect }) => {
+const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect, onMultiOrgSelect }) => {
 	const [isOpen, setOpen] = useState<boolean>(false);
 	const [orgTypes, setOrgTypes] = useState<IObject[]>();
 	const [orgListFormType, setOrgListFromType] = useState<IObject[]>();
@@ -57,12 +59,24 @@ const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect }) => {
 				name="orgType"
 				onChange={onOrgTypeChoose}
 			/>
-			<Modal
-				title={orgType.current?.titleBn}
-				isOpen={isOpen}
-				handleClose={onModalClose}
-				scrollBody
-			>
+			<Modal noHeader isOpen={isOpen} scrollBody>
+				<ModalHeader
+					title={
+						<div className="d-flex">
+							{!!orgListFormType?.length && (
+								<Checkbox
+									noMargin
+									checked={selectedOrgList?.length === orgListFormType?.length}
+									onChange={(e) =>
+										onMultiOrgSelect(orgListFormType, e.target.checked)
+									}
+								/>
+							)}
+							&nbsp;<h2 className="m-0">{orgType.current?.titleBn}</h2>
+						</div>
+					}
+					handleClose={onModalClose}
+				/>
 				<ModalBody className="min-h-200px p-0">
 					<ul className="list-group list-group-flush">
 						{orgListFormType?.map((org) => {

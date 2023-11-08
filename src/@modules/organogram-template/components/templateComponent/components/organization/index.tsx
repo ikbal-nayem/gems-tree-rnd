@@ -36,6 +36,16 @@ const Organizations = ({ formProps }: IOrganizations) => {
 		setValue("templateOrganizationsDtoList", [...currentOrg]);
 	};
 
+	const onMultiOrgSelect = (selected: IObject[], isAdd: boolean) => {
+		const currentOrg = getValues("templateOrganizationsDtoList") || [];
+		selected?.forEach((s) => {
+			const cIdx = currentOrg?.findIndex((co) => co?.id === s?.id);
+			if (cIdx < 0 && isAdd) currentOrg.push(s);
+			else if (cIdx >= 0 && !isAdd) currentOrg.splice(cIdx, 1);
+		});
+		setValue("templateOrganizationsDtoList", [...currentOrg]);
+	};
+
 	const onOrgCancle = (idx) => {
 		const currentOrg = getValues("templateOrganizationsDtoList") || [];
 		currentOrg?.splice(idx, 1);
@@ -55,6 +65,7 @@ const Organizations = ({ formProps }: IOrganizations) => {
 					<OrgFromOrgtype
 						selectedOrgList={selectedOrgList}
 						onOrgSelect={onOrgSelect}
+						onMultiOrgSelect={onMultiOrgSelect}
 					/>
 				</div>
 				<div className="col-md-6">
