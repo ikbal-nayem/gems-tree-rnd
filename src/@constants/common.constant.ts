@@ -18,6 +18,7 @@ export const COMMON_LABELS = {
   SAVE: "সংরক্ষণ করুন",
   SEND_BACK: "ফেরত পাঠান",
   CLOSE: "বন্ধ করুন",
+  CONFIRM: "নিশ্চিত করুন",
 
   // ========= Others =============
   ACTIVE_STATUS: "প্রকৃতি",
@@ -46,6 +47,7 @@ export const COMMON_LABELS = {
     SAVE: "Save",
     SEND_BACK: "Send Back",
     CLOSE: "Close",
+    CONFIRM: "Confirm",
 
     // ========= Others =============
     ACTIVE_STATUS: "Actice Status",

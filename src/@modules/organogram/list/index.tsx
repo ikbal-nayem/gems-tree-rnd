@@ -79,6 +79,10 @@ const TemplateList = () => {
       });
   };
 
+  const onPageChanged = (metaParams: IMeta) => {
+    getDataList({ ...metaParams });
+  };
+
   // const getXLSXStoreList = (reqMeta = null) => {
   //   const payload = {
   //     meta: reqMeta ? { ...reqMeta } : { ...respMeta, page: 0, sort: null },
@@ -150,7 +154,11 @@ const TemplateList = () => {
             respMeta={respMeta}
             isLoading={isLoading}
           >
-            <Pagination meta={respMeta} pageNeighbours={2} setSearchParams />
+            <Pagination
+              meta={respMeta}
+              pageNeighbours={2}
+              onPageChanged={onPageChanged}
+            />
           </TemplateTable>
         </div>
 
