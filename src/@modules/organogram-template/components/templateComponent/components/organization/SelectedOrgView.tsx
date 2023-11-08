@@ -10,7 +10,7 @@ const OrgList = ({ selectedOrgList, onOrgCancle }) => {
 						className="border rounded px-3 py-1 d-flex gap-2 justify-content-between align-items-center bg-light"
 						key={org?.id}
 					>
-						{`${numEnToBn(i + 1)}. ${org?.nameBn}`}
+						{`${numEnToBn(i + 1)}. ${org?.nameBn || org?.organizationNameBn}`}
 						<Icon
 							icon="close"
 							size={15}

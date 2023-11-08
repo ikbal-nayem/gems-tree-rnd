@@ -73,6 +73,7 @@ const TemplateComponent = ({
 				businessAllocationDtoList: updateData?.businessAllocationDtoList,
 				attachmentDtoList: updateData?.attachmentDtoList,
 				inventoryDtoList: updateData?.inventoryDtoList,
+				templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
 				miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
 			});
 		}
@@ -132,7 +133,11 @@ const TemplateComponent = ({
 		}
 
 		data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
-			(d) => ({ id: d?.id, nameEn: d?.nameEn, nameBn: d?.nameBn })
+			(d) => ({
+				organizationId: d?.id,
+				organizationNameEn: d?.nameEn,
+				organizationNameBn: d?.nameBn,
+			})
 		);
 
 		const reqPayload = {

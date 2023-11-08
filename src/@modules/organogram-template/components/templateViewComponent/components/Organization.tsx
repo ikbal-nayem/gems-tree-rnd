@@ -15,7 +15,7 @@ const OrgList = ({ data }) => {
 						className="border rounded px-3 py-1 d-flex gap-2 bg-light"
 						key={org?.id}
 					>
-						{`${numEnToBn(i + 1)}. ${org?.nameBn}`}
+						{`${numEnToBn(i + 1)}. ${org?.organizationNameBn}`}
 					</div>
 				))}
 			</div>

@@ -53,6 +53,8 @@ const Organizations = ({ formProps }: IOrganizations) => {
 	};
 
 	const selectedOrgList = watch("templateOrganizationsDtoList");
+	console.log(getValues());
+	
 
 	return (
 		<div className="card border p-3">
