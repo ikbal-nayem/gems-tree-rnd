@@ -47,42 +47,23 @@ const TemplateViewComponent = ({
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   return (
     <div>
-      <div className="border border-secondary mb-3">
-        <OrganizationTemplateTree treeData={treeData} />
-      </div>
-      <div className="card col-md-6 border p-3 mb-4">
-        <div className="row">
-          <div className="col-6">
-            <Label className="fs-3 fw-bolder mb-0">
-              {organogramView ? "অর্গানোগ্রাম" : "টেমপ্লেট"}
-            </Label>
-          </div>
-          <div className="col-6 d-flex justify-content-end">
-            <Label className="mb-0 text-info">
-              <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
-              {updateData?.versionBn || COMMON_LABELS.NOT_ASSIGN}
-            </Label>
-          </div>
-        </div>
+      <div className="card col-12 border p-3 mb-4">
         {!organogramView && (
           <>
-            <Separator className="mt-1 mb-2" />
-            <div className="row">
-              <div className="col-md-6 col-12">
-                <p className="fs-6 fw-bolder mb-0">
-                  {LABEL.TEMPLATE_TITLE_BN}:{" "}
-                </p>
-                <p>{updateData?.titleBn || COMMON_LABELS.NOT_ASSIGN}</p>
-              </div>
-              <div className="col-md-6 col-12">
-                <p className="fs-6 fw-bolder mb-0">
-                  {LABEL.TEMPLATE_TITLE_EN}:{" "}
-                </p>
-                <p>{updateData?.titleEn || COMMON_LABELS.NOT_ASSIGN}</p>
-              </div>
+            <div className="d-flex justify-content-center fs-3 fw-bolder mb-0">
+              {LABEL.TITLE}  : &nbsp; {updateData?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+            </div>
+            <div className="d-flex justify-content-center fw-bolder mb-0">
+              <Label className="mb-0 text-info">
+                <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
+                {updateData?.versionBn || COMMON_LABELS.NOT_ASSIGN}
+              </Label>
             </div>
           </>
         )}
+      </div>
+      <div className="border border-secondary mb-3">
+        <OrganizationTemplateTree treeData={treeData} />
       </div>
       <div className="row">
         <div className="col-md-6">

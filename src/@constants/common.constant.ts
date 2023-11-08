@@ -28,6 +28,7 @@ export const COMMON_LABELS = {
   NUMERIC_ONLY: "শুধুমাত্র সংখ্যা লিখুন",
   EN_ONLY: "ইংরেজিতে লিখুন",
   BN_ONLY: "বাংলায় লিখুন",
+  TITLE: "শিরোনাম",
 
   // ===========================================================================================
 
@@ -57,6 +58,7 @@ export const COMMON_LABELS = {
     NUMERIC_ONLY: "Numeric Entry Only",
     EN_ONLY: "English Only",
     BN_ONLY: "Bangla Only",
+    TITLE: "Title",
   },
 };
 
@@ -64,6 +66,7 @@ export const LABELS = {
   EN: {
     ACTIVITIES: "Activities",
     MANPOWER: "Manpower",
+    TITLE: "Title",
     TEMPLATE_TITLE_BN: "Title (Bn)",
     TEMPLATE_TITLE_EN: "Title (En)",
     VERSION: "Version",
@@ -83,6 +86,7 @@ export const LABELS = {
   BN: {
     ACTIVITIES: "কার্যাবলি",
     MANPOWER: "কর্মকর্তা",
+    TITLE: "শিরোনাম",
     TEMPLATE_TITLE_BN: "শিরোনাম (বাংলা)",
     TEMPLATE_TITLE_EN: "শিরোনাম (ইংরেজি)",
     VERSION: "ভার্শন",
