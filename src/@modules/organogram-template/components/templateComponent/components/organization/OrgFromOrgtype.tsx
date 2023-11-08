@@ -66,7 +66,9 @@ const OrgFromOrgtype = ({ selectedOrgList, onOrgSelect, onMultiOrgSelect }) => {
 							{!!orgListFormType?.length && (
 								<Checkbox
 									noMargin
-									checked={selectedOrgList?.length === orgListFormType?.length}
+									checked={orgListFormType.every((c) =>
+										selectedOrgList?.some((l) => l.id === c.id)
+									)}
 									onChange={(e) =>
 										onMultiOrgSelect(orgListFormType, e.target.checked)
 									}
