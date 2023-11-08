@@ -11,9 +11,9 @@ import { LABELS } from "../../../../@constants/common.constant";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
-import CheckListList from "./components/CheckListList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
+import OrgList from "./components/SelectedOrganization";
 
 interface IOrganogramViewComponent {
   updateData?: IObject;
@@ -80,7 +80,8 @@ const OrganogramViewComponent = ({
             />
           </div>
           <div className="mt-3">
-            <CheckListList data={updateData?.attachmentDtoList || []} />
+            <OrgList data={updateData?.selectedOrgList || []} />
+            {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
           </div>
         </div>
         <div className="col-md-6">

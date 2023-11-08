@@ -18,16 +18,14 @@ const tabs = [
     label: "অর্গানোগ্রাম",
     key: "ORGANOGRAM",
   },
-  {
-    label: "জনবল",
-    key: "Manpower",
-  },
 ];
 
 const OrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
   const [searchParam, setSearchParam] = useSearchParams();
+  const [inventoryData, setInventoryData] = useState<IObject[]>([]);
+  const [manpowerData, setManpowerData] = useState<IObject>();
 
   const organogramId = searchParam.get("id") || "";
 
@@ -44,6 +42,8 @@ const OrganogramView = () => {
 
   useEffect(() => {
     getTemplateDetailsDetailsById();
+    getTemplateInventoryById();
+    getManpowerSummaryById();
   }, []);
 
   const getTemplateDetailsDetailsById = () => {
@@ -51,6 +51,26 @@ const OrganogramView = () => {
     OMSService.getOrganogramDetailsByOrganogramId(organogramId)
       .then((resp) => {
         setData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getTemplateInventoryById = () => {
+    setIsLoading(true);
+    OMSService.getTemplateInventoryByTemplateId(organogramId)
+      .then((resp) => {
+        setInventoryData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getManpowerSummaryById = () => {
+    setIsLoading(true);
+    OMSService.getTemplateManpowerSummaryById(organogramId)
+      .then((resp) => {
+        setManpowerData(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -73,10 +93,9 @@ const OrganogramView = () => {
             <TabBlock index={0} activeIndex={activeTab}>
               <OrganogramViewComponent
                 updateData={data}
+                inventoryData={inventoryData}
+                manpowerData={manpowerData}
               />
-            </TabBlock>
-            <TabBlock index={1} activeIndex={activeTab}>
-              Manpower
             </TabBlock>
           </div>
         </div>

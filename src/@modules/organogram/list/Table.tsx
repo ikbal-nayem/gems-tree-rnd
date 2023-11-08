@@ -30,7 +30,6 @@ const OrganogramTable: FC<TableProps> = ({
 }) => {
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
-    { title: LABELS.NAME, width: 250 },
     { title: LABELS.ORGANIZATION_NAME, width: 250 },
     { title: LABELS.VERSION, width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
@@ -51,10 +50,6 @@ const OrganogramTable: FC<TableProps> = ({
           {dataList?.map((item, idx) => (
             <TableRow key={idx}>
               <TableCell text={generateRowNumBn(idx, respMeta)} />
-              <TableCell
-                text={item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
-              />
               <TableCell
                 text={item?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
                 subText={item?.organization?.nameEn || COMMON_LABELS.NOT_ASSIGN}
