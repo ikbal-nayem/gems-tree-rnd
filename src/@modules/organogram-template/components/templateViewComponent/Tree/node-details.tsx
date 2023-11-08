@@ -1,12 +1,12 @@
+import { COMMON_LABELS } from "@constants/common.constant";
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalFooter,
   NoData,
 } from "@gems/components";
-import { COMMON_LABELS, IObject } from "@gems/utils";
+import { IObject } from "@gems/utils";
 
 interface ICard {
   isEn: any;
@@ -17,6 +17,8 @@ interface ICard {
 
 const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
   const list = data?.postFunctionalityList;
+  const LABELS = isEn ? COMMON_LABELS.EN : COMMON_LABELS;
+
   return (
     <Modal
       title={isEn ? "Job Responsibility" : "কার্যাবলি"}
@@ -27,7 +29,7 @@ const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
     >
       <ModalBody>
         <div className="p-2">
-          <ol className="bn_ol">
+          <ol className={isEn ? "" : "bn_ol"}>
             {list?.length > 0 ? (
               list?.map((item, i) => {
                 return (
@@ -38,7 +40,7 @@ const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
                 );
               })
             ) : (
-              <NoData details={isEn ? "No Info" : COMMON_LABELS.NOT_ASSIGN} />
+              <NoData details={LABELS.NOT_ASSIGN} />
             )}
           </ol>
         </div>
@@ -47,7 +49,7 @@ const NodeDetails = ({ isEn, data, isOpen, onClose }: ICard) => {
       <ModalFooter>
         <div className="d-flex gap-3 justify-content-end">
           <Button color="secondary" onClick={onClose}>
-            {COMMON_LABELS.CLOSE}
+            {LABELS.CLOSE}
           </Button>
         </div>
       </ModalFooter>

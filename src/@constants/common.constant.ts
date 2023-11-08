@@ -1,5 +1,5 @@
 export const META_TYPE = {
-	ORG_TYPE: "ORG_TYPE",
+  ORG_TYPE: "ORG_TYPE",
 };
 
 export const COMMON_LABELS = {
@@ -17,6 +17,7 @@ export const COMMON_LABELS = {
   CANCEL: "বাতিল করুন",
   SAVE: "সংরক্ষণ করুন",
   SEND_BACK: "ফেরত পাঠান",
+  CLOSE: "বন্ধ করুন",
 
   // ========= Others =============
   ACTIVE_STATUS: "প্রকৃতি",
@@ -26,6 +27,35 @@ export const COMMON_LABELS = {
   NUMERIC_ONLY: "শুধুমাত্র সংখ্যা লিখুন",
   EN_ONLY: "ইংরেজিতে লিখুন",
   BN_ONLY: "বাংলায় লিখুন",
+
+  // ===========================================================================================
+
+  EN: {
+    // ======== Column Header =======
+    ACTION: "Action",
+    SL_NO: "Sl no",
+
+    // ============ Table Action Button =============
+    DETAILS: "Details",
+    EDIT: "Edit",
+    DELETE: "Delete",
+
+    // ========= Form Button =============
+    APPROVE: "Approve",
+    CANCEL: "Cancel",
+    SAVE: "Save",
+    SEND_BACK: "Send Back",
+    CLOSE: "Close",
+
+    // ========= Others =============
+    ACTIVE_STATUS: "Actice Status",
+    ACTIVE: "Active",
+    INACTIVE: "Inactive",
+    NOT_ASSIGN: "No Info",
+    NUMERIC_ONLY: "Numeric Entry Only",
+    EN_ONLY: "English Only",
+    BN_ONLY: "Bangla Only",
+  },
 };
 
 export const LABELS = {
