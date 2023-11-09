@@ -2,7 +2,7 @@ export const LOCAL_LABELS = {
 	BN:{
 		NAME_OF_POSTS:'পদবি',
 		NO_OF_POSTS:'লোকবল',
-		Total:'মোট',
+		TOTAL:'মোট',
 		GRAND_TOTAL:'সর্বমোট',
 	},
 

@@ -1,4 +1,11 @@
-import { ACLWrapper, Button, Icon, Label, Separator } from "@gems/components";
+import {
+  ACLWrapper,
+  Button,
+  Icon,
+  Label,
+  Separator,
+  Switch,
+} from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -18,6 +25,7 @@ import {
   COMMON_LABELS as COMN_LABELS,
 } from "@constants/common.constant";
 import OrgList from "./components/Organization";
+import { useState } from "react";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -43,7 +51,11 @@ const TemplateViewComponent = ({
           children: [],
         };
 
-  const langEn = false;
+  const [langEn, setLangEn] = useState<boolean>(false);
+
+  const switchLang = () => {
+    setLangEn(!langEn);
+  };
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   return (
     <div>
@@ -51,13 +63,24 @@ const TemplateViewComponent = ({
         {!organogramView && (
           <>
             <div className="d-flex justify-content-center fs-3 fw-bolder mb-0">
-              {LABEL.TITLE}  : &nbsp; {updateData?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+              {LABEL.TITLE} : &nbsp;{" "}
+              {(langEn ? updateData?.titleEn : updateData?.titleBn) ||
+                COMMON_LABELS.NOT_ASSIGN}
             </div>
             <div className="d-flex justify-content-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
                 <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
-                {updateData?.versionBn || COMMON_LABELS.NOT_ASSIGN}
+                {(langEn ? updateData?.versionEn : updateData?.versionBn) ||
+                  COMMON_LABELS.NOT_ASSIGN}
               </Label>
+            </div>
+            <div className="position-absolute p-6" style={{ top: 0, right: 0 }}>
+              <Switch
+                label={langEn ? "বাংলা" : "English"}
+                onChange={switchLang}
+                className="gap-4 fw-bold text-gray-800 cursor-pointer"
+                noMargin
+              />
             </div>
           </>
         )}
@@ -67,17 +90,24 @@ const TemplateViewComponent = ({
       </div>
       <div className="row">
         <div className="col-md-6">
-          <ActivitiesList data={updateData?.mainActivitiesDtoList || []} />
+          <ActivitiesList
+            data={updateData?.mainActivitiesDtoList || []}
+            langEn={langEn}
+          />
 
           <div className="mt-3">
             <EquipmentsList
               data={updateData?.miscellaneousPointDtoList || []}
               inventoryData={inventoryData || []}
+              langEn={langEn}
             />
           </div>
           {!organogramView && (
             <div className="mt-3">
-              <OrgList data={updateData?.templateOrganizationsDtoList || []} />
+              <OrgList
+                data={updateData?.templateOrganizationsDtoList || []}
+                langEn={langEn}
+              />
               {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
             </div>
           )}
@@ -86,13 +116,21 @@ const TemplateViewComponent = ({
           <div className="mt-md-0 mt-3">
             <AllocationOfBusinessList
               data={updateData?.businessAllocationDtoList || []}
+              langEn={langEn}
             />
           </div>
           <div className="mt-3">
-            <ManPowerList isLoading={false} data={manpowerData} />
+            <ManPowerList
+              isLoading={false}
+              data={manpowerData}
+              langEn={langEn}
+            />
           </div>
           <div className="mt-3">
-            <AbbreviationList data={updateData?.abbreviationDtoList || []} />
+            <AbbreviationList
+              data={updateData?.abbreviationDtoList || []}
+              langEn={langEn}
+            />
           </div>
         </div>
       </div>

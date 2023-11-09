@@ -15,18 +15,21 @@ import { LOCAL_LABELS } from "./labels";
 type TableProps = {
   data: any;
   isLoading: boolean;
+  langEn: boolean;
 };
 
-const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
+const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
+  const LABEL = langEn ? LABELS.EN : LABELS.BN;
+  const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
   const columns: ITableHeadColumn[] = [
-    { title: LOCAL_LABELS.BN.NAME_OF_POSTS, width: 50 },
-    { title: LOCAL_LABELS.BN.NO_OF_POSTS, width: 80, align: "end" },
+    { title: LOCAL_LABEL.NAME_OF_POSTS, width: 50 },
+    { title: LOCAL_LABEL.NO_OF_POSTS, width: 80, align: "end" },
   ];
 
   let idx = 1000; // lets take a common index for both parent-child list
   return (
     <div className="card border p-3">
-      <h4 className="m-0">{LABELS.BN.SUM_OF_MANPOWER}</h4>
+      <h4 className="m-0">{LABEL.SUM_OF_MANPOWER}</h4>
       <Separator className="mt-1 mb-0" />
       {data?.classDtoList?.length ? (
         <Table columns={columns}>
@@ -47,27 +50,40 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
                       />
                       <TableCell
                         textAlign="end"
-                        text={numEnToBn(itr?.manpower) || COMMON_LABELS.NOT_ASSIGN}
+                        text={
+                          numEnToBn(itr?.manpower) || COMMON_LABELS.NOT_ASSIGN
+                        }
                       />
                     </TableRow>
                   ))}
                   <TableRow key={idx++}>
-                    <TableCell textClassName="fw-bold fs-4 mb-3" text={LOCAL_LABELS.BN.Total} />
+                    <TableCell
+                      textClassName="fw-bold fs-4 mb-3"
+                      text={LOCAL_LABEL.TOTAL}
+                    />
                     <TableCell
                       textAlign="end"
                       textClassName="fw-bold fs-4 mb-3"
-                      text={numEnToBn(classs?.totalClassManpower) || COMMON_LABELS.NOT_ASSIGN}
+                      text={
+                        numEnToBn(classs?.totalClassManpower) ||
+                        COMMON_LABELS.NOT_ASSIGN
+                      }
                     />
                   </TableRow>
                 </Fragment>
               );
             })}
             <TableRow key={idx++}>
-              <TableCell textClassName="fw-bold fs-3" text={LOCAL_LABELS.BN.GRAND_TOTAL} />
+              <TableCell
+                textClassName="fw-bold fs-3"
+                text={LOCAL_LABEL.GRAND_TOTAL}
+              />
               <TableCell
                 textAlign="end"
                 textClassName="fw-bold fs-3"
-                text={numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN}
+                text={
+                  numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
+                }
               />
             </TableRow>
             <TableRow key={idx++}>
@@ -79,7 +95,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading }) => {
         <ContentPreloader />
       ) : (
         <NoData
-          details={LABELS.BN.SUM_OF_MANPOWER + " এর কোনো তথ্য পাওয়া যায়নি!"}
+          details={LABEL.SUM_OF_MANPOWER + " এর কোনো তথ্য পাওয়া যায়নি!"}
         />
       )}
     </div>
