@@ -54,9 +54,13 @@ const TemplateViewComponent = ({
     <div>
       <div className="card col-12 border p-3 mb-4">
         <div className="d-flex justify-content-center fs-3 fw-bolder mb-0">
-          {LABEL.TITLE} : &nbsp;{" "}
-          {(langEn ? updateData?.titleEn : updateData?.titleBn) ||
-            COMMON_LABELS.NOT_ASSIGN}
+          {(organogramView
+            ? langEn
+              ? updateData?.organization?.nameEn
+              : updateData?.organization?.nameBn
+            : langEn
+            ? updateData?.titleEn
+            : updateData?.titleBn) || COMMON_LABELS.NOT_ASSIGN}
         </div>
         <div className="d-flex justify-content-center fw-bolder mb-0">
           <Label className="mb-0 text-info">
