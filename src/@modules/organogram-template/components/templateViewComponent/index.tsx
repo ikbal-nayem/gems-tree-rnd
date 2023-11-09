@@ -50,6 +50,8 @@ const TemplateViewComponent = ({
     setLangEn(!langEn);
   };
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
+  const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
+
   return (
     <div>
       <div className="card col-12 border p-3 mb-4">
@@ -137,7 +139,7 @@ const TemplateViewComponent = ({
               onClick={() => null}
             >
               <Icon icon="arrow_back" className="fw-bold me-2" />
-              <span> {COMN_LABELS.SEND_BACK} </span>
+              <span> {BTN_LABELS.SEND_BACK} </span>
             </Button>
 
             <Button
@@ -145,7 +147,7 @@ const TemplateViewComponent = ({
               color="success"
               onClick={() => null}
             >
-              <span> {COMN_LABELS.APPROVE} </span>
+              <span> {BTN_LABELS.APPROVE} </span>
               <Icon icon="check" size={15} className="fw-bold ms-1" />
             </Button>
           </div>
@@ -157,7 +159,7 @@ const TemplateViewComponent = ({
             color="success"
             onClick={() => null}
           >
-            <span> {COMN_LABELS.CONFIRM} </span>
+            <span> {BTN_LABELS.CONFIRM} </span>
             <Icon icon="check" size={15} className="fw-bold ms-1" />
           </Button>
         </div>
