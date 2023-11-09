@@ -53,30 +53,26 @@ const TemplateViewComponent = ({
   return (
     <div>
       <div className="card col-12 border p-3 mb-4">
-        {!organogramView && (
-          <>
-            <div className="d-flex justify-content-center fs-3 fw-bolder mb-0">
-              {LABEL.TITLE} : &nbsp;{" "}
-              {(langEn ? updateData?.titleEn : updateData?.titleBn) ||
-                COMMON_LABELS.NOT_ASSIGN}
-            </div>
-            <div className="d-flex justify-content-center fw-bolder mb-0">
-              <Label className="mb-0 text-info">
-                <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
-                {(langEn ? updateData?.versionEn : updateData?.versionBn) ||
-                  COMMON_LABELS.NOT_ASSIGN}
-              </Label>
-            </div>
-            <div className="position-absolute p-6" style={{ top: 0, right: 0 }}>
-              <Switch
-                label={langEn ? "বাংলা" : "English"}
-                onChange={switchLang}
-                className="gap-4 fw-bold text-gray-800 cursor-pointer"
-                noMargin
-              />
-            </div>
-          </>
-        )}
+        <div className="d-flex justify-content-center fs-3 fw-bolder mb-0">
+          {LABEL.TITLE} : &nbsp;{" "}
+          {(langEn ? updateData?.titleEn : updateData?.titleBn) ||
+            COMMON_LABELS.NOT_ASSIGN}
+        </div>
+        <div className="d-flex justify-content-center fw-bolder mb-0">
+          <Label className="mb-0 text-info">
+            <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
+            {(langEn ? updateData?.versionEn : updateData?.versionBn) ||
+              COMMON_LABELS.NOT_ASSIGN}
+          </Label>
+        </div>
+        <div className="position-absolute p-6" style={{ top: 0, right: 0 }}>
+          <Switch
+            label={langEn ? "বাংলা" : "English"}
+            onChange={switchLang}
+            className="gap-4 fw-bold text-gray-800 cursor-pointer"
+            noMargin
+          />
+        </div>
       </div>
       <div className="border border-secondary mb-3">
         <OrganizationTemplateTree treeData={treeData} langEn={langEn} />

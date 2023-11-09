@@ -19,25 +19,21 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
 
   return (
     <div className="position rounded">
-      <div className="row ms-2">
-        <div className="col-1 d-flex justify-content-end">
-          <Icon
-            icon="visibility"
-            hoverTitle={LABEL.ACTIVITIES}
-            size={20}
-            color="primary"
-            onClick={() => onView(nodeData)}
-          />
-        </div>
-        <div className="col-10 d-flex justify-content-center">
-          <h5 className="p-1 mb-0">
-            {langEn ? nodeData.titleEn : nodeData.titleBn}
-          </h5>
-        </div>
-        <div className="col-1 d-flex justify-content-end ">
-          <span className="border border-dark border-1 m-1 px-1 rounded">
+      <div className="d-flex justify-content-between">
+        <Icon
+          icon="visibility"
+          hoverTitle={LABEL.ACTIVITIES}
+          size={20}
+          color="primary"
+          onClick={() => onView(nodeData)}
+        />
+        <h5 className="p-1 mb-0">
+          {langEn ? nodeData.titleEn : nodeData.titleBn}
+        </h5>
+        <div>
+          <p className="border border-dark border-1 m-1 px-1 rounded">
             {manPower}
-          </span>
+          </p>
         </div>
       </div>
 
