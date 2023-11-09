@@ -7,13 +7,16 @@ import NodeDetails from "./node-details";
 
 interface IOrganizationTemplateTree {
   treeData: IObject;
+  langEn: boolean;
 }
 
-const OrganizationTemplateTree = ({ treeData }: IOrganizationTemplateTree) => {
+const OrganizationTemplateTree = ({
+  treeData,
+  langEn,
+}: IOrganizationTemplateTree) => {
   const [postList, setPostist] = useState<IObject[]>([]);
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const selectedNode = useRef<IObject>(null);
-  const isEn = false;
 
   useEffect(() => {
     OMSService.getPostList().then((resp) => setPostist(resp.body || []));
@@ -36,10 +39,20 @@ const OrganizationTemplateTree = ({ treeData }: IOrganizationTemplateTree) => {
         datasource={treeData}
         chartClass="myChart"
         NodeTemplate={({ nodeData }) => (
-          <MyNode isEn={isEn} nodeData={nodeData} postList={postList} onView={onView} />
+          <MyNode
+            langEn={langEn}
+            nodeData={nodeData}
+            postList={postList}
+            onView={onView}
+          />
         )}
       />
-      <NodeDetails isEn={isEn} data={selectedNode.current} isOpen={formOpen} onClose={onFormClose} />
+      <NodeDetails
+        isEn={langEn}
+        data={selectedNode.current}
+        isOpen={formOpen}
+        onClose={onFormClose}
+      />
     </>
   );
 };

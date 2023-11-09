@@ -86,7 +86,7 @@ const TemplateViewComponent = ({
         )}
       </div>
       <div className="border border-secondary mb-3">
-        <OrganizationTemplateTree treeData={treeData} />
+        <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
       </div>
       <div className="row">
         <div className="col-md-6">

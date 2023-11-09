@@ -3,12 +3,12 @@ import { Icon } from "@gems/components";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { numEnToBn } from "@gems/utils";
 
-const MyNode = ({ isEn, nodeData, postList, onView }) => {
+const MyNode = ({ langEn, nodeData, postList, onView }) => {
   let COMMON_LABEL,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
 
-  if (isEn) {
+  if (langEn) {
     COMMON_LABEL = COMMON_LABELS.EN;
     LABEL = LABELS.EN;
   } else {
