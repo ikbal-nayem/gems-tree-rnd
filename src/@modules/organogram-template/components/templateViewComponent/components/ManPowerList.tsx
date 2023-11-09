@@ -40,18 +40,27 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                   <TableRow key={idx++}>
                     <TableCell
                       textClassName="fw-bold fs-5"
-                      text={classs?.className || COMMON_LABELS.NOT_ASSIGN}
+                      text={
+                        (langEn ? classs?.classNameEn : classs?.classNameBn) ||
+                        COMMON_LABELS.NOT_ASSIGN
+                      }
                     />
                   </TableRow>
                   {classs?.manpowerDtoList?.map((itr) => (
                     <TableRow key={idx++}>
                       <TableCell
-                        text={itr?.postTitle || COMMON_LABELS.NOT_ASSIGN}
+                        text={
+                          (langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
+                          COMMON_LABELS.NOT_ASSIGN
+                        }
                       />
                       <TableCell
                         textAlign="end"
                         text={
-                          numEnToBn(itr?.manpower) || COMMON_LABELS.NOT_ASSIGN
+                          langEn
+                            ? itr?.manpower
+                            : numEnToBn(itr?.manpower) ||
+                              COMMON_LABELS.NOT_ASSIGN
                         }
                       />
                     </TableRow>
@@ -65,8 +74,10 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                       textAlign="end"
                       textClassName="fw-bold fs-4 mb-3"
                       text={
-                        numEnToBn(classs?.totalClassManpower) ||
-                        COMMON_LABELS.NOT_ASSIGN
+                        langEn
+                          ? classs?.totalClassManpower
+                          : numEnToBn(classs?.totalClassManpower) ||
+                            COMMON_LABELS.NOT_ASSIGN
                       }
                     />
                   </TableRow>
@@ -82,7 +93,9 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                 textAlign="end"
                 textClassName="fw-bold fs-3"
                 text={
-                  numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
+                  langEn
+                    ? data?.totalManpower
+                    : numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
                 }
               />
             </TableRow>

@@ -1,11 +1,4 @@
-import {
-  ACLWrapper,
-  Button,
-  Icon,
-  Label,
-  Separator,
-  Switch,
-} from "@gems/components";
+import { ACLWrapper, Button, Icon, Label, Switch } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -15,17 +8,17 @@ import {
 } from "@gems/utils";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
+import {
+  COMMON_LABELS as COMN_LABELS,
+  LABELS,
+} from "@constants/common.constant";
+import { useState } from "react";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
-import {
-  LABELS,
-  COMMON_LABELS as COMN_LABELS,
-} from "@constants/common.constant";
 import OrgList from "./components/Organization";
-import { useState } from "react";
 
 interface ITemplateViewComponent {
   updateData: IObject;

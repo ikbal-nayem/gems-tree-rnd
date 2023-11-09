@@ -1,7 +1,7 @@
-import "./my-node.css";
-import { Icon } from "@gems/components";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
+import { Icon } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
+import "./my-node.css";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
   let COMMON_LABEL,
