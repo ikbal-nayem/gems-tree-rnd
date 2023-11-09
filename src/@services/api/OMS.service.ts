@@ -17,7 +17,7 @@ export const OMSService = {
 		await axiosIns.post(OMS_SERVICE + "organogram-template/save", payload),
 
 	templateClone: async (payload): Promise<any> =>
-		await axiosIns.post(OMS_SERVICE + "organogram-template/clone", payload),
+		await axiosIns.post(OMS_SERVICE + "organogram-template/clone/save", payload),
 
 	getTemplateList: async (payload): Promise<any> =>
 		await axiosIns.post(OMS_SERVICE + "organogram-template/get-list", payload),

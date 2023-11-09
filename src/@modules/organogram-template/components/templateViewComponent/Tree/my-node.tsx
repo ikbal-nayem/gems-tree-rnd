@@ -21,7 +21,8 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
     <div className="position rounded">
       <div className="d-flex justify-content-between">
         <Icon
-          icon="visibility"
+          icon="fact_check"
+          variants="outlined"
           hoverTitle={LABEL.ACTIVITIES}
           size={20}
           color="primary"

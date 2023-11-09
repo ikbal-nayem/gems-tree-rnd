@@ -21,6 +21,7 @@ type TableProps = {
   dataList: any[];
   isLoading: boolean;
   respMeta?: IMeta;
+  getDataList:() => void;
 };
 
 const TemplateTable: FC<TableProps> = ({
@@ -28,6 +29,7 @@ const TemplateTable: FC<TableProps> = ({
   dataList,
   isLoading,
   respMeta,
+  getDataList,
 }) => {
   const [templateId, setTemplateId] = useState<any>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -110,6 +112,7 @@ const TemplateTable: FC<TableProps> = ({
         isOpen={isOpen}
         onClose={onClose}
         templateId={templateId}
+        getDataList={getDataList}
       />
     </>
   );

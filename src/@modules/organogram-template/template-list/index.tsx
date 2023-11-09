@@ -159,6 +159,7 @@ const TemplateList = () => {
             //   { version: "name A" },
             //   { version: "name B" },
             // ]}
+            getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
           >

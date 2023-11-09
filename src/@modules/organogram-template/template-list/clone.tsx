@@ -16,9 +16,10 @@ interface IForm {
   templateId: any;
   isOpen: boolean;
   onClose: () => void;
+  getDataList: () => void;
 }
 
-const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
+const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
     useState<boolean>(false);
@@ -36,6 +37,7 @@ const TemplateClone = ({ templateId, isOpen, onClose }: IForm) => {
 
   useEffect(() => {
     reset({});
+    getDataList();
   }, [isOpen]);
 
   const onSubmit = (cloneData) => {
