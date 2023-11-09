@@ -30,10 +30,14 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           />
         </div>
         <div className="col-10 d-flex justify-content-center">
-          <h5 className="p-1 mb-0">{nodeData.titleBn}</h5>
+          <h5 className="p-1 mb-0">
+            {langEn ? nodeData.titleEn : nodeData.titleBn}
+          </h5>
         </div>
         <div className="col-1 d-flex justify-content-end ">
-          <span className="border border-dark border-1 m-1 px-1 rounded">{manPower}</span>
+          <span className="border border-dark border-1 m-1 px-1 rounded">
+            {manPower}
+          </span>
         </div>
       </div>
 
@@ -48,12 +52,19 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
               <div key={i}>
                 {item?.numberOfEmployee || item?.postDto?.nameBn ? (
                   <p className="mb-0">
-                    {item?.numberOfEmployee || null} x{" "}
+                    {langEn
+                      ? item?.numberOfEmployee || 0
+                      : numEnToBn(item?.numberOfEmployee || 0)}{" "}
+                    x{" "}
                     {(postList?.length > 0 &&
                       item?.organizationPost?.id &&
-                      postList?.find(
-                        (d) => d?.id === item?.organizationPost?.id
-                      )?.nameBn) ||
+                      (langEn
+                        ? postList?.find(
+                            (d) => d?.id === item?.organizationPost?.id
+                          )?.nameEn
+                        : postList?.find(
+                            (d) => d?.id === item?.organizationPost?.id
+                          )?.nameBn)) ||
                       COMMON_LABELS.NOT_ASSIGN}
                   </p>
                 ) : null}
