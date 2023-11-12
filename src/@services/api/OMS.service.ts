@@ -25,12 +25,12 @@ export const OMSService = {
   getTemplateList: async (payload): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organogram-template/get-list", payload),
 
-	getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
-		await axiosIns.get(
-			OMS_SERVICE +
-				"organogram-template/get-organogram-template-by-id/" +
-				templateId
-		),
+  getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-organogram-template-by-id/" +
+        templateId
+    ),
 
   getTemplateInventoryByTemplateId: async (templateId: string): Promise<any> =>
     await axiosIns.get(
@@ -52,7 +52,7 @@ export const OMSService = {
   ): Promise<any> =>
     await axiosIns.get(
       OMS_SERVICE +
-        "organogram-template/get-0rganogram-template-is-exist/" +
+        "organogram-template/get-organogram-template-is-exist/" +
         isEn +
         "/" +
         title
@@ -61,7 +61,7 @@ export const OMSService = {
   templateUpdate: async (payload, templateId): Promise<any> =>
     await axiosIns.put(
       OMS_SERVICE +
-        "organogram-template/update-0rganogram-template-by-id/" +
+        "organogram-template/update-organogram-template-by-id/" +
         templateId,
       payload
     ),
@@ -72,6 +72,10 @@ export const OMSService = {
         templateId +
         "/" +
         status
+    ),
+  approveTemplateById: async (templateId): Promise<any> =>
+    await axiosIns.put(
+      OMS_SERVICE + "organogram-template/template-approve/" + templateId
     ),
 
   getOrganizationList: async (payload: IObject): Promise<any> =>
