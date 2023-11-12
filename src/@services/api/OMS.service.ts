@@ -25,7 +25,7 @@ export const OMSService = {
 	getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
 		await axiosIns.get(
 			OMS_SERVICE +
-				"organogram-template/get-0rganogram-template-by-id/" +
+				"organogram-template/get-organogram-template-by-id/" +
 				templateId
 		),
 
