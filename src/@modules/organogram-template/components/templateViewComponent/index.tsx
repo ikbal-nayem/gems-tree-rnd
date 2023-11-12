@@ -73,6 +73,15 @@ const TemplateViewComponent = ({
       .catch((error) => toast.error(error?.message));
   };
 
+  const onTemplateApprove = () => {
+    OMSService.approveTemplateById(updateData?.id)
+      .then((res) => {
+        toast.success(res?.message);
+        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+      })
+      .catch((error) => toast.error(error?.message));
+  };
+
   return (
     <div>
       <div className="card col-12 border p-3 mb-4">
@@ -205,7 +214,7 @@ const TemplateViewComponent = ({
               <Button
                 className="rounded-pill px-8 fw-bold"
                 color="success"
-                onClick={() => onStatusChange("APPROVED")}
+                onClick={() => onTemplateApprove()}
               >
                 <span> {BTN_LABELS.APPROVE} </span>
                 <Icon icon="check" size={15} className="fw-bold ms-1" />
