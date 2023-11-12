@@ -13,12 +13,14 @@ export const COMMON_LABELS = {
   DELETE: "মুছে ফেলুন",
 
   // ========= Form Button =============
-  APPROVE: "অনুমোদন",
+  REVIEW: "রিভিউ করুন",
+  APPROVE: "অনুমোদন করুন",
   CANCEL: "বাতিল করুন",
   SAVE: "সংরক্ষণ করুন",
   SEND_BACK: "ফেরত পাঠান",
+  SEND_BACK_TO_REVIEW: "রিভিউতে ফেরত পাঠান",
   CLOSE: "বন্ধ করুন",
-  CONFIRM: "নিশ্চিত করুন",
+  CONFIRM: "প্রেরন করুন",
 
   // ========= Others =============
   ACTIVE_STATUS: "প্রকৃতি",
@@ -43,10 +45,12 @@ export const COMMON_LABELS = {
     DELETE: "Delete",
 
     // ========= Form Button =============
+    REVIEW: "Review",
     APPROVE: "Approve",
     CANCEL: "Cancel",
     SAVE: "Save",
     SEND_BACK: "Send Back",
+    SEND_BACK_TO_REVIEW:" Send Back To Review",
     CLOSE: "Close",
     CONFIRM: "Confirm",
 

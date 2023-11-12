@@ -1,8 +1,14 @@
-import { ACLWrapper, Button, Icon, Label, Switch } from "@gems/components";
+import {
+  ACLWrapper,
+  Button,
+  Icon,
+  Label,
+  Switch,
+  toast,
+} from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
-  ROLES,
   generateUUID,
   isObjectNull,
 } from "@gems/utils";
@@ -19,6 +25,11 @@ import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
 import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
 import OrgList from "./components/Organization";
+
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
+import { OMSService } from "@services/api/OMS.service";
+import { useNavigate } from "react-router-dom";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -45,12 +56,22 @@ const TemplateViewComponent = ({
         };
 
   const [langEn, setLangEn] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const switchLang = () => {
     setLangEn(!langEn);
   };
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
+
+  const onStatusChange = (status: string) => {
+    OMSService.updateTemplateStatusById(updateData?.id, status)
+      .then((res) => {
+        toast.success(res?.message);
+        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+      })
+      .catch((error) => toast.error(error?.message));
+  };
 
   return (
     <div>
@@ -130,39 +151,68 @@ const TemplateViewComponent = ({
         </div>
       </div>
 
-      {organogramView ? (
-        <ACLWrapper visibleToRoles={[ROLES.OFFICE_ADMIN, ROLES.APPROVER]}>
+      {!organogramView && (
+        <>
           <div className="d-flex justify-content-center gap-8 mt-12">
-            <Button
-              className="rounded-pill fw-bold pe-8"
-              color="danger"
-              onClick={() => null}
+            <ACLWrapper
+              visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
+              visibleCustom={updateData?.status === TEMPLATE_STATUS.NEW}
             >
-              <Icon icon="arrow_back" className="fw-bold me-2" />
-              <span> {BTN_LABELS.SEND_BACK} </span>
-            </Button>
+              <Button
+                className="rounded-pill px-8 fw-bold"
+                color="success"
+                onClick={() => onStatusChange("IN_REVIEW")}
+              >
+                <span> {BTN_LABELS.CONFIRM} </span>
+                <Icon icon="check" size={15} className="fw-bold ms-1" />
+              </Button>
+            </ACLWrapper>
 
-            <Button
-              className="rounded-pill px-8 fw-bold"
-              color="success"
-              onClick={() => null}
+            <ACLWrapper
+              visibleToRoles={[ROLES.OMS_TEMPLATE_REVIEW]}
+              visibleCustom={updateData?.status === TEMPLATE_STATUS.IN_REVIEW}
             >
-              <span> {BTN_LABELS.APPROVE} </span>
-              <Icon icon="check" size={15} className="fw-bold ms-1" />
-            </Button>
+              <Button
+                className="rounded-pill fw-bold pe-8"
+                color="danger"
+                onClick={() => onStatusChange("NEW")}
+              >
+                <Icon icon="arrow_back" className="fw-bold me-2" />
+                <span> {BTN_LABELS.SEND_BACK} </span>
+              </Button>
+              <Button
+                className="rounded-pill px-8 fw-bold"
+                color="success"
+                onClick={() => onStatusChange("IN_APPROVE")}
+              >
+                <span> {BTN_LABELS.REVIEW} </span>
+                <Icon icon="check" size={15} className="fw-bold ms-1" />
+              </Button>
+            </ACLWrapper>
+
+            <ACLWrapper
+              visibleToRoles={[ROLES.OMS_TEMPLATE_APPROVE]}
+              visibleCustom={updateData?.status === TEMPLATE_STATUS.IN_APPROVE}
+            >
+              <Button
+                className="rounded-pill fw-bold pe-8"
+                color="danger"
+                onClick={() => onStatusChange("IN_REVIEW")}
+              >
+                <Icon icon="arrow_back" className="fw-bold me-2" />
+                <span> {BTN_LABELS.SEND_BACK} </span>
+              </Button>
+              <Button
+                className="rounded-pill px-8 fw-bold"
+                color="success"
+                onClick={() => onStatusChange("APPROVED")}
+              >
+                <span> {BTN_LABELS.APPROVE} </span>
+                <Icon icon="check" size={15} className="fw-bold ms-1" />
+              </Button>
+            </ACLWrapper>
           </div>
-        </ACLWrapper>
-      ) : (
-        <div className="d-flex justify-content-center gap-8 mt-12">
-          <Button
-            className="rounded-pill px-8 fw-bold"
-            color="success"
-            onClick={() => null}
-          >
-            <span> {BTN_LABELS.CONFIRM} </span>
-            <Icon icon="check" size={15} className="fw-bold ms-1" />
-          </Button>
-        </div>
+        </>
       )}
     </div>
   );

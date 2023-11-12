@@ -1,4 +1,5 @@
 import {
+  ACLWrapper,
   ContentPreloader,
   Dropdown,
   DropdownItem,
@@ -8,20 +9,28 @@ import {
   Table,
   TableCell,
   TableRow,
+  Tag,
 } from "@gems/components";
-import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  IColors,
+  IMeta,
+  generateRowNumBn,
+  statusColorMapping,
+} from "@gems/utils";
 import { FC, ReactNode, useState } from "react";
 import { LABELS } from "./labels";
 import { useNavigate } from "react-router-dom";
 import TemplateClone from "./clone";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 
 type TableProps = {
   children: ReactNode;
   dataList: any[];
   isLoading: boolean;
   respMeta?: IMeta;
-  getDataList:() => void;
+  getDataList: () => void;
 };
 
 const TemplateTable: FC<TableProps> = ({
@@ -42,6 +51,7 @@ const TemplateTable: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.NAME, width: 250 },
+    { title: LABELS.STATUS, width: 150, align: "center" },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
@@ -67,6 +77,16 @@ const TemplateTable: FC<TableProps> = ({
                 text={item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                 subText={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
               />
+              <TableCell>
+                <div className="d-flex justify-content-center">
+                  <Tag
+                    title={item?.status || COMMON_LABELS.NOT_ASSIGN}
+                    color={
+                      statusColorMapping(item?.status || "IN_REVIEW") as IColors
+                    }
+                  />
+                </div>
+              </TableCell>
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
                   btnIcon={true}
@@ -77,18 +97,39 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => navigateToDetails(item?.id)}>
-                    <Icon size={19} icon="edit" />
-                    <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
-                  </DropdownItem>
-                  <DropdownItem onClick={() => onClone(item?.id)}>
-                    <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
-                  </DropdownItem>
-                  <DropdownItem onClick={() => null}>
-                    <Icon size={19} icon="delete" color="danger" />
-                    <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-                  </DropdownItem>
+                  <ACLWrapper
+                    visibleToRoles={[
+                      ROLES.OMS_TEMPLATE_ENTRY,
+                      ROLES.OMS_TEMPLATE_REVIEW,
+                    ]}
+                    visibleCustom={
+                      item?.status === TEMPLATE_STATUS.NEW ||
+                      item?.status === TEMPLATE_STATUS.IN_REVIEW
+                    }
+                  >
+                    <DropdownItem onClick={() => navigateToDetails(item?.id)}>
+                      <Icon size={19} icon="edit" />
+                      <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                    </DropdownItem>
+                  </ACLWrapper>
+                  <ACLWrapper
+                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
+                  >
+                    <DropdownItem onClick={() => onClone(item?.id)}>
+                      <Icon size={19} icon="file_copy" />
+                      <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
+                    </DropdownItem>
+                  </ACLWrapper>
+                  <ACLWrapper
+                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
+                  >
+                    <DropdownItem onClick={() => null}>
+                      <Icon size={19} icon="delete" color="danger" />
+                      <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
+                    </DropdownItem>
+                  </ACLWrapper>
                 </Dropdown>
               </TableCell>
             </TableRow>
