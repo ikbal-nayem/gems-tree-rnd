@@ -33,7 +33,12 @@ const TemplateUpdate = () => {
   const onSubmit = (templateData) => {
     setIsSubmitLoading(true);
 
-    OMSService.templateUpdate(templateData, templateId)
+    let reqPayload = {
+      ...templateData,
+      status: data?.status,
+    };
+
+    OMSService.templateUpdate(reqPayload, templateId)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);

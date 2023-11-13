@@ -151,6 +151,7 @@ const OrganizationTemplateTree = ({
               nodeData={nodeData}
               treeDispatch={treeDispatch}
               postList={postList}
+              firstNode={treeData?.id === nodeData?.id}
             />
           )}
           // draggable={true}

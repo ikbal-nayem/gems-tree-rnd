@@ -8,7 +8,7 @@ import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 //   nodeData: PropTypes.object.isRequired
 // };
 
-const MyNode = ({ nodeData, treeDispatch, postList }) => {
+const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
   return (
     <div>
       <div className="position rounded">
@@ -49,12 +49,14 @@ const MyNode = ({ nodeData, treeDispatch, postList }) => {
               color="success"
               onClick={() => treeDispatch("ADD", nodeData)}
             />
-            <Icon
-              icon="remove_circle"
-              size={22}
-              color="danger"
-              onClick={() => treeDispatch("REMOVE", nodeData)}
-            />
+            {!firstNode && (
+              <Icon
+                icon="remove_circle"
+                size={22}
+                color="danger"
+                onClick={() => treeDispatch("REMOVE", nodeData)}
+              />
+            )}
           </div>
         </div>
         <div
