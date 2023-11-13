@@ -17,7 +17,7 @@ const EquipmentsForm = ({ data, inventoryData, langEn }: IEquipmentsForm) => {
       </div>
       <Separator className="mt-1 mb-2" />
       <div className="row">
-        {inventoryData?.length &&
+        {inventoryData?.length>0 &&
           inventoryData?.map((item, i) => {
             return (
               <div className="col-md-6 col-12" key={i}>
