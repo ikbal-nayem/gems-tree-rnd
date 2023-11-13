@@ -10,6 +10,13 @@ interface IAbbreviationForm {
 
 const AbbreviationForm = ({ data, langEn }: IAbbreviationForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
+  if (langEn) {
+    data = data.sort((item1, item2) => {
+      if (item1.shortForm > item2.shortForm) return 1;
+      if (item1.shortForm < item2.shortForm) return -1;
+      return 0;
+    });
+  }
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
