@@ -11,8 +11,11 @@ const TemplateCreate = () => {
 
   const onSubmit = (data) => {
     setIsSubmitLoading(true);
-
-    OMSService.templateCreate(data)
+    let reqPayload = {
+      ...data,
+      status: "NEW",
+    };
+    OMSService.templateCreate(reqPayload)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
