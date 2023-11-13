@@ -1,7 +1,7 @@
 import { Icon } from "@gems/components";
 // import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
-import { COMMON_LABELS } from "@gems/utils";
+import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 // import { Dropdown, DropdownItem } from "../Dropdown";
 // import { Button, Modal } from "react-bootstrap";
 // const propTypes = {
@@ -68,7 +68,10 @@ const MyNode = ({ nodeData, treeDispatch, postList }) => {
                 <div key={i}>
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (
                     <p className="mb-0">
-                      {item?.numberOfEmployee || null} x{" "}
+                      {item?.numberOfEmployee
+                        ? numEnToBn(item?.numberOfEmployee)
+                        : 0 || null}{" "}
+                      x{" "}
                       {(postList?.length > 0 &&
                         item?.organizationPost?.id &&
                         postList?.find(
