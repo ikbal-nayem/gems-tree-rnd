@@ -85,7 +85,7 @@ const TemplateViewComponent = ({
   return (
     <div>
       <div className="card border p-3 mb-4">
-        <div className="d-flex flex-wrap-reverse flex-xl-nowrap">
+        <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
             <div className="fs-3 text-center fw-bolder mb-0">
               {(organogramView
