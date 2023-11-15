@@ -4,6 +4,7 @@ import {
   IObject,
   generateUUID,
   isObjectNull,
+  // makeFormData,
 } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,6 +17,8 @@ import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import { OMSService } from "@services/api/OMS.service";
 import Organizations from "./components/organization";
+import AttachmentForm from "./components/AttachmentForm";
+import { makeFormData } from "utility/makeObject";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -153,7 +156,16 @@ const TemplateComponent = ({
       ...data,
       organizationStructureDto: treeData,
     };
-    onSubmit(reqPayload);
+    let test = reqPayload?.attachmentDtoList?.forEach((element) => {
+      makeFormData(element);
+    });
+
+    // for (const value of test.values()) {
+    //   console.log(value);
+    // }
+    console.log("jjkk", test);
+
+    // onSubmit(reqPayload);
   };
 
   return (
@@ -245,9 +257,12 @@ const TemplateComponent = ({
             <EquipmentsForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-3">
-            {/* <CheckListForm formProps={formProps} /> */}
             <Organizations formProps={formProps} />
+            <div className="mt-3">
+              <AttachmentForm formProps={formProps} />
+            </div>
           </div>
+
           <div className="col-md-6 mt-3">
             <AbbreviationForm formProps={formProps} />
           </div>
