@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import TemplateClone from "./clone";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
+import { useAuth } from "@context/Auth";
 
 type TableProps = {
   children: ReactNode;
@@ -42,6 +43,7 @@ const TemplateTable: FC<TableProps> = ({
 }) => {
   const [templateId, setTemplateId] = useState<any>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { currentUser } = useAuth();
   const onClose = () => setIsOpen(false);
   const onClone = (id) => {
     setTemplateId(id);
@@ -104,7 +106,10 @@ const TemplateTable: FC<TableProps> = ({
                     ]}
                     visibleCustom={
                       item?.status === TEMPLATE_STATUS.NEW ||
-                      item?.status === TEMPLATE_STATUS.IN_REVIEW
+                      (currentUser?.roles?.some(
+                        (r) => r.roleCode === ROLES.OMS_TEMPLATE_REVIEW
+                      ) &&
+                        item?.status === TEMPLATE_STATUS.IN_REVIEW)
                     }
                   >
                     <DropdownItem onClick={() => navigateToDetails(item?.id)}>
