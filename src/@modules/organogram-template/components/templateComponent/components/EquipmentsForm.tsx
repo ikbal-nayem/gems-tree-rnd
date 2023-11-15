@@ -173,7 +173,7 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                   placeholder="সংখ্যা লিখুন"
                   noMargin
                   type="number"
-                  defaultValue={0}
+                  defaultValue={1}
                   registerProperty={{
                     ...register(`inventoryDtoList.${idx}.quantity`, {
                       required: "সংখ্যা লিখুন",
