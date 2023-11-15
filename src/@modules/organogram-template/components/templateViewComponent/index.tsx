@@ -156,12 +156,14 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          <div className="mt-3">
-            <AbbreviationList
-              data={updateData?.abbreviationDtoList || []}
-              langEn={langEn}
-            />
-          </div>
+          {langEn && (
+            <div className="mt-3">
+              <AbbreviationList
+                data={updateData?.abbreviationDtoList || []}
+                langEn={langEn}
+              />
+            </div>
+          )}
         </div>
       </div>
 
