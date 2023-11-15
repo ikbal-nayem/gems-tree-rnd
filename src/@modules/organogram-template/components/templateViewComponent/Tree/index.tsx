@@ -46,6 +46,8 @@ const OrganizationTemplateTree = ({
             onView={onView}
           />
         )}
+        pan={true}
+        zoom={true}
       />
       <NodeDetails
         isEn={langEn}
