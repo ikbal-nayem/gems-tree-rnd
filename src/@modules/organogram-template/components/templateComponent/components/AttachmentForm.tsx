@@ -19,6 +19,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
   const {
     register,
     control,
+    setValue,
     formState: { errors },
   } = formProps;
 
@@ -26,6 +27,10 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
     control,
     name: "attachmentDtoList",
   });
+
+  const onFileChange = (e, idx) => {
+    setValue(`attachmentDtoList.${idx}.fileName`, e?.name || null);
+  };
 
   return (
     <div className="card border p-3">
@@ -39,7 +44,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
           const label = "তালিকা";
           const labelBn = label + " (বাংলা)";
           const labelEn = label + " (ইংরেজি)";
-          const labelAttachment="ফাইল"
+          const labelAttachment = "ফাইল";
 
           return (
             <div
@@ -106,6 +111,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     control={control}
                     label={idx < 1 ? labelAttachment : ""}
                     name={`attachmentDtoList.${idx}.attachment`}
+                    onChange={(e) => onFileChange(e, idx)}
                     isError={!!errors?.attachmentDtoList?.[idx]?.attachment}
                     errorMessage={
                       errors?.attachmentDtoList?.[idx]?.attachment

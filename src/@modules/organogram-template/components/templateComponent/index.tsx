@@ -156,16 +156,14 @@ const TemplateComponent = ({
       ...data,
       organizationStructureDto: treeData,
     };
-    let test = reqPayload?.attachmentDtoList?.forEach((element) => {
-      makeFormData(element);
-    });
+    // let test = makeFormData(reqPayload);
 
     // for (const value of test.values()) {
     //   console.log(value);
     // }
-    console.log("jjkk", test);
+    // console.log("jjkk", reqPayload);
 
-    // onSubmit(reqPayload);
+    onSubmit(reqPayload);
   };
 
   return (
