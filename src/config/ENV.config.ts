@@ -5,7 +5,7 @@ interface IENV {
 }
 
 export const ENV: IENV = {
-	env: process.env.REACT_APP_ENV_TYPE || "",
-	getway: process.env.REACT_APP_GETWAY || "",
-	googleAnalyticsTag: process.env.REACT_APP_GOOGLE_ANALYTICS || "",
+	env: process.env.REACT_APP_ENV_TYPE || '',
+	getway: process.env.REACT_APP_GATEWAY || '',
+	googleAnalyticsTag: process.env.REACT_APP_GOOGLE_ANALYTICS || '',
 };
