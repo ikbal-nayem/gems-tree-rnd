@@ -2,17 +2,16 @@ import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import NodeDetails from "./node-details";
+import jsPDF from "jspdf";
 import MyNode from "./my-node";
+import { IconButton } from "@gems/components";
 
 // interface IOrganizationTemplateTree {
 //   treeData: IObject;
 //   langEn: boolean;
 // }
 
-const OrganizationTemplateTree = ({
-  treeData,
-  langEn,
-}) => {
+const OrganizationTemplateTree = ({ treeData, langEn }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
   const selectedNode = useRef(null);
@@ -31,10 +30,30 @@ const OrganizationTemplateTree = ({
     setFormOpen(false);
   };
 
+  // Export PDF
+  const exportPDF = (canvas, exportFilename) => {
+    const canvasWidth = Math.floor(canvas.width);
+    const canvasHeight = Math.floor(canvas.height);
+    const canW = canvasWidth > canvasHeight ? canvasWidth : canvasHeight;
+    const canH = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
+    const doc = new jsPDF({
+      orientation: canvasWidth > canvasHeight ? "landscape" : "portrait",
+      unit: "px",
+      format: [canW, canH],
+    });
+    doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
+    doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
+    doc.save(exportFilename + ".pdf");
+  };
+
+  const download = useRef();
+  const onDownload = () => {
+    download.current.exportTo("Test", "pdf");
+  };
+
   return (
-    <>
+    <div className="position-relative">
       <ChartContainer
-        // ref={orgchart}
         datasource={treeData}
         chartClass="myChart"
         NodeTemplate={({ nodeData }) => (
@@ -45,7 +64,10 @@ const OrganizationTemplateTree = ({
             onView={onView}
           />
         )}
+        ref={download}
+        exportPDF={exportPDF}
         pan={true}
+        // zoom={true}
       />
       <NodeDetails
         isEn={langEn}
@@ -53,7 +75,10 @@ const OrganizationTemplateTree = ({
         isOpen={formOpen}
         onClose={onFormClose}
       />
-    </>
+      {/* <div className="position-absolute" style={{ top: 0, right: 20 }}>
+        <IconButton iconName="download" color="info" onClick={onDownload} />
+      </div> */}
+    </div>
   );
 };
 
