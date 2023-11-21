@@ -45,22 +45,22 @@ const TemplateCreate = () => {
       status: "NEW",
     };
 
-    // let fd = new FormData();
+    let fd = new FormData();
 
-    // fd.append("body", JSON.stringify(reqPayload));
-    // fileList.forEach((element) => {
-    //   fd.append("files", element);
-    // });
+    fd.append("body", JSON.stringify(reqPayload));
+    fileList.forEach((element) => {
+      fd.append("files", element);
+    });
 
-    let realTest = makeFormData(reqPayload);
+    // let realTest = makeFormData(reqPayload);
 
-    console.log("test", reqPayload);
-    for (const value of realTest.values()) {
+    // console.log("test", reqPayload);
+    for (const value of fd.values()) {
       console.log(value);
     }
     // console.log("jjkk", reqPayload);
 
-    OMSService.templateCreate(realTest)
+    OMSService.templateCreate(fd)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
