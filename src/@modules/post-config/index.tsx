@@ -48,7 +48,7 @@ const initPayload = {
 	body: { searchKey: "" },
 };
 
-const PostConfigue = () => {
+const PostConfig = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -243,7 +243,7 @@ const PostConfigue = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.POST_CONFIFUE}</PageTitle>
+      <PageTitle>{MENU.BN.POST_CONFIG}</PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
@@ -308,4 +308,4 @@ const PostConfigue = () => {
     </>
   );
 };
-export default PostConfigue;
+export default PostConfig;

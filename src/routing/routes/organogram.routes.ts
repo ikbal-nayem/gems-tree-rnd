@@ -4,7 +4,7 @@ import { IAppRoutes } from "@gems/utils";
 import { lazy } from "react";
 import { getPermittedRouteList } from "utility/utils";
 
-let organogramRouteList = [
+let routeList = [
   {
     link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
     routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
@@ -12,7 +12,7 @@ let organogramRouteList = [
   },
 ];
 
-let permissionRouteList = getPermittedRouteList(organogramRouteList);
+let permissionRouteList = getPermittedRouteList(routeList);
 
 export const OrganogramRoutes: IAppRoutes = {
   link: ROUTE_L1.OMS_ORGANOGRAM,

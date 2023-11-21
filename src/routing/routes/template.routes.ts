@@ -4,7 +4,7 @@ import { IAppRoutes } from "@gems/utils";
 import { lazy } from "react";
 import { getPermittedRouteList } from "utility/utils";
 
-let templateRouteList = [
+let routeList = [
   {
     link: ROUTE_L2.ORG_TEMPLATE_CREATE,
     routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
@@ -18,7 +18,7 @@ let templateRouteList = [
   },
 ];
 
-let permissionRouteList = getPermittedRouteList(templateRouteList);
+let permissionRouteList = getPermittedRouteList(routeList);
 
 export const TemplateRoutes: IAppRoutes = {
   link: ROUTE_L1.ORG_TEMPLATE,

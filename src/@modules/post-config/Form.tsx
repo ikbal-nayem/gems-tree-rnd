@@ -61,7 +61,7 @@ const RankMinistryForm = ({
   return (
     <Drawer
       title={
-        MENU.BN.POST_CONFIFUE +
+        MENU.BN.POST_CONFIG +
         " " +
         (isObjectNull(updateData) ? COMMON_LABELS.SAVE : COMMON_LABELS.EDIT)
       }
