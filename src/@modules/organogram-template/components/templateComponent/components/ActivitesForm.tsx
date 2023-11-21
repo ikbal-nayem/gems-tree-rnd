@@ -1,8 +1,8 @@
-import { IconButton, Input, Label, Separator } from "@gems/components";
 import { LABELS } from "@constants/common.constant";
+import { IconButton, Input, Label, Separator } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import { bnCheck, enCheck } from "utility/checkValidation";
+import { enCheck } from "utility/checkValidation";
 
 interface IActivitiesForm {
   formProps: any;
@@ -52,7 +52,6 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                         {
                           required:
                             "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
-                          validate: bnCheck,
                         }
                       ),
                     }}

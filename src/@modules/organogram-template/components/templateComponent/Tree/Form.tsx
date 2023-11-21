@@ -20,7 +20,7 @@ import {
 } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { bnCheck, enCheck } from "utility/checkValidation";
+import { enCheck } from "utility/checkValidation";
 
 interface INodeForm {
   isOpen: boolean;
@@ -134,7 +134,6 @@ const NodeForm = ({
                 registerProperty={{
                   ...register("titleBn", {
                     required: " ",
-                    validate: bnCheck,
                   }),
                 }}
                 isError={!!errors?.titleBn}
@@ -193,7 +192,6 @@ const NodeForm = ({
                           `postFunctionalityList.${index}.functionalityBn`,
                           {
                             required: " ",
-                            validate: bnCheck,
                           }
                         ),
                       }}

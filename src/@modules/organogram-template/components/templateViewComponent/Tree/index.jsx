@@ -67,7 +67,6 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
         ref={download}
         exportPDF={exportPDF}
         pan={true}
-        // zoom={true}
       />
       <NodeDetails
         isEn={langEn}
@@ -75,9 +74,14 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
         isOpen={formOpen}
         onClose={onFormClose}
       />
-      {/* <div className="position-absolute" style={{ top: 0, right: 20 }}>
-        <IconButton iconName="download" color="info" onClick={onDownload} />
-      </div> */}
+      <div className="position-absolute" style={{ top: 0, right: 20 }}>
+        <IconButton
+          iconName="download"
+          color="info"
+          variant="fill"
+          onClick={onDownload}
+        />
+      </div>
     </div>
   );
 };
