@@ -98,17 +98,3 @@ export const getPermittedRouteList = (routeList) => {
     ) || []
   );
 };
-
-export const getPermittedRouteList = (routeList) => {
-	let userInfo = getUser();
-	return (
-	  routeList.filter(
-		(d) =>
-		  Object.keys(userInfo?.userPermissionDTO)?.length > 0 &&
-		  userInfo?.userPermissionDTO?.sitemapList?.length > 0 &&
-		  userInfo?.userPermissionDTO?.sitemapList?.find(
-			(e) => d?.routeKey === e?.routeKey
-		  )
-	  ) || []
-	);
-  };
