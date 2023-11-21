@@ -226,26 +226,25 @@ const PostConfig = () => {
     };
     const reqData = { ...payload, body: makeBoolean(payload?.body) };
 
-    // MasterDataService.getRankMinistryConfigList(reqData)
-    //   .then((res) => {
-    //     exportXLSX(exportData(res?.body || []), MENU.EN.POST_CONFIFUE);
-    //   })
-    //   .catch((err) => toast.error(err?.message))
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //   });
+    OMSService.FETCH.orgPostConfig(reqData)
+      .then((res) => {
+        exportXLSX(exportData(res?.body || []), MENU.EN.POST_CONFIG);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const exportData = (data: any[]) =>
     data.map((d) => ({
-      পদবি: d?.rank?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-      প্রতিষ্ঠান: d?.ministry?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-      গ্রেড: d?.grade?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      পদবি: d?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      প্রতিষ্ঠান: d?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      গ্রেড: d?.gradeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       "সার্ভিস/ক্যাডারের ধরণ":
-        d?.serviceType?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-      "সার্ভিস/ক্যাডারের নাম": d?.cadre?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+        d?.serviceTypeDto?.titleBn || COMMON_LABELS.NOT_ASSIGN,
       "অর্গানোগ্রাম ভার্সন":
-        d?.organogramVersion?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+        d?.organogramVersionDto?.titleBn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
