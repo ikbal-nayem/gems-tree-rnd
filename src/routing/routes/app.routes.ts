@@ -16,6 +16,10 @@ export const AppRouteList: IAppRoutes[] = [
     element: lazy(() => import("@modules/employee-list")),
   },
   {
+    link: ROUTE_L1.OMS_POST_CONFIG,
+    element: lazy(() => import("@modules/post-config")),
+  },
+  {
     link: "*",
     redirect: ROUTE_L1.DASHBOARD,
   },
