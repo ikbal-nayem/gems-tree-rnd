@@ -1,28 +1,27 @@
-import OrganizationChart from "@dabeng/react-orgchart";
-import { IObject } from "@gems/utils";
+import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
-import MyNode from "./my-node";
 import NodeDetails from "./node-details";
+import MyNode from "./my-node";
 
-interface IOrganizationTemplateTree {
-  treeData: IObject;
-  langEn: boolean;
-}
+// interface IOrganizationTemplateTree {
+//   treeData: IObject;
+//   langEn: boolean;
+// }
 
 const OrganizationTemplateTree = ({
   treeData,
   langEn,
-}: IOrganizationTemplateTree) => {
-  const [postList, setPostist] = useState<IObject[]>([]);
-  const [formOpen, setFormOpen] = useState<boolean>(false);
-  const selectedNode = useRef<IObject>(null);
+}) => {
+  const [postList, setPostist] = useState([]);
+  const [formOpen, setFormOpen] = useState(false);
+  const selectedNode = useRef(null);
 
   useEffect(() => {
     OMSService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
-  const onView = (data: IObject) => {
+  const onView = (data) => {
     selectedNode.current = data;
     setFormOpen(true);
   };
@@ -34,7 +33,7 @@ const OrganizationTemplateTree = ({
 
   return (
     <>
-      <OrganizationChart
+      <ChartContainer
         // ref={orgchart}
         datasource={treeData}
         chartClass="myChart"

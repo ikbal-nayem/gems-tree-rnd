@@ -21,7 +21,7 @@
   /* background-color: #215a88; */
   background-color: #fff;
   color: black;
-  width: 215px;
+  width: 150px;
   /* height: 65px; */
   padding: 2px;
 }
@@ -48,14 +48,14 @@
 }
 
 /* Yellow Node Border */
-.orgchart ul li .oc-node {
+/* .orgchart ul li .oc-node {
   box-sizing: border-box;
   display: inline-block;
   position: relative;
   padding: 3px;
   border: 2px dashed transparent;
   margin-bottom: 20px;
-}
+} */
 
 /* Yellow Node Border */
 /* .orgchart ul li .oc-node:hover {
