@@ -60,6 +60,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     label={idx < 1 ? labelBn : ""}
                     placeholder={labelBn + " লিখুন"}
                     autoFocus
+                    isRequired
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleBn`, {
                         required: " ",
@@ -77,6 +78,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
                     autoFocus
+                    isRequired
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
                         required: " ",
