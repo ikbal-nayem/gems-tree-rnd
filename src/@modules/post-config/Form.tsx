@@ -2,7 +2,6 @@ import { MENU } from "@constants/menu-titles.constant";
 import {
   Autocomplete,
   Button,
-  Checkbox,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -17,6 +16,7 @@ type IOptions = {
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
   gradeList: IMetaKeyResponse[];
+  organogramVersionList: IMetaKeyResponse[];
 };
 
 interface ITrainingOrgForm {
@@ -51,10 +51,7 @@ const RankMinistryForm = ({
     if (!isObjectNull(updateData)) {
       reset({ ...updateData });
     } else {
-      reset({
-        isActive: true,
-        isEntryRank: false,
-      });
+      reset({});
     }
   }, [updateData, reset]);
 
@@ -72,40 +69,40 @@ const RankMinistryForm = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
+          <div className="col-12">
+              <Autocomplete
+                label="পদবি"
+                name="postDTO"
+                placeholder="পদবি বাছাই করুন"
+                isRequired="পদবি বাছাই করুন"
+                options={options?.postList || []}
+                getOptionLabel={(t) => t.nameBn}
+                getOptionValue={(op) => op?.id}
+                onChange={(t) => setValue("postId", t?.id)}
+                control={control}
+                isError={!!errors?.postDTO}
+                errorMessage={errors?.postDTO?.message as string}
+              />
+            </div>
             <div className="col-12">
               <Autocomplete
                 label="প্রতিষ্ঠান"
-                name="organigation"
-                placeholder="মন্ত্রণালয় বাছাই করুন"
-                isRequired="মন্ত্রণালয় বাছাই করুন"
+                name="organization"
+                placeholder="প্রতিষ্ঠান বাছাই করুন"
+                isRequired="প্রতিষ্ঠান বাছাই করুন"
                 options={options?.orgList || []}
                 getOptionLabel={(t) => t.nameBn}
                 getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("organigationId", t?.id)}
+                onChange={(t) => setValue("organizationId", t?.id)}
                 control={control}
-                isError={!!errors?.ministry}
-                errorMessage={errors?.ministry?.message as string}
+                isError={!!errors?.organization}
+                errorMessage={errors?.organization?.message as string}
               />
-            </div>
-            <div className="col-12">
-              <Autocomplete
-                label="পদ"
-                name="rank"
-                placeholder="পদ বাছাই করুন"
-                isRequired="পদ বাছাই করুন"
-                options={options?.postList || []}
-                getOptionLabel={(t) => t.titleBn}
-                getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("rankId", t?.id)}
-                control={control}
-                isError={!!errors?.rank}
-                errorMessage={errors?.rank?.message as string}
-              />
-            </div>
+            </div>           
             <div className="col-12">
               <Autocomplete
                 label="সার্ভিস/ক্যাডারের ধরণ"
-                name="serviceType"
+                name="serviceTypeDto"
                 placeholder="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
                 isRequired="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
                 options={options?.serviceList || []}
@@ -113,12 +110,12 @@ const RankMinistryForm = ({
                 getOptionValue={(op) => op?.metaKey}
                 onChange={(t) => setValue("serviceTypeKey", t?.metaKey)}
                 control={control}
-                isError={!!errors?.serviceType}
-                errorMessage={errors?.serviceType?.message as string}
+                isError={!!errors?.serviceTypeDto}
+                errorMessage={errors?.serviceTypeDto?.message as string}
               />
             </div>
 
-            {watch("serviceType")?.metaKey === "SERVICE_TYPE_CADRE" ? (
+            {/* {watch("serviceType")?.metaKey === "SERVICE_TYPE_CADRE" ? (
               <div className="col-12">
                 <Autocomplete
                   label="সার্ভিস/ক্যাডারের নাম"
@@ -134,12 +131,12 @@ const RankMinistryForm = ({
                   errorMessage={errors?.cadre?.message as string}
                 />
               </div>
-            ) : null}
+            ) : null} */}
 
             <div className="col-12">
               <Autocomplete
                 label="গ্রেড"
-                name="grade"
+                name="gradeDTO"
                 placeholder="গ্রেড বাছাই করুন"
                 isRequired="গ্রেড বাছাই করুন"
                 options={options?.gradeList || []}
@@ -147,25 +144,24 @@ const RankMinistryForm = ({
                 getOptionValue={(op) => op?.id}
                 onChange={(t) => setValue("gradeId", t?.id)}
                 control={control}
-                isError={!!errors?.grade}
-                errorMessage={errors?.grade?.message as string}
+                isError={!!errors?.gradeDTO}
+                errorMessage={errors?.gradeDTO?.message as string}
               />
             </div>
 
-            <div className="col-12 col-md-6">
-              <Checkbox
-                label="প্রারম্ভিক পদ"
-                registerProperty={{
-                  ...register("isEntryRank"),
-                }}
-              />
-            </div>
-            <div className="col-12 col-md-6">
-              <Checkbox
-                label="সক্রিয়"
-                registerProperty={{
-                  ...register("isActive"),
-                }}
+            <div className="col-12">
+              <Autocomplete
+                label="অর্গানোগ্রাম ভার্সন"
+                name="organogramVersionDto"
+                placeholder="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+                isRequired="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+                options={options?.organogramVersionList || []}
+                getOptionLabel={(t) => t.titleBn}
+                getOptionValue={(op) => op?.metaKey}
+                onChange={(t) => setValue("organogramVersionKey", t?.metaKey)}
+                control={control}
+                isError={!!errors?.organogramVersionDto}
+                errorMessage={errors?.organogramVersionDto?.message as string}
               />
             </div>
           </div>

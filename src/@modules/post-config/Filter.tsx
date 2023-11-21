@@ -1,32 +1,27 @@
 import {
   Autocomplete,
-  Checkbox,
   Drawer,
   DrawerBody,
   DrawerHeader,
   FilterFooter,
   IconButton,
-  Label,
-  RadioButton,
 } from "@gems/components";
-import { IObject, makeBoolean } from "@gems/utils";
+import { IObject } from "@gems/utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const RankMinistryFilter = ({ onFilterDone, options }) => {
+const Filter = ({ onFilterDone, options }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { register, control, handleSubmit, setValue, watch } = useForm<any>({
-    defaultValues: {
-      isEntryRank: "null",
-      isActive: true,
-    },
-  });
+  const { control, handleSubmit, setValue, reset } = useForm<any>();
 
-  const onClose = () => setOpen(false);
+  const onClose = () => {
+    reset({});
+    setOpen(false);
+  };
 
   const onFilter = (data: IObject) => {
-    onFilterDone(makeBoolean(data));
-    onClose();
+    onFilterDone(data);
+    setOpen(false);
   };
 
   return (
@@ -45,32 +40,32 @@ const RankMinistryFilter = ({ onFilterDone, options }) => {
             <div className="row">
               <div className="col-12">
                 <Autocomplete
-                  label="মন্ত্রণালয়"
-                  name="ministry"
-                  placeholder="মন্ত্রণালয় বাছাই করুন"
-                  options={options?.ministryList || []}
+                  label="পদবি"
+                  name="postDTO"
+                  placeholder="পদবি বাছাই করুন"
+                  options={options?.postList || []}
                   getOptionLabel={(t) => t.nameBn}
                   getOptionValue={(op) => op?.id}
-                  onChange={(t) => setValue("ministryId", t?.id)}
+                  onChange={(t) => setValue("postId", t?.id)}
                   control={control}
                 />
               </div>
               <div className="col-12">
                 <Autocomplete
-                  label="পদ"
-                  name="rank"
-                  placeholder="পদ বাছাই করুন"
-                  options={options?.rankList || []}
-                  getOptionLabel={(t) => t.titleBn}
+                  label="প্রতিষ্ঠান"
+                  name="organization"
+                  placeholder="প্রতিষ্ঠান বাছাই করুন"
+                  options={options?.orgList || []}
+                  getOptionLabel={(t) => t.nameBn}
                   getOptionValue={(op) => op?.id}
-                  onChange={(t) => setValue("rankId", t?.id)}
+                  onChange={(t) => setValue("organizationId", t?.id)}
                   control={control}
                 />
               </div>
               <div className="col-12">
                 <Autocomplete
                   label="সার্ভিস/ক্যাডারের ধরণ"
-                  name="serviceType"
+                  name="serviceTypeDto"
                   placeholder="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
                   options={options?.serviceList || []}
                   getOptionLabel={(t) => t.titleBn}
@@ -79,7 +74,7 @@ const RankMinistryFilter = ({ onFilterDone, options }) => {
                   control={control}
                 />
               </div>
-              {watch("serviceType")?.metaKey === "SERVICE_TYPE_CADRE" ? (
+              {/* {watch("serviceType")?.metaKey === "SERVICE_TYPE_CADRE" ? (
                 <div className="col-12">
                   <Autocomplete
                     label="সার্ভিস/ক্যাডারের নাম"
@@ -92,11 +87,11 @@ const RankMinistryFilter = ({ onFilterDone, options }) => {
                     control={control}
                   />
                 </div>
-              ) : null}
+              ) : null} */}
               <div className="col-12">
                 <Autocomplete
                   label="গ্রেড"
-                  name="grade"
+                  name="gradeDTO"
                   placeholder="গ্রেড বাছাই করুন"
                   options={options?.gradeList || []}
                   getOptionLabel={(t) => t.nameBn}
@@ -105,34 +100,16 @@ const RankMinistryFilter = ({ onFilterDone, options }) => {
                   control={control}
                 />
               </div>
-
               <div className="col-12">
-                <Label>প্রারম্ভিক পদ</Label>
-                <div className="col-sm-12 d-flex gap-5">
-                  <RadioButton
-                    label="সকল"
-                    value="null"
-                    registerProperty={{ ...register("isEntryRank") }}
-                  />
-                  <RadioButton
-                    label="প্রারম্ভিক"
-                    value="true"
-                    registerProperty={{ ...register("isEntryRank") }}
-                  />
-                  <RadioButton
-                    label="প্রারম্ভিক নয়"
-                    value="false"
-                    registerProperty={{ ...register("isEntryRank") }}
-                  />
-                </div>
-              </div>
-
-              <div className="col-12">
-                <Checkbox
-                  label="সক্রিয়"
-                  registerProperty={{
-                    ...register("isActive"),
-                  }}
+                <Autocomplete
+                  label="অর্গানোগ্রাম ভার্সন"
+                  name="organogramVersionDto"
+                  placeholder="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+                  options={options?.organogramVersionList || []}
+                  getOptionLabel={(t) => t.titleBn}
+                  getOptionValue={(op) => op?.metaKey}
+                  onChange={(t) => setValue("organogramVersionKey", t?.metaKey)}
+                  control={control}
                 />
               </div>
             </div>
@@ -145,4 +122,4 @@ const RankMinistryFilter = ({ onFilterDone, options }) => {
   );
 };
 
-export default RankMinistryFilter;
+export default Filter;

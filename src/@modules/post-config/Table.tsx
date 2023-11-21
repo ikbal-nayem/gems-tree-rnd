@@ -3,6 +3,7 @@ import {
   DropdownItem,
   ITableHeadColumn,
   Icon,
+  IconButton,
   Table,
   TableCell,
   TableRow,
@@ -12,13 +13,13 @@ import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  { title: "পদ", minWidth: 100 },
-  { title: "মন্ত্রণালয়", minWidth: 100 },
+  { title: "পদবি", minWidth: 100 },
+  { title: "প্রতিষ্ঠান", minWidth: 100 },
   { title: "সার্ভিস/ক্যাডারের ধরণ", minWidth: 75 },
-  { title: "সার্ভিস/ক্যাডারের নাম", minWidth: 75 },
+//   { title: "সার্ভিস/ক্যাডারের নাম", minWidth: 75 },
   { title: "গ্রেড", minWidth: 75 },
-  { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
-  { title: COMMON_LABELS.ACTION },
+  { title: "অর্গানোগ্রাম ভার্সন", minWidth: 75 },
+  { title: COMMON_LABELS.ACTION, align:"end" },
 ];
 
 type TrainingOrgTableProps = {
@@ -42,68 +43,67 @@ const RankMinistryTable: FC<TrainingOrgTableProps> = ({
       <Table columns={columns}>
         {data?.map((data, i) => {
           return (
-						<TableRow key={i}>
-							<TableCell text={generateRowNumBn(i, meta)} />
-							<TableCell
-								text={data?.rank?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-								subText={data?.rank?.titleEn}
-								tagText={data?.isEntryRank ? "প্রারম্ভিক পদ" : null}
-								tagColor="info"
-							/>
+            <TableRow key={i}>
+              <TableCell text={generateRowNumBn(i, meta)} />
+              <TableCell
+                text={data?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.postDTO?.nameEn}
+              />
 
-							<TableCell
-								text={data?.ministry?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-								subText={data?.ministry?.nameEn}
-							/>
+              <TableCell
+                text={data?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.organization?.nameEn || ""}
+              />
 
-							<TableCell
-								text={data?.serviceType?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-							/>
+              <TableCell
+                text={data?.serviceTypeDto?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.serviceTypeDto?.titleEn || ""}
+              />
 
-							<TableCell
-								text={data?.cadre?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-							/>
+              {/* <TableCell
+                text={data?.cadre?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.cadre?.titleEn || ""}
+              /> */}
 
-							<TableCell
-								text={data?.grade?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-							/>
+              <TableCell
+                text={data?.gradeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.gradeDTO?.nameEn || ""}
+              />
 
-							{/* Active */}
-							<TableCell>
-								{data?.isActive ? (
-									<Icon icon="done" color="success" size={20} />
-								) : (
-									<Icon icon="close" color="danger" size={20} />
-								)}
-							</TableCell>
+              <TableCell
+                text={
+                  data?.organogramVersionDto?.titleBn || COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={data?.organogramVersionDto?.titleEn || ""}
+              />
 
-							{/* Action */}
-							<TableCell textAlign="end">
-								<Dropdown
-									btnIcon={true}
-									btnContent={<Icon icon="more_vert" size={20} />}
-									id={"data?.id"}
-								>
-									<DropdownItem
-										onClick={() => {
-											handleUpdate(data);
-										}}
-									>
-										<Icon size={19} icon="edit" />
-										<h6 className="mb-0 ms-3">{COMMON_LABELS.EDIT}</h6>
-									</DropdownItem>
-									<DropdownItem
-										onClick={() => {
-											handleDelete(data);
-										}}
-									>
-										<Icon size={19} icon="delete" color="danger" />
-										<h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-									</DropdownItem>
-								</Dropdown>
-							</TableCell>
-						</TableRow>
-					);
+              {/* Action */}
+              <TableCell textAlign="end">
+                <Dropdown
+                  btnIcon={true}
+                  btnContent={<Icon icon="more_vert" size={20} />}
+                  id={"data?.id"}
+                >
+                  <DropdownItem
+                    onClick={() => {
+                      handleUpdate(data);
+                    }}
+                  >
+                    <Icon size={19} icon="edit" />
+                    <h6 className="mb-0 ms-3">{COMMON_LABELS.EDIT}</h6>
+                  </DropdownItem>
+                  {/* <DropdownItem
+                    onClick={() => {
+                      handleDelete(data);
+                    }}
+                  >
+                    <Icon size={19} icon="delete" color="danger" />
+                    <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
+                  </DropdownItem> */}
+                </Dropdown>
+              </TableCell>
+            </TableRow>
+          );
         })}
       </Table>
       {children}

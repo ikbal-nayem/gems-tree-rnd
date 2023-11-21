@@ -98,4 +98,19 @@ export const OMSService = {
 
   getOrganizationByType: async (type: string): Promise<any> =>
     await axiosIns.get(OMS_SERVICE + "organization/get-by-org-type/" + type),
+
+  FETCH: {
+    orgPostConfig: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "org-post/get-list", payload),
+  },
+
+  SAVE: {
+    orgPostConfig: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "org-post/create", payload),
+  },
+
+  UPDATE: {
+    orgPostConfig: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "org-post/update", payload),
+  },
 };

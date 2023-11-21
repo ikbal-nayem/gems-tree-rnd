@@ -37,15 +37,16 @@ type IOptions = {
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
   gradeList: IMetaKeyResponse[];
+  organogramVersionList: IMetaKeyResponse[];
 };
 
 const initPayload = {
-	meta: {
-		page: 0,
-		limit: 25,
-		sort: [{ order: "asc", field: "serialNo" }],
-	},
-	body: { searchKey: "" },
+  meta: {
+    page: 0,
+    limit: 25,
+    sort: [{ order: "asc", field: "createdOn" }],
+  },
+  body: { searchKey: "" },
 };
 
 const PostConfig = () => {
@@ -72,19 +73,21 @@ const PostConfig = () => {
 
   useEffect(() => {
     const req1 = OMSService.getOrganizationList(initPayload);
-    const req2 = OMSService.getPostList();
+    const req2 = CoreService.getPostList();
     const req3 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
     const req4 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
     const req5 = CoreService.getGrades();
+    const req6 = CoreService.getByMetaTypeList("ORGANOGRAM");
 
-    Promise.all([req1, req2, req3, req4, req5])
-      .then(([res1, res2, res3, res4, res5]) => {
+    Promise.all([req1, req2, req3, req4, req5, req6])
+      .then(([res1, res2, res3, res4, res5, res6]) => {
         setOptions({
           orgList: res1?.body,
           postList: res2?.body,
           serviceList: res3?.body,
           cadreList: res4?.body,
           gradeList: res5?.body,
+          organogramVersionList: res6?.body,
         });
       })
       .finally(() => setIsLoading(false));
@@ -121,17 +124,19 @@ const PostConfig = () => {
 
     const reqData = { ...payload, body: makeBoolean(payload?.body) };
 
-    // MasterDataService.getRankMinistryConfigList(reqData)
-      // .then((res) => {
-      //   setListData(res?.body || []);
-      //   setRespMeta(
-      //     res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
-      //   );
-      // })
-      // .catch((err) => toast.error(err?.message))
-      // .finally(() => {
-      //   setIsLoading(false);
-      // });
+    OMSService.FETCH.orgPostConfig(reqData)
+      .then((res) => {
+        setListData(res?.body || []);
+        setRespMeta(
+          res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+        );
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        console.log(listData);
+
+        setIsLoading(false);
+      });
   };
 
   const onPageChanged = (metaParams: IMeta) => {
@@ -182,22 +187,22 @@ const PostConfig = () => {
   };
 
   const onSubmit = (data) => {
-  //   topProgress.show();
-  //   const service = data?.id
-  //     ? MasterDataService.rankMinistryUpdate
-  //     : MasterDataService.rankMinistryCreate;
-  //   service(data)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setIsDrawerOpen(false);
-  //       setUpdateData({});
-  //     })
-  //     .catch((error) => toast.error(error?.message))
-  //     .finally(() => {
-  //       setIsSubmitLoading(false);
-  //       topProgress.hide();
-  //     });
+    topProgress.show();
+    const service = data?.id
+      ? OMSService.UPDATE.orgPostConfig
+      : OMSService.SAVE.orgPostConfig;
+    service(data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsDrawerOpen(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => {
+        setIsSubmitLoading(false);
+        topProgress.hide();
+      });
   };
 
   const getXLSXStoreList = () => {
@@ -233,12 +238,14 @@ const PostConfig = () => {
 
   const exportData = (data: any[]) =>
     data.map((d) => ({
-      পদ: d?.rank?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-      "পদের ধরণ": d?.isEntryRank ? "প্রারম্ভিক পদ" : "",
-      মন্ত্রণালয়: d?.ministry?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      পদবি: d?.rank?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      প্রতিষ্ঠান: d?.ministry?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      গ্রেড: d?.grade?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       "সার্ভিস/ক্যাডারের ধরণ":
         d?.serviceType?.titleBn || COMMON_LABELS.NOT_ASSIGN,
       "সার্ভিস/ক্যাডারের নাম": d?.cadre?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "অর্গানোগ্রাম ভার্সন":
+        d?.organogramVersion?.titleBn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
@@ -279,7 +286,7 @@ const PostConfig = () => {
           </Table>
           <ContentPreloader show={isLoading} />
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো পদের নাম তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 
