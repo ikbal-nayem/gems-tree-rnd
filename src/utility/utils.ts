@@ -3,6 +3,7 @@ import { AbilityContext } from "@context/Can";
 import { useContext } from "react";
 import { makeTwoDigit } from "./splitDate";
 import { numEnToBn } from "./textMapping";
+import { getUser } from "@services/helper/auth.helper";
 
 export const viewMenuGroup = (item) => {
 	let ability: any = useContext(AbilityContext);
@@ -83,3 +84,17 @@ export const payscaleFormatter = (year: any, grade: any, payscale: any) => {
 		? numEnToBn(year) + " , " + grade + " , " + payscale
 		: payscale;
 };
+
+export const getPermittedRouteList = (routeList) => {
+	let userInfo = getUser();
+	return (
+	  routeList.filter(
+		(d) =>
+		  Object.keys(userInfo?.userPermissionDTO)?.length > 0 &&
+		  userInfo?.userPermissionDTO?.sitemapList?.length > 0 &&
+		  userInfo?.userPermissionDTO?.sitemapList?.find(
+			(e) => d?.routeKey === e?.routeKey
+		  )
+	  ) || []
+	);
+  };
