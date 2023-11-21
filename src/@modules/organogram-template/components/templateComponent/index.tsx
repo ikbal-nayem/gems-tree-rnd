@@ -10,12 +10,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
-import { bnCheck, enCheck } from "../../../../utility/checkValidation";
+import { OMSService } from "@services/api/OMS.service";
+import { enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import EquipmentsForm from "./components/EquipmentsForm";
-import { OMSService } from "@services/api/OMS.service";
 import Organizations from "./components/organization";
 import AttachmentForm from "./components/AttachmentForm";
 import { makeFormData } from "utility/makeObject";
@@ -188,7 +188,6 @@ const TemplateComponent = ({
                   ...register("titleBn", {
                     required: " ",
                     onChange: (e) => duplicateTitleCheck(e.target.value, false),
-                    validate: bnCheck,
                   }),
                 }}
                 isError={!!errors?.titleBn}
@@ -220,7 +219,6 @@ const TemplateComponent = ({
                 registerProperty={{
                   ...register("versionBn", {
                     required: " ",
-                    validate: bnCheck,
                   }),
                 }}
                 isError={!!errors?.versionBn}

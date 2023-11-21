@@ -11,7 +11,7 @@ import { IObject, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
-import { bnCheck, enCheck } from "utility/checkValidation";
+import { enCheck } from "utility/checkValidation";
 
 interface IEquipmentsForm {
   formProps: any;
@@ -232,7 +232,6 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                     registerProperty={{
                       ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {
                         required: " ",
-                        validate: bnCheck,
                       }),
                     }}
                     isError={

@@ -1,12 +1,10 @@
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { IAppRoutes } from "@gems/utils";
-import { getUser } from "@services/helper/auth.helper";
 import { lazy } from "react";
+import { getPermittedRouteList } from "utility/utils";
 
-let userInfo = getUser();
-
-let organogramRouteList = [
+let routeList = [
   {
     link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
     routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
@@ -14,15 +12,7 @@ let organogramRouteList = [
   },
 ];
 
-let permissionRouteList =
-  organogramRouteList.filter(
-    (d) =>
-      Object.keys(userInfo?.userPermissionDTO)?.length > 0 &&
-      userInfo?.userPermissionDTO?.sitemapList?.length > 0 &&
-      userInfo?.userPermissionDTO?.sitemapList?.find(
-        (e) => d?.routeKey === e?.routeKey
-      )
-  ) || [];
+let permissionRouteList = getPermittedRouteList(routeList);
 
 export const OrganogramRoutes: IAppRoutes = {
   link: ROUTE_L1.OMS_ORGANOGRAM,

@@ -28,9 +28,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           color="primary"
           onClick={() => onView(nodeData)}
         />
-        <h5 className="p-1 mb-0">
+        <p className="p-1 mb-0 fw-bold fs-7">
           {langEn ? nodeData.titleEn : nodeData.titleBn}
-        </h5>
+        </p>
         <div>
           <p className="border border-dark border-1 m-1 px-1 rounded">
             {manPower}
@@ -48,7 +48,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                  <p className="mb-0">
+                  <p className="mb-0 fs-7">
                     {langEn
                       ? item?.numberOfEmployee || 0
                       : numEnToBn(item?.numberOfEmployee || 0)}{" "}

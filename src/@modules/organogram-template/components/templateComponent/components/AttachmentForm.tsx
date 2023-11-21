@@ -9,7 +9,7 @@ import {
 } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import { bnCheck, enCheck } from "utility/checkValidation";
+import { enCheck } from "utility/checkValidation";
 
 interface IAttachmentForm {
   formProps: any;
@@ -63,7 +63,6 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleBn`, {
                         required: " ",
-                        validate: bnCheck,
                       }),
                     }}
                     isError={!!errors?.attachmentDtoList?.[idx]?.titleBn}

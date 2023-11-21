@@ -1,4 +1,4 @@
-import OrganizationChart from "@dabeng/react-orgchart";
+import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { IObject, generateUUID, isObjectNull } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
@@ -6,7 +6,7 @@ import MyNode from "./my-node";
 import { OMSService } from "@services/api/OMS.service";
 import { ConfirmationModal } from "@gems/components";
 
-const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
+const addNode = (nd, parentId, templateData) => {
   if (nd.id === parentId) {
     nd.children = [
       ...nd.children,
@@ -20,7 +20,7 @@ const addNode = (nd: IObject, parentId: string, templateData: IObject) => {
   return { ...nd };
 };
 
-const editNode = (nd: IObject, nodeId: string, updateData: IObject) => {
+const editNode = (nd, nodeId, updateData) => {
   if (nd.id === nodeId) {
     return { ...nd, ...updateData };
   }
@@ -45,29 +45,21 @@ const deleteNode = (nd, nodeId) => {
   return { ...nd };
 };
 
-interface IOrganizationTemplateTree {
-  treeData: IObject;
-  setTreeData: (data) => void;
-}
-
-const OrganizationTemplateTree = ({
-  treeData,
-  setTreeData,
-}: IOrganizationTemplateTree) => {
-  const [formOpen, setFormOpen] = useState<boolean>(false);
+const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
+  const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
-  const selectedNode = useRef<IObject>(null);
-  const updateNodeData = useRef<IObject>(null);
+  const selectedNode = useRef(null);
+  const updateNodeData = useRef(null);
 
-  const [postList, setPostist] = useState<IObject[]>([]);
-  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<any>();
+  const [postList, setPostist] = useState([]);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [deleteData, setDeleteData] = useState();
 
   useEffect(() => {
     OMSService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
-  const treeDispatch = (actionType, data: IObject) => {
+  const treeDispatch = (actionType, data) => {
     switch (actionType) {
       case "ADD":
         selectedNode.current = data;
@@ -100,7 +92,7 @@ const OrganizationTemplateTree = ({
     setFormOpen(false);
   };
 
-  const onSubmit = (formData: IObject) => {
+  const onSubmit = (formData) => {
     const ad = isObjectNull(updateNodeData.current)
       ? addNode(treeData, selectedNode.current?.id, formData)
       : editNode(treeData, updateNodeData.current?.id, formData);
@@ -142,7 +134,7 @@ const OrganizationTemplateTree = ({
         </button>
       </section> */}
       <div>
-        <OrganizationChart
+        <ChartContainer
           // ref={orgchart}
           datasource={treeData}
           chartClass="myChart"

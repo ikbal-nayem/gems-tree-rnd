@@ -2,7 +2,10 @@ import {
   ACLWrapper,
   Button,
   Icon,
+  IconButton,
   Label,
+  Modal,
+  ModalBody,
   Switch,
   toast,
 } from "@gems/components";
@@ -56,11 +59,18 @@ const TemplateViewComponent = ({
         };
 
   const [langEn, setLangEn] = useState<boolean>(false);
+  const [formOpen, setFormOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const switchLang = () => {
     setLangEn(!langEn);
   };
+
+  const onFormClose = () => {
+    setFormOpen(false);
+  };
+
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
 
@@ -115,8 +125,21 @@ const TemplateViewComponent = ({
           </div>
         </div>
       </div>
-      <div className="border border-secondary mb-3">
+      <div className="position-relative border border-secondary mb-3">
         <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
+        <div className="position-absolute" style={{ top: 10, right: 65 }}>
+          <IconButton
+            iconName="fullscreen"
+            color="info"
+            variant="fill"
+            onClick={() => setFormOpen(true)}
+          />
+        </div>
+        <Modal isOpen={formOpen} handleClose={onFormClose} fullscreen title="">
+          <ModalBody>
+            <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
+          </ModalBody>
+        </Modal>
       </div>
       <div className="row">
         <div className="col-md-6">

@@ -31,9 +31,9 @@ const token = LocalStorageService.get(AUTH_INFO)?.accessToken;
 
 export const makePDSUrl = (type: "lpds" | "spds", empId: string) => {
 	return {
-		previewUrl: `${process.env.REACT_APP_GETWAY}/${REPORT_SERVICE}report/public/${type}?employeeId=${empId}&key=${token}`,
-		fileType: "pdf",
-		originalFileName: type === "lpds" ? "পূর্ণ প্রোফাইল" : "সংক্ষিপ্ত প্রোফাইল",
+		previewUrl: `${process.env.REACT_APP_GATEWAY}/${REPORT_SERVICE}report/public/${type}?employeeId=${empId}&key=${token}`,
+		fileType: 'pdf',
+		originalFileName: type === 'lpds' ? 'পূর্ণ প্রোফাইল' : 'সংক্ষিপ্ত প্রোফাইল',
 	};
 };
 
