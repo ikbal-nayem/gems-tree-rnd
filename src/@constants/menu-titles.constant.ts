@@ -6,6 +6,7 @@ export const MENU = {
     TEMPLATE_LIST: "টেমপ্লেটের তালিকা",
     ORGANOGRAM: "অর্গানোগ্রাম",
     ORGANOGRAM_LIST: "অর্গানোগ্রামের তালিকা",
+    POST_CONFIG: "পদবি কনফিগারেশন",
   },
 
   EN: {
@@ -15,5 +16,6 @@ export const MENU = {
     TEMPLATE_LIST: "Template List",
     ORGANOGRAM: "Organogram",
     ORGANOGRAM_LIST: "Organogram List",
+    POST_CONFIG: "Post Configuration",
   },
 };
