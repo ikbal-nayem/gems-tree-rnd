@@ -1,10 +1,8 @@
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { IAppRoutes } from "@gems/utils";
-import { getUser } from "@services/helper/auth.helper";
 import { lazy } from "react";
-
-let userInfo = getUser();
+import { getPermittedRouteList } from "utility/utils";
 
 let templateRouteList = [
   {
@@ -20,15 +18,7 @@ let templateRouteList = [
   },
 ];
 
-let permissionRouteList =
-  templateRouteList.filter(
-    (d) =>
-      Object.keys(userInfo?.userPermissionDTO)?.length > 0 &&
-      userInfo?.userPermissionDTO?.sitemapList?.length > 0 &&
-      userInfo?.userPermissionDTO?.sitemapList?.find(
-        (e) => d?.routeKey === e?.routeKey
-      )
-  ) || [];
+let permissionRouteList = getPermittedRouteList(templateRouteList);
 
 export const TemplateRoutes: IAppRoutes = {
   link: ROUTE_L1.ORG_TEMPLATE,
