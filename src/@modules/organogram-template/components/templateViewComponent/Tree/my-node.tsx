@@ -25,7 +25,12 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           variants="outlined"
           hoverTitle={LABEL.ACTIVITIES}
           size={20}
-          color="primary"
+          color={
+            nodeData?.postFunctionalityList &&
+            nodeData?.postFunctionalityList?.length > 0
+              ? "primary"
+              : "light"
+          }
           onClick={() => onView(nodeData)}
         />
         <p className="p-1 mb-0 fw-bold fs-7">
