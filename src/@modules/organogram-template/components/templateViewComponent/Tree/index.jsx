@@ -38,17 +38,16 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
     const canH = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
     const doc = new jsPDF({
       orientation: canvasWidth > canvasHeight ? "landscape" : "portrait",
-      unit: "px",
+      unit: "pt",
       format: [canW, canH],
     });
-    doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
-    doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
+    doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
     doc.save(exportFilename + ".pdf");
   };
 
   const download = useRef();
   const onDownload = () => {
-    download.current.exportTo("Test", "pdf");
+    download.current.exportTo("Organogram", "pdf");
   };
 
   return (
