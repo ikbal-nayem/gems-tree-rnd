@@ -66,6 +66,7 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
         ref={download}
         exportPDF={exportPDF}
         pan={true}
+        zoom={true}
       />
       <NodeDetails
         isEn={langEn}
