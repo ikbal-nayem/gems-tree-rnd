@@ -18,7 +18,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
   }
 
   return (
-    <div className="position rounded">
+    <div className="position rounded border border-gray-400 border-1">
       <div className="d-flex justify-content-between">
         <Icon
           icon="fact_check"
