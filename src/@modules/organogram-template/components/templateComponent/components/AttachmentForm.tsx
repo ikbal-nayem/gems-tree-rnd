@@ -41,7 +41,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
       <Separator className="mt-1 mb-2" />
       <div>
         {fields.map((f, idx) => {
-          const label = "তালিকা";
+          const label = "সংযুক্তি";
           const labelBn = label + " (বাংলা)";
           const labelEn = label + " (ইংরেজি)";
           const labelAttachment = "ফাইল";
@@ -111,11 +111,11 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     isRequired="ফাইল আপলোড করুন"
                     control={control}
                     label={idx < 1 ? labelAttachment : ""}
-                    name={`attachmentDtoList.${idx}.attachment`}
+                    name={`attachmentDtoList.${idx}.checkAttachmentFile`}
                     onChange={(e) => onFileChange(e, idx)}
-                    isError={!!errors?.attachmentDtoList?.[idx]?.attachment}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.checkAttachmentFile}
                     errorMessage={
-                      errors?.attachmentDtoList?.[idx]?.attachment
+                      errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
                         ?.message as string
                     }
                     maxSize={15}
