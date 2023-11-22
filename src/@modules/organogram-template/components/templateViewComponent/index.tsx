@@ -136,7 +136,7 @@ const TemplateViewComponent = ({
           />
         </div>
         <Modal isOpen={formOpen} handleClose={onFormClose} fullscreen title="">
-          <ModalBody>
+          <ModalBody className="p-0">
             <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
           </ModalBody>
         </Modal>
