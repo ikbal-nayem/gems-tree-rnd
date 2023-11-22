@@ -40,18 +40,6 @@ const Filter = ({ onFilterDone, options }) => {
             <div className="row">
               <div className="col-12">
                 <Autocomplete
-                  label="পদবি"
-                  name="postDTO"
-                  placeholder="পদবি বাছাই করুন"
-                  options={options?.postList || []}
-                  getOptionLabel={(t) => t.nameBn}
-                  getOptionValue={(op) => op?.id}
-                  onChange={(t) => setValue("postId", t?.id)}
-                  control={control}
-                />
-              </div>
-              <div className="col-12">
-                <Autocomplete
                   label="প্রতিষ্ঠান"
                   name="organization"
                   placeholder="প্রতিষ্ঠান বাছাই করুন"
@@ -59,6 +47,18 @@ const Filter = ({ onFilterDone, options }) => {
                   getOptionLabel={(t) => t.nameBn}
                   getOptionValue={(op) => op?.id}
                   onChange={(t) => setValue("organizationId", t?.id)}
+                  control={control}
+                />
+              </div>
+              <div className="col-12">
+                <Autocomplete
+                  label="পদবি"
+                  name="postDTO"
+                  placeholder="পদবি বাছাই করুন"
+                  options={options?.postList || []}
+                  getOptionLabel={(t) => t.nameBn}
+                  getOptionValue={(op) => op?.id}
+                  onChange={(t) => setValue("postId", t?.id)}
                   control={control}
                 />
               </div>

@@ -69,21 +69,6 @@ const RankMinistryForm = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
-          <div className="col-12">
-              <Autocomplete
-                label="পদবি"
-                name="postDTO"
-                placeholder="পদবি বাছাই করুন"
-                isRequired="পদবি বাছাই করুন"
-                options={options?.postList || []}
-                getOptionLabel={(t) => t.nameBn}
-                getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("postId", t?.id)}
-                control={control}
-                isError={!!errors?.postDTO}
-                errorMessage={errors?.postDTO?.message as string}
-              />
-            </div>
             <div className="col-12">
               <Autocomplete
                 label="প্রতিষ্ঠান"
@@ -98,7 +83,22 @@ const RankMinistryForm = ({
                 isError={!!errors?.organization}
                 errorMessage={errors?.organization?.message as string}
               />
-            </div>           
+            </div>
+            <div className="col-12">
+              <Autocomplete
+                label="পদবি"
+                name="postDTO"
+                placeholder="পদবি বাছাই করুন"
+                isRequired="পদবি বাছাই করুন"
+                options={options?.postList || []}
+                getOptionLabel={(t) => t.nameBn}
+                getOptionValue={(op) => op?.id}
+                onChange={(t) => setValue("postId", t?.id)}
+                control={control}
+                isError={!!errors?.postDTO}
+                errorMessage={errors?.postDTO?.message as string}
+              />
+            </div>
             <div className="col-12">
               <Autocomplete
                 label="সার্ভিস/ক্যাডারের ধরণ"
