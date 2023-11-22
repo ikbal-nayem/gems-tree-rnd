@@ -38,14 +38,16 @@ const TemplateCreate = () => {
     fileList.forEach((element) => {
       fd.append("files", element);
     });
+    console.log("pring");
+    
 
-    OMSService.templateCreate(fd)
-      .then((res) => {
-        toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
-      })
-      .catch((error) => toast.error(error?.message))
-      .finally(() => setIsSubmitLoading(false));
+    // OMSService.templateCreate(fd)
+    //   .then((res) => {
+    //     toast.success(res?.message);
+    //     navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+    //   })
+    //   .catch((error) => toast.error(error?.message))
+    //   .finally(() => setIsSubmitLoading(false));
   };
 
   return (
