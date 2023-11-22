@@ -15,11 +15,11 @@ const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
   { title: "পদবি", minWidth: 100 },
   { title: "প্রতিষ্ঠান", minWidth: 100 },
-  { title: "সার্ভিস/ক্যাডারের ধরণ", minWidth: 75 },
-//   { title: "সার্ভিস/ক্যাডারের নাম", minWidth: 75 },
-  { title: "গ্রেড", minWidth: 75 },
   { title: "অর্গানোগ্রাম ভার্সন", minWidth: 75 },
-  { title: COMMON_LABELS.ACTION, align:"end" },
+  { title: "সার্ভিস/ক্যাডারের ধরণ", minWidth: 75 },
+  //   { title: "সার্ভিস/ক্যাডারের নাম", minWidth: 75 },
+  { title: "গ্রেড", minWidth: 75 },
+  { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
 type TrainingOrgTableProps = {
@@ -42,6 +42,7 @@ const RankMinistryTable: FC<TrainingOrgTableProps> = ({
     <>
       <Table columns={columns}>
         {data?.map((data, i) => {
+          const serviceType =  data?.serviceTypeDto?.metaKey
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i, meta)} />
@@ -56,9 +57,22 @@ const RankMinistryTable: FC<TrainingOrgTableProps> = ({
               />
 
               <TableCell
+                text={
+                  data?.organogramVersionDto?.titleBn ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={data?.organogramVersionDto?.titleEn || ""}
+              />
+
+              <TableCell
+                tagText={data?.serviceTypeDto?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                tagColor={serviceType === "SERVICE_TYPE_CADRE" ? "info" : 
+                serviceType === "SERVICE_TYPE_NON_CADRE" ? "dark" : "danger"}
+              />
+              {/* <TableCell
                 text={data?.serviceTypeDto?.titleBn || COMMON_LABELS.NOT_ASSIGN}
                 subText={data?.serviceTypeDto?.titleEn || ""}
-              />
+              /> */}
 
               {/* <TableCell
                 text={data?.cadre?.titleBn || COMMON_LABELS.NOT_ASSIGN}
@@ -68,13 +82,6 @@ const RankMinistryTable: FC<TrainingOrgTableProps> = ({
               <TableCell
                 text={data?.gradeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}
                 subText={data?.gradeDTO?.nameEn || ""}
-              />
-
-              <TableCell
-                text={
-                  data?.organogramVersionDto?.titleBn || COMMON_LABELS.NOT_ASSIGN
-                }
-                subText={data?.organogramVersionDto?.titleEn || ""}
               />
 
               {/* Action */}
