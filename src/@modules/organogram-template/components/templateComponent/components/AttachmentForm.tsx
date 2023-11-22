@@ -6,7 +6,6 @@ import {
   Label,
   Separator,
   SingleFile,
-  toast,
 } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
@@ -21,9 +20,6 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
     register,
     control,
     setValue,
-    getValues,
-    setError,
-    clearErrors,
     formState: { errors },
   } = formProps;
 
@@ -32,34 +28,8 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
     name: "attachmentDtoList",
   });
 
-  console.log("dsfdf",errors);
-  
-
   const onFileChange = (e, idx) => {
-    if (e?.name) {
-      setValue(`attachmentDtoList.${idx}.fileName`, e?.name || null);
-      const attachmentDtoList = getValues("attachmentDtoList") || [];
-      for (let i = 0; i < attachmentDtoList.length; i++) {
-        if (
-          i !== idx &&
-          attachmentDtoList[i]?.checkAttachmentFile?.name === e?.name
-        ) {
-          toast.error(
-            "'" +
-              attachmentDtoList[i]?.checkAttachmentFile?.name +
-              "' আইটেমটি অনন্য নয়"
-          );
-
-          setError(`attachmentDtoList.[${idx}].checkAttachmentFile`, {
-            type: "manaul",
-            message:
-              " আইটেমটি অনন্য নয় !",
-          });
-          // break;
-        }
-        // clearErrors(`attachmentDtoList.[${idx}].checkAttachmentFile`);
-      }
-    } 
+    setValue(`attachmentDtoList.${idx}.fileName`, e?.name || null);
   };
 
   return (
@@ -143,9 +113,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     label={idx < 1 ? labelAttachment : ""}
                     name={`attachmentDtoList.${idx}.checkAttachmentFile`}
                     onChange={(e) => onFileChange(e, idx)}
-                    isError={
-                      !!errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
-                    }
+                    isError={!!errors?.attachmentDtoList?.[idx]?.checkAttachmentFile}
                     errorMessage={
                       errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
                         ?.message as string

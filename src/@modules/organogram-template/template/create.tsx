@@ -11,7 +11,7 @@ const TemplateCreate = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    // setIsSubmitLoading(true);
+    setIsSubmitLoading(true);
 
     let fileList =
       data?.attachmentDtoList?.length > 0 &&
@@ -41,13 +41,13 @@ const TemplateCreate = () => {
     console.log("pring");
     
 
-    // OMSService.templateCreate(fd)
-    //   .then((res) => {
-    //     toast.success(res?.message);
-    //     navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
-    //   })
-    //   .catch((error) => toast.error(error?.message))
-    //   .finally(() => setIsSubmitLoading(false));
+    OMSService.templateCreate(fd)
+      .then((res) => {
+        toast.success(res?.message);
+        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
   };
 
   return (
