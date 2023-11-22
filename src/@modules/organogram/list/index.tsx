@@ -58,6 +58,7 @@ const TemplateList = () => {
         : reqMeta || { ...respMeta, page: 0 },
       body: {
         searchKey: searchKey || null,
+        isTemplate: false,
       },
     };
 
