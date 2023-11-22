@@ -18,14 +18,20 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
   }
 
   return (
-    <div className="position rounded">
+    <div className="position rounded border border-gray-400 border-1">
       <div className="d-flex justify-content-between">
         <Icon
           icon="fact_check"
           variants="outlined"
           hoverTitle={LABEL.ACTIVITIES}
           size={20}
-          color="primary"
+          className="text-hover-warning"
+          color={
+            nodeData?.postFunctionalityList &&
+            nodeData?.postFunctionalityList?.length > 0
+              ? "primary"
+              : "light"
+          }
           onClick={() => onView(nodeData)}
         />
         <p className="p-1 mb-0 fw-bold fs-7">
