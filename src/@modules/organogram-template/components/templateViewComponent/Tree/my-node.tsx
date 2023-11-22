@@ -25,6 +25,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           variants="outlined"
           hoverTitle={LABEL.ACTIVITIES}
           size={20}
+          className="text-hover-warning"
           color={
             nodeData?.postFunctionalityList &&
             nodeData?.postFunctionalityList?.length > 0
