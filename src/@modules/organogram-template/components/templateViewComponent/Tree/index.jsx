@@ -48,7 +48,7 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
 
   const download = useRef();
   const onDownload = () => {
-    download.current.exportTo("Test", "pdf");
+    download.current.exportTo("Organogram", "pdf");
   };
 
   return (
@@ -67,6 +67,7 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
         ref={download}
         exportPDF={exportPDF}
         pan={true}
+        zoom={true}
       />
       <NodeDetails
         isEn={langEn}
