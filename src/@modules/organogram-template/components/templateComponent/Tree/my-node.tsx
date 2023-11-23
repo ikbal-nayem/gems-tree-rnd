@@ -16,12 +16,12 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
           {/* <IconButton iconName="more_vert" color="warning" iconSize={16}/> */}
           <Icon
             icon="edit_square"
-            size={22}
+            size={20}
             color="warning"
             onClick={() => treeDispatch("EDIT", nodeData)}
           />
           <div>
-            <h5 className="p-1 mb-0">{nodeData.titleBn}</h5>
+            <p className="p-1 mb-0 fs-7">{nodeData.titleBn}</p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
           {/* <Dropdown
@@ -45,14 +45,14 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
           <div>
             <Icon
               icon="add_circle"
-              size={22}
+              size={20}
               color="success"
               onClick={() => treeDispatch("ADD", nodeData)}
             />
             {!firstNode && (
               <Icon
                 icon="remove_circle"
-                size={22}
+                size={20}
                 color="danger"
                 onClick={() => treeDispatch("REMOVE", nodeData)}
               />
@@ -61,7 +61,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
         </div>
         <div
           className={`bg-light text-start ${
-            nodeData?.manpowerList?.length ? "p-3" : ""
+            nodeData?.manpowerList?.length ? "p-1" : ""
           }`}
         >
           {nodeData?.manpowerList?.length > 0 &&
@@ -69,18 +69,22 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
               return (
                 <div key={i}>
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                    <p className="mb-0">
-                      {item?.numberOfEmployee
-                        ? numEnToBn(item?.numberOfEmployee)
-                        : 0 || null}{" "}
-                      x{" "}
-                      {(postList?.length > 0 &&
-                        item?.organizationPost?.id &&
-                        postList?.find(
-                          (d) => d?.id === item?.organizationPost?.id
-                        )?.nameBn) ||
-                        COMMON_LABELS.NOT_ASSIGN}
-                    </p>
+                    <div className="d-flex">
+                      <p className="mb-0 fs-7">
+                        {item?.numberOfEmployee
+                          ? numEnToBn(item?.numberOfEmployee)
+                          : 0 || null}{" "}
+                      </p>
+                      <p className="mb-0 fs-7 ms-1">x</p>
+                      <p className="mb-0 fs-7 ms-1">
+                        {(postList?.length > 0 &&
+                          item?.organizationPost?.id &&
+                          postList?.find(
+                            (d) => d?.id === item?.organizationPost?.id
+                          )?.nameBn) ||
+                          COMMON_LABELS.NOT_ASSIGN}
+                      </p>
+                    </div>
                   ) : null}
                 </div>
               );

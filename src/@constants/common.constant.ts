@@ -93,7 +93,7 @@ export const LABELS = {
     TITLE: "শিরোনাম",
     TEMPLATE_TITLE_BN: "শিরোনাম (বাংলা)",
     TEMPLATE_TITLE_EN: "শিরোনাম (ইংরেজি)",
-    VERSION: "ভার্শন",
+    VERSION: "ভার্সন",
 
     MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
     EQUIPMENTS: "যানবহন, অফিস সরঞ্জাম ইত্যাদি",
