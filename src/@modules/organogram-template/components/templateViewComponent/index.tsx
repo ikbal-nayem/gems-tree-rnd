@@ -33,6 +33,7 @@ import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
 import { useNavigate } from "react-router-dom";
+import AttachmentList from "./components/AttachmentList";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -164,6 +165,12 @@ const TemplateViewComponent = ({
               {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
             </div>
           )}
+          <div className="mt-3">
+            <AttachmentList
+              data={updateData?.attachmentDtoList || []}
+              langEn={langEn}
+            />
+          </div>
         </div>
         <div className="col-md-6">
           <div className="mt-md-0 mt-3">

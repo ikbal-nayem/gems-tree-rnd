@@ -41,7 +41,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
       <Separator className="mt-1 mb-2" />
       <div>
         {fields.map((f, idx) => {
-          const label = "সংযুক্তি";
+          const label = "নাম";
           const labelBn = label + " (বাংলা)";
           const labelEn = label + " (ইংরেজি)";
           const labelAttachment = "ফাইল";
