@@ -38,7 +38,6 @@ const TemplateCreate = () => {
     fileList.forEach((element) => {
       fd.append("files", element);
     });
-    console.log("pring");
     
 
     OMSService.templateCreate(fd)

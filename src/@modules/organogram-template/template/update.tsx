@@ -31,20 +31,54 @@ const TemplateUpdate = () => {
   };
 
   const onSubmit = (templateData) => {
-    setIsSubmitLoading(true);
+    // setIsSubmitLoading(true);
+
+    let fileList =
+      templateData?.attachmentDtoList?.length > 0 &&
+      templateData?.attachmentDtoList?.map((item) => {
+        if (item?.fileName) return item.checkAttachmentFile;
+        return null
+      });
+
+    let attachmentDto =
+      templateData?.attachmentDtoList?.length > 0 &&
+      templateData?.attachmentDtoList?.map((item) => {
+        if (item?.fileName) delete item.checkAttachmentFile;
+        return item;
+      });
 
     let reqPayload = {
       ...templateData,
-      status: data?.status,
+      attachmentDtoList: attachmentDto,
+      // status: "NEW",
     };
 
-    OMSService.templateUpdate(reqPayload, templateId)
-      .then((res) => {
-        toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
-      })
-      .catch((error) => toast.error(error?.message))
-      .finally(() => setIsSubmitLoading(false));
+    console.log(fileList);
+    
+
+    let fd = new FormData();
+
+    fd.append("body", JSON.stringify(reqPayload));
+    fileList.forEach((element) => {
+      fd.append("files", element);
+    });
+
+    for (const value of fd.values()) {
+      console.log(value);
+    }
+
+    // let reqPayload = {
+    //   ...templateData,
+    //   status: data?.status,
+    // };
+
+    // OMSService.templateUpdate(fd, templateId)
+    //   .then((res) => {
+    //     toast.success(res?.message);
+    //     navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+    //   })
+    //   .catch((error) => toast.error(error?.message))
+    //   .finally(() => setIsSubmitLoading(false));
   };
 
   return (
