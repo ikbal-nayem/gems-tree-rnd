@@ -64,7 +64,7 @@ const TemplateList = () => {
 
     const reqData = { ...payload, body: payload?.body };
 
-    OMSService.getOrganizationOrganogramList(reqData)
+    OMSService.getTemplateList(reqData)
       .then((resp) => {
         setDataList(resp?.body);
         setRespMeta(resp?.meta);

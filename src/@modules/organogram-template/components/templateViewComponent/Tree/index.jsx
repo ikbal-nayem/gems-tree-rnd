@@ -30,6 +30,10 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
     setFormOpen(false);
   };
 
+  // Direct Print
+  // doc.autoPrint();
+  // window.open(doc.output("bloburl"), "_blank");
+
   // Export PDF
   const exportPDF = (canvas, exportFilename) => {
     const canvasWidth = Math.floor(canvas.width);
@@ -41,7 +45,6 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
       unit: "px",
       format: [canW, canH],
     });
-    doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
     doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
     doc.save(exportFilename + ".pdf");
   };

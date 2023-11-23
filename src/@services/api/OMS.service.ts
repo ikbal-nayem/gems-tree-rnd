@@ -23,7 +23,10 @@ export const OMSService = {
     ),
 
   getTemplateList: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organogram-template/get-list", payload),
+    await axiosIns.post(
+      OMS_SERVICE + "organogram-template/custom/get-list",
+      payload
+    ),
 
   getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
     await axiosIns.get(
@@ -80,12 +83,6 @@ export const OMSService = {
 
   getOrganizationList: async (payload: IObject): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organization/get-list", payload),
-
-  getOrganizationOrganogramList: async (payload): Promise<any> =>
-    await axiosIns.post(
-      OMS_SERVICE + "organization-organogram/get-list",
-      payload
-    ),
 
   getOrganogramDetailsByOrganogramId: async (
     organogramId: string
