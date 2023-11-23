@@ -34,19 +34,15 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           }
           onClick={() => onView(nodeData)}
         />
-        <p className="p-1 mb-0 fw-bold fs-7">
+        <p className="mb-0 fs-8">
           {langEn ? nodeData.titleEn : nodeData.titleBn}
         </p>
-        <div>
-          <p className="border border-dark border-1 m-1 px-1 rounded">
-            {manPower}
-          </p>
-        </div>
+        <p className="mb-0 fs-8">{manPower}</p>
       </div>
 
       <div
         className={`bg-light text-start ${
-          nodeData?.manpowerList?.length ? "p-3" : ""
+          nodeData?.manpowerList?.length ? "p-1" : ""
         }`}
       >
         {nodeData?.manpowerList?.length > 0 &&
@@ -54,22 +50,26 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                  <p className="mb-0 fs-7">
-                    {langEn
-                      ? item?.numberOfEmployee || 0
-                      : numEnToBn(item?.numberOfEmployee || 0)}{" "}
-                    x{" "}
-                    {(postList?.length > 0 &&
-                      item?.organizationPost?.id &&
-                      (langEn
-                        ? postList?.find(
-                            (d) => d?.id === item?.organizationPost?.id
-                          )?.nameEn
-                        : postList?.find(
-                            (d) => d?.id === item?.organizationPost?.id
-                          )?.nameBn)) ||
-                      COMMON_LABELS.NOT_ASSIGN}
-                  </p>
+                  <div className="d-flex">
+                    <p className="mb-0 fs-8">
+                      {langEn
+                        ? item?.numberOfEmployee || 0
+                        : numEnToBn(item?.numberOfEmployee || 0)}{" "}
+                    </p>
+                    <p className="mb-0 ms-1 fs-8">x</p>
+                    <p className="ms-1 mb-0 fs-8">
+                      {(postList?.length > 0 &&
+                        item?.organizationPost?.id &&
+                        (langEn
+                          ? postList?.find(
+                              (d) => d?.id === item?.organizationPost?.id
+                            )?.nameEn
+                          : postList?.find(
+                              (d) => d?.id === item?.organizationPost?.id
+                            )?.nameBn)) ||
+                        COMMON_LABELS.NOT_ASSIGN}
+                    </p>
+                  </div>
                 ) : null}
               </div>
             );

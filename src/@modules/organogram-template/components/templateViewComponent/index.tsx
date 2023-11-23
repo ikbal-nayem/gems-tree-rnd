@@ -127,7 +127,7 @@ const TemplateViewComponent = ({
       </div>
       <div className="position-relative border border-secondary mb-3">
         <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
-        <div className="position-absolute" style={{ top: 10, right: 65 }}>
+        <div className="position-absolute" style={{ top: 10, right: 125 }}>
           <IconButton
             iconName="fullscreen"
             color="info"

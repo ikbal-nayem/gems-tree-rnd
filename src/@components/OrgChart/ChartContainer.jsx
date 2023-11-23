@@ -337,7 +337,7 @@ const ChartContainer = forwardRef(
           </div>
         </div>
         {zoom && (
-          <div className="position-absolute" style={{ top: 0, left: 2 }}>
+          <div className="position-absolute" style={{ top: 5, right: 60 }}>
             <Icon
               icon="zoom_in"
               size={30}
@@ -345,15 +345,13 @@ const ChartContainer = forwardRef(
               onClick={() => zoomHandler(-1)}
               variants="outlined"
             />
-            <div>
-              <Icon
-                icon="zoom_out"
-                size={30}
-                color="danger"
-                variants="outlined"
-                onClick={() => zoomHandler(1)}
-              />
-            </div>
+            <Icon
+              icon="zoom_out"
+              size={30}
+              color="danger"
+              variants="outlined"
+              onClick={() => zoomHandler(1)}
+            />
           </div>
         )}
       </div>
