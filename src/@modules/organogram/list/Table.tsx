@@ -51,8 +51,8 @@ const OrganogramTable: FC<TableProps> = ({
             <TableRow key={idx}>
               <TableCell text={generateRowNumBn(idx, respMeta)} />
               <TableCell
-                text={item?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.organization?.nameEn || COMMON_LABELS.NOT_ASSIGN}
+                text={item?.organizationNameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.organizationNameEn || COMMON_LABELS.NOT_ASSIGN}
               />
               <TableCell
                 text={item?.versionBn || COMMON_LABELS.NOT_ASSIGN}
