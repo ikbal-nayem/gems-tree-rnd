@@ -45,11 +45,7 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
       unit: "pt",
       format: [canW, canH],
     });
-<<<<<<< HEAD
-    doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
-=======
     doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
->>>>>>> 0b04b5fde349f0c15934bb79bf149bb18a280e1f
     doc.save(exportFilename + ".pdf");
   };
 
