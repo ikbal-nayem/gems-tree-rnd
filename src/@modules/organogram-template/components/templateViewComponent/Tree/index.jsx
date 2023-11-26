@@ -34,6 +34,14 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
   // doc.autoPrint();
   // window.open(doc.output("bloburl"), "_blank");
 
+  const pdfCallRef = useRef();
+
+  useEffect(() => {
+    setTimeout(() => {
+      download.current.exportTo("Organogram", "pdf");
+    }, 2000);
+  }, []);
+
   // Export PDF
   const exportPDF = (canvas, exportFilename) => {
     const canvasWidth = Math.floor(canvas.width);
@@ -45,13 +53,14 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
       unit: "pt",
       format: [canW, canH],
     });
-    doc.addImage(canvas.toDataURL("image/jpeg", 1.0), "PNG", 0, 0, canW, canH);
-    doc.save(exportFilename + ".pdf");
+    doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
+    // doc.save(exportFilename + ".pdf");
+    pdfCallRef.current = { doc, exportFilename };
   };
 
   const download = useRef();
   const onDownload = () => {
-    download.current.exportTo("Organogram", "pdf");
+    pdfCallRef.current.doc.save(pdfCallRef.current.exportFilename + ".pdf");
   };
 
   return (
