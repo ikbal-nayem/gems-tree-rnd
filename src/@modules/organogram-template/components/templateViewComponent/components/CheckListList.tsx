@@ -25,7 +25,7 @@ const CheckListForm = ({ data }: ICheckListForm) => {
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABELS.BN.CHECK_LIST}</h4>
+        <h4 className="m-0">{LABELS.BN.ATTACHMENT}</h4>
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
