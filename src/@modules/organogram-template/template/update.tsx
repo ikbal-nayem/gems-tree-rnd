@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import TemplateComponent from "../components/templateComponent";
 // import { OMSService } from "@services/api/OMS.service";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
-import { OMSService } from "../../../@services/api/OMS.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { OMSService } from "../../../@services/api/OMS.service";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -34,11 +34,12 @@ const TemplateUpdate = () => {
     // setIsSubmitLoading(true);
 
     let fileList =
-      templateData?.attachmentDtoList?.length > 0 &&
-      templateData?.attachmentDtoList?.map((item) => {
-        if (item?.fileName) return item.checkAttachmentFile;
-        return null
-      });
+      (templateData?.attachmentDtoList?.length > 0 &&
+        templateData?.attachmentDtoList?.map((item) => {
+          if (item?.fileName) return item.checkAttachmentFile;
+          return undefined;
+        })) ||
+      [];
 
     let attachmentDto =
       templateData?.attachmentDtoList?.length > 0 &&
@@ -50,35 +51,25 @@ const TemplateUpdate = () => {
     let reqPayload = {
       ...templateData,
       attachmentDtoList: attachmentDto,
-      // status: "NEW",
+      id: templateId,
+      status: data?.status,
     };
-
-    console.log(fileList);
-    
 
     let fd = new FormData();
 
     fd.append("body", JSON.stringify(reqPayload));
-    fileList.forEach((element) => {
-      fd.append("files", element);
-    });
+    fileList?.length > 0 &&
+      fileList.forEach((element) => {
+        if (element !== undefined) fd.append("files", element);
+      });
 
-    for (const value of fd.values()) {
-      console.log(value);
-    }
-
-    // let reqPayload = {
-    //   ...templateData,
-    //   status: data?.status,
-    // };
-
-    // OMSService.templateUpdate(fd, templateId)
-    //   .then((res) => {
-    //     toast.success(res?.message);
-    //     navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
-    //   })
-    //   .catch((error) => toast.error(error?.message))
-    //   .finally(() => setIsSubmitLoading(false));
+    OMSService.templateUpdate(fd)
+      .then((res) => {
+        toast.success(res?.message);
+        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
   };
 
   return (

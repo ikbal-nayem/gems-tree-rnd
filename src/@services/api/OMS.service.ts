@@ -61,11 +61,10 @@ export const OMSService = {
         title
     ),
 
-  templateUpdate: async (payload, templateId): Promise<any> =>
+  templateUpdate: async (payload): Promise<any> =>
     await axiosIns.put(
       OMS_SERVICE +
-        "organogram-template/update-organogram-template-by-id/" +
-        templateId,
+        "organogram-template/update-organogram-template-by-id",
       payload
     ),
   updateTemplateStatusById: async (templateId, status): Promise<any> =>
