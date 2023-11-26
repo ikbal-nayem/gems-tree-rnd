@@ -39,65 +39,98 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                 <Fragment key={idx++}>
                   <TableRow key={idx++}>
                     <TableCell
-                      textClassName="fw-bold fs-5"
-                      text={
-                        (langEn ? classs?.classNameEn : classs?.classNameBn) ||
-                        COMMON_LABELS.NOT_ASSIGN
-                      }
-                    />
+                    // textClassName="fw-bold fs-5"
+                    // text={
+                    //   (langEn ? classs?.classNameEn : classs?.classNameBn) ||
+                    //   COMMON_LABELS.NOT_ASSIGN
+                    // }
+                    >
+                      {(langEn ? classs?.classNameEn : classs?.classNameBn) ||
+                        COMMON_LABELS.NOT_ASSIGN}
+                    </TableCell>
                   </TableRow>
                   {classs?.manpowerDtoList?.map((itr) => (
                     <TableRow key={idx++}>
                       <TableCell
-                        text={
-                          (langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
-                          COMMON_LABELS.NOT_ASSIGN
-                        }
-                      />
+                      // text={
+                      //   (langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
+                      //   COMMON_LABELS.NOT_ASSIGN
+                      // }
+                      >
+                        {(langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
+                          COMMON_LABELS.NOT_ASSIGN}
+                      </TableCell>
                       <TableCell
-                        textAlign="end"
-                        text={
-                          langEn
+                      // textAlign="end"
+                      // text={
+                      //   langEn
+                      //     ? itr?.manpower
+                      //     : numEnToBn(itr?.manpower) ||
+                      //       COMMON_LABELS.NOT_ASSIGN
+                      // }
+                      >
+                        <div className="d-flex justify-content-end">
+                          {langEn
                             ? itr?.manpower
                             : numEnToBn(itr?.manpower) ||
-                              COMMON_LABELS.NOT_ASSIGN
-                        }
-                      />
+                              COMMON_LABELS.NOT_ASSIGN}
+                        </div>
+                      </TableCell>
                     </TableRow>
                   ))}
                   <TableRow key={idx++}>
                     <TableCell
-                      textClassName="fw-bold fs-4 mb-3"
-                      text={LOCAL_LABEL.TOTAL}
-                    />
+                    // textClassName="fw-bold fs-4 mb-3"
+                    // text={LOCAL_LABEL.TOTAL}
+                    >
+                      <div className="d-flex justify-content-start mb-3">
+                        {LOCAL_LABEL.TOTAL}
+                      </div>
+                    </TableCell>
                     <TableCell
-                      textAlign="end"
-                      textClassName="fw-bold fs-4 mb-3"
-                      text={
-                        langEn
+                      // textAlign="end"
+                      // textClassName="fw-bold fs-4 mb-3"
+                      // text={
+                      //   langEn
+                      //     ? classs?.totalClassManpower
+                      //     : numEnToBn(classs?.totalClassManpower) ||
+                      //       COMMON_LABELS.NOT_ASSIGN
+                      // }
+                    >
+                      <div className="d-flex justify-content-end mb-3">
+                        {langEn
                           ? classs?.totalClassManpower
                           : numEnToBn(classs?.totalClassManpower) ||
-                            COMMON_LABELS.NOT_ASSIGN
-                      }
-                    />
+                            COMMON_LABELS.NOT_ASSIGN}
+                      </div>
+                    </TableCell>
                   </TableRow>
                 </Fragment>
               );
             })}
             <TableRow key={idx++}>
               <TableCell
-                textClassName="fw-bold fs-3"
-                text={LOCAL_LABEL.GRAND_TOTAL}
-              />
+              // textClassName="fw-bold fs-3"
+              // text={LOCAL_LABEL.GRAND_TOTAL}
+              >
+                {LOCAL_LABEL.GRAND_TOTAL}
+              </TableCell>
               <TableCell
-                textAlign="end"
-                textClassName="fw-bold fs-3"
-                text={
-                  langEn
+              // textAlign="end"
+              // textClassName="fw-bold fs-3"
+              // text={
+              //   langEn
+              //     ? data?.totalManpower
+              //     : numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
+              // }
+              >
+                <div className="d-flex justify-content-end">
+                  {langEn
                     ? data?.totalManpower
-                    : numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
-                }
-              />
+                    : numEnToBn(data?.totalManpower) ||
+                      COMMON_LABELS.NOT_ASSIGN}
+                </div>
+              </TableCell>
             </TableRow>
             <TableRow key={idx++}>
               <TableCell> </TableCell>
