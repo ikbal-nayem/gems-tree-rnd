@@ -104,13 +104,34 @@ const NodeForm = ({
       : COMMON_LABELS.NUMERIC_ONLY;
   };
 
+  const setEnIntoBnFields = (data) => {
+    let postFunctionalityListNew = [];
+    if (
+      data?.postFunctionalityList &&
+      data?.postFunctionalityList?.length > 0
+    ) {
+      data?.postFunctionalityList.forEach((pf) => {
+        postFunctionalityListNew.push({
+          functionalityBn: pf?.functionalityEn,
+          functionalityEn: pf?.functionalityEn,
+        });
+      });
+    }
+
+    return {
+      ...data,
+      titleBn: data?.titleEn,
+      postFunctionalityList: postFunctionalityListNew,
+    };
+  };
+
   const onFormSubmit = (data) => {
-    setIsHeadIndex(null)
-    onSubmit(data)
+    setIsHeadIndex(null);
+    onSubmit(setEnIntoBnFields(data));
   };
 
   const onFormClose = () => {
-    setIsHeadIndex(null)
+    setIsHeadIndex(null);
     onClose();
   };
 
@@ -125,7 +146,7 @@ const NodeForm = ({
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
           <div className="row border rounded p-2 my-1 bg-gray-100">
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <Input
                 label="বাংলা নাম"
                 placeholder="বাংলা নাম লিখুন"
@@ -139,11 +160,11 @@ const NodeForm = ({
                 isError={!!errors?.titleBn}
                 errorMessage={errors?.titleBn?.message as string}
               />
-            </div>
-            <div className="col-md-6 col-12">
+            </div> */}
+            <div className="col-md-12 col-12">
               <Input
                 label="ইংরেজি নাম"
-                placeholder="ইংরেজি নাম লিখুন"
+                placeholder="নাম ইংরেজিতে লিখুন"
                 isRequired
                 noMargin
                 registerProperty={{
@@ -182,7 +203,7 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <Input
                       label={index < 1 ? "দায়িত্ব (বাংলা)" : ""}
                       noMargin
@@ -205,9 +226,9 @@ const NodeForm = ({
                           ?.message as string
                       }
                     />
-                  </div>
+                  </div> */}
 
-                  <div className="col-md-6 mt-1 mt-xl-0">
+                  <div className="col-md-12 mt-1 mt-xl-0">
                     <Input
                       label={index < 1 ? "দায়িত্ব (ইংরেজি)" : ""}
                       noMargin
