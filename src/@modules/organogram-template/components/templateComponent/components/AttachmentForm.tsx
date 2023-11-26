@@ -5,19 +5,21 @@ import {
   Input,
   Label,
   Separator,
+  SingleFile,
 } from "@gems/components";
 import { numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
-interface ICheckListForm {
+interface IAttachmentForm {
   formProps: any;
 }
 
-const CheckListForm = ({ formProps }: ICheckListForm) => {
+const AttachmentForm = ({ formProps }: IAttachmentForm) => {
   const {
     register,
     control,
+    setValue,
     formState: { errors },
   } = formProps;
 
@@ -26,18 +28,23 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
     name: "attachmentDtoList",
   });
 
+  const onFileChange = (e, idx) => {
+    setValue(`attachmentDtoList.${idx}.fileName`, e?.name || null);
+  };
+
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABELS.BN.CHECK_LIST}</h4>
+        <h4 className="m-0">{LABELS.BN.ATTACHMENT}</h4>
         <IconButton iconName="add" color="primary" onClick={() => append("")} />
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
         {fields.map((f, idx) => {
-          const label = "তালিকা";
+          const label = "নাম";
           const labelBn = label + " (বাংলা)";
           const labelEn = label + " (ইংরেজি)";
+          const labelAttachment = "ফাইল";
 
           return (
             <div
@@ -48,11 +55,12 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
               <div className="row w-100">
-                <div className="col-xl-5 col-12">
+                <div className="col-xl-4 col-12">
                   <Input
                     label={idx < 1 ? labelBn : ""}
                     placeholder={labelBn + " লিখুন"}
                     autoFocus
+                    isRequired
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleBn`, {
                         required: " ",
@@ -70,6 +78,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
                     autoFocus
+                    isRequired
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
                         required: " ",
@@ -83,7 +92,7 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                     }
                   />
                 </div>
-                <div
+                {/* <div
                   className={
                     idx < 1 ? "col-xl-3 mt-xl-9 mt-0" : "col-xl-3 mt-3"
                   }
@@ -96,8 +105,25 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
                       ...register(`attachmentDtoList.${idx}.isMandatory`),
                     }}
                   />
+                </div> */}
+                <div className="col-xl-4 col-12">
+                  <SingleFile
+                    isRequired="ফাইল আপলোড করুন"
+                    control={control}
+                    label={idx < 1 ? labelAttachment : ""}
+                    name={`attachmentDtoList.${idx}.checkAttachmentFile`}
+                    onChange={(e) => onFileChange(e, idx)}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.checkAttachmentFile}
+                    errorMessage={
+                      errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
+                        ?.message as string
+                    }
+                    maxSize={1}
+                    // helpText="পিডিএফ ফাইল নির্বাচন করুন,ফাইলের সর্বোচ্চ সাইজ ১৫ এমবি"
+                  />
                 </div>
               </div>
+
               <div className={idx < 1 ? "mt-6" : ""}>
                 <IconButton
                   iconName="delete"
@@ -118,4 +144,4 @@ const CheckListForm = ({ formProps }: ICheckListForm) => {
   );
 };
 
-export default CheckListForm;
+export default AttachmentForm;

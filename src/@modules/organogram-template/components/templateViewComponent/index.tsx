@@ -35,6 +35,7 @@ import { OMSService } from "@services/api/OMS.service";
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import AttachmentList from "./components/AttachmentList";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -210,6 +211,12 @@ const TemplateViewComponent = ({
               {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
             </div>
           )}
+          <div className="mt-3">
+            <AttachmentList
+              data={updateData?.attachmentDtoList || []}
+              langEn={langEn}
+            />
+          </div>
         </div>
         <div className="col-md-6">
           <div className="mt-md-0 mt-3">

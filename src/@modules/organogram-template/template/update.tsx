@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import TemplateComponent from "../components/templateComponent";
 // import { OMSService } from "@services/api/OMS.service";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
-import { OMSService } from "../../../@services/api/OMS.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { OMSService } from "../../../@services/api/OMS.service";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,14 +31,39 @@ const TemplateUpdate = () => {
   };
 
   const onSubmit = (templateData) => {
-    setIsSubmitLoading(true);
+    // setIsSubmitLoading(true);
+
+    let fileList =
+      (templateData?.attachmentDtoList?.length > 0 &&
+        templateData?.attachmentDtoList?.map((item) => {
+          if (item?.fileName) return item.checkAttachmentFile;
+          return undefined;
+        })) ||
+      [];
+
+    let attachmentDto =
+      templateData?.attachmentDtoList?.length > 0 &&
+      templateData?.attachmentDtoList?.map((item) => {
+        if (item?.fileName) delete item.checkAttachmentFile;
+        return item;
+      });
 
     let reqPayload = {
       ...templateData,
+      attachmentDtoList: attachmentDto,
+      id: templateId,
       status: data?.status,
     };
 
-    OMSService.templateUpdate(reqPayload, templateId)
+    let fd = new FormData();
+
+    fd.append("body", JSON.stringify(reqPayload));
+    fileList?.length > 0 &&
+      fileList.forEach((element) => {
+        if (element !== undefined) fd.append("files", element);
+      });
+
+    OMSService.templateUpdate(fd)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + templateId);

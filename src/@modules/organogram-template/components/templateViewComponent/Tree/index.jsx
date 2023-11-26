@@ -50,7 +50,7 @@ const OrganizationTemplateTree = ({ treeData, langEn,test }) => {
     const canH = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
     const doc = new jsPDF({
       orientation: canvasWidth > canvasHeight ? "landscape" : "portrait",
-      unit: "px",
+      unit: "pt",
       format: [canW, canH],
     });
     doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
