@@ -11,9 +11,10 @@ import { IconButton } from "@gems/components";
 //   langEn: boolean;
 // }
 
-const OrganizationTemplateTree = ({ treeData, langEn,test }) => {
+const OrganizationTemplateTree = ({ treeData, langEn, dataToPDF }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
+  const [isDownloadButton, setIsDownlaodButton] = useState(false);
   const selectedNode = useRef(null);
 
   useEffect(() => {
@@ -30,17 +31,14 @@ const OrganizationTemplateTree = ({ treeData, langEn,test }) => {
     setFormOpen(false);
   };
 
-  // Direct Print
-  // doc.autoPrint();
-  // window.open(doc.output("bloburl"), "_blank");
-
   const pdfCallRef = useRef();
 
   useEffect(() => {
     setTimeout(() => {
       download.current.exportTo("Organogram", "pdf");
-    }, 2000);
-  }, []);
+      setIsDownlaodButton(true);
+    }, 1500);
+  }, [langEn]);
 
   // Export PDF
   const exportPDF = (canvas, exportFilename) => {
@@ -52,16 +50,22 @@ const OrganizationTemplateTree = ({ treeData, langEn,test }) => {
       orientation: canvasWidth > canvasHeight ? "landscape" : "portrait",
       unit: "pt",
       format: [canW, canH],
+      compress: true,
     });
     doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
     // doc.save(exportFilename + ".pdf");
-    pdfCallRef.current = {...pdfCallRef.current, doc, exportFilename };
+    pdfCallRef.current = { ...pdfCallRef.current, doc, exportFilename };
   };
 
   const download = useRef();
   const onDownload = () => {
     pdfCallRef.current.doc.save(pdfCallRef.current.exportFilename + ".pdf");
-    test.current.save("dd.pdf");
+    dataToPDF.current.save("Data.pdf");
+  };
+
+  const onPrint = () => {
+    pdfCallRef.current.doc.autoPrint();
+    window.open(pdfCallRef.current.doc.output("bloburl"), "_blank");
   };
 
   return (
@@ -88,12 +92,22 @@ const OrganizationTemplateTree = ({ treeData, langEn,test }) => {
         isOpen={formOpen}
         onClose={onFormClose}
       />
+      <div className="position-absolute" style={{ top: 0, right: 125 }}>
+        <IconButton
+          iconName="print"
+          color="info"
+          variant="fill"
+          onClick={onPrint}
+          isDisabled={!isDownloadButton}
+        />
+      </div>
       <div className="position-absolute" style={{ top: 0, right: 20 }}>
         <IconButton
           iconName="download"
           color="info"
           variant="fill"
           onClick={onDownload}
+          isDisabled={!isDownloadButton}
         />
       </div>
     </div>

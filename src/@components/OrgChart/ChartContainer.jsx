@@ -251,14 +251,13 @@ const ChartContainer = forwardRef(
       exportTo: (exportFilename, exportFileextension) => {
         exportFilename = exportFilename || "OrgChart";
         exportFileextension = exportFileextension || "png";
-        setExporting(true);
+        // setExporting(true);
         const originalScrollLeft = container.current.scrollLeft;
         container.current.scrollLeft = 0;
         const originalScrollTop = container.current.scrollTop;
         container.current.scrollTop = 0;
         html2canvas(chart.current, {
-          width: chart.current.clientWidth,
-          height: chart.current.clientHeight,
+          scale: 1.5,
           onclone: function (clonedDoc) {
             clonedDoc.querySelector(".orgchart").style.background = "none";
             clonedDoc.querySelector(".orgchart").style.transform = "";

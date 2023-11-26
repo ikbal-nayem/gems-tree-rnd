@@ -98,20 +98,28 @@ const TemplateViewComponent = ({
       .finally(() => setApproveLoading(false));
   };
 
+  const [isPDFGenerating, setPDFGenerating] = useState<boolean>(false);
+
   useEffect(() => {
+    setPDFGenerating(true);
     setTimeout(() => {
       downloadPDF();
-    }, 1000);
-  }, []);
+    }, 1500);
+    setTimeout(() => {
+      setPDFGenerating(false);
+    }, 3500);
+  }, [langEn]);
 
-  const test = useRef<any>();
+  const dataToPDF = useRef<any>();
   const pdfRef = useRef();
 
   const downloadPDF = () => {
-    const input :any= pdfRef.current;
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("img/png");
-      const pdf = new jsPDF("l", "px", [input.clientWidth,input.clientHeight]);
+    const input: any = pdfRef.current;
+    html2canvas(input, {
+      scale: 1.5,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("l", "px", [canvas.width, canvas.height], true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imageWidth = canvas.width;
@@ -127,7 +135,7 @@ const TemplateViewComponent = ({
         imageWidth * ratio,
         imageHeight * ratio
       );
-      test.current = pdf;
+      dataToPDF.current = pdf;
     });
   };
 
@@ -168,9 +176,9 @@ const TemplateViewComponent = ({
         <OrganizationTemplateTree
           treeData={treeData}
           langEn={langEn}
-          test={test}
+          dataToPDF={dataToPDF}
         />
-        <div className="position-absolute" style={{ top: 10, right: 125 }}>
+        <div className="position-absolute" style={{ top: 10, right: 175 }}>
           <IconButton
             iconName="fullscreen"
             color="info"
@@ -183,65 +191,99 @@ const TemplateViewComponent = ({
             <OrganizationTemplateTree
               treeData={treeData}
               langEn={langEn}
-              test={test}
+              dataToPDF={dataToPDF}
             />
           </ModalBody>
         </Modal>
       </div>
-      <div className="row" ref={pdfRef}>
-        <div className="col-md-6">
-          <ActivitiesList
-            data={updateData?.mainActivitiesDtoList || []}
-            langEn={langEn}
-          />
+      {isPDFGenerating ? (
+        <div className="row" ref={pdfRef}>
+          <div className="col-6">
+            <ActivitiesList
+              data={updateData?.mainActivitiesDtoList || []}
+              langEn={langEn}
+            />
 
-          <div className="mt-3">
-            <EquipmentsList
-              data={updateData?.miscellaneousPointDtoList || []}
-              inventoryData={inventoryData || []}
-              langEn={langEn}
-            />
-          </div>
-          {!organogramView && (
             <div className="mt-3">
-              <OrgList
-                data={updateData?.templateOrganizationsDtoList || []}
-                langEn={langEn}
-              />
-              {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
-            </div>
-          )}
-          <div className="mt-3">
-            <AttachmentList
-              data={updateData?.attachmentDtoList || []}
-              langEn={langEn}
-            />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="mt-md-0 mt-3">
-            <AllocationOfBusinessList
-              data={updateData?.businessAllocationDtoList || []}
-              langEn={langEn}
-            />
-          </div>
-          <div className="mt-3">
-            <ManPowerList
-              isLoading={false}
-              data={manpowerData}
-              langEn={langEn}
-            />
-          </div>
-          {langEn && (
-            <div className="mt-3">
-              <AbbreviationList
-                data={updateData?.abbreviationDtoList || []}
+              <EquipmentsList
+                data={updateData?.miscellaneousPointDtoList || []}
+                inventoryData={inventoryData || []}
                 langEn={langEn}
               />
             </div>
-          )}
+            <div className="mt-3">
+              <AllocationOfBusinessList
+                data={updateData?.businessAllocationDtoList || []}
+                langEn={langEn}
+              />
+            </div>
+          </div>
+          <div className="col-6">
+            <div>
+              <ManPowerList
+                isLoading={false}
+                data={manpowerData}
+                langEn={langEn}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="row">
+          <div className="col-md-6">
+            <ActivitiesList
+              data={updateData?.mainActivitiesDtoList || []}
+              langEn={langEn}
+            />
+
+            <div className="mt-3">
+              <EquipmentsList
+                data={updateData?.miscellaneousPointDtoList || []}
+                inventoryData={inventoryData || []}
+                langEn={langEn}
+              />
+            </div>
+            {!organogramView && (
+              <div className="mt-3">
+                <OrgList
+                  data={updateData?.templateOrganizationsDtoList || []}
+                  langEn={langEn}
+                />
+                {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
+              </div>
+            )}
+            <div className="mt-3">
+              <AttachmentList
+                data={updateData?.attachmentDtoList || []}
+                langEn={langEn}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="mt-md-0 mt-3">
+              <AllocationOfBusinessList
+                data={updateData?.businessAllocationDtoList || []}
+                langEn={langEn}
+              />
+            </div>
+            <div className="mt-3">
+              <ManPowerList
+                isLoading={false}
+                data={manpowerData}
+                langEn={langEn}
+              />
+            </div>
+            {langEn && (
+              <div className="mt-3">
+                <AbbreviationList
+                  data={updateData?.abbreviationDtoList || []}
+                  langEn={langEn}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {!organogramView && (
         <>
