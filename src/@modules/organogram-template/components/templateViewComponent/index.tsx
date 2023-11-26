@@ -21,7 +21,7 @@ import {
   COMMON_LABELS as COMN_LABELS,
   LABELS,
 } from "@constants/common.constant";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
@@ -33,6 +33,8 @@ import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
 import { useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -95,6 +97,39 @@ const TemplateViewComponent = ({
       .finally(() => setApproveLoading(false));
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      downloadPDF();
+    }, 1000);
+  }, []);
+
+  const test = useRef<any>();
+  const pdfRef = useRef();
+
+  const downloadPDF = () => {
+    const input :any= pdfRef.current;
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      const pdf = new jsPDF("l", "px", [input.clientWidth,input.clientHeight]);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imageWidth = canvas.width;
+      const imageHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
+      const imageX = (pdfWidth - imageWidth * ratio) / 2;
+      const imageY = 30;
+      pdf.addImage(
+        imgData,
+        "PNG",
+        imageX,
+        imageY,
+        imageWidth * ratio,
+        imageHeight * ratio
+      );
+      test.current = pdf;
+    });
+  };
+
   return (
     <div>
       <div className="card border p-3 mb-4">
@@ -129,7 +164,11 @@ const TemplateViewComponent = ({
         </div>
       </div>
       <div className="position-relative border border-secondary mb-3">
-        <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
+        <OrganizationTemplateTree
+          treeData={treeData}
+          langEn={langEn}
+          test={test}
+        />
         <div className="position-absolute" style={{ top: 10, right: 125 }}>
           <IconButton
             iconName="fullscreen"
@@ -140,11 +179,15 @@ const TemplateViewComponent = ({
         </div>
         <Modal isOpen={formOpen} handleClose={onFormClose} fullscreen title="">
           <ModalBody className="p-0">
-            <OrganizationTemplateTree treeData={treeData} langEn={langEn} />
+            <OrganizationTemplateTree
+              treeData={treeData}
+              langEn={langEn}
+              test={test}
+            />
           </ModalBody>
         </Modal>
       </div>
-      <div className="row">
+      <div className="row" ref={pdfRef}>
         <div className="col-md-6">
           <ActivitiesList
             data={updateData?.mainActivitiesDtoList || []}

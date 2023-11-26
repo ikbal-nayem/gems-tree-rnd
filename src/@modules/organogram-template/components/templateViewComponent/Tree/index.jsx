@@ -11,7 +11,7 @@ import { IconButton } from "@gems/components";
 //   langEn: boolean;
 // }
 
-const OrganizationTemplateTree = ({ treeData, langEn }) => {
+const OrganizationTemplateTree = ({ treeData, langEn,test }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
   const selectedNode = useRef(null);
@@ -55,12 +55,13 @@ const OrganizationTemplateTree = ({ treeData, langEn }) => {
     });
     doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
     // doc.save(exportFilename + ".pdf");
-    pdfCallRef.current = { doc, exportFilename };
+    pdfCallRef.current = {...pdfCallRef.current, doc, exportFilename };
   };
 
   const download = useRef();
   const onDownload = () => {
     pdfCallRef.current.doc.save(pdfCallRef.current.exportFilename + ".pdf");
+    test.current.save("dd.pdf");
   };
 
   return (
