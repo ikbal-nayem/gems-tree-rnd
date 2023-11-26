@@ -41,7 +41,7 @@ const TemplateUpdate = () => {
     OMSService.templateUpdate(reqPayload, templateId)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + templateId);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));

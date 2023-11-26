@@ -59,7 +59,8 @@ const TemplateViewComponent = ({
         };
 
   const [langEn, setLangEn] = useState<boolean>(false);
-  const [formOpen, setFormOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState<boolean>(false);
+  const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -84,12 +85,14 @@ const TemplateViewComponent = ({
   };
 
   const onTemplateApprove = () => {
+    setApproveLoading(true);
     OMSService.approveTemplateById(updateData?.id)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
       })
-      .catch((error) => toast.error(error?.message));
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setApproveLoading(false));
   };
 
   return (
@@ -244,6 +247,7 @@ const TemplateViewComponent = ({
               <Button
                 className="rounded-pill px-8 fw-bold"
                 color="success"
+                isLoading={isApproveLoading}
                 onClick={() => onTemplateApprove()}
               >
                 <span> {BTN_LABELS.APPROVE} </span>
