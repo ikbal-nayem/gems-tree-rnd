@@ -45,8 +45,11 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                     //   COMMON_LABELS.NOT_ASSIGN
                     // }
                     >
-                      {(langEn ? classs?.classNameEn : classs?.classNameBn) ||
+                      <div className="fw-bold">
+                        {(langEn ? classs?.classNameEn : classs?.classNameBn) ||
                         COMMON_LABELS.NOT_ASSIGN}
+                      </div>
+                      
                     </TableCell>
                   </TableRow>
                   {classs?.manpowerDtoList?.map((itr) => (
@@ -82,8 +85,8 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                     <TableCell
                     // textClassName="fw-bold fs-4 mb-3"
                     // text={LOCAL_LABEL.TOTAL}
-                    >
-                      <div className="d-flex justify-content-start mb-3">
+                    >                     
+                      <div className="d-flex justify-content-start mb-3 fw-bold">
                         {LOCAL_LABEL.TOTAL}
                       </div>
                     </TableCell>
@@ -97,7 +100,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                       //       COMMON_LABELS.NOT_ASSIGN
                       // }
                     >
-                      <div className="d-flex justify-content-end mb-3">
+                      <div className="d-flex justify-content-end mb-3 fw-bold">
                         {langEn
                           ? classs?.totalClassManpower
                           : numEnToBn(classs?.totalClassManpower) ||
@@ -113,7 +116,9 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
               // textClassName="fw-bold fs-3"
               // text={LOCAL_LABEL.GRAND_TOTAL}
               >
-                {LOCAL_LABEL.GRAND_TOTAL}
+                <div className="fw-bold fs-5">
+                  {LOCAL_LABEL.GRAND_TOTAL}
+                </div>
               </TableCell>
               <TableCell
               // textAlign="end"
@@ -124,7 +129,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
               //     : numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
               // }
               >
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-end fw-bold fs-5">
                   {langEn
                     ? data?.totalManpower
                     : numEnToBn(data?.totalManpower) ||
