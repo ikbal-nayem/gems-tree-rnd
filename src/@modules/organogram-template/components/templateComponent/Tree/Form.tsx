@@ -29,6 +29,7 @@ interface INodeForm {
   onSubmit: (data) => void;
   updateData?: IObject;
   postList: IObject[];
+  isNotEnamCommittee: boolean;
 }
 
 const NodeForm = ({
@@ -37,6 +38,7 @@ const NodeForm = ({
   onClose,
   onSubmit,
   updateData,
+  isNotEnamCommittee,
 }: INodeForm) => {
   const {
     register,
@@ -144,22 +146,24 @@ const NodeForm = ({
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
           <div className="row border rounded p-2 my-1 bg-gray-100">
-            {/* <div className="col-md-6 col-12">
-              <Input
-                label="বাংলা নাম"
-                placeholder="বাংলা নাম লিখুন"
-                isRequired
-                noMargin
-                registerProperty={{
-                  ...register("titleBn", {
-                    required: " ",
-                  }),
-                }}
-                isError={!!errors?.titleBn}
-                errorMessage={errors?.titleBn?.message as string}
-              />
-            </div> */}
-            <div className="col-md-12 col-12">
+            {isNotEnamCommittee && (
+              <div className="col-md-6 col-12">
+                <Input
+                  label="বাংলা নাম"
+                  placeholder="বাংলা নাম লিখুন"
+                  isRequired
+                  noMargin
+                  registerProperty={{
+                    ...register("titleBn", {
+                      required: " ",
+                    }),
+                  }}
+                  isError={!!errors?.titleBn}
+                  errorMessage={errors?.titleBn?.message as string}
+                />
+              </div>
+            )}
+            <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
               <Input
                 label="ইংরেজি নাম"
                 placeholder="নাম ইংরেজিতে লিখুন"
@@ -201,32 +205,40 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  {/* <div className="col-md-6">
-                    <Input
-                      label={index < 1 ? "দায়িত্ব (বাংলা)" : ""}
-                      noMargin
-                      placeholder="দায়িত্ব বাংলায় লিখুন"
-                      registerProperty={{
-                        ...register(
-                          `postFunctionalityList.${index}.functionalityBn`,
-                          {
-                            required: " ",
-                          }
-                        ),
-                      }}
-                      isRequired
-                      isError={
-                        !!errors?.postFunctionalityList?.[index]
-                          ?.functionalityBn
-                      }
-                      errorMessage={
-                        errors?.postFunctionalityList?.[index]?.functionalityBn
-                          ?.message as string
-                      }
-                    />
-                  </div> */}
+                  {isNotEnamCommittee && (
+                    <div className="col-md-6">
+                      <Input
+                        label={index < 1 ? "দায়িত্ব (বাংলা)" : ""}
+                        noMargin
+                        placeholder="দায়িত্ব বাংলায় লিখুন"
+                        registerProperty={{
+                          ...register(
+                            `postFunctionalityList.${index}.functionalityBn`,
+                            {
+                              required: " ",
+                            }
+                          ),
+                        }}
+                        isRequired
+                        isError={
+                          !!errors?.postFunctionalityList?.[index]
+                            ?.functionalityBn
+                        }
+                        errorMessage={
+                          errors?.postFunctionalityList?.[index]
+                            ?.functionalityBn?.message as string
+                        }
+                      />
+                    </div>
+                  )}
 
-                  <div className="col-md-12 mt-1 mt-xl-0">
+                  <div
+                    className={
+                      isNotEnamCommittee
+                        ? "col-md-6 mt-1 mt-xl-0"
+                        : "col-md-12 mt-1 mt-xl-0"
+                    }
+                  >
                     <Input
                       label={index < 1 ? "দায়িত্ব (ইংরেজি)" : ""}
                       noMargin

@@ -6,11 +6,13 @@ import { enCheck } from "utility/checkValidation";
 
 interface IActivitiesForm {
   formProps: any;
+  isNotEnamCommittee: boolean;
 }
-const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
+const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
   const {
     register,
     control,
+    setValue,
     formState: { errors },
   } = formProps;
 
@@ -39,28 +41,35 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
               <div className="row w-100">
-                {/* <div className="col-xl-6 col-12">
-                  <Input
-                    label={idx < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
-                    isRequired
-                    noMargin
-                    autoFocus
-                    registerProperty={{
-                      ...register(
-                        `mainActivitiesDtoList.${idx}.mainActivityBn`,
-                        {
-                          required:
-                            "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
-                        }
-                      ),
-                    }}
-                    isError={
-                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityBn
-                    }
-                  />
-                </div> */}
-                <div className="col-12 mt-1 mt-xl-0">
+                {isNotEnamCommittee && (
+                  <div className="col-xl-6 col-12">
+                    <Input
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      isRequired
+                      noMargin
+                      autoFocus
+                      registerProperty={{
+                        ...register(
+                          `mainActivitiesDtoList.${idx}.mainActivityBn`,
+                          {
+                            required: " ",
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityBn
+                      }
+                    />
+                  </div>
+                )}
+                <div
+                  className={
+                    isNotEnamCommittee
+                      ? "col-xl-6 col-12 mt-1 mt-xl-0"
+                      : "col-12 mt-1 mt-xl-0"
+                  }
+                >
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
@@ -71,8 +80,15 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                       ...register(
                         `mainActivitiesDtoList.${idx}.mainActivityEn`,
                         {
-                          required:
-                            "কার্যক্রম " + numEnToBn(idx + 1) + " লিখুন",
+                          onChange: (e) => {
+                            if (!isNotEnamCommittee) {
+                              setValue(
+                                `mainActivitiesDtoList.${idx}.mainActivityBn`,
+                                e.target.value
+                              );
+                            }
+                          },
+                          required: " ",
                           validate: enCheck,
                         }
                       ),

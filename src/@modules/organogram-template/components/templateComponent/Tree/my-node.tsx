@@ -1,7 +1,7 @@
 import { Icon } from "@gems/components";
 // import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
-import { COMMON_LABELS, numEnToBn } from "@gems/utils";
+import { COMMON_LABELS } from "@constants/common.constant";
 // import { Dropdown, DropdownItem } from "../Dropdown";
 // import { Button, Modal } from "react-bootstrap";
 // const propTypes = {
@@ -82,7 +82,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                           postList?.find(
                             (d) => d?.id === item?.organizationPost?.id
                           )?.nameEn) ||
-                          COMMON_LABELS.NOT_ASSIGN}
+                          COMMON_LABELS.EN.NOT_ASSIGN}
                       </p>
                     </div>
                   ) : null}
