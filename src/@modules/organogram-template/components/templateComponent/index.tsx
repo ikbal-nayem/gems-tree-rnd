@@ -36,6 +36,7 @@ const TemplateComponent = ({
       : {
           id: generateUUID(),
           titleBn: "অর্গানোগ্রাম তৈরি শুরু করুন",
+          titleEn: "Start the Organogram here",
           children: [],
         }
   );
