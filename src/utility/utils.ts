@@ -98,3 +98,5 @@ export const getPermittedRouteList = (routeList) => {
     ) || []
   );
 };
+
+export const isNotEmptyList = (list) => list && list?.length > 0;

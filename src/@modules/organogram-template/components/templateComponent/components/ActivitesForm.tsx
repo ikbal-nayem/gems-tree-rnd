@@ -39,7 +39,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
               <div className="row w-100">
-                <div className="col-xl-6 col-12">
+                {/* <div className="col-xl-6 col-12">
                   <Input
                     label={idx < 1 ? labelBn : ""}
                     placeholder={labelBn + " লিখুন"}
@@ -59,8 +59,8 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                       !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityBn
                     }
                   />
-                </div>
-                <div className="col-xl-6 col-12 mt-1 mt-xl-0">
+                </div> */}
+                <div className="col-12 mt-1 mt-xl-0">
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}

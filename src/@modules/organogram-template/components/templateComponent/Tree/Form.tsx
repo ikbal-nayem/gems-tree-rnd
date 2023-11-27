@@ -21,6 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
+import { isNotEmptyList } from "utility/utils";
 
 interface INodeForm {
   isOpen: boolean;
@@ -106,10 +107,7 @@ const NodeForm = ({
 
   const setEnIntoBnFields = (data) => {
     let postFunctionalityListNew = [];
-    if (
-      data?.postFunctionalityList &&
-      data?.postFunctionalityList?.length > 0
-    ) {
+    if (isNotEmptyList(data?.postFunctionalityList)) {
       data?.postFunctionalityList.forEach((pf) => {
         postFunctionalityListNew.push({
           functionalityBn: pf?.functionalityEn,

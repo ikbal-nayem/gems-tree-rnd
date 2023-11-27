@@ -19,6 +19,7 @@ import EquipmentsForm from "./components/EquipmentsForm";
 import Organizations from "./components/organization";
 import AttachmentForm from "./components/AttachmentForm";
 import { makeFormData } from "utility/makeObject";
+import { isNotEmptyList } from "utility/utils";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -152,8 +153,32 @@ const TemplateComponent = ({
       })
     );
 
+    let mainActivitiesList = [];
+    if (isNotEmptyList(data?.mainActivitiesDtoList)) {
+      data?.mainActivitiesDtoList.forEach((obj) => {
+        mainActivitiesList.push({
+          mainActivityBn: obj?.mainActivityEn,
+          mainActivityEn: obj?.mainActivityEn,
+        });
+      });
+    }
+
+    let businessAllocationList = [];
+    if (isNotEmptyList(data?.businessAllocationDtoList)) {
+      data?.businessAllocationDtoList.forEach((obj) => {
+        businessAllocationList.push({
+          businessOfAllocationBn: obj?.businessOfAllocationEn,
+          businessOfAllocationEn: obj?.businessOfAllocationEn,
+        });
+      });
+    }
+
     const reqPayload = {
       ...data,
+      titleBn: data?.titleEn,
+      versionBn: data?.versionEn,
+      mainActivitiesDtoList: mainActivitiesList,
+      businessAllocationDtoList: businessAllocationList,
       organizationStructureDto: treeData,
     };
     // let test = makeFormData(reqPayload);
@@ -161,7 +186,7 @@ const TemplateComponent = ({
     // for (const value of test.values()) {
     //   console.log(value);
     // }
-    // console.log("jjkk", reqPayload);
+    console.log("Req Payload: ", reqPayload);
 
     onSubmit(reqPayload);
   };
@@ -179,7 +204,7 @@ const TemplateComponent = ({
           <h4 className="m-0">টেমপ্লেট</h4>
           <Separator className="mt-1 mb-2" />
           <div className="row">
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম বাংলা"
                 placeholder="বাংলায় শিরোনাম লিখুন"
@@ -193,7 +218,7 @@ const TemplateComponent = ({
                 isError={!!errors?.titleBn}
                 errorMessage={errors?.titleBn?.message as string}
               />
-            </div>
+            </div> */}
 
             <div className="col-md-6 col-12">
               <Input
@@ -211,7 +236,7 @@ const TemplateComponent = ({
                 errorMessage={errors?.titleEn?.message as string}
               />
             </div>
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <Input
                 label="ভার্শন (বাংলা)"
                 placeholder="বাংলায় ভার্শন লিখুন"
@@ -224,7 +249,7 @@ const TemplateComponent = ({
                 isError={!!errors?.versionBn}
                 errorMessage={errors?.versionBn?.message as string}
               />
-            </div>
+            </div> */}
             <div className="col-md-6 col-12">
               <Input
                 label="ভার্শন (ইংরেজি)"

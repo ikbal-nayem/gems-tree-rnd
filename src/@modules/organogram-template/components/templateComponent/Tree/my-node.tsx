@@ -21,7 +21,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             onClick={() => treeDispatch("EDIT", nodeData)}
           />
           <div>
-            <p className="p-1 mb-0 fs-7">{nodeData.titleBn}</p>
+            <p className="p-1 mb-0 fs-7">{nodeData.titleEn}</p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
           {/* <Dropdown
@@ -72,7 +72,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                     <div className="d-flex">
                       <p className="mb-0 fs-7">
                         {item?.numberOfEmployee
-                          ? numEnToBn(item?.numberOfEmployee)
+                          ? item?.numberOfEmployee
                           : 0 || null}{" "}
                       </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
@@ -81,7 +81,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                           item?.organizationPost?.id &&
                           postList?.find(
                             (d) => d?.id === item?.organizationPost?.id
-                          )?.nameBn) ||
+                          )?.nameEn) ||
                           COMMON_LABELS.NOT_ASSIGN}
                       </p>
                     </div>
