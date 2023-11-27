@@ -1,3 +1,4 @@
+import { LABELS } from "@constants/common.constant";
 import {
   ContentPreloader,
   ITableHeadColumn,
@@ -9,7 +10,6 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 import { FC, Fragment } from "react";
-import { LABELS } from "@constants/common.constant";
 import { LOCAL_LABELS } from "./labels";
 
 type TableProps = {
@@ -22,11 +22,13 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
   const columns: ITableHeadColumn[] = [
-    { title: LOCAL_LABEL.NAME_OF_POSTS, width: 50 },
-    { title: LOCAL_LABEL.NO_OF_POSTS, width: 80, align: "end" },
+    { title: LOCAL_LABEL.SL_NO, width: 50 },
+    { title: LOCAL_LABEL.NAME_OF_POSTS, align: "start" },
+    { title: LOCAL_LABEL.NO_OF_POSTS, align: "end" },
   ];
 
   let idx = 1000; // lets take a common index for both parent-child list
+  let slNo = 1; // serial number count only for posts
   return (
     <div className="card border p-3">
       <h4 className="m-0">{LABEL.SUM_OF_MANPOWER}</h4>
@@ -38,41 +40,25 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
               return (
                 <Fragment key={idx++}>
                   <TableRow key={idx++}>
-                    <TableCell
-                    // textClassName="fw-bold fs-5"
-                    // text={
-                    //   (langEn ? classs?.classNameEn : classs?.classNameBn) ||
-                    //   COMMON_LABELS.NOT_ASSIGN
-                    // }
-                    >
-                      <div className="fw-bold">
+                    <TableCell />
+                    <TableCell className="remove-padding">
+                      <p className="fw-bold mb-0 fs-7">
                         {(langEn ? classs?.classNameEn : classs?.classNameBn) ||
-                        COMMON_LABELS.NOT_ASSIGN}
-                      </div>
-                      
+                          COMMON_LABELS.NOT_ASSIGN}
+                      </p>
                     </TableCell>
                   </TableRow>
                   {classs?.manpowerDtoList?.map((itr) => (
                     <TableRow key={idx++}>
-                      <TableCell
-                      // text={
-                      //   (langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
-                      //   COMMON_LABELS.NOT_ASSIGN
-                      // }
-                      >
-                        {(langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
-                          COMMON_LABELS.NOT_ASSIGN}
+                      <TableCell className="remove-padding">{slNo++}</TableCell>
+                      <TableCell className="remove-padding">
+                        <p className="mb-0 fs-7">
+                          {(langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
+                            COMMON_LABELS.NOT_ASSIGN}
+                        </p>
                       </TableCell>
-                      <TableCell
-                      // textAlign="end"
-                      // text={
-                      //   langEn
-                      //     ? itr?.manpower
-                      //     : numEnToBn(itr?.manpower) ||
-                      //       COMMON_LABELS.NOT_ASSIGN
-                      // }
-                      >
-                        <div className="d-flex justify-content-end">
+                      <TableCell className="remove-padding">
+                        <div className="d-flex justify-content-end fs-7">
                           {langEn
                             ? itr?.manpower
                             : numEnToBn(itr?.manpower) ||
@@ -82,25 +68,14 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                     </TableRow>
                   ))}
                   <TableRow key={idx++}>
-                    <TableCell
-                    // textClassName="fw-bold fs-4 mb-3"
-                    // text={LOCAL_LABEL.TOTAL}
-                    >                     
-                      <div className="d-flex justify-content-start mb-3 fw-bold">
+                    <TableCell />
+                    <TableCell className="remove-padding">
+                      <div className="d-flex justify-content-start mb-2 fw-bold fs-7">
                         {LOCAL_LABEL.TOTAL}
                       </div>
                     </TableCell>
-                    <TableCell
-                      // textAlign="end"
-                      // textClassName="fw-bold fs-4 mb-3"
-                      // text={
-                      //   langEn
-                      //     ? classs?.totalClassManpower
-                      //     : numEnToBn(classs?.totalClassManpower) ||
-                      //       COMMON_LABELS.NOT_ASSIGN
-                      // }
-                    >
-                      <div className="d-flex justify-content-end mb-3 fw-bold">
+                    <TableCell className="remove-padding">
+                      <div className="d-flex justify-content-end mb-2 fw-bold fs-7">
                         {langEn
                           ? classs?.totalClassManpower
                           : numEnToBn(classs?.totalClassManpower) ||
@@ -112,24 +87,12 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
               );
             })}
             <TableRow key={idx++}>
-              <TableCell
-              // textClassName="fw-bold fs-3"
-              // text={LOCAL_LABEL.GRAND_TOTAL}
-              >
-                <div className="fw-bold fs-5">
-                  {LOCAL_LABEL.GRAND_TOTAL}
-                </div>
+              <TableCell />
+              <TableCell className="p-0">
+                <div className="fw-bold fs-6">{LOCAL_LABEL.GRAND_TOTAL}</div>
               </TableCell>
-              <TableCell
-              // textAlign="end"
-              // textClassName="fw-bold fs-3"
-              // text={
-              //   langEn
-              //     ? data?.totalManpower
-              //     : numEnToBn(data?.totalManpower) || COMMON_LABELS.NOT_ASSIGN
-              // }
-              >
-                <div className="d-flex justify-content-end fw-bold fs-5">
+              <TableCell>
+                <div className="d-flex justify-content-end fw-bold fs-6">
                   {langEn
                     ? data?.totalManpower
                     : numEnToBn(data?.totalManpower) ||
@@ -138,7 +101,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
               </TableCell>
             </TableRow>
             <TableRow key={idx++}>
-              <TableCell> </TableCell>
+              <TableCell />
             </TableRow>
           </>
         </Table>

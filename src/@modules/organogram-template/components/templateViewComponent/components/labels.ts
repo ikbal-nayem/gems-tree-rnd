@@ -1,5 +1,8 @@
+import {COMMON_LABELS} from "@gems/utils"
+
 export const LOCAL_LABELS = {
   BN: {
+    ...COMMON_LABELS,
     NAME_OF_POSTS: "পদবি",
     NO_OF_POSTS: "লোকবল",
     TOTAL: "মোট",
@@ -13,5 +16,6 @@ export const LOCAL_LABELS = {
     TOTAL: "Total",
     GRAND_TOTAL: "GRAND TOTAL",
     NAME: "Name",
+    SL_NO:"Sl No"
   },
 };

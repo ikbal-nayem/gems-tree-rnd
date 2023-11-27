@@ -49,8 +49,6 @@ const TemplateView = () => {
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
   };
-  // console.log('Manpower Data');
-  // console.log(manpowerData);
 
   return (
     <>
