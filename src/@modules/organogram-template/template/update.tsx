@@ -42,11 +42,12 @@ const TemplateUpdate = () => {
       [];
 
     let attachmentDto =
-      templateData?.attachmentDtoList?.length > 0 &&
-      templateData?.attachmentDtoList?.map((item) => {
-        if (item?.fileName) delete item.checkAttachmentFile;
-        return item;
-      });
+      (templateData?.attachmentDtoList?.length > 0 &&
+        templateData?.attachmentDtoList?.map((item) => {
+          if (item?.fileName) delete item.checkAttachmentFile;
+          return item;
+        })) ||
+      [];
 
     let reqPayload = {
       ...templateData,
