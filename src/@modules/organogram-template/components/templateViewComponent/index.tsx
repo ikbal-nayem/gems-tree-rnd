@@ -61,15 +61,15 @@ const TemplateViewComponent = ({
           children: [],
         };
 
-  const [langEn, setLangEn] = useState<boolean>(false);
+  const [langEn, setLangEn] = useState<boolean>(true);
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const switchLang = () => {
-    setLangEn(!langEn);
-  };
+  // const switchLang = () => {
+  //   setLangEn(!langEn);
+  // };
 
   const onFormClose = () => {
     setFormOpen(false);
@@ -162,14 +162,14 @@ const TemplateViewComponent = ({
             </div>
           </div>
 
-          <div className="d-flex ms-auto">
+          {/* <div className="d-flex ms-auto">
             <Switch
               label={langEn ? "বাংলা" : "English"}
               onChange={switchLang}
               className="gap-1 fw-bold text-gray-800 cursor-pointer"
               noMargin
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="position-relative border border-secondary mb-3">
