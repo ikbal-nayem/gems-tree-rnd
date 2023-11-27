@@ -1,4 +1,4 @@
-import { Button, Input, Separator } from "@gems/components";
+import { Button, Checkbox, Input, Separator } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -44,7 +44,8 @@ const TemplateComponent = ({
     useState<boolean>(false);
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
-  const isNotEnamCommittee = false;
+  const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
+  // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
       abbreviationDtoList: [],
@@ -77,6 +78,7 @@ const TemplateComponent = ({
         );
       } else abbreviationist = updateData?.abbreviationDtoList;
       reset({
+        isEnamCommittee: updateData?.isEnamCommittee,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
         versionBn: updateData?.versionBn,
@@ -179,7 +181,19 @@ const TemplateComponent = ({
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate>
         <div className="card col-md-12 border p-3 mb-4">
-          <h4 className="m-0">টেমপ্লেট</h4>
+          <div className="d-flex justify-content-between gap-5">
+            <h4 className="m-0">টেমপ্লেট</h4>
+            <Checkbox
+              label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
+              labelClass="fw-bold"
+              registerProperty={{
+                ...register("isEnamCommittee", {
+                  onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
+                }),
+              }}
+            />
+          </div>
+
           <Separator className="mt-1 mb-2" />
           <div className="row">
             {isNotEnamCommittee && (
