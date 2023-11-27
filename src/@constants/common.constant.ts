@@ -81,7 +81,7 @@ export const LABELS = {
     ATTACHED_OFFICE: "Attached Offices",
     SUMMARY_OF_MANPOWER: "Summary of Manpower",
     ALLOCATION_OF_BUSINESS: "Allocation of Business",
-    MISCELLANEOUS: "Miscellaneous",
+    MISCELLANEOUS: "Miscellaneous Points",
     ATTACHMENT: "Attachment",
     SUM_OF_MANPOWER: "Summary of Manpower",
     ORGANIZATION: "Organization",
