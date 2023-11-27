@@ -13,9 +13,10 @@ import { enCheck } from "utility/checkValidation";
 
 interface IAttachmentForm {
   formProps: any;
+  isNotEnamCommittee: boolean;
 }
 
-const AttachmentForm = ({ formProps }: IAttachmentForm) => {
+const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
   const {
     register,
     control,
@@ -55,25 +56,31 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
               <div className="row w-100">
-                <div className="col-xl-4 col-12">
-                  <Input
-                    label={idx < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
-                    autoFocus
-                    isRequired
-                    registerProperty={{
-                      ...register(`attachmentDtoList.${idx}.titleBn`, {
-                        required: " ",
-                      }),
-                    }}
-                    isError={!!errors?.attachmentDtoList?.[idx]?.titleBn}
-                    errorMessage={
-                      errors?.attachmentDtoList?.[idx]?.titleBn
-                        ?.message as string
-                    }
-                  />
-                </div>
-                <div className="col-xl-4 col-12">
+                {isNotEnamCommittee && (
+                  <div className="col-xl-4 col-12">
+                    <Input
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      autoFocus
+                      isRequired
+                      registerProperty={{
+                        ...register(`attachmentDtoList.${idx}.titleBn`, {
+                          required: " ",
+                        }),
+                      }}
+                      isError={!!errors?.attachmentDtoList?.[idx]?.titleBn}
+                      errorMessage={
+                        errors?.attachmentDtoList?.[idx]?.titleBn
+                          ?.message as string
+                      }
+                    />
+                  </div>
+                )}
+                <div
+                  className={
+                    isNotEnamCommittee ? "col-xl-4 col-12" : "col-xl-8 col-12"
+                  }
+                >
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
@@ -81,6 +88,14 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     isRequired
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
+                        onChange:(e) => {
+                          if (!isNotEnamCommittee) {
+                            setValue(
+                              `attachmentDtoList.${idx}.titleBn`,
+                              e.target.value
+                            );
+                          }
+                        },
                         required: " ",
                         validate: enCheck,
                       }),
@@ -113,7 +128,9 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     label={idx < 1 ? labelAttachment : ""}
                     name={`attachmentDtoList.${idx}.checkAttachmentFile`}
                     onChange={(e) => onFileChange(e, idx)}
-                    isError={!!errors?.attachmentDtoList?.[idx]?.checkAttachmentFile}
+                    isError={
+                      !!errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
+                    }
                     errorMessage={
                       errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
                         ?.message as string

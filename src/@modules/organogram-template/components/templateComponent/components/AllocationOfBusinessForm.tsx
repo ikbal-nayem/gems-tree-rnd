@@ -6,12 +6,17 @@ import { enCheck } from "utility/checkValidation";
 
 interface IAllocationOfBusinessForm {
   formProps: any;
+  isNotEnamCommittee: boolean;
 }
 
-const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
+const AllocationOfBusinessForm = ({
+  formProps,
+  isNotEnamCommittee,
+}: IAllocationOfBusinessForm) => {
   const {
     register,
     control,
+    setValue,
     formState: { errors },
   } = formProps;
 
@@ -40,28 +45,36 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
               <div className="row w-100">
-                {/* <div className="col-xl-6 col-12">
-                  <Input
-                    label={idx < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
-                    isRequired
-                    noMargin
-                    autoFocus
-                    registerProperty={{
-                      ...register(
-                        `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
-                        {
-                          required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
-                        }
-                      ),
-                    }}
-                    isError={
-                      !!errors?.businessAllocationDtoList?.[idx]
-                        ?.businessOfAllocationBn
-                    }
-                  />
-                </div> */}
-                <div className="col-12 mt-1 mt-xl-0">
+                {isNotEnamCommittee && (
+                  <div className="col-xl-6 col-12">
+                    <Input
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      isRequired
+                      noMargin
+                      autoFocus
+                      registerProperty={{
+                        ...register(
+                          `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
+                          {
+                            required: " ",
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.businessAllocationDtoList?.[idx]
+                          ?.businessOfAllocationBn
+                      }
+                    />
+                  </div>
+                )}
+                <div
+                  className={
+                    isNotEnamCommittee
+                      ? "col-xl-6 col-12 mt-1 mt-xl-0"
+                      : "col-12 mt-1 mt-xl-0"
+                  }
+                >
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
@@ -72,7 +85,15 @@ const AllocationOfBusinessForm = ({ formProps }: IAllocationOfBusinessForm) => {
                       ...register(
                         `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
                         {
-                          required: "বরাদ্দ " + numEnToBn(idx + 1) + " লিখুন",
+                          onChange:(e) => {
+                            if (!isNotEnamCommittee) {
+                              setValue(
+                                `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
+                                e.target.value
+                              );
+                            }
+                          },
+                          required: " ",
                           validate: enCheck,
                         }
                       ),

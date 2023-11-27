@@ -4,7 +4,6 @@ import {
   IObject,
   generateUUID,
   isObjectNull,
-  // makeFormData,
 } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,8 +17,6 @@ import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import Organizations from "./components/organization";
 import AttachmentForm from "./components/AttachmentForm";
-import { makeFormData } from "utility/makeObject";
-import { isNotEmptyList } from "utility/utils";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -46,6 +43,7 @@ const TemplateComponent = ({
     useState<boolean>(false);
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
+  const isNotEnamCommittee = false;
   const formProps = useForm<any>({
     defaultValues: {
       abbreviationDtoList: [],
@@ -153,32 +151,10 @@ const TemplateComponent = ({
       })
     );
 
-    let mainActivitiesList = [];
-    if (isNotEmptyList(data?.mainActivitiesDtoList)) {
-      data?.mainActivitiesDtoList.forEach((obj) => {
-        mainActivitiesList.push({
-          mainActivityBn: obj?.mainActivityEn,
-          mainActivityEn: obj?.mainActivityEn,
-        });
-      });
-    }
-
-    let businessAllocationList = [];
-    if (isNotEmptyList(data?.businessAllocationDtoList)) {
-      data?.businessAllocationDtoList.forEach((obj) => {
-        businessAllocationList.push({
-          businessOfAllocationBn: obj?.businessOfAllocationEn,
-          businessOfAllocationEn: obj?.businessOfAllocationEn,
-        });
-      });
-    }
-
     const reqPayload = {
       ...data,
       titleBn: data?.titleEn,
       versionBn: data?.versionEn,
-      mainActivitiesDtoList: mainActivitiesList,
-      businessAllocationDtoList: businessAllocationList,
       organizationStructureDto: treeData,
     };
     // let test = makeFormData(reqPayload);
@@ -186,7 +162,7 @@ const TemplateComponent = ({
     // for (const value of test.values()) {
     //   console.log(value);
     // }
-    console.log("Req Payload: ", reqPayload);
+    // console.log("Req Payload: ", reqPayload);
 
     onSubmit(reqPayload);
   };
@@ -197,6 +173,7 @@ const TemplateComponent = ({
         <OrganizationTemplateTree
           treeData={treeData}
           setTreeData={setTreeData}
+          isNotEnamCommittee={isNotEnamCommittee}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate>
@@ -204,21 +181,24 @@ const TemplateComponent = ({
           <h4 className="m-0">টেমপ্লেট</h4>
           <Separator className="mt-1 mb-2" />
           <div className="row">
-            {/* <div className="col-md-6 col-12">
-              <Input
-                label="শিরোনাম বাংলা"
-                placeholder="বাংলায় শিরোনাম লিখুন"
-                isRequired
-                registerProperty={{
-                  ...register("titleBn", {
-                    required: " ",
-                    onChange: (e) => duplicateTitleCheck(e.target.value, false),
-                  }),
-                }}
-                isError={!!errors?.titleBn}
-                errorMessage={errors?.titleBn?.message as string}
-              />
-            </div> */}
+            {isNotEnamCommittee && (
+              <div className="col-md-6 col-12">
+                <Input
+                  label="শিরোনাম বাংলা"
+                  placeholder="বাংলায় শিরোনাম লিখুন"
+                  isRequired
+                  registerProperty={{
+                    ...register("titleBn", {
+                      required: " ",
+                      onChange: (e) =>
+                        duplicateTitleCheck(e.target.value, false),
+                    }),
+                  }}
+                  isError={!!errors?.titleBn}
+                  errorMessage={errors?.titleBn?.message as string}
+                />
+              </div>
+            )}
 
             <div className="col-md-6 col-12">
               <Input
@@ -236,20 +216,22 @@ const TemplateComponent = ({
                 errorMessage={errors?.titleEn?.message as string}
               />
             </div>
-            {/* <div className="col-md-6 col-12">
-              <Input
-                label="ভার্শন (বাংলা)"
-                placeholder="বাংলায় ভার্শন লিখুন"
-                isRequired
-                registerProperty={{
-                  ...register("versionBn", {
-                    required: " ",
-                  }),
-                }}
-                isError={!!errors?.versionBn}
-                errorMessage={errors?.versionBn?.message as string}
-              />
-            </div> */}
+            {isNotEnamCommittee && (
+              <div className="col-md-6 col-12">
+                <Input
+                  label="ভার্শন (বাংলা)"
+                  placeholder="বাংলায় ভার্শন লিখুন"
+                  isRequired
+                  registerProperty={{
+                    ...register("versionBn", {
+                      required: " ",
+                    }),
+                  }}
+                  isError={!!errors?.versionBn}
+                  errorMessage={errors?.versionBn?.message as string}
+                />
+              </div>
+            )}
             <div className="col-md-6 col-12">
               <Input
                 label="ভার্শন (ইংরেজি)"
@@ -269,18 +251,30 @@ const TemplateComponent = ({
         </div>
         <div className="row">
           <div className="col-md-6">
-            <ActivitiesForm formProps={formProps} />
+            <ActivitiesForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
           </div>
           <div className="col-md-6 mt-md-0 mt-3">
-            <AllocationOfBusinessForm formProps={formProps} />
+            <AllocationOfBusinessForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
           </div>
           <div className="col-12 mt-3">
-            <EquipmentsForm formProps={formProps} />
+            <EquipmentsForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
           </div>
           <div className="col-md-6 mt-3">
             <Organizations formProps={formProps} />
             <div className="mt-3">
-              <AttachmentForm formProps={formProps} />
+              <AttachmentForm
+                formProps={formProps}
+                isNotEnamCommittee={isNotEnamCommittee}
+              />
             </div>
           </div>
 

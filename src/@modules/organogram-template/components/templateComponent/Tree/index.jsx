@@ -45,7 +45,7 @@ const deleteNode = (nd, nodeId) => {
   return { ...nd };
 };
 
-const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
+const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
   const selectedNode = useRef(null);
@@ -155,6 +155,7 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
           updateData={updateNodeData.current}
           onClose={onFormClose}
           onSubmit={onSubmit}
+          isNotEnamCommittee={isNotEnamCommittee}
         />
       </div>
       <ConfirmationModal

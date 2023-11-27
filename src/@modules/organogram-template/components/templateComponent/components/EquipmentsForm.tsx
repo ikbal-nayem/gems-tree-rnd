@@ -13,11 +13,12 @@ import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
-interface IEquipmentsForm {
+interface IForm {
   formProps: any;
+  isNotEnamCommittee: boolean;
 }
 
-const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
+const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
   const {
     register,
     control,
@@ -223,27 +224,36 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
               <div className="row w-100">
-                <div className="col-xl-6 col-12">
-                  <Input
-                    label={idx < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
-                    autoFocus
-                    noMargin
-                    registerProperty={{
-                      ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {
-                        required: " ",
-                      }),
-                    }}
-                    isError={
-                      !!errors?.miscellaneousPointDtoList?.[idx]?.titleBn
-                    }
-                    errorMessage={
-                      errors?.miscellaneousPointDtoList?.[idx]?.titleBn
-                        ?.message as string
-                    }
-                  />
-                </div>
-                <div className="col-xl-6 col-12 mt-1 mt-xl-0">
+                {isNotEnamCommittee && (
+                  <div className="col-xl-6 col-12">
+                    <Input
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      autoFocus
+                      noMargin
+                      registerProperty={{
+                        ...register(
+                          `miscellaneousPointDtoList.${idx}.titleBn`,
+                          {
+                            required: " ",
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.miscellaneousPointDtoList?.[idx]?.titleBn
+                      }
+                      errorMessage={
+                        errors?.miscellaneousPointDtoList?.[idx]?.titleBn
+                          ?.message as string
+                      }
+                    />
+                  </div>
+                )}
+                <div className={
+                    isNotEnamCommittee
+                      ? "col-xl-6 col-12 mt-1 mt-xl-0"
+                      : "col-12 mt-1 mt-xl-0"
+                  }>
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
@@ -251,6 +261,14 @@ const EquipmentsForm = ({ formProps }: IEquipmentsForm) => {
                     noMargin
                     registerProperty={{
                       ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {
+                        onChange: (e) => {
+                          if (!isNotEnamCommittee) {
+                            setValue(
+                              `miscellaneousPointDtoList.${idx}.titleBn`,
+                              e.target.value
+                            );
+                          }
+                        },
                         required: " ",
                         validate: enCheck,
                       }),
