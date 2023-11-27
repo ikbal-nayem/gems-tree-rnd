@@ -23,12 +23,12 @@ const AbbreviationForm = ({ data, langEn }: IAbbreviationForm) => {
         <h4 className="m-0">{LABEL.ABBREVIATIONS}</h4>
       </div>
       <Separator className="mt-1 mb-2" />
-      <div className="mt-3">
+      <div className="mt-1">
         {data?.map((item, i) => {
           return (
-            <p key={i}>
+            <p className="mb-0 fs-7" key={i}>
               {item?.shortForm || COMMON_LABELS.NOT_ASSIGN}
-              &nbsp;&nbsp;=&nbsp;&nbsp;
+              &nbsp;=&nbsp;
               {item?.fullForm || COMMON_LABELS.NOT_ASSIGN}
             </p>
           );

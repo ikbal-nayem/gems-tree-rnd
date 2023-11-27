@@ -58,7 +58,12 @@ const AttachmentList: FC<TableProps> = ({ data, langEn }) => {
           </>
         </Table>
       ) : (
-        <NoData details={LABEL.ATTACHMENT + " এর কোনো তথ্য পাওয়া যায়নি!"} />
+        <NoData
+          details={
+            LABEL.ATTACHMENT +
+            (langEn ? " data not available!" : " এর কোনো তথ্য পাওয়া যায়নি!")
+          }
+        />
       )}
     </div>
   );

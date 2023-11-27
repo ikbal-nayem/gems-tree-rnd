@@ -14,17 +14,19 @@ const TemplateCreate = () => {
     setIsSubmitLoading(true);
 
     let fileList =
-      data?.attachmentDtoList?.length > 0 &&
-      data?.attachmentDtoList?.map((item) => {
-        return item.checkAttachmentFile;
-      });
+      (data?.attachmentDtoList?.length > 0 &&
+        data?.attachmentDtoList?.map((item) => {
+          return item.checkAttachmentFile;
+        })) ||
+      [];
 
     let attachmentDto =
-      data?.attachmentDtoList?.length > 0 &&
-      data?.attachmentDtoList?.map((item) => {
-        delete item.checkAttachmentFile;
-        return item;
-      });
+      (data?.attachmentDtoList?.length > 0 &&
+        data?.attachmentDtoList?.map((item) => {
+          delete item.checkAttachmentFile;
+          return item;
+        })) ||
+      [];
 
     let reqPayload = {
       ...data,
@@ -38,7 +40,6 @@ const TemplateCreate = () => {
     fileList.forEach((element) => {
       fd.append("files", element);
     });
-    
 
     OMSService.templateCreate(fd)
       .then((res) => {
