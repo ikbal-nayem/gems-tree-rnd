@@ -67,9 +67,11 @@ const TemplateViewComponent = ({
 
   const navigate = useNavigate();
 
-  // const switchLang = () => {
-  //   setLangEn(!langEn);
-  // };
+  const switchLang = () => {
+    setTimeout(() => {
+      setLangEn(!langEn);
+    }, 500);
+  };
 
   const onFormClose = () => {
     setFormOpen(false);
@@ -162,14 +164,16 @@ const TemplateViewComponent = ({
             </div>
           </div>
 
-          {/* <div className="d-flex ms-auto">
-            <Switch
-              label={langEn ? "বাংলা" : "English"}
-              onChange={switchLang}
-              className="gap-1 fw-bold text-gray-800 cursor-pointer"
-              noMargin
-            />
-          </div> */}
+          {!updateData?.isEnamCommittee && (
+            <div className="d-flex ms-auto">
+              <Switch
+                label={langEn ? "বাংলা" : "English"}
+                onChange={switchLang}
+                className="gap-1 fw-bold text-gray-800 cursor-pointer"
+                noMargin
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="position-relative border border-secondary mb-3">

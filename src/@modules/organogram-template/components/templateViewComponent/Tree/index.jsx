@@ -34,6 +34,7 @@ const OrganizationTemplateTree = ({ treeData, langEn, dataToPDF }) => {
   const pdfCallRef = useRef();
 
   useEffect(() => {
+    setIsDownlaodButton(false);
     setTimeout(() => {
       download.current.exportTo("Organogram", "pdf");
       setIsDownlaodButton(true);

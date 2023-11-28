@@ -67,7 +67,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                           : postList?.find(
                               (d) => d?.id === item?.organizationPost?.id
                             )?.nameBn)) ||
-                        COMMON_LABELS.NOT_ASSIGN}
+                        (langEn
+                          ? COMMON_LABELS.EN.NOT_ASSIGN
+                          : COMMON_LABELS.NOT_ASSIGN)}
                     </p>
                   </div>
                 ) : null}
