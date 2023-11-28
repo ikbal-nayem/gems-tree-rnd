@@ -184,17 +184,21 @@ const TemplateComponent = ({
         <div className="card col-md-12 border p-3 mb-4">
           <div className="d-flex justify-content-start gap-6">
             <h2 className="m-0">টেমপ্লেট</h2>
-            <span className="text-primary">|</span>
-            <Checkbox
-              label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
-              labelClass="fw-bold"
-              noMargin
-              registerProperty={{
-                ...register("isEnamCommittee", {
-                  onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
-                }),
-              }}
-            />
+            {isObjectNull(updateData) && (
+              <>
+                <span className="text-primary">|</span>
+                <Checkbox
+                  label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
+                  labelClass="fw-bold"
+                  noMargin
+                  registerProperty={{
+                    ...register("isEnamCommittee", {
+                      onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
+                    }),
+                  }}
+                />
+              </>
+            )}
           </div>
 
           <Separator className="mt-1 mb-4" />
