@@ -57,13 +57,13 @@ const TemplateUpdate = () => {
     };
 
     let fd = new FormData();
-
+    console.log("Req Payload: ", reqPayload);
     fd.append("body", JSON.stringify(reqPayload));
     fileList?.length > 0 &&
       fileList.forEach((element) => {
         if (element !== undefined) fd.append("files", element);
       });
-
+    console.log("form data: " + fd);
     OMSService.templateUpdate(fd)
       .then((res) => {
         toast.success(res?.message);

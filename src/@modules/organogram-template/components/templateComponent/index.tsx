@@ -62,6 +62,8 @@ const TemplateComponent = ({
     reset,
     setError,
     clearErrors,
+    setValue,
+    getValues,
     formState: { errors },
   } = formProps;
 
@@ -112,9 +114,13 @@ const TemplateComponent = ({
             : setDuplicateTitleBnDitected(true);
         } else {
           clearErrors(field);
-          isEn
-            ? setDuplicateTitleEnDitected(false)
-            : setDuplicateTitleBnDitected(false);
+          if (isEn) {
+            setDuplicateTitleEnDitected(false);
+            setValue("titleEn", title);
+          } else {
+            setDuplicateTitleBnDitected(false);
+            setValue("titleBn", title);
+          }
         }
       })
       .catch((e) => console.log(e.message));
@@ -157,7 +163,8 @@ const TemplateComponent = ({
 
     const reqPayload = {
       ...data,
-      titleBn: data?.titleEn,
+      titleBn: getValues(isNotEnamCommittee ? "titleBn" : "titleEn"  ),
+      titleEn: getValues("titleEn"),
       // versionBn: data?.versionEn,
       organizationStructureDto: treeData,
     };
@@ -168,77 +175,67 @@ const TemplateComponent = ({
     // }
     // console.log("Req Payload: ", reqPayload);
 
-    onSubmit(reqPayload);
+    onSubmit(reqPayload); 
   };
 
   return (
     <div>
-      <div className="border border-secondary mb-3">
-        <OrganizationTemplateTree
-          treeData={treeData}
-          setTreeData={setTreeData}
-          isNotEnamCommittee={isNotEnamCommittee}
-        />
-      </div>
-      <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
-        <div className="card col-md-12 border p-3 mb-4">
-          <div className="d-flex justify-content-start gap-6">
-            <h2 className="m-0">টেমপ্লেট</h2>
-            {isObjectNull(updateData) && (
-              <>
-                <span className="text-primary">|</span>
-                <Checkbox
-                  label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
-                  labelClass="fw-bold"
-                  noMargin
-                  registerProperty={{
-                    ...register("isEnamCommittee", {
-                      onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
-                    }),
-                  }}
-                />
-              </>
-            )}
-          </div>
+      <div className="card col-md-12 border p-3 mb-4">
+        <div className="d-flex justify-content-start gap-6">
+          <h2 className="m-0">টেমপ্লেট</h2>
+          <span className="text-primary">|</span>
+          <Checkbox
+            label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
+            labelClass="fw-bold"
+            noMargin
+            registerProperty={{
+              ...register("isEnamCommittee", {
+                onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
+              }),
+            }}
+          />
+        </div>
 
-          <Separator className="mt-1 mb-4" />
-          <div className="row">
-            {isNotEnamCommittee && (
-              <div className="col-md-6 col-12">
-                <Input
-                  label="শিরোনাম বাংলা"
-                  placeholder="বাংলায় শিরোনাম লিখুন"
-                  isRequired
-                  registerProperty={{
-                    ...register("titleBn", {
-                      required: " ",
-                      onChange: (e) =>
-                        duplicateTitleCheck(e.target.value, false),
-                    }),
-                  }}
-                  isError={!!errors?.titleBn}
-                  errorMessage={errors?.titleBn?.message as string}
-                />
-              </div>
-            )}
+        <Separator className="mt-1 mb-4" />
 
-            <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
+        <div className="row">
+          {isNotEnamCommittee && (
+            <div className="col-md-6 col-12">
               <Input
-                label="শিরোনাম ইংরেজি"
-                placeholder="ইংরেজিতে শিরোনাম লিখুন"
+                label="শিরোনাম বাংলা"
+                placeholder="বাংলায় শিরোনাম লিখুন"
                 isRequired
+                defaultValue={!isObjectNull(updateData) ? updateData?.titleBn : ""}
                 registerProperty={{
-                  ...register("titleEn", {
+                  ...register("titleBn", {
                     required: " ",
-                    onChange: (e) => duplicateTitleCheck(e.target.value, true),
-                    validate: enCheck,
+                    onChange: (e) => duplicateTitleCheck(e.target.value, false),
                   }),
                 }}
-                isError={!!errors?.titleEn}
-                errorMessage={errors?.titleEn?.message as string}
+                isError={!!errors?.titleBn}
+                errorMessage={errors?.titleBn?.message as string}
               />
             </div>
-            {/* {isNotEnamCommittee && (
+          )}
+
+          <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
+            <Input
+              label="শিরোনাম ইংরেজি"
+              placeholder="ইংরেজিতে শিরোনাম লিখুন"
+              isRequired
+              defaultValue={!isObjectNull(updateData) ? updateData?.titleEn : ""}
+              registerProperty={{
+                ...register("titleEn", {
+                  required: " ",
+                  onChange: (e) => duplicateTitleCheck(e.target.value, true),
+                  validate: enCheck,
+                }),
+              }}
+              isError={!!errors?.titleEn}
+              errorMessage={errors?.titleEn?.message as string}
+            />
+          </div>
+          {/* {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
                 <Input
                   label="ভার্শন (বাংলা)"
@@ -254,7 +251,7 @@ const TemplateComponent = ({
                 />
               </div>
             )} */}
-            {/* <div className="col-md-6 col-12">
+          {/* <div className="col-md-6 col-12">
               <Input
                 label="ভার্শন (ইংরেজি)"
                 placeholder="ইংরেজিতে ভার্শন লিখুন"
@@ -269,9 +266,17 @@ const TemplateComponent = ({
                 errorMessage={errors?.versionEn?.message as string}
               />
             </div> */}
-          </div>
         </div>
+      </div>
 
+      <div className="border border-secondary mb-3">
+        <OrganizationTemplateTree
+          treeData={treeData}
+          setTreeData={setTreeData}
+          isNotEnamCommittee={isNotEnamCommittee}
+        />
+      </div>
+      <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
         <div className="row">
           <div className="col-md-6">
             <ActivitiesForm
