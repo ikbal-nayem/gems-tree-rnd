@@ -68,9 +68,7 @@ const TemplateViewComponent = ({
   const navigate = useNavigate();
 
   const switchLang = () => {
-    setTimeout(() => {
-      setLangEn(!langEn);
-    }, 500);
+    setLangEn(!langEn);
   };
 
   const onFormClose = () => {
