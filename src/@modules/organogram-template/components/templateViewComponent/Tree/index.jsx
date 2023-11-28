@@ -42,7 +42,7 @@ const OrganizationTemplateTree = ({ treeData, langEn, dataToPDF }) => {
   }, [langEn]);
 
   // Export PDF
-  const exportPDF = (canvas, exportFilename) => {
+  const exportPDF = async (canvas, exportFilename) => {
     const canvasWidth = Math.floor(canvas.width);
     const canvasHeight = Math.floor(canvas.height);
     const canW = canvasWidth > canvasHeight ? canvasWidth : canvasHeight;
