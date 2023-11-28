@@ -2,13 +2,21 @@ import { Icon } from "@gems/components";
 // import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
 import { COMMON_LABELS } from "@constants/common.constant";
+import { isNotEmptyList } from "utility/utils";
+import { numEnToBn } from "@gems/utils";
 // import { Dropdown, DropdownItem } from "../Dropdown";
 // import { Button, Modal } from "react-bootstrap";
 // const propTypes = {
 //   nodeData: PropTypes.object.isRequired
 // };
 
-const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
+const MyNode = ({
+  nodeData,
+  treeDispatch,
+  postList,
+  firstNode,
+  isNotEnamCommittee,
+}) => {
   return (
     <div>
       <div className="position rounded">
@@ -21,7 +29,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             onClick={() => treeDispatch("EDIT", nodeData)}
           />
           <div>
-            <p className="p-1 mb-0 fs-7">{nodeData.titleEn}</p>
+            <p className="p-1 mb-0 fs-7">{isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn}</p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
           {/* <Dropdown
@@ -66,24 +74,26 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
         >
           {nodeData?.manpowerList?.length > 0 &&
             nodeData?.manpowerList?.map((item, i) => {
+              let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
+              mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
+              const postExists =
+                isNotEmptyList(postList) && item?.organizationPost?.id;
+
+              const post = postExists
+                ? postList?.find((d) => d?.id === item?.organizationPost?.id)
+                : null;
+
+              const postName = isNotEnamCommittee
+                ? post?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                : post?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
+
               return (
                 <div key={i}>
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (
                     <div className="d-flex">
-                      <p className="mb-0 fs-7">
-                        {item?.numberOfEmployee
-                          ? item?.numberOfEmployee
-                          : 0 || null}{" "}
-                      </p>
+                      <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
-                      <p className="mb-0 fs-7 ms-1">
-                        {(postList?.length > 0 &&
-                          item?.organizationPost?.id &&
-                          postList?.find(
-                            (d) => d?.id === item?.organizationPost?.id
-                          )?.nameEn) ||
-                          COMMON_LABELS.EN.NOT_ASSIGN}
-                      </p>
+                      <p className="mb-0 fs-7 ms-1">{postName}</p>
                     </div>
                   ) : null}
                 </div>

@@ -67,6 +67,7 @@ const TemplateComponent = ({
 
   useEffect(() => {
     if (!isObjectNull(updateData)) {
+      setIsNotEnamCommittee(!updateData?.isEnamCommittee);
       let abbreviationist: any;
       if (updateData?.abbreviationDtoList?.length > 0) {
         abbreviationist = updateData?.abbreviationDtoList.sort(
@@ -81,8 +82,8 @@ const TemplateComponent = ({
         isEnamCommittee: updateData?.isEnamCommittee,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
-        versionBn: updateData?.versionBn,
-        versionEn: updateData?.versionEn,
+        // versionBn: updateData?.versionBn,
+        // versionEn: updateData?.versionEn,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
@@ -157,7 +158,7 @@ const TemplateComponent = ({
     const reqPayload = {
       ...data,
       titleBn: data?.titleEn,
-      versionBn: data?.versionEn,
+      // versionBn: data?.versionEn,
       organizationStructureDto: treeData,
     };
     // let test = makeFormData(reqPayload);
@@ -179,13 +180,15 @@ const TemplateComponent = ({
           isNotEnamCommittee={isNotEnamCommittee}
         />
       </div>
-      <form onSubmit={handleSubmit(onFinalSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
         <div className="card col-md-12 border p-3 mb-4">
-          <div className="d-flex justify-content-between gap-5">
-            <h4 className="m-0">টেমপ্লেট</h4>
+          <div className="d-flex justify-content-start gap-6">
+            <h2 className="m-0">টেমপ্লেট</h2>
+            <span className="text-primary">|</span>
             <Checkbox
               label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
               labelClass="fw-bold"
+              noMargin
               registerProperty={{
                 ...register("isEnamCommittee", {
                   onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
@@ -194,7 +197,7 @@ const TemplateComponent = ({
             />
           </div>
 
-          <Separator className="mt-1 mb-2" />
+          <Separator className="mt-1 mb-4" />
           <div className="row">
             {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
@@ -215,7 +218,7 @@ const TemplateComponent = ({
               </div>
             )}
 
-            <div className="col-md-6 col-12">
+            <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
               <Input
                 label="শিরোনাম ইংরেজি"
                 placeholder="ইংরেজিতে শিরোনাম লিখুন"
@@ -231,7 +234,7 @@ const TemplateComponent = ({
                 errorMessage={errors?.titleEn?.message as string}
               />
             </div>
-            {isNotEnamCommittee && (
+            {/* {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
                 <Input
                   label="ভার্শন (বাংলা)"
@@ -246,8 +249,8 @@ const TemplateComponent = ({
                   errorMessage={errors?.versionBn?.message as string}
                 />
               </div>
-            )}
-            <div className="col-md-6 col-12">
+            )} */}
+            {/* <div className="col-md-6 col-12">
               <Input
                 label="ভার্শন (ইংরেজি)"
                 placeholder="ইংরেজিতে ভার্শন লিখুন"
@@ -261,9 +264,10 @@ const TemplateComponent = ({
                 isError={!!errors?.versionEn}
                 errorMessage={errors?.versionEn?.message as string}
               />
-            </div>
+            </div> */}
           </div>
         </div>
+
         <div className="row">
           <div className="col-md-6">
             <ActivitiesForm
@@ -298,7 +302,12 @@ const TemplateComponent = ({
           </div>
         </div>
         <div className="d-flex gap-3 justify-content-center mt-5">
-          <Button color="primary" type="submit" isLoading={isSubmitLoading}>
+          <Button
+            color="primary"
+            type="submit"
+            isLoading={isSubmitLoading}
+            form="templateForm"
+          >
             {!isObjectNull(updateData)
               ? COMMON_LABELS.UPDATE
               : COMMON_LABELS.SAVE}

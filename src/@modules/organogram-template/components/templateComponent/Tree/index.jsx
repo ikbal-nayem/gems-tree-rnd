@@ -144,6 +144,7 @@ const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee })
               treeDispatch={treeDispatch}
               postList={postList}
               firstNode={treeData?.id === nodeData?.id}
+              isNotEnamCommittee={isNotEnamCommittee}
             />
           )}
           // draggable={true}
