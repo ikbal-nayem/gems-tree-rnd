@@ -222,7 +222,7 @@ const ChartNode = ({
 			<div
 				ref={node}
 				id={datasource.id}
-				className={`${nodeClass}${datasource?.children?.length && datasource?.isLastNode ? ' last-node-sibling' : ''}`}
+				className={`${nodeClass}${datasource.children.length && datasource?.isLastNode ? ' last-node-sibling' : ''}`}
 				draggable={draggable ? 'true' : undefined}
 				onClick={clickNodeHandler}
 				onDragStart={dragstartHandler}
