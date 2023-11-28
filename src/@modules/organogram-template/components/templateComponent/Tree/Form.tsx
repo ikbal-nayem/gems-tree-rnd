@@ -307,7 +307,7 @@ const NodeForm = ({
                       isRequired=" "
                       control={control}
                       options={postList || []}
-                      getOptionLabel={(op) => op?.nameBn}
+                      getOptionLabel={(op) => isNotEnamCommittee ? op?.nameBn : op?.nameEn}
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.organizationPost`}
                       // onChange={onDataChange}
