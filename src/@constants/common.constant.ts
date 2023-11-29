@@ -76,7 +76,7 @@ export const LABELS = {
     VERSION: "Version",
 
     MAIN_ACTIVITIES: "Main Activities",
-    EQUIPMENTS: "Equipments",
+    EQUIPMENTS: "AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
     ABBREVIATIONS: "Abbreviations",
     ATTACHED_OFFICE: "Attached Offices",
     SUMMARY_OF_MANPOWER: "Summary of Manpower",
@@ -96,7 +96,7 @@ export const LABELS = {
     VERSION: "ভার্সন",
 
     MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
-    EQUIPMENTS: "যানবহন, অফিস সরঞ্জাম ইত্যাদি",
+    EQUIPMENTS: "পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদন",
     ABBREVIATIONS: "শব্দসংক্ষেপ",
     ATTACHED_OFFICE: "সংযুক্ত অফিসসমূহ",
     SUMMARY_OF_MANPOWER: "জনবলের তালিকা",
