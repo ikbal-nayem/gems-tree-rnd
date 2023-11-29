@@ -229,7 +229,6 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     <Input
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
-                      autoFocus
                       noMargin
                       registerProperty={{
                         ...register(
