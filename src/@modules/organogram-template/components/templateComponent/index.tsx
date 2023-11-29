@@ -226,13 +226,13 @@ const TemplateComponent = ({
             <Input
               label="শিরোনাম ইংরেজি"
               placeholder="ইংরেজিতে শিরোনাম লিখুন"
-              isRequired
+              isRequired={!isNotEnamCommittee}
               defaultValue={
                 !isObjectNull(updateData) ? updateData?.titleEn : ""
               }
               registerProperty={{
                 ...register("titleEn", {
-                  required: " ",
+                  required: !isNotEnamCommittee,
                   onChange: (e) => duplicateTitleCheck(e.target.value, true),
                   validate: enCheck,
                 }),

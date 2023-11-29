@@ -167,11 +167,11 @@ const NodeForm = ({
               <Input
                 label="ইংরেজি নাম"
                 placeholder="নাম ইংরেজিতে লিখুন"
-                isRequired
+                isRequired={!isNotEnamCommittee}
                 noMargin
                 registerProperty={{
                   ...register("titleEn", {
-                    required: " ",
+                    required: !isNotEnamCommittee,
                     validate: enCheck,
                   }),
                 }}
@@ -247,7 +247,7 @@ const NodeForm = ({
                         ...register(
                           `postFunctionalityList.${index}.functionalityEn`,
                           {
-                            required: " ",
+                            required: !isNotEnamCommittee,
                             validate: enCheck,
                           }
                         ),
