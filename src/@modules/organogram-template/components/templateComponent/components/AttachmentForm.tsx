@@ -61,7 +61,6 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     <Input
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
-                      autoFocus
                       isRequired
                       registerProperty={{
                         ...register(`attachmentDtoList.${idx}.titleBn`, {
@@ -84,7 +83,6 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
-                    autoFocus
                     isRequired
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {

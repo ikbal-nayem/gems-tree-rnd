@@ -48,7 +48,6 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                       placeholder={labelBn + " লিখুন"}
                       isRequired
                       noMargin
-                      autoFocus
                       registerProperty={{
                         ...register(
                           `mainActivitiesDtoList.${idx}.mainActivityBn`,
@@ -75,7 +74,6 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                     placeholder={labelEn + " লিখুন"}
                     isRequired
                     noMargin
-                    autoFocus
                     registerProperty={{
                       ...register(
                         `mainActivitiesDtoList.${idx}.mainActivityEn`,

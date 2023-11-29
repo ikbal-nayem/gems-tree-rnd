@@ -52,7 +52,6 @@ const AllocationOfBusinessForm = ({
                       placeholder={labelBn + " লিখুন"}
                       isRequired
                       noMargin
-                      autoFocus
                       registerProperty={{
                         ...register(
                           `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
@@ -80,7 +79,6 @@ const AllocationOfBusinessForm = ({
                     placeholder={labelEn + " লিখুন"}
                     isRequired
                     noMargin
-                    autoFocus
                     registerProperty={{
                       ...register(
                         `businessAllocationDtoList.${idx}.businessOfAllocationEn`,

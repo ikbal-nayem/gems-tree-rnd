@@ -64,6 +64,7 @@ const TemplateComponent = ({
     clearErrors,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = formProps;
 
@@ -163,7 +164,7 @@ const TemplateComponent = ({
 
     const reqPayload = {
       ...data,
-      titleBn: getValues(isNotEnamCommittee ? "titleBn" : "titleEn"  ),
+      titleBn: getValues(isNotEnamCommittee ? "titleBn" : "titleEn"),
       titleEn: getValues("titleEn"),
       // versionBn: data?.versionEn,
       organizationStructureDto: treeData,
@@ -175,7 +176,7 @@ const TemplateComponent = ({
     // }
     // console.log("Req Payload: ", reqPayload);
 
-    onSubmit(reqPayload); 
+    onSubmit(reqPayload);
   };
 
   return (
@@ -205,13 +206,16 @@ const TemplateComponent = ({
                 label="শিরোনাম বাংলা"
                 placeholder="বাংলায় শিরোনাম লিখুন"
                 isRequired
-                defaultValue={!isObjectNull(updateData) ? updateData?.titleBn : ""}
+                defaultValue={
+                  !isObjectNull(updateData) ? updateData?.titleBn : ""
+                }
                 registerProperty={{
                   ...register("titleBn", {
                     required: " ",
                     onChange: (e) => duplicateTitleCheck(e.target.value, false),
                   }),
                 }}
+                autoFocus={watch("isEnamCommittee") !== "true"}
                 isError={!!errors?.titleBn}
                 errorMessage={errors?.titleBn?.message as string}
               />
@@ -223,7 +227,9 @@ const TemplateComponent = ({
               label="শিরোনাম ইংরেজি"
               placeholder="ইংরেজিতে শিরোনাম লিখুন"
               isRequired
-              defaultValue={!isObjectNull(updateData) ? updateData?.titleEn : ""}
+              defaultValue={
+                !isObjectNull(updateData) ? updateData?.titleEn : ""
+              }
               registerProperty={{
                 ...register("titleEn", {
                   required: " ",
