@@ -72,7 +72,7 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
-                    isRequired
+                    isRequired={!isNotEnamCommittee}
                     noMargin
                     registerProperty={{
                       ...register(
@@ -86,7 +86,7 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                               );
                             }
                           },
-                          required: " ",
+                          required: !isNotEnamCommittee,
                           validate: enCheck,
                         }
                       ),

@@ -83,7 +83,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
-                    isRequired
+                    isRequired={!isNotEnamCommittee}
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
                         onChange:(e) => {
@@ -94,7 +94,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                             );
                           }
                         },
-                        required: " ",
+                        required: !isNotEnamCommittee,
                         validate: enCheck,
                       }),
                     }}

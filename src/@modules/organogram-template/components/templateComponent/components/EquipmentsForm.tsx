@@ -268,7 +268,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                             );
                           }
                         },
-                        required: " ",
+                        required: !isNotEnamCommittee,
                         validate: enCheck,
                       }),
                     }}

@@ -77,7 +77,7 @@ const AllocationOfBusinessForm = ({
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
-                    isRequired
+                    isRequired={!isNotEnamCommittee}
                     noMargin
                     registerProperty={{
                       ...register(
@@ -91,7 +91,7 @@ const AllocationOfBusinessForm = ({
                               );
                             }
                           },
-                          required: " ",
+                          required: !isNotEnamCommittee,
                           validate: enCheck,
                         }
                       ),
