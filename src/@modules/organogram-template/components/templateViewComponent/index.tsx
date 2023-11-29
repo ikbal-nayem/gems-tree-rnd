@@ -21,7 +21,7 @@ import {
   COMMON_LABELS as COMN_LABELS,
   LABELS,
 } from "@constants/common.constant";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
@@ -32,9 +32,9 @@ import OrgList from "./components/Organization";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
-import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useNavigate } from "react-router-dom";
 import AttachmentList from "./components/AttachmentList";
 
 interface ITemplateViewComponent {
@@ -98,45 +98,103 @@ const TemplateViewComponent = ({
       .finally(() => setApproveLoading(false));
   };
 
-  const [isPDFGenerating, setPDFGenerating] = useState<boolean>(false);
+  // useEffect(() => {
+  //   setPDFGenerating(true);
+  //   // setTimeout(() => {
+  //   //   downloadPDF();
+  //   // }, 1500);
+  //   setTimeout(() => {
+  //     setPDFGenerating(false);
+  //   }, 3500);
+  // }, [langEn]);
 
-  useEffect(() => {
-    setPDFGenerating(true);
-    setTimeout(() => {
-      downloadPDF();
-    }, 1500);
-    setTimeout(() => {
-      setPDFGenerating(false);
-    }, 3500);
-  }, [langEn]);
+  // const dataToPDF = useRef<any>();
 
-  const dataToPDF = useRef<any>();
-  const pdfRef = useRef();
+  // const downloadPDF = () => {
+  //   const input: any = pdfRef.current;
+  //   html2canvas(input, {
+  //     scale: 1.5,
+  //   }).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("l", "px", [canvas.width, canvas.height], true);
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = pdf.internal.pageSize.getHeight();
+  //     const imageWidth = canvas.width;
+  //     const imageHeight = canvas.height;
+  //     const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
+  //     const imageX = (pdfWidth - imageWidth * ratio) / 2;
+  //     const imageY = 30;
+  //     pdf.addImage(
+  //       imgData,
+  //       "PNG",
+  //       imageX,
+  //       imageY,
+  //       imageWidth * ratio,
+  //       imageHeight * ratio
+  //     );
+  //     dataToPDF.current = pdf;
+  //   });
+  // };
 
-  const downloadPDF = () => {
-    const input: any = pdfRef.current;
-    html2canvas(input, {
-      scale: 1.5,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("l", "px", [canvas.width, canvas.height], true);
+  const captureAndConvertToPDF = async (isPrint = false) => {
+    // Get references to the HTML elements you want to capture
+    const elementsToCapture = document.getElementsByClassName("pdfGenarator");
+
+    // Create a new instance of jsPDF
+    const pdf = new jsPDF("l", "px", [
+      elementsToCapture[0].clientWidth,
+      elementsToCapture[0].clientHeight + 100,
+    ]);
+
+    // Loop through the elements and capture each one
+    for (let i = 0; i < elementsToCapture.length; i++) {
+      const element: any = elementsToCapture[i];
+
+      // Use html2canvas to capture the element
+      const canvas = await html2canvas(element, {
+        scale: 2.5,
+        onclone: (clone: any) => {
+          clone.querySelector(".animate__fadeIn").style.animation = "none";
+          clone.querySelector(".treeTitle").style.overflow = "visible";
+          clone.querySelector(".treeTitle").style.height = "fit-content";
+          clone.querySelector(".dataBlock").style.overflow = "visible";
+          clone.querySelector(".dataBlock").style.height = "fit-content";
+        },
+      });
+
+      // Convert the canvas to an image and add it to the PDF
+      const imageData = canvas.toDataURL("image/png");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imageWidth = canvas.width;
+
+      const imageWidth = i === 1 ? canvas.width + 1000 : canvas.width;
+      // const imageWidth = canvas.width;
       const imageHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
       const imageX = (pdfWidth - imageWidth * ratio) / 2;
       const imageY = 30;
       pdf.addImage(
-        imgData,
+        imageData,
         "PNG",
         imageX,
         imageY,
         imageWidth * ratio,
         imageHeight * ratio
       );
-      dataToPDF.current = pdf;
-    });
+      // pdf.addImage(imageData, 'PNG', 10, 10, 190, 0); // Adjust the position and size as needed
+      if (i < elementsToCapture.length - 1) {
+        pdf.addPage(); // Add a new page for each element except the last one
+      }
+    }
+
+    // For open direct print
+    if (isPrint) {
+      pdf.autoPrint();
+      window.open(pdf.output("bloburl"), "_blank");
+    }
+
+    // Save or display the PDF
+    else pdf.save("Organogram.pdf");
   };
 
   return (
@@ -178,7 +236,17 @@ const TemplateViewComponent = ({
         <OrganizationTemplateTree
           treeData={treeData}
           langEn={langEn}
-          dataToPDF={dataToPDF}
+          onCapturePDF={captureAndConvertToPDF}
+          pdfClass="pdfGenarator"
+          templateName={
+            (organogramView
+              ? langEn
+                ? updateData?.organization?.nameEn
+                : updateData?.organization?.nameBn
+              : langEn
+              ? updateData?.titleEn
+              : updateData?.titleBn) || ""
+          }
         />
         <div className="position-absolute" style={{ top: 10, right: 175 }}>
           <IconButton
@@ -193,99 +261,118 @@ const TemplateViewComponent = ({
             <OrganizationTemplateTree
               treeData={treeData}
               langEn={langEn}
-              dataToPDF={dataToPDF}
+              onCapturePDF={captureAndConvertToPDF}
+              pdfClass="pdfGenarator"
+              templateName={
+                (organogramView
+                  ? langEn
+                    ? updateData?.organization?.nameEn
+                    : updateData?.organization?.nameBn
+                  : langEn
+                  ? updateData?.titleEn
+                  : updateData?.titleBn) || ""
+              }
             />
           </ModalBody>
         </Modal>
       </div>
-      {isPDFGenerating ? (
-        <div className="row" ref={pdfRef}>
-          <div className="col-6">
-            <ActivitiesList
-              data={updateData?.mainActivitiesDtoList || []}
+      {/* {isPDFGenerating ? ( */}
+      <div
+        className="row pdfGenarator dataBlock"
+        style={{ overflow: "hidden", height: 0 }}
+      >
+        <div className="col-4">
+          <ActivitiesList
+            data={updateData?.mainActivitiesDtoList || []}
+            langEn={langEn}
+          />
+
+          <div className="mt-3">
+            <AllocationOfBusinessList
+              data={updateData?.businessAllocationDtoList || []}
               langEn={langEn}
             />
-
-            <div className="mt-3">
-              <EquipmentsList
-                data={updateData?.miscellaneousPointDtoList || []}
-                inventoryData={inventoryData || []}
-                langEn={langEn}
-              />
-            </div>
-            <div className="mt-3">
-              <AllocationOfBusinessList
-                data={updateData?.businessAllocationDtoList || []}
-                langEn={langEn}
-              />
-            </div>
-          </div>
-          <div className="col-6">
-            <div>
-              <ManPowerList
-                isLoading={false}
-                data={manpowerData}
-                langEn={langEn}
-              />
-            </div>
           </div>
         </div>
-      ) : (
-        <div className="row">
-          <div className="col-md-6">
-            <ActivitiesList
-              data={updateData?.mainActivitiesDtoList || []}
+        <div className="col-4">
+          <EquipmentsList
+            data={updateData?.miscellaneousPointDtoList || []}
+            inventoryData={inventoryData || []}
+            langEn={langEn}
+          />
+          <div className="mt-3">
+            <AbbreviationList
+              data={updateData?.abbreviationDtoList || []}
               langEn={langEn}
             />
-
-            <div className="mt-3">
-              <EquipmentsList
-                data={updateData?.miscellaneousPointDtoList || []}
-                inventoryData={inventoryData || []}
-                langEn={langEn}
-              />
-            </div>
-            {!organogramView && (
-              <div className="mt-3">
-                <OrgList
-                  data={updateData?.templateOrganizationsDtoList || []}
-                  langEn={langEn}
-                />
-                {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
-              </div>
-            )}
-            <div className="mt-3">
-              <AttachmentList
-                data={updateData?.attachmentDtoList || []}
-                langEn={langEn}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="mt-md-0 mt-3">
-              <AllocationOfBusinessList
-                data={updateData?.businessAllocationDtoList || []}
-                langEn={langEn}
-              />
-            </div>
-            <div className="mt-3">
-              <ManPowerList
-                isLoading={false}
-                data={manpowerData}
-                langEn={langEn}
-              />
-            </div>
-            {langEn && (
-              <div className="mt-3">
-                <AbbreviationList
-                  data={updateData?.abbreviationDtoList || []}
-                  langEn={langEn}
-                />
-              </div>
-            )}
           </div>
         </div>
-      )}
+        <div className="col-4">
+          <div>
+            <ManPowerList
+              isLoading={false}
+              data={manpowerData}
+              langEn={langEn}
+            />
+          </div>
+        </div>
+      </div>
+      {/* ) : ( */}
+      <div className="row">
+        <div className="col-md-6">
+          <ActivitiesList
+            data={updateData?.mainActivitiesDtoList || []}
+            langEn={langEn}
+          />
+
+          <div className="mt-3">
+            <EquipmentsList
+              data={updateData?.miscellaneousPointDtoList || []}
+              inventoryData={inventoryData || []}
+              langEn={langEn}
+            />
+          </div>
+          {!organogramView && (
+            <div className="mt-3">
+              <OrgList
+                data={updateData?.templateOrganizationsDtoList || []}
+                langEn={langEn}
+              />
+              {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
+            </div>
+          )}
+          <div className="mt-3">
+            <AttachmentList
+              data={updateData?.attachmentDtoList || []}
+              langEn={langEn}
+            />
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="mt-md-0 mt-3">
+            <AllocationOfBusinessList
+              data={updateData?.businessAllocationDtoList || []}
+              langEn={langEn}
+            />
+          </div>
+          <div className="mt-3">
+            <ManPowerList
+              isLoading={false}
+              data={manpowerData}
+              langEn={langEn}
+            />
+          </div>
+          {langEn && (
+            <div className="mt-3">
+              <AbbreviationList
+                data={updateData?.abbreviationDtoList || []}
+                langEn={langEn}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      {/* )} */}
 
       {!organogramView && (
         <>
