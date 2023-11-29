@@ -86,7 +86,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     isRequired={!isNotEnamCommittee}
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
-                        onChange:(e) => {
+                        onChange: (e) => {
                           if (!isNotEnamCommittee) {
                             setValue(
                               `attachmentDtoList.${idx}.titleBn`,
@@ -104,6 +104,22 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                         ?.message as string
                     }
                   />
+                </div>
+                <div className="App">
+                  <input
+                    name="mobile"
+                    placeholder="mobileMake"
+                    list="suggestion"
+                    onChange={(e) => console.log(e.target.value)}
+                  ></input>
+                  <datalist id="suggestion">
+                    <option key="1" value="Nokia">
+                      Nokia
+                    </option>
+                    <option key="2" value="Samsung">
+                      Samsung
+                    </option>
+                  </datalist>
                 </div>
                 {/* <div
                   className={
