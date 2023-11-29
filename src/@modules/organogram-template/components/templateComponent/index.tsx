@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, Separator } from "@gems/components";
+import { Button, Checkbox, DateInput, Input, Separator } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -65,6 +65,7 @@ const TemplateComponent = ({
     setValue,
     getValues,
     watch,
+    control,
     formState: { errors },
   } = formProps;
 
@@ -222,7 +223,8 @@ const TemplateComponent = ({
             </div>
           )}
 
-          <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
+          {/* <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}> */}
+          <div className="col-md-6 col-12">
             <Input
               label="শিরোনাম ইংরেজি"
               placeholder="ইংরেজিতে শিরোনাম লিখুন"
@@ -272,6 +274,17 @@ const TemplateComponent = ({
                 errorMessage={errors?.versionEn?.message as string}
               />
             </div> */}
+            <div className="col-md-6 col-12">
+              <DateInput
+                label="ভার্শন"
+                isRequired="ভার্শন লিখুন"
+                name="versionDate"
+                control={control}
+                blockFutureDate
+                isError={!!errors?.versionDate}
+                errorMessage={errors?.versionDate?.message as string}
+              />
+            </div>
         </div>
       </div>
 
