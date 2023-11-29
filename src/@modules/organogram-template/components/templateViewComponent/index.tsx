@@ -143,7 +143,7 @@ const TemplateViewComponent = ({
     // Create a new instance of jsPDF
     const pdf = new jsPDF("l", "px", [
       elementsToCapture[0].clientWidth,
-      elementsToCapture[0].clientHeight + 50,
+      elementsToCapture[0].clientHeight + 100,
     ]);
 
     // Loop through the elements and capture each one
@@ -167,7 +167,7 @@ const TemplateViewComponent = ({
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      const imageWidth = i === 1 ? canvas.width + 500 : canvas.width;
+      const imageWidth = i === 1 ? canvas.width + 1000 : canvas.width;
       // const imageWidth = canvas.width;
       const imageHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
@@ -281,19 +281,12 @@ const TemplateViewComponent = ({
         className="row pdfGenarator dataBlock"
         style={{ overflow: "hidden", height: 0 }}
       >
-        <div className="col-6">
+        <div className="col-4">
           <ActivitiesList
             data={updateData?.mainActivitiesDtoList || []}
             langEn={langEn}
           />
 
-          <div className="mt-3">
-            <EquipmentsList
-              data={updateData?.miscellaneousPointDtoList || []}
-              inventoryData={inventoryData || []}
-              langEn={langEn}
-            />
-          </div>
           <div className="mt-3">
             <AllocationOfBusinessList
               data={updateData?.businessAllocationDtoList || []}
@@ -301,7 +294,20 @@ const TemplateViewComponent = ({
             />
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-4">
+          <EquipmentsList
+            data={updateData?.miscellaneousPointDtoList || []}
+            inventoryData={inventoryData || []}
+            langEn={langEn}
+          />
+          <div className="mt-3">
+            <AbbreviationList
+              data={updateData?.abbreviationDtoList || []}
+              langEn={langEn}
+            />
+          </div>
+        </div>
+        <div className="col-4">
           <div>
             <ManPowerList
               isLoading={false}
