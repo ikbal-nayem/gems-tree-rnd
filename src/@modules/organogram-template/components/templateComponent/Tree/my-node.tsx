@@ -27,6 +27,7 @@ const MyNode = ({
             size={20}
             color="warning"
             onClick={() => treeDispatch("EDIT", nodeData)}
+            hoverTitle={isNotEnamCommittee ? "এই নোড আপডেট করুন" : "Update this node"}
           />
           <div>
             <p className="p-1 mb-0 fs-7">{isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn}</p>
@@ -56,6 +57,7 @@ const MyNode = ({
               size={20}
               color="success"
               onClick={() => treeDispatch("ADD", nodeData)}
+              hoverTitle={isNotEnamCommittee ? "পরবর্তী স্তরে নতুন নোড যোগ করুন" : "Add new node into next layer"}
             />
             {!firstNode && (
               <Icon
@@ -63,6 +65,7 @@ const MyNode = ({
                 size={20}
                 color="danger"
                 onClick={() => treeDispatch("REMOVE", nodeData)}
+                hoverTitle={isNotEnamCommittee ? "এই নোড মুছুন" : "Delete this node"}
               />
             )}
           </div>
