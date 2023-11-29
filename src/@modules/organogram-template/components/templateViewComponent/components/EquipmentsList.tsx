@@ -40,11 +40,17 @@ const EquipmentsForm = ({ data, inventoryData, langEn }: IEquipmentsForm) => {
             );
           })}
       </div>
-      <div className="card-head d-flex justify-content-start align-items-center gap-2">
-        <span className="fs-5 fw-bold">3.</span>
-        <u className="fs-5 fw-bold m-0">{LABEL.MISCELLANEOUS}</u>
-      </div>
-      <Separator className="mt-1 mb-2" />
+
+      {data?.length > 0 && (
+        <>
+          <div className="card-head d-flex justify-content-start align-items-center gap-2">
+            <span className="fs-5 fw-bold">3.</span>
+            <u className="fs-5 fw-bold m-0">{LABEL.MISCELLANEOUS}</u>
+          </div>
+          <Separator className="mt-1 mb-2" />
+        </>
+      )}
+
       <div>
         <ol type="a" className={langEn ? "" : "bn_ol"}>
           {data?.length > 0 &&
