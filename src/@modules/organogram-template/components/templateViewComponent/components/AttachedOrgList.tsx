@@ -24,7 +24,11 @@ const AttachedOrgList = ({ data, langEn }: IAttachedOrgList) => {
             const orgList = item?.organizationDTOList;
             return (
               <div className="col-md-6 col-12" key={i}>
-                <p className="fs-6 fw-bold mb-0">
+                <p
+                  className={
+                    "fs-6 fw-bold mb-0" + (orgType ? "" : " fs-3 text-danger")
+                  }
+                >
                   {(langEn ? orgType?.titleEn : orgType?.titleBn) ||
                     COMMON_LABEL.NOT_ASSIGN}
                 </p>
