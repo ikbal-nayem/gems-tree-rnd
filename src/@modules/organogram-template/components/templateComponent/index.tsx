@@ -340,16 +340,15 @@ const TemplateComponent = ({
           </div>
           <div className="col-md-6 mt-3">
             <Organizations formProps={formProps} />
-            <div className="mt-3">
-              <AttachmentForm
-                formProps={formProps}
-                isNotEnamCommittee={isNotEnamCommittee}
-              />
-            </div>
           </div>
-
           <div className="col-md-6 mt-3">
             <AbbreviationForm formProps={formProps} />
+          </div>
+          <div className="col-12 mt-3">
+            <AttachmentForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
           </div>
         </div>
         <div className="d-flex gap-3 justify-content-center mt-5">
