@@ -11,7 +11,9 @@ import {
 } from "@gems/components";
 import {
   COMMON_LABELS,
+  DATE_PATTERN,
   IObject,
+  generateDateFormat,
   generateUUID,
   isObjectNull,
 } from "@gems/utils";
@@ -203,7 +205,7 @@ const TemplateViewComponent = ({
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
-            <div className="fs-3 text-center fw-bolder mb-0">
+            <div className="fs-2 text-center fw-bolder mb-0">
               {(organogramView
                 ? langEn
                   ? updateData?.organization?.nameEn
@@ -214,9 +216,23 @@ const TemplateViewComponent = ({
             </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
-                <span className="mb-0 fw-bold">{LABEL.VERSION}: </span>
-                {(langEn ? updateData?.versionEn : updateData?.versionBn) ||
-                  COMMON_LABELS.NOT_ASSIGN}
+                <span className="mb-0 fw-bold me-1">{LABEL.VERSION}: </span>
+                {updateData?.isEnamCommittee
+                  ? "Enam Committe Report (26/12/1982)"
+                  : langEn
+                  ? updateData?.versionDate
+                    ? generateDateFormat(
+                        updateData?.versionDate,
+                        DATE_PATTERN.GOVT_STANDARD,
+                        "en"
+                      ) + " Report"
+                    : ""
+                  : updateData?.versionDate
+                  ? generateDateFormat(
+                      updateData?.versionDate,
+                      DATE_PATTERN.GOVT_STANDARD
+                    ) + " রিপোর্ট"
+                  : COMMON_LABELS.NOT_ASSIGN}
               </Label>
             </div>
           </div>
