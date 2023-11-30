@@ -1,0 +1,19 @@
+/* Hide number field arrow */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.react-datepicker-popper {
+  z-index: 1021;
+}
+
+.react-datepicker__close-icon::after {
+  background-color: inherit !important;
+  color: var(--kt-secondary-active);
+  font-size: 25px;
+}

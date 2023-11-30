@@ -1,13 +1,15 @@
-import { LABELS } from "@constants/common.constant";
+import { Input } from "@components/Input";
+import { LABELS, META_TYPE } from "@constants/common.constant";
 import {
-  Checkbox,
+  DateInput,
   IconButton,
-  Input,
   Label,
   Separator,
   SingleFile,
 } from "@gems/components";
-import { numEnToBn } from "@gems/utils";
+import { IObject, numEnToBn } from "@gems/utils";
+import { CoreService } from "@services/api/Core.service";
+import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
@@ -29,6 +31,16 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
     name: "attachmentDtoList",
   });
 
+  const [checklist, setCheckList] = useState<IObject[]>([]);
+  const [checkElist, setCheckEList] = useState<IObject[]>([]);
+
+  useEffect(() => {
+    CoreService.getByMetaTypeList(META_TYPE.CHECKLIST).then((resp) => {
+      setCheckList(resp?.body);
+      setCheckEList(resp?.body);
+    });
+  }, []);
+
   const onFileChange = (e, idx) => {
     setValue(`attachmentDtoList.${idx}.fileName`, e?.name || null);
   };
@@ -43,8 +55,12 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
       <div>
         {fields.map((f, idx) => {
           const label = "নাম";
+          const labelGONo = "জিও নম্বর";
           const labelBn = label + " (বাংলা)";
           const labelEn = label + " (ইংরেজি)";
+          const labelGONoBn = labelGONo + " (বাংলা)";
+          const labelGONoEn = labelGONo + " (ইংরেজি)";
+          const labelGODate = "জিও তারিখ";
           const labelAttachment = "ফাইল";
 
           return (
@@ -57,7 +73,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
               </div>
               <div className="row w-100">
                 {isNotEnamCommittee && (
-                  <div className="col-xl-4 col-12">
+                  <div className="col-xl-3 col-12">
                     <Input
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
@@ -72,12 +88,15 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                         errors?.attachmentDtoList?.[idx]?.titleBn
                           ?.message as string
                       }
+                      autoSuggestionKey="titleBn"
+                      suggestionOptions={checklist || []}
+                      suggestionTextKey="titleBn"
                     />
                   </div>
                 )}
                 <div
                   className={
-                    isNotEnamCommittee ? "col-xl-4 col-12" : "col-xl-8 col-12"
+                    isNotEnamCommittee ? "col-xl-3 col-12" : "col-xl-6 col-12"
                   }
                 >
                   <Input
@@ -86,7 +105,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     isRequired={!isNotEnamCommittee}
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
-                        onChange:(e) => {
+                        onChange: (e) => {
                           if (!isNotEnamCommittee) {
                             setValue(
                               `attachmentDtoList.${idx}.titleBn`,
@@ -103,6 +122,69 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                       errors?.attachmentDtoList?.[idx]?.titleEn
                         ?.message as string
                     }
+                    autoSuggestionKey="titleEn"
+                    suggestionOptions={checkElist || []}
+                    suggestionTextKey="titleEn"
+                  />
+                </div>
+                {isNotEnamCommittee && (
+                  <div className="col-xl-3 col-12">
+                    <Input
+                      label={idx < 1 ? labelGONoBn : ""}
+                      placeholder={labelGONoBn + " লিখুন"}
+                      isRequired
+                      registerProperty={{
+                        ...register(`attachmentDtoList.${idx}.goNoBn`, {
+                          required: " ",
+                          setValueAs: (v) => numEnToBn(v),
+                        }),
+                      }}
+                      isError={!!errors?.attachmentDtoList?.[idx]?.goNoBn}
+                      errorMessage={
+                        errors?.attachmentDtoList?.[idx]?.goNoBn
+                          ?.message as string
+                      }
+                    />
+                  </div>
+                )}
+                <div
+                  className={
+                    isNotEnamCommittee ? "col-xl-3 col-12" : "col-xl-6 col-12"
+                  }
+                >
+                  <Input
+                    label={idx < 1 ? labelGONoEn : ""}
+                    placeholder={labelGONoEn + " লিখুন"}
+                    isRequired={!isNotEnamCommittee}
+                    registerProperty={{
+                      ...register(`attachmentDtoList.${idx}.goNoEn`, {
+                        onChange: (e) => {
+                          if (!isNotEnamCommittee) {
+                            setValue(
+                              `attachmentDtoList.${idx}.goNoBn`,
+                              e.target.value
+                            );
+                          }
+                        },
+                        required: !isNotEnamCommittee,
+                        validate: enCheck,
+                      }),
+                    }}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.goNoEn}
+                    errorMessage={
+                      errors?.attachmentDtoList?.[idx]?.goNoEn
+                        ?.message as string
+                    }
+                  />
+                </div>
+                <div className="col-xl-3 col-12">
+                  <DateInput
+                    label={idx < 1 ? labelGODate : ""}
+                    isRequired={labelGODate + "লিখুন"}
+                    name={`attachmentDtoList.${idx}.goDate`}
+                    control={control}
+                    isError={!!errors?.goDate}
+                    errorMessage={errors?.goDate?.message as string}
                   />
                 </div>
                 {/* <div
@@ -119,7 +201,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     }}
                   />
                 </div> */}
-                <div className="col-xl-4 col-12">
+                <div className="col-xl-3 col-12">
                   <SingleFile
                     isRequired="ফাইল আপলোড করুন"
                     control={control}
