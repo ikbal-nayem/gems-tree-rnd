@@ -1,5 +1,6 @@
 export const META_TYPE = {
   ORG_TYPE: "ORG_TYPE",
+  CHECKLIST: "CHECKLIST",
 };
 
 export const COMMON_LABELS = {

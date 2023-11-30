@@ -8,6 +8,8 @@ export const LOCAL_LABELS = {
     TOTAL: "মোট",
     GRAND_TOTAL: "সর্বমোট",
     NAME: "নাম",
+    GO_NUMBER: "জিও নম্বর",
+    GO_DATE: "জিও তারিখ",
   },
 
   EN: {
@@ -16,6 +18,8 @@ export const LOCAL_LABELS = {
     TOTAL: "Total",
     GRAND_TOTAL: "GRAND TOTAL",
     NAME: "Name",
-    SL_NO:"Sl No"
+    SL_NO:"Sl No",
+    GO_NUMBER: "GO No",
+    GO_DATE: "GO Date",
   },
 };
