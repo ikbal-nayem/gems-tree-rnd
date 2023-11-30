@@ -10,6 +10,7 @@ import {
   IObject,
   generateUUID,
   isObjectNull,
+  notNullOrUndefined,
 } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -172,7 +173,6 @@ const TemplateComponent = ({
       ...data,
       titleBn: getValues(isNotEnamCommittee ? "titleBn" : "titleEn"),
       titleEn: getValues("titleEn"),
-      // versionBn: data?.versionEn,
       organizationStructureDto: treeData,
     };
     // let test = makeFormData(reqPayload);
@@ -187,10 +187,19 @@ const TemplateComponent = ({
 
   const onIsEnamCommitteeChange = (checked: boolean) => {
     setIsNotEnamCommittee(!checked);
-    const enamApprovalDate =  new Date("1982-12-26");
-    const chosenDate =  new Date(getValues("versionDate"));
+    const enamApprovalDate = new Date("1982-12-26");
+    const hasChosenDate = notNullOrUndefined(getValues("chosenDate"));
     if (checked) setValue("versionDate", enamApprovalDate);
-    else  setValue("versionDate", updateData?.versionDate);
+    else {
+      if (hasChosenDate) {
+        const chosenDate = getValues("chosenDate");
+        setValue("versionDate", new Date(chosenDate));
+      } else {
+        if (notNullOrUndefined(updateData?.versionDate)) {
+          setValue("versionDate", new Date(updateData?.versionDate));
+        }
+      }
+    }
   };
 
   return (
@@ -293,6 +302,7 @@ const TemplateComponent = ({
               isRequired="ভার্শন লিখুন"
               name="versionDate"
               control={control}
+              onChange={(e) => setValue("chosenDate", e.value)}
               blockFutureDate
               isError={!!errors?.versionDate}
               errorMessage={errors?.versionDate?.message as string}
@@ -330,15 +340,16 @@ const TemplateComponent = ({
           </div>
           <div className="col-md-6 mt-3">
             <Organizations formProps={formProps} />
+            <div className="mt-3">
+              <AttachmentForm
+                formProps={formProps}
+                isNotEnamCommittee={isNotEnamCommittee}
+              />
+            </div>
           </div>
+
           <div className="col-md-6 mt-3">
             <AbbreviationForm formProps={formProps} />
-          </div>
-          <div className="col-12 mt-3">
-            <AttachmentForm
-              formProps={formProps}
-              isNotEnamCommittee={isNotEnamCommittee}
-            />
           </div>
         </div>
         <div className="d-flex gap-3 justify-content-center mt-5">
