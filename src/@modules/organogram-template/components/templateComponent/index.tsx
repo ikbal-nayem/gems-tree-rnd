@@ -185,6 +185,14 @@ const TemplateComponent = ({
     onSubmit(reqPayload);
   };
 
+  const onIsEnamCommitteeChange = (checked: boolean) => {
+    setIsNotEnamCommittee(!checked);
+    const enamApprovalDate =  new Date("1982-12-26");
+    const chosenDate =  new Date(getValues("versionDate"));
+    if (checked) setValue("versionDate", enamApprovalDate);
+    else  setValue("versionDate", updateData?.versionDate);
+  };
+
   return (
     <div>
       <div className="card col-md-12 border p-3 mb-4">
@@ -197,7 +205,7 @@ const TemplateComponent = ({
             noMargin
             registerProperty={{
               ...register("isEnamCommittee", {
-                onChange: (e) => setIsNotEnamCommittee(!e.target.checked),
+                onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
               }),
             }}
           />
