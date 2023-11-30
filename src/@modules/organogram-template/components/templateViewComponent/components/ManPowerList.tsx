@@ -29,6 +29,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
 
   let idx = 1000; // lets take a common index for both parent-child list
   let slNo = 1; // serial number count only for posts
+  const COMMON_LABEL = langEn ? COMMON_LABELS.EN : COMMON_LABELS;
   return (
     <div className="card border p-3">
       <h4 className="m-0">{LABEL.SUM_OF_MANPOWER}</h4>
@@ -44,7 +45,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                     <TableCell className="remove-padding">
                       <p className="fw-bold mb-0 fs-7">
                         {(langEn ? classs?.classNameEn : classs?.classNameBn) ||
-                          COMMON_LABELS.NOT_ASSIGN}
+                          COMMON_LABEL.NOT_ASSIGN}
                       </p>
                     </TableCell>
                   </TableRow>
@@ -56,7 +57,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                       <TableCell className="remove-padding">
                         <p className="mb-0 fs-7">
                           {(langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
-                            COMMON_LABELS.NOT_ASSIGN}
+                            COMMON_LABEL.NOT_ASSIGN}
                         </p>
                       </TableCell>
                       <TableCell className="remove-padding">
@@ -64,7 +65,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                           {langEn
                             ? itr?.manpower
                             : numEnToBn(itr?.manpower) ||
-                              COMMON_LABELS.NOT_ASSIGN}
+                              COMMON_LABEL.NOT_ASSIGN}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -81,7 +82,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                         {langEn
                           ? classs?.totalClassManpower
                           : numEnToBn(classs?.totalClassManpower) ||
-                            COMMON_LABELS.NOT_ASSIGN}
+                            COMMON_LABEL.NOT_ASSIGN}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -98,7 +99,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                   {langEn
                     ? data?.totalManpower
                     : numEnToBn(data?.totalManpower) ||
-                      COMMON_LABELS.NOT_ASSIGN}
+                      COMMON_LABEL.NOT_ASSIGN}
                 </div>
               </TableCell>
             </TableRow>
@@ -111,7 +112,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
         <ContentPreloader />
       ) : (
         <NoData
-          details={LABEL.SUM_OF_MANPOWER + " এর কোনো তথ্য পাওয়া যায়নি!"}
+          details={COMMON_LABEL.NOT_ASSIGN}
         />
       )}
     </div>

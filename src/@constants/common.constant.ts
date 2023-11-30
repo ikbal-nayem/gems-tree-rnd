@@ -78,7 +78,7 @@ export const LABELS = {
     MAIN_ACTIVITIES: "Main Activities",
     EQUIPMENTS: "AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
     ABBREVIATIONS: "Abbreviations",
-    ATTACHED_OFFICE: "Attached Offices",
+    ATTACHED_OFFICE: "LIST OF ATTACHED ORGANISATION",
     SUMMARY_OF_MANPOWER: "Summary of Manpower",
     ALLOCATION_OF_BUSINESS: "Allocation of Business",
     MISCELLANEOUS: "Miscellaneous Points",

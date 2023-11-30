@@ -36,6 +36,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import AttachmentList from "./components/AttachmentList";
+import AttachedOrgList from "./components/AttachedOrgList";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -347,6 +348,14 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
+          {organogramView && (
+            <div className="mt-3">
+              <AttachedOrgList
+                data={updateData?.attachmentOrganization || []}
+                langEn={langEn}
+              />
+            </div>
+          )}
         </div>
         <div className="col-md-6">
           <div className="mt-md-0 mt-3">
@@ -372,7 +381,7 @@ const TemplateViewComponent = ({
           )}
         </div>
       </div>
-      {/* )} */}
+      {/* )} attachmentOrganization */}
 
       {!organogramView && (
         <>
