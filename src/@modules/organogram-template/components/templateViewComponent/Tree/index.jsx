@@ -12,6 +12,7 @@ const OrganizationTemplateTree = ({
   pdfClass,
   templateName,
   isPDFLoading,
+  versionName
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -79,6 +80,7 @@ const OrganizationTemplateTree = ({
         )}
         ref={download}
         templateName={templateName}
+        versionName={versionName}
         // exportPDF={exportPDF}
         pan={true}
         zoom={true}

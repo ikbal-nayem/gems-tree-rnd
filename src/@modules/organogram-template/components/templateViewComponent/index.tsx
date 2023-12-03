@@ -165,39 +165,42 @@ const TemplateViewComponent = ({
     setPDFLoading(false);
   };
 
+  let titleName =
+    (organogramView
+      ? langEn
+        ? updateData?.organization?.nameEn
+        : updateData?.organization?.nameBn
+      : langEn
+      ? updateData?.titleEn
+      : updateData?.titleBn) || "";
+
+  let versionName = updateData?.isEnamCommittee
+    ? "Enam Committe Report (26/12/1982)"
+    : langEn
+    ? updateData?.versionDate
+      ? generateDateFormat(
+          updateData?.versionDate,
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        ) + " Report"
+      : ""
+    : updateData?.versionDate
+    ? generateDateFormat(updateData?.versionDate, DATE_PATTERN.GOVT_STANDARD) +
+      " রিপোর্ট"
+    : "";
+
   return (
     <div>
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
             <div className="fs-2 text-center fw-bolder mb-0">
-              {(organogramView
-                ? langEn
-                  ? updateData?.organization?.nameEn
-                  : updateData?.organization?.nameBn
-                : langEn
-                ? updateData?.titleEn
-                : updateData?.titleBn) || COMMON_LABELS.NOT_ASSIGN}
+              {titleName || COMMON_LABELS.NOT_ASSIGN}
             </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
                 <span className="mb-0 fw-bold me-1">{LABEL.VERSION}: </span>
-                {updateData?.isEnamCommittee
-                  ? "Enam Committe Report (26/12/1982)"
-                  : langEn
-                  ? updateData?.versionDate
-                    ? generateDateFormat(
-                        updateData?.versionDate,
-                        DATE_PATTERN.GOVT_STANDARD,
-                        "en"
-                      ) + " Report"
-                    : ""
-                  : updateData?.versionDate
-                  ? generateDateFormat(
-                      updateData?.versionDate,
-                      DATE_PATTERN.GOVT_STANDARD
-                    ) + " রিপোর্ট"
-                  : COMMON_LABELS.NOT_ASSIGN}
+                {versionName || COMMON_LABELS.NOT_ASSIGN}
               </Label>
             </div>
           </div>
@@ -221,15 +224,8 @@ const TemplateViewComponent = ({
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
-          templateName={
-            (organogramView
-              ? langEn
-                ? updateData?.organization?.nameEn
-                : updateData?.organization?.nameBn
-              : langEn
-              ? updateData?.titleEn
-              : updateData?.titleBn) || ""
-          }
+          templateName={titleName}
+          versionName={versionName}
         />
         <div className="position-absolute" style={{ top: 10, right: 175 }}>
           <IconButton
@@ -239,7 +235,12 @@ const TemplateViewComponent = ({
             onClick={() => setFormOpen(true)}
           />
         </div>
-        <Modal isOpen={formOpen} handleClose={onFormClose} fullscreen title="">
+        <Modal
+          isOpen={formOpen}
+          handleClose={onFormClose}
+          fullscreen
+          title={`${titleName} ${versionName ? "( " + versionName + " )" : ""}`}
+        >
           <ModalBody className="p-0">
             <OrganizationTemplateTree
               treeData={treeData}
@@ -247,15 +248,8 @@ const TemplateViewComponent = ({
               onCapturePDF={captureAndConvertToPDF}
               pdfClass=""
               isPDFLoading={isPDFLoading}
-              templateName={
-                (organogramView
-                  ? langEn
-                    ? updateData?.organization?.nameEn
-                    : updateData?.organization?.nameBn
-                  : langEn
-                  ? updateData?.titleEn
-                  : updateData?.titleBn) || ""
-              }
+              templateName={titleName}
+              versionName={versionName}
             />
           </ModalBody>
         </Modal>
