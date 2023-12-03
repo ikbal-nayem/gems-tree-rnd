@@ -48,7 +48,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
       );
     } else {
       setValue(
-        `attachmentDtoList.${idx}.titleBn`,
+        `attachmentDtoList.${idx}.titleEn`,
         checklist?.find((obj) => obj?.titleBn === val)?.titleEn
       );
     }
