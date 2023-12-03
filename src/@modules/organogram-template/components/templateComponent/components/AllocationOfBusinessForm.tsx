@@ -1,6 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Label, Separator } from "@gems/components";
-import { numEnToBn } from "@gems/utils";
+import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
@@ -57,6 +57,14 @@ const AllocationOfBusinessForm = ({
                           `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
                           {
                             required: " ",
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `businessAllocationDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                            },
                           }
                         ),
                       }}
@@ -83,11 +91,18 @@ const AllocationOfBusinessForm = ({
                       ...register(
                         `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
                         {
-                          onChange:(e) => {
+                          onChange: (e) => {
                             if (!isNotEnamCommittee) {
                               setValue(
                                 `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
                                 e.target.value
+                              );
+                            }
+
+                            if (notNullOrUndefined(e.target.value)) {
+                              setValue(
+                                `businessAllocationDtoList.${idx}.displayOrder`,
+                                idx + 1
                               );
                             }
                           },
