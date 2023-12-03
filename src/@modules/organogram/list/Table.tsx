@@ -10,7 +10,13 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
-import { COMMON_LABELS, IMeta, generateRowNumBn } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  DATE_PATTERN,
+  IMeta,
+  generateDateFormat,
+  generateRowNumBn,
+} from "@gems/utils";
 import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
@@ -55,8 +61,16 @@ const OrganogramTable: FC<TableProps> = ({
                 subText={item?.organizationNameEn || COMMON_LABELS.NOT_ASSIGN}
               />
               <TableCell
-                text={item?.versionBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.versionEn || COMMON_LABELS.NOT_ASSIGN}
+                text={
+                  item?.isEnamCommittee
+                    ? "Enam Committe Report (26/12/1982)"
+                    : item?.versionDate
+                    ? generateDateFormat(
+                        item?.versionDate,
+                        DATE_PATTERN.GOVT_STANDARD
+                      ) + " রিপোর্ট"
+                    : ""
+                }
               />
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown

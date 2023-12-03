@@ -264,7 +264,15 @@ const TemplateViewComponent = ({
             data={updateData?.mainActivitiesDtoList || []}
             langEn={langEn}
           />
-
+          {organogramView && (
+            <div className="mt-3">
+              <EquipmentsList
+                data={updateData?.miscellaneousPointDtoList || []}
+                inventoryData={inventoryData || []}
+                langEn={langEn}
+              />
+            </div>
+          )}
           <div className="mt-3">
             <AllocationOfBusinessList
               data={updateData?.businessAllocationDtoList || []}
@@ -273,17 +281,23 @@ const TemplateViewComponent = ({
           </div>
         </div>
         <div className="pe-4" style={{ minWidth: "700px" }}>
-          <EquipmentsList
-            data={updateData?.miscellaneousPointDtoList || []}
-            inventoryData={inventoryData || []}
-            langEn={langEn}
-          />
-          <div className="mt-3">
-            <AbbreviationList
-              data={updateData?.abbreviationDtoList || []}
+          {!organogramView && (
+            <EquipmentsList
+              data={updateData?.miscellaneousPointDtoList || []}
+              inventoryData={inventoryData || []}
               langEn={langEn}
             />
-          </div>
+          )}
+          {organogramView && (
+            <AttachedOrgList
+              data={updateData?.attachmentOrganization || []}
+              langEn={langEn}
+            />
+          )}
+          <AbbreviationList
+            data={updateData?.abbreviationDtoList || []}
+            langEn={langEn}
+          />
         </div>
         <div className="" style={{ minWidth: "700px" }}>
           <div>
