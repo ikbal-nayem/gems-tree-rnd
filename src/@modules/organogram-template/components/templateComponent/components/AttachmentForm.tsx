@@ -7,7 +7,7 @@ import {
   Separator,
   SingleFile,
 } from "@gems/components";
-import { IObject, numEnToBn } from "@gems/utils";
+import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
@@ -38,6 +38,21 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
       setCheckList(resp?.body);
     });
   }, []);
+
+  const onTitleChange = (val, idx, fieldLang: "en" | "bn") => {
+    if (!notNullOrUndefined(val)) return;
+    if (fieldLang === "en") {
+      setValue(
+        `attachmentDtoList.${idx}.titleBn`,
+        checklist?.find((obj) => obj?.titleEn === val)?.titleBn
+      );
+    } else {
+      setValue(
+        `attachmentDtoList.${idx}.titleBn`,
+        checklist?.find((obj) => obj?.titleBn === val)?.titleEn
+      );
+    }
+  };
 
   const onFileChange = (e, idx) => {
     setValue(`attachmentDtoList.${idx}.fileName`, e?.name || null);
@@ -83,6 +98,8 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                               `attachmentDtoList.${idx}.titleBn`,
                               e.target.value
                             );
+                          } else {
+                            onTitleChange(e.target.value, idx, "en");
                           }
                         },
                         required: !isNotEnamCommittee,
@@ -106,6 +123,8 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                         isRequired
                         registerProperty={{
                           ...register(`attachmentDtoList.${idx}.titleBn`, {
+                            onChange: (e) =>
+                              onTitleChange(e.target.value, idx, "bn"),
                             required: " ",
                           }),
                         }}

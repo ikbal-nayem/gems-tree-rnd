@@ -14,6 +14,7 @@ import {
   COMMON_LABELS,
   IObject,
   isObjectNull,
+  notNullOrUndefined,
   numBnToEn,
   numEnToBn,
   numericCheck,
@@ -79,6 +80,7 @@ const NodeForm = ({
   const [titleList, setTitleList] = useState<IObject[]>([]);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
+    if (!notNullOrUndefined(val)) return;
     if (fieldLang === "en") {
       setValue(
         "titleBn",
