@@ -98,7 +98,7 @@ export const OMSService = {
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-post/get-list", payload),
 
-    organogramTitle: async (): Promise<any> =>
+    nodeTitle: async (): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "organogram-template/get-organogram-title"
       ),

@@ -45,6 +45,7 @@ const NodeForm = ({
     register,
     handleSubmit,
     reset,
+    setValue,
     control,
     formState: { errors },
   } = useForm<any>({
@@ -77,12 +78,22 @@ const NodeForm = ({
 
   const [titleList, setTitleList] = useState<IObject[]>([]);
 
-  const onTitleChange = (title, lang: "en" | "bn") => {
-    // titleList?.map()
-  }
+  const onTitleChange = (val, fieldLang: "en" | "bn") => {
+    if (fieldLang === "en") {
+      setValue(
+        "titleBn",
+        titleList?.find((obj) => obj?.titleEn === val)?.titleBn
+      );
+    } else {
+      setValue(
+        "titleEn",
+        titleList?.find((obj) => obj?.titleBn === val)?.titleEn
+      );
+    }
+  };
 
   useEffect(() => {
-    OMSService.FETCH.organogramTitle().then((resp) => {
+    OMSService.FETCH.nodeTitle().then((resp) => {
       setTitleList(resp?.body);
     });
   }, []);
@@ -168,9 +179,13 @@ const NodeForm = ({
                   noMargin
                   registerProperty={{
                     ...register("titleBn", {
+                      onChange: (e) => onTitleChange(e.target.value, "bn"),
                       required: " ",
                     }),
                   }}
+                  autoSuggestionKey="titleBn"
+                  suggestionTextKey="titleBn"
+                  suggestionOptions={titleList || []}
                   isError={!!errors?.titleBn}
                   errorMessage={errors?.titleBn?.message as string}
                 />
