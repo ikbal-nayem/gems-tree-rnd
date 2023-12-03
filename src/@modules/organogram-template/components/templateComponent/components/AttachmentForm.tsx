@@ -123,48 +123,48 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                 </div>
                 <div className="col-xl-3 col-12">
                   <>
+                    <Input
+                      label={idx < 1 ? labelGONoEn : ""}
+                      placeholder={labelGONoEn + " লিখুন"}
+                      isRequired={!isNotEnamCommittee}
+                      registerProperty={{
+                        ...register(`attachmentDtoList.${idx}.goNoEn`, {
+                          onChange: (e) => {
+                            if (!isNotEnamCommittee) {
+                              setValue(
+                                `attachmentDtoList.${idx}.goNoBn`,
+                                e.target.value
+                              );
+                            }
+                          },
+                          required: !isNotEnamCommittee,
+                          validate: enCheck,
+                        }),
+                      }}
+                      isError={!!errors?.attachmentDtoList?.[idx]?.goNoEn}
+                      errorMessage={
+                        errors?.attachmentDtoList?.[idx]?.goNoEn
+                          ?.message as string
+                      }
+                    />
                     {isNotEnamCommittee && (
                       <Input
-                        label={idx < 1 ? labelGONoEn : ""}
-                        placeholder={labelGONoEn + " লিখুন"}
-                        isRequired={!isNotEnamCommittee}
+                        label={idx < 1 ? labelGONoBn : ""}
+                        placeholder={labelGONoBn + " লিখুন"}
+                        isRequired
                         registerProperty={{
-                          ...register(`attachmentDtoList.${idx}.goNoEn`, {
-                            onChange: (e) => {
-                              if (!isNotEnamCommittee) {
-                                setValue(
-                                  `attachmentDtoList.${idx}.goNoBn`,
-                                  e.target.value
-                                );
-                              }
-                            },
-                            required: !isNotEnamCommittee,
-                            validate: enCheck,
+                          ...register(`attachmentDtoList.${idx}.goNoBn`, {
+                            required: " ",
+                            setValueAs: (v) => numEnToBn(v),
                           }),
                         }}
-                        isError={!!errors?.attachmentDtoList?.[idx]?.goNoEn}
+                        isError={!!errors?.attachmentDtoList?.[idx]?.goNoBn}
                         errorMessage={
-                          errors?.attachmentDtoList?.[idx]?.goNoEn
+                          errors?.attachmentDtoList?.[idx]?.goNoBn
                             ?.message as string
                         }
                       />
                     )}
-                    <Input
-                      label={idx < 1 ? labelGONoBn : ""}
-                      placeholder={labelGONoBn + " লিখুন"}
-                      isRequired
-                      registerProperty={{
-                        ...register(`attachmentDtoList.${idx}.goNoBn`, {
-                          required: " ",
-                          setValueAs: (v) => numEnToBn(v),
-                        }),
-                      }}
-                      isError={!!errors?.attachmentDtoList?.[idx]?.goNoBn}
-                      errorMessage={
-                        errors?.attachmentDtoList?.[idx]?.goNoBn
-                          ?.message as string
-                      }
-                    />
                   </>
                 </div>
                 <div className="col-xl-3 col-12">
