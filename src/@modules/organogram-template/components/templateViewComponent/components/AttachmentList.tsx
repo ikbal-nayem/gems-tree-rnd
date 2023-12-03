@@ -2,7 +2,6 @@ import { LABELS } from "@constants/common.constant";
 import {
   ITableHeadColumn,
   MediaPreview,
-  NoData,
   Separator,
   Table,
   TableCell,
@@ -88,14 +87,7 @@ const AttachmentList: FC<TableProps> = ({ data, langEn }) => {
             })}
           </>
         </Table>
-      ) : (
-        <NoData
-          details={
-            LABEL.ATTACHMENT +
-            (langEn ? " data not available!" : " এর কোনো তথ্য পাওয়া যায়নি!")
-          }
-        />
-      )}
+      ) : null}
     </div>
   );
 };
