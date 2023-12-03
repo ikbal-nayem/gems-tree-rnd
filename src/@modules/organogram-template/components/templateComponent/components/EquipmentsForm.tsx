@@ -7,7 +7,7 @@ import {
   Separator,
   toast,
 } from "@gems/components";
-import { IObject, numEnToBn } from "@gems/utils";
+import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
@@ -235,6 +235,14 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                           `miscellaneousPointDtoList.${idx}.titleBn`,
                           {
                             required: " ",
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `miscellaneousPointDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                            },
                           }
                         ),
                       }}
@@ -265,6 +273,13 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                             setValue(
                               `miscellaneousPointDtoList.${idx}.titleBn`,
                               e.target.value
+                            );
+                          }
+
+                          if (notNullOrUndefined(e.target.value)) {
+                            setValue(
+                              `miscellaneousPointDtoList.${idx}.displayOrder`,
+                              idx + 1
                             );
                           }
                         },

@@ -1,6 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Label, Separator } from "@gems/components";
-import { numEnToBn } from "@gems/utils";
+import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
@@ -53,6 +53,14 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                           `mainActivitiesDtoList.${idx}.mainActivityBn`,
                           {
                             required: " ",
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `mainActivitiesDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                            },
                           }
                         ),
                       }}
@@ -83,6 +91,12 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                               setValue(
                                 `mainActivitiesDtoList.${idx}.mainActivityBn`,
                                 e.target.value
+                              );
+                            }
+                            if (notNullOrUndefined(e.target.value)) {
+                              setValue(
+                                `mainActivitiesDtoList.${idx}.displayOrder`,
+                                idx + 1
                               );
                             }
                           },

@@ -250,6 +250,14 @@ const NodeForm = ({
                             `postFunctionalityList.${index}.functionalityBn`,
                             {
                               required: " ",
+                              onChange: (e) => {
+                                if (notNullOrUndefined(e.target.value)) {
+                                  setValue(
+                                    `postFunctionalityList.${index}.displayOrder`,
+                                    index + 1
+                                  );
+                                }
+                              },
                             }
                           ),
                         }}
@@ -281,6 +289,21 @@ const NodeForm = ({
                         ...register(
                           `postFunctionalityList.${index}.functionalityEn`,
                           {
+                            onChange: (e) => {
+                              if (!isNotEnamCommittee) {
+                                setValue(
+                                  `postFunctionalityList.${index}.functionalityBn`,
+                                  e.target.value
+                                );
+                              }
+
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `postFunctionalityList.${index}.displayOrder`,
+                                  index + 1
+                                );
+                              }
+                            },
                             required: !isNotEnamCommittee,
                             validate: enCheck,
                           }
