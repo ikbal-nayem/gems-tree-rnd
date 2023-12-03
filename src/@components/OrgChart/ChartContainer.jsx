@@ -29,6 +29,7 @@ const propTypes = {
   onClickChart: PropTypes.func,
   exportPDF: PropTypes.func,
   templateName: PropTypes.string,
+  versionName: PropTypes.string,
 };
 
 const defaultProps = {
@@ -42,6 +43,7 @@ const defaultProps = {
   collapsible: true,
   multipleSelect: false,
   templateName: "",
+  versionName:""
 };
 
 const ChartContainer = forwardRef(
@@ -62,6 +64,7 @@ const ChartContainer = forwardRef(
       onClickChart,
       exportPDF,
       templateName,
+      versionName
     },
     ref
   ) => {
@@ -318,6 +321,7 @@ const ChartContainer = forwardRef(
               style={{ height: 0, overflow: "hidden" }}
             >
               <p className="fs-2 mb-0">{templateName}</p>
+              <p className="fs-3 mb-0">{versionName}</p>
             </div>
             <ul>
               <ChartNode
