@@ -32,12 +32,10 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
   });
 
   const [checklist, setCheckList] = useState<IObject[]>([]);
-  const [checkElist, setCheckEList] = useState<IObject[]>([]);
 
   useEffect(() => {
     CoreService.getByMetaTypeList(META_TYPE.CHECKLIST).then((resp) => {
       setCheckList(resp?.body);
-      setCheckEList(resp?.body);
     });
   }, []);
 
@@ -97,7 +95,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                         ?.message as string
                     }
                     autoSuggestionKey="titleEn"
-                    suggestionOptions={checkElist || []}
+                    suggestionOptions={checklist || []}
                     suggestionTextKey="titleEn"
                   />
                   {isNotEnamCommittee && (

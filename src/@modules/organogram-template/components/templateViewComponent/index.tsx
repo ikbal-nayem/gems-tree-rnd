@@ -67,6 +67,7 @@ const TemplateViewComponent = ({
   const [langEn, setLangEn] = useState<boolean>(true);
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
+  const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -101,52 +102,15 @@ const TemplateViewComponent = ({
       .finally(() => setApproveLoading(false));
   };
 
-  // useEffect(() => {
-  //   setPDFGenerating(true);
-  //   // setTimeout(() => {
-  //   //   downloadPDF();
-  //   // }, 1500);
-  //   setTimeout(() => {
-  //     setPDFGenerating(false);
-  //   }, 3500);
-  // }, [langEn]);
-
-  // const dataToPDF = useRef<any>();
-
-  // const downloadPDF = () => {
-  //   const input: any = pdfRef.current;
-  //   html2canvas(input, {
-  //     scale: 1.5,
-  //   }).then((canvas) => {
-  //     const imgData = canvas.toDataURL("image/png");
-  //     const pdf = new jsPDF("l", "px", [canvas.width, canvas.height], true);
-  //     const pdfWidth = pdf.internal.pageSize.getWidth();
-  //     const pdfHeight = pdf.internal.pageSize.getHeight();
-  //     const imageWidth = canvas.width;
-  //     const imageHeight = canvas.height;
-  //     const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
-  //     const imageX = (pdfWidth - imageWidth * ratio) / 2;
-  //     const imageY = 30;
-  //     pdf.addImage(
-  //       imgData,
-  //       "PNG",
-  //       imageX,
-  //       imageY,
-  //       imageWidth * ratio,
-  //       imageHeight * ratio
-  //     );
-  //     dataToPDF.current = pdf;
-  //   });
-  // };
-
   const captureAndConvertToPDF = async (isPrint = false) => {
+    setPDFLoading(true);
     // Get references to the HTML elements you want to capture
     const elementsToCapture = document.getElementsByClassName("pdfGenarator");
 
     // Create a new instance of jsPDF
     const pdf = new jsPDF("l", "px", [
-      elementsToCapture[0].clientWidth,
-      elementsToCapture[0].clientHeight + 100,
+      elementsToCapture[0]?.clientWidth,
+      elementsToCapture[0]?.clientHeight + 100,
     ]);
 
     // Loop through the elements and capture each one
@@ -160,8 +124,11 @@ const TemplateViewComponent = ({
           clone.querySelector(".animate__fadeIn").style.animation = "none";
           clone.querySelector(".treeTitle").style.overflow = "visible";
           clone.querySelector(".treeTitle").style.height = "fit-content";
-          clone.querySelector(".dataBlock").style.overflow = "visible";
+          clone.querySelector(".dataBlock").style.overflow = "auto";
           clone.querySelector(".dataBlock").style.height = "fit-content";
+          clone.querySelector(".dataBlock").style.padding = "20px";
+          clone.querySelector(".dataBlock").style.paddingBottom = "30px";
+          clone.querySelector(".orgchart").style.paddingBottom = "15px";
         },
       });
 
@@ -170,21 +137,17 @@ const TemplateViewComponent = ({
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      const imageWidth = i === 1 ? canvas.width + 1000 : canvas.width;
-      // const imageWidth = canvas.width;
+      const imageWidth = i === 1 ? canvas.width + 100 : canvas.width;
       const imageHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
-      const imageX = (pdfWidth - imageWidth * ratio) / 2;
-      const imageY = 30;
       pdf.addImage(
         imageData,
         "PNG",
-        imageX,
-        imageY,
+        0,
+        0,
         imageWidth * ratio,
         imageHeight * ratio
       );
-      // pdf.addImage(imageData, 'PNG', 10, 10, 190, 0); // Adjust the position and size as needed
       if (i < elementsToCapture.length - 1) {
         pdf.addPage(); // Add a new page for each element except the last one
       }
@@ -198,6 +161,8 @@ const TemplateViewComponent = ({
 
     // Save or display the PDF
     else pdf.save("Organogram.pdf");
+
+    setPDFLoading(false);
   };
 
   return (
@@ -255,6 +220,7 @@ const TemplateViewComponent = ({
           langEn={langEn}
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
+          isPDFLoading={isPDFLoading}
           templateName={
             (organogramView
               ? langEn
@@ -279,7 +245,8 @@ const TemplateViewComponent = ({
               treeData={treeData}
               langEn={langEn}
               onCapturePDF={captureAndConvertToPDF}
-              pdfClass="pdfGenarator"
+              pdfClass=""
+              isPDFLoading={isPDFLoading}
               templateName={
                 (organogramView
                   ? langEn
@@ -295,10 +262,10 @@ const TemplateViewComponent = ({
       </div>
       {/* {isPDFGenerating ? ( */}
       <div
-        className="row pdfGenarator dataBlock"
-        style={{ overflow: "hidden", height: 0 }}
+        className="d-flex pdfGenarator dataBlock"
+        style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
-        <div className="col-4">
+        <div className="pe-3" style={{ minWidth: "700px" }}>
           <ActivitiesList
             data={updateData?.mainActivitiesDtoList || []}
             langEn={langEn}
@@ -311,7 +278,7 @@ const TemplateViewComponent = ({
             />
           </div>
         </div>
-        <div className="col-4">
+        <div className="pe-4" style={{ minWidth: "700px" }}>
           <EquipmentsList
             data={updateData?.miscellaneousPointDtoList || []}
             inventoryData={inventoryData || []}
@@ -324,7 +291,7 @@ const TemplateViewComponent = ({
             />
           </div>
         </div>
-        <div className="col-4">
+        <div className="" style={{ minWidth: "700px" }}>
           <div>
             <ManPowerList
               isLoading={false}

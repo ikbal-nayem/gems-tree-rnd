@@ -1,14 +1,9 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
-import { IconButton } from "@gems/components";
+import { Button, Icon, IconButton } from "@gems/components";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import MyNode from "./my-node";
 import NodeDetails from "./node-details";
-
-// interface IOrganizationTemplateTree {
-//   treeData: IObject;
-//   langEn: boolean;
-// }
 
 const OrganizationTemplateTree = ({
   treeData,
@@ -16,6 +11,7 @@ const OrganizationTemplateTree = ({
   onCapturePDF,
   pdfClass,
   templateName,
+  isPDFLoading,
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -103,13 +99,21 @@ const OrganizationTemplateTree = ({
         />
       </div>
       <div className="position-absolute" style={{ top: 0, right: 20 }}>
-        <IconButton
-          iconName="download"
+        <Button
           color="info"
-          variant="fill"
+          className="rounded-circle px-3 py-3"
+          isDisabled={!isDownloadButton||isPDFLoading}
+          size="sm"
           onClick={onDownload}
-          isDisabled={!isDownloadButton}
-        />
+        >
+          {isPDFLoading ? (
+            <span
+              className={`spinner-border spinner-border-md align-middle`}
+            ></span>
+          ) : (
+            <Icon icon="download" className="" size={20} />
+          )}
+        </Button>
       </div>
     </div>
   );
