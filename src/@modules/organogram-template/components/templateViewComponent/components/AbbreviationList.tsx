@@ -22,8 +22,8 @@ const AbbreviationForm = ({ data, langEn }: IAbbreviationForm) => {
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABEL.ABBREVIATIONS}</h4>
       </div>
-      <Separator className="mt-1 mb-2" />
-      <div className="mt-1">
+      <Separator className="mt-1 mb-1" />
+      <div>
         {data?.map((item, i) => {
           return (
             <p className="mb-0 fs-7" key={i}>

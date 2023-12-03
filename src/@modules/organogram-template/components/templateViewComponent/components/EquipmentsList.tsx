@@ -16,7 +16,7 @@ const EquipmentsForm = ({ data, inventoryData, langEn }: IEquipmentsForm) => {
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABEL.EQUIPMENTS}</h4>
       </div>
-      <Separator className="mt-1 mb-2" />
+      <Separator className="mt-1 mb-1" />
       <div className="row">
         {isNotEmptyList(inventoryData) &&
           inventoryData?.map((item, i) => {
@@ -52,7 +52,7 @@ const EquipmentsForm = ({ data, inventoryData, langEn }: IEquipmentsForm) => {
       )}
 
       <div>
-        <ol type="a" className={langEn ? "" : "bn_ol"}>
+        <ol type="a" className={langEn ? "mb-0" : "bn_ol mb-0"}>
           {data?.length > 0 &&
             data?.map((item, i) => {
               return <li key={i}>{langEn ? item?.titleEn : item?.titleBn}</li>;

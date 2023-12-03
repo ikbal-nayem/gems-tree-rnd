@@ -6,7 +6,6 @@ import {
   Label,
   Modal,
   ModalBody,
-  Switch,
   toast,
 } from "@gems/components";
 import {
@@ -39,6 +38,7 @@ import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import AttachmentList from "./components/AttachmentList";
 import AttachedOrgList from "./components/AttachedOrgList";
+import Switch from "@components/Switch";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -210,7 +210,7 @@ const TemplateViewComponent = ({
               <Switch
                 label={langEn ? "বাংলা" : "English"}
                 onChange={switchLang}
-                className="gap-1 fw-bold text-gray-800 cursor-pointer"
+                className="gap-1 fw-bold text-gray-800"
                 noMargin
               />
             </div>

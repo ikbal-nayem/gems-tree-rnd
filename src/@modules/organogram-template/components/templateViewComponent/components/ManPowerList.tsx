@@ -2,7 +2,6 @@ import { LABELS } from "@constants/common.constant";
 import {
   ContentPreloader,
   ITableHeadColumn,
-  NoData,
   Separator,
   Table,
   TableCell,
@@ -98,8 +97,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
                 <div className="d-flex justify-content-end fw-bold fs-6">
                   {langEn
                     ? data?.totalManpower
-                    : numEnToBn(data?.totalManpower) ||
-                      COMMON_LABEL.NOT_ASSIGN}
+                    : numEnToBn(data?.totalManpower) || COMMON_LABEL.NOT_ASSIGN}
                 </div>
               </TableCell>
             </TableRow>
@@ -110,11 +108,7 @@ const ManPowerList: FC<TableProps> = ({ data, isLoading, langEn }) => {
         </Table>
       ) : isLoading ? (
         <ContentPreloader />
-      ) : (
-        <NoData
-          details={COMMON_LABEL.NOT_ASSIGN}
-        />
-      )}
+      ) : null}
     </div>
   );
 };
