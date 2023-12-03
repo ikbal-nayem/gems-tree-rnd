@@ -14,7 +14,7 @@ export const OMSService = {
     ),
 
   templateCreate: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE+ "organogram-template/save", payload),
+    await axiosIns.post(OMS_SERVICE + "organogram-template/save", payload),
 
   templateClone: async (payload): Promise<any> =>
     await axiosIns.post(
@@ -63,8 +63,7 @@ export const OMSService = {
 
   templateUpdate: async (payload): Promise<any> =>
     await axiosIns.put(
-      OMS_SERVICE +
-        "organogram-template/update-organogram-template-by-id",
+      OMS_SERVICE + "organogram-template/update-organogram-template-by-id",
       payload
     ),
   updateTemplateStatusById: async (templateId, status): Promise<any> =>
@@ -98,6 +97,11 @@ export const OMSService = {
   FETCH: {
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-post/get-list", payload),
+
+    organogramTitle: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-template/get-organogram-title"
+      ),
   },
 
   SAVE: {

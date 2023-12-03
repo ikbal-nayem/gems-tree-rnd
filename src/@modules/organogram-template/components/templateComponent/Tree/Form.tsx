@@ -1,10 +1,10 @@
+import { Input } from "@components/Input";
 import { ERR_MSG, LABELS } from "@constants/common.constant";
 import {
   Autocomplete,
   Button,
   Checkbox,
   IconButton,
-  Input,
   Label,
   Modal,
   ModalBody,
@@ -18,6 +18,7 @@ import {
   numEnToBn,
   numericCheck,
 } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
@@ -73,6 +74,18 @@ const NodeForm = ({
     control,
     name: "manpowerList",
   });
+
+  const [titleList, setTitleList] = useState<IObject[]>([]);
+
+  const onTitleChange = (title, lang: "en" | "bn") => {
+    // titleList?.map()
+  }
+
+  useEffect(() => {
+    OMSService.FETCH.organogramTitle().then((resp) => {
+      setTitleList(resp?.body);
+    });
+  }, []);
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
@@ -172,9 +185,13 @@ const NodeForm = ({
                 registerProperty={{
                   ...register("titleEn", {
                     required: !isNotEnamCommittee,
+                    onChange: (e) => onTitleChange(e.target.value, "en"),
                     validate: enCheck,
                   }),
                 }}
+                autoSuggestionKey="titleEn"
+                suggestionTextKey="titleEn"
+                suggestionOptions={titleList || []}
                 isError={!!errors?.titleEn}
                 errorMessage={errors?.titleEn?.message as string}
               />
@@ -307,7 +324,9 @@ const NodeForm = ({
                       isRequired=" "
                       control={control}
                       options={postList || []}
-                      getOptionLabel={(op) => isNotEnamCommittee ? op?.nameBn : op?.nameEn}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                      }
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.organizationPost`}
                       // onChange={onDataChange}
