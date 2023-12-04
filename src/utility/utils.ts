@@ -100,3 +100,12 @@ export const getPermittedRouteList = (routeList) => {
 };
 
 export const isNotEmptyList = (list) => list && list?.length > 0;
+
+export const numOfNewLines = (val) => (val.match(/\n/g) || []).length;
+
+export const numOfTabs = (val) => {
+  if (notNullOrUndefined(val))
+    return val.length - val.replace("    ", "").length;
+};
+
+export const breakNewLines = (val) => val.split("\n");
