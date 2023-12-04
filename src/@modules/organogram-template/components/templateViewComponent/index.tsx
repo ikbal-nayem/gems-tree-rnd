@@ -39,6 +39,7 @@ import { useNavigate } from "react-router-dom";
 import AttachmentList from "./components/AttachmentList";
 import AttachedOrgList from "./components/AttachedOrgList";
 import Switch from "@components/Switch";
+import NotesList from "./components/NotesList";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -121,7 +122,8 @@ const TemplateViewComponent = ({
       const canvas = await html2canvas(element, {
         scale: 2.5,
         onclone: (clone: any) => {
-          clone.querySelector(".animate__fadeIn").style.animation = "none";
+          clone.querySelector(".animate__fadeIn") &&
+            (clone.querySelector(".animate__fadeIn").style.animation = "none");
           clone.querySelector(".treeTitle").style.overflow = "visible";
           clone.querySelector(".treeTitle").style.height = "fit-content";
           clone.querySelector(".dataBlock").style.overflow = "auto";
@@ -254,7 +256,7 @@ const TemplateViewComponent = ({
           </ModalBody>
         </Modal>
       </div>
-      {/* {isPDFGenerating ? ( */}
+      {/* For pdf generating start */}
       <div
         className="d-flex pdfGenarator dataBlock"
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
@@ -298,6 +300,10 @@ const TemplateViewComponent = ({
             data={updateData?.abbreviationDtoList || []}
             langEn={langEn}
           />
+          <NotesList
+            data={updateData?.organogramNoteDtoList || []}
+            langEn={langEn}
+          />
         </div>
         <div className="" style={{ minWidth: "700px" }}>
           <div>
@@ -309,7 +315,7 @@ const TemplateViewComponent = ({
           </div>
         </div>
       </div>
-      {/* ) : ( */}
+      {/* Pdf generating end */}
       <div className="row">
         <div className="col-md-6">
           <ActivitiesList
@@ -336,6 +342,12 @@ const TemplateViewComponent = ({
           <div className="mt-3">
             <AttachmentList
               data={updateData?.attachmentDtoList || []}
+              langEn={langEn}
+            />
+          </div>
+          <div className="mt-3">
+            <NotesList
+              data={updateData?.organogramNoteDtoList || []}
               langEn={langEn}
             />
           </div>

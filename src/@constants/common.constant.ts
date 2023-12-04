@@ -51,7 +51,7 @@ export const COMMON_LABELS = {
     CANCEL: "Cancel",
     SAVE: "Save",
     SEND_BACK: "Send Back",
-    SEND_BACK_TO_REVIEW:" Send Back To Review",
+    SEND_BACK_TO_REVIEW: " Send Back To Review",
     CLOSE: "Close",
     CONFIRM: "Confirm",
 
@@ -86,6 +86,7 @@ export const LABELS = {
     ATTACHMENT: "Attachment",
     SUM_OF_MANPOWER: "Summary of Manpower",
     ORGANIZATION: "Organization",
+    NOTES: "Notes",
   },
 
   BN: {
@@ -106,6 +107,7 @@ export const LABELS = {
     ATTACHMENT: "সংযুক্তি",
     SUM_OF_MANPOWER: "জনবল",
     ORGANIZATION: "প্রতিষ্ঠান",
+    NOTES: "মন্তব্য",
   },
 };
 
