@@ -1,6 +1,8 @@
 import { LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import "../style.scss";
+import { breakNewLines, numOfNewLines, numOfTabs } from "utility/utils";
+import TextBlock from "@components/TextBlock";
 
 interface IAllocationOfBusinessForm {
   data: any;
@@ -23,10 +25,17 @@ const AllocationOfBusinessForm = ({
           {data?.map((item, i) => {
             return (
               <li key={i}>
-                &nbsp;&nbsp;
-                {langEn
-                  ? item?.businessOfAllocationEn
-                  : item?.businessOfAllocationBn}
+                {langEn ? (
+                  numOfNewLines(item?.businessOfAllocationEn) < 1 ? (
+                    item?.businessOfAllocationEn
+                  ) : (
+                    <TextBlock value={item?.businessOfAllocationEn} />
+                  )
+                ) : numOfNewLines(item?.businessOfAllocationBn) < 1 ? (
+                  item?.businessOfAllocationBn
+                ) : (
+                  <TextBlock value={item?.businessOfAllocationBn} />
+                )}
               </li>
             );
           })}

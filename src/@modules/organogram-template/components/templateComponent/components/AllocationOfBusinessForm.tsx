@@ -1,6 +1,11 @@
 import { LABELS } from "@constants/common.constant";
-import { IconButton, Input, Label, Separator } from "@gems/components";
-import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import {
+  IconButton,
+  Label,
+  Separator,
+  Textarea,
+} from "@gems/components";
+import { bnCheck, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
@@ -47,7 +52,7 @@ const AllocationOfBusinessForm = ({
               <div className="row w-100">
                 {isNotEnamCommittee && (
                   <div className="col-xl-6 col-12">
-                    <Input
+                    {/* <Input
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
                       isRequired
@@ -72,6 +77,38 @@ const AllocationOfBusinessForm = ({
                         !!errors?.businessAllocationDtoList?.[idx]
                           ?.businessOfAllocationBn
                       }
+                    /> */}
+
+                    <Textarea
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      noMargin
+                      isRequired
+                      registerProperty={{
+                        ...register(
+                          `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
+                          {
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `businessAllocationDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                            },
+                            required: " ",
+                            validate: bnCheck,
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.businessAllocationDtoList?.[idx]
+                          ?.businessOfAllocationBn
+                      }
+                      errorMessage={
+                        errors?.businessAllocationDtoList?.[idx]?.businessOfAllocationBn
+                          ?.message as string
+                      }
                     />
                   </div>
                 )}
@@ -82,7 +119,7 @@ const AllocationOfBusinessForm = ({
                       : "col-12 mt-1 mt-xl-0"
                   }
                 >
-                  <Input
+                  {/* <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
                     isRequired={!isNotEnamCommittee}
@@ -114,6 +151,44 @@ const AllocationOfBusinessForm = ({
                     isError={
                       !!errors?.businessAllocationDtoList?.[idx]
                         ?.businessOfAllocationEn
+                    }
+                  /> */}
+                  <Textarea
+                    label={idx < 1 ? labelEn : ""}
+                    placeholder={labelEn + " লিখুন"}
+                    noMargin
+                    isRequired={!isNotEnamCommittee}
+                    registerProperty={{
+                      ...register(
+                        `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
+                        {
+                          onChange: (e) => {
+                            if (!isNotEnamCommittee) {
+                              setValue(
+                                `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
+                                e.target.value
+                              );
+                            }
+
+                            if (notNullOrUndefined(e.target.value)) {
+                              setValue(
+                                `businessAllocationDtoList.${idx}.displayOrder`,
+                                idx + 1
+                              );
+                            }
+                          },
+                          required: !isNotEnamCommittee,
+                          // validate: enCheck,
+                        }
+                      ),
+                    }}
+                    isError={
+                      !!errors?.businessAllocationDtoList?.[idx]
+                        ?.businessOfAllocationEn
+                    }
+                    errorMessage={
+                      errors?.businessAllocationDtoList?.[idx]?.businessOfAllocationEn
+                        ?.message as string
                     }
                   />
                 </div>
