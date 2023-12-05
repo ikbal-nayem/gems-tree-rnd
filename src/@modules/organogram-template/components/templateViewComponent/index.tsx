@@ -217,7 +217,7 @@ const TemplateViewComponent = ({
             </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
-                <span className="mb-0 fw-bold me-1">{LABEL.VERSION}: </span>
+                <span className="mb-0 fw-bold me-1">{LABEL.ORGANOGRAM_DATE}: </span>
                 {versionName || COMMON_LABELS.NOT_ASSIGN}
               </Label>
             </div>
