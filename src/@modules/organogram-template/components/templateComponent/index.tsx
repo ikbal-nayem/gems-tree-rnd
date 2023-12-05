@@ -24,6 +24,7 @@ import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import Organizations from "./components/organization";
 import AttachmentForm from "./components/AttachmentForm";
+import NotesForm from "./components/NotesForm";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -61,6 +62,7 @@ const TemplateComponent = ({
       attachmentDtoList: [],
       inventoryDtoList: [],
       miscellaneousPointDtoList: [],
+      organogramNoteDtoList: [],
     },
   });
   const {
@@ -101,6 +103,7 @@ const TemplateComponent = ({
         inventoryDtoList: updateData?.inventoryDtoList,
         templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
+        organogramNoteDtoList: updateData?.organogramNoteDtoList,
       });
     }
   }, [updateData]);
@@ -349,6 +352,9 @@ const TemplateComponent = ({
               formProps={formProps}
               isNotEnamCommittee={isNotEnamCommittee}
             />
+          </div>
+          <div className="col-md-6 mt-3">
+            <NotesForm formProps={formProps} />
           </div>
         </div>
         <div className="d-flex gap-3 justify-content-center mt-5">
