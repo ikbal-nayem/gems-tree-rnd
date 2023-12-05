@@ -95,7 +95,7 @@ const TemplateComponent = ({
         isEnamCommittee: updateData?.isEnamCommittee,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
-        versionDate: updateData?.versionDate,
+        organogramDate: updateData?.organogramDate,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
@@ -192,14 +192,14 @@ const TemplateComponent = ({
     setIsNotEnamCommittee(!checked);
     const enamApprovalDate = new Date("1982-12-26");
     const hasChosenDate = notNullOrUndefined(getValues("chosenDate"));
-    if (checked) setValue("versionDate", enamApprovalDate);
+    if (checked) setValue("organogramDate", enamApprovalDate);
     else {
       if (hasChosenDate) {
         const chosenDate = getValues("chosenDate");
-        setValue("versionDate", new Date(chosenDate));
+        setValue("organogramDate", new Date(chosenDate));
       } else {
-        if (notNullOrUndefined(updateData?.versionDate)) {
-          setValue("versionDate", new Date(updateData?.versionDate));
+        if (notNullOrUndefined(updateData?.organogramDate)) {
+          setValue("organogramDate", new Date(updateData?.organogramDate));
         }
       }
     }
@@ -271,8 +271,8 @@ const TemplateComponent = ({
           {/* {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
                 <Input
-                  label="ভার্শন (বাংলা)"
-                  placeholder="বাংলায় ভার্শন লিখুন"
+                  label="অর্গানোগ্রাম তারিখ (বাংলা)"
+                  placeholder="বাংলায় অর্গানোগ্রাম তারিখ লিখুন"
                   isRequired
                   registerProperty={{
                     ...register("versionBn", {
@@ -286,8 +286,8 @@ const TemplateComponent = ({
             )} */}
           {/* <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন (ইংরেজি)"
-                placeholder="ইংরেজিতে ভার্শন লিখুন"
+                label="অর্গানোগ্রাম তারিখ (ইংরেজি)"
+                placeholder="ইংরেজিতে অর্গানোগ্রাম তারিখ লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("versionEn", {
@@ -301,14 +301,14 @@ const TemplateComponent = ({
             </div> */}
           <div className="col-md-6 col-12">
             <DateInput
-              label="ভার্শন"
-              isRequired="ভার্শন লিখুন"
-              name="versionDate"
+              label="অর্গানোগ্রাম তারিখ"
+              isRequired="অর্গানোগ্রাম তারিখ লিখুন"
+              name="organogramDate"
               control={control}
               onChange={(e) => setValue("chosenDate", e.value)}
               blockFutureDate
-              isError={!!errors?.versionDate}
-              errorMessage={errors?.versionDate?.message as string}
+              isError={!!errors?.organogramDate}
+              errorMessage={errors?.organogramDate?.message as string}
             />
           </div>
         </div>

@@ -27,9 +27,11 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Filter from "./Filter";
-import Form from "./Form";
+import UpdateForm from "./UpdateForm";
 import Table from "./Table";
 import { MENU } from "@constants/menu-titles.constant";
+import { useAuth } from "@context/Auth";
+import CreateForm from "./CreateForm";
 
 type IOptions = {
   orgList: IMetaKeyResponse[];
@@ -37,7 +39,6 @@ type IOptions = {
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
   gradeList: IMetaKeyResponse[];
-  organogramVersionList: IMetaKeyResponse[];
 };
 
 const initPayload = {
@@ -50,7 +51,8 @@ const initPayload = {
 };
 
 const PostConfig = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState<boolean>(false);
+  const [isUpdateDrawerOpen, setIsUpdateDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
@@ -70,6 +72,8 @@ const PostConfig = () => {
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
+  const { currentUser } = useAuth();
+  const [userOrg, setUserOrg] = useState<any>(currentUser?.organization);
 
   useEffect(() => {
     const req1 = OMSService.getOrganizationList(initPayload);
@@ -77,17 +81,15 @@ const PostConfig = () => {
     const req3 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
     const req4 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
     const req5 = CoreService.getGrades();
-    const req6 = CoreService.getByMetaTypeList("ORGANOGRAM");
 
-    Promise.all([req1, req2, req3, req4, req5, req6])
-      .then(([res1, res2, res3, res4, res5, res6]) => {
+    Promise.all([req1, req2, req3, req4, req5])
+      .then(([res1, res2, res3, res4, res5]) => {
         setOptions({
           orgList: res1?.body,
           postList: res2?.body,
           serviceList: res3?.body,
           cadreList: res4?.body,
           gradeList: res5?.body,
-          organogramVersionList: res6?.body,
         });
       })
       .finally(() => setIsLoading(false));
@@ -149,13 +151,14 @@ const PostConfig = () => {
   };
 
   const onDrawerClose = () => {
-    setIsDrawerOpen(false);
+    setIsCreateDrawerOpen(false);
+    setIsUpdateDrawerOpen(false);
     setUpdateData({});
   };
 
   const handleUpdate = (data: any) => {
     setUpdateData(data);
-    setIsDrawerOpen(true);
+    setIsUpdateDrawerOpen(true);
   };
 
   const handleDelete = (data: any) => {
@@ -188,14 +191,27 @@ const PostConfig = () => {
 
   const onSubmit = (data) => {
     topProgress.show();
-    const service = data?.id
-      ? OMSService.UPDATE.orgPostConfig
-      : OMSService.SAVE.orgPostConfig;
-    service(data)
+    OMSService.SAVE.orgPostConfig(data)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
-        setIsDrawerOpen(false);
+        setIsCreateDrawerOpen(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => {
+        setIsSubmitLoading(false);
+        topProgress.hide();
+      });
+  };
+
+  const onUpdate = (data) => {
+    topProgress.show();
+    OMSService.UPDATE.orgPostConfig(data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsUpdateDrawerOpen(false);
         setUpdateData({});
       })
       .catch((error) => toast.error(error?.message))
@@ -251,7 +267,7 @@ const PostConfig = () => {
     <>
       <PageTitle>{MENU.BN.POST_CONFIG}</PageTitle>
       <PageToolbarRight>
-        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
+        <Button color="primary" onClick={() => setIsCreateDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
       </PageToolbarRight>
@@ -292,11 +308,18 @@ const PostConfig = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        <Form
-          isOpen={isDrawerOpen}
+        <CreateForm
+          isOpen={isCreateDrawerOpen}
+          onClose={onDrawerClose}
+          onSubmit={onSubmit}
+          options={options}
+          submitLoading={isSubmitLoading}
+        />
+        <UpdateForm
+          isOpen={isUpdateDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
-          onSubmit={onSubmit}
+          onSubmit={onUpdate}
           options={options}
           submitLoading={isSubmitLoading}
         />

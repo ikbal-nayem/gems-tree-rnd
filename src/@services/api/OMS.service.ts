@@ -102,6 +102,11 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organogram-template/get-organogram-title"
       ),
+
+    childOrgByLoggedUser: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-child-org-by-logged-user"
+      ),
   },
 
   SAVE: {

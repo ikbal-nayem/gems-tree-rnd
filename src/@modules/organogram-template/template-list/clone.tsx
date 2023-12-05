@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  Checkbox,
+  DateInput,
   Input,
   Modal,
   ModalBody,
   ModalFooter,
+  Separator,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS } from "@gems/utils";
+import { COMMON_LABELS, notNullOrUndefined } from "@gems/utils";
 import { OMSService } from "../../../@services/api/OMS.service";
 import { useForm } from "react-hook-form";
 import { bnCheck, enCheck } from "utility/checkValidation";
 
 interface IForm {
-  templateId: any;
+  template: any;
   isOpen: boolean;
   onClose: () => void;
   getDataList: () => void;
 }
 
-const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
+const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
     useState<boolean>(false);
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
+  const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
 
   const {
     register,
@@ -32,6 +36,9 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
     reset,
     setError,
     clearErrors,
+    control,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<any>();
 
@@ -45,11 +52,11 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
 
     setIsSubmitLoading(true);
     const payload = {
+      cloneIsEnamCommittee: cloneData.isEnamCommittee,
       cloneTitleBn: cloneData.titleBn,
       cloneTitleEn: cloneData.titleEn,
-      cloneVersionBn: cloneData.versionBn,
-      cloneVersionEn: cloneData.versionEn,
-      refTemplateId: templateId,
+      cloneOrganogramDate: cloneData.organogramDate,
+      refTemplateId: template?.id,
     };
     OMSService.templateClone(payload)
       .then((res) => toast.success(res?.message))
@@ -85,9 +92,24 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
       .catch((e) => console.log(e.message));
   };
 
+  const onIsEnamCommitteeChange = (checked: boolean) => {
+    setIsNotEnamCommittee(!checked);
+    const enamApprovalDate = new Date("1982-12-26");
+    if (checked) setValue("organogramDate", enamApprovalDate);
+    else if (notNullOrUndefined(getValues("chosenDate"))) {
+      const chosenDate = getValues("chosenDate");
+      setValue("organogramDate", new Date(chosenDate));
+    }
+  };
+
+  const MODAL_TITLE =
+    (template?.titleBn ? "'" + template?.titleBn + "' এর " : "") +
+    "ডুপ্লিকেট টেমপ্লেটের তথ্য প্রদান করুন";
+
   return (
     <Modal
-      title="ডুপ্লিকেট টেমপ্লেটের তথ্য প্রদান করুন"
+      title={MODAL_TITLE}
+      // title="ডুপ্লিকেট টেমপ্লেটের তথ্য প্রদান করুন"
       isOpen={isOpen}
       handleClose={onClose}
       holdOn
@@ -96,30 +118,47 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
           <div className="row">
-            <div className="col-md-6 col-12">
-              <Input
-                label="শিরোনাম (বাংলা)"
-                placeholder="বাংলায় শিরোনাম লিখুন"
-                isRequired
+            <div className="col-6">
+              <Checkbox
+                label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
+                labelClass="fw-bold"
+                noMargin
                 registerProperty={{
-                  ...register("titleBn", {
-                    required: "শিরোনাম বাংলা লিখুন",
-                    onChange: (e) => duplicateTitleCheck(e.target.value, false),
-                    validate: bnCheck,
+                  ...register("isEnamCommittee", {
+                    onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
                   }),
                 }}
-                isError={!!errors?.titleBn}
-                errorMessage={errors?.titleBn?.message as string}
               />
             </div>
+            <div className="col-6"></div>
+            <Separator />
+            {isNotEnamCommittee && (
+              <div className="col-md-6 col-12">
+                <Input
+                  label="শিরোনাম (বাংলা)"
+                  placeholder="বাংলায় শিরোনাম লিখুন"
+                  isRequired
+                  registerProperty={{
+                    ...register("titleBn", {
+                      required: " ",
+                      onChange: (e) =>
+                        duplicateTitleCheck(e.target.value, false),
+                      validate: bnCheck,
+                    }),
+                  }}
+                  isError={!!errors?.titleBn}
+                  errorMessage={errors?.titleBn?.message as string}
+                />
+              </div>
+            )}
             <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম (ইংরেজি)"
                 placeholder="ইংরেজিতে শিরোনাম লিখুন"
-                isRequired
+                isRequired={!isNotEnamCommittee}
                 registerProperty={{
                   ...register("titleEn", {
-                    required: "শিরোনাম ইংরেজি লিখুন",
+                    required: !isNotEnamCommittee,
                     onChange: (e) => duplicateTitleCheck(e.target.value, true),
                     validate: enCheck,
                   }),
@@ -129,9 +168,21 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
               />
             </div>
             <div className="col-md-6 col-12">
+              <DateInput
+                label="অর্গানোগ্রাম তারিখ"
+                isRequired=" "
+                name="organogramDate"
+                control={control}
+                onChange={(e) => setValue("chosenDate", e.value)}
+                blockFutureDate
+                isError={!!errors?.organogramDate}
+                errorMessage={errors?.organogramDate?.message as string}
+              />
+            </div>
+            {/* <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন (বাংলা)"
-                placeholder="বাংলায় ভার্শন লিখুন"
+                label="অর্গানোগ্রাম তারিখ (বাংলা)"
+                placeholder="বাংলায় অর্গানোগ্রাম তারিখ লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("versionBn", {
@@ -145,8 +196,8 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
             </div>
             <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন (ইংরেজি)"
-                placeholder="ইংরেজিতে ভার্শন লিখুন"
+                label="অর্গানোগ্রাম তারিখ (ইংরেজি)"
+                placeholder="ইংরেজিতে অর্গানোগ্রাম তারিখ লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("versionEn", {
@@ -157,7 +208,7 @@ const TemplateClone = ({ templateId, isOpen, onClose, getDataList }: IForm) => {
                 isError={!!errors?.versionEn}
                 errorMessage={errors?.versionEn?.message as string}
               />
-            </div>
+            </div> */}
           </div>
         </ModalBody>
 

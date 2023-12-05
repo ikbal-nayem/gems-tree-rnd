@@ -197,15 +197,15 @@ const TemplateViewComponent = ({
   let versionName = updateData?.isEnamCommittee
     ? "Enam Committe Report (26/12/1982)"
     : langEn
-    ? updateData?.versionDate
+    ? updateData?.organogramDate
       ? generateDateFormat(
-          updateData?.versionDate,
+          updateData?.organogramDate,
           DATE_PATTERN.GOVT_STANDARD,
           "en"
         ) + " Report"
       : ""
-    : updateData?.versionDate
-    ? generateDateFormat(updateData?.versionDate, DATE_PATTERN.GOVT_STANDARD) +
+    : updateData?.organogramDate
+    ? generateDateFormat(updateData?.organogramDate, DATE_PATTERN.GOVT_STANDARD) +
       " রিপোর্ট"
     : "";
 
