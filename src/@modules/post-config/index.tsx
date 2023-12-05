@@ -27,9 +27,11 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Filter from "./Filter";
-import Form from "./Form";
+import UpdateForm from "./UpdateForm";
 import Table from "./Table";
 import { MENU } from "@constants/menu-titles.constant";
+import { useAuth } from "@context/Auth";
+import CreateForm from "./CreateForm";
 
 type IOptions = {
   orgList: IMetaKeyResponse[];
@@ -50,7 +52,8 @@ const initPayload = {
 };
 
 const PostConfig = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState<boolean>(false);
+  const [isUpdateDrawerOpen, setIsUpdateDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
@@ -70,6 +73,8 @@ const PostConfig = () => {
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
+  const { currentUser } = useAuth();
+  const [userOrg, setUserOrg] = useState<any>(currentUser?.organization);
 
   useEffect(() => {
     const req1 = OMSService.getOrganizationList(initPayload);
@@ -149,13 +154,14 @@ const PostConfig = () => {
   };
 
   const onDrawerClose = () => {
-    setIsDrawerOpen(false);
+    setIsCreateDrawerOpen(false);
+    setIsUpdateDrawerOpen(false);
     setUpdateData({});
   };
 
   const handleUpdate = (data: any) => {
     setUpdateData(data);
-    setIsDrawerOpen(true);
+    setIsUpdateDrawerOpen(true);
   };
 
   const handleDelete = (data: any) => {
@@ -188,14 +194,27 @@ const PostConfig = () => {
 
   const onSubmit = (data) => {
     topProgress.show();
-    const service = data?.id
-      ? OMSService.UPDATE.orgPostConfig
-      : OMSService.SAVE.orgPostConfig;
-    service(data)
+    OMSService.SAVE.orgPostConfig(data)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
-        setIsDrawerOpen(false);
+        setIsCreateDrawerOpen(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => {
+        setIsSubmitLoading(false);
+        topProgress.hide();
+      });
+  };
+
+  const onUpdate = (data) => {
+    topProgress.show();
+    OMSService.UPDATE.orgPostConfig(data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsUpdateDrawerOpen(false);
         setUpdateData({});
       })
       .catch((error) => toast.error(error?.message))
@@ -251,7 +270,7 @@ const PostConfig = () => {
     <>
       <PageTitle>{MENU.BN.POST_CONFIG}</PageTitle>
       <PageToolbarRight>
-        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
+        <Button color="primary" onClick={() => setIsCreateDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
       </PageToolbarRight>
@@ -292,11 +311,18 @@ const PostConfig = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        <Form
-          isOpen={isDrawerOpen}
+        <CreateForm
+          isOpen={isCreateDrawerOpen}
+          onClose={onDrawerClose}
+          onSubmit={onSubmit}
+          options={options}
+          submitLoading={isSubmitLoading}
+        />
+        <UpdateForm
+          isOpen={isUpdateDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
-          onSubmit={onSubmit}
+          onSubmit={onUpdate}
           options={options}
           submitLoading={isSubmitLoading}
         />

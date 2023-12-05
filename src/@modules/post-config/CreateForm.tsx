@@ -1,0 +1,157 @@
+import { MENU } from "@constants/menu-titles.constant";
+import {
+  Autocomplete,
+  Button,
+  DateInput,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+} from "@gems/components";
+import { COMMON_LABELS, IMetaKeyResponse, isObjectNull } from "@gems/utils";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+type IOptions = {
+  orgList: IMetaKeyResponse[];
+  postList: IMetaKeyResponse[];
+  serviceList: IMetaKeyResponse[];
+  cadreList: IMetaKeyResponse[];
+  gradeList: IMetaKeyResponse[];
+  organogramVersionList: IMetaKeyResponse[];
+};
+
+interface IForm {
+  isOpen?: boolean;
+  onSubmit: (data) => void;
+  onClose: () => void;
+  options?: IOptions;
+  submitLoading?: boolean;
+}
+
+const CreateForm = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  options,
+  submitLoading,
+}: IForm) => {
+  const formProps = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    watch,
+    control,
+    setValue,
+  } = formProps;
+
+  useEffect(() => {
+    reset({});
+  }, [isOpen]);
+
+  return (
+    <Drawer
+      title={MENU.BN.POST_CONFIG + " " + COMMON_LABELS.SAVE}
+      isOpen={isOpen}
+      handleClose={onClose}
+      // className="w-md-50 w-xl-25"
+      className="w-50"
+    >
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <DrawerBody>
+          <div className="row">
+            <div className="col-12">
+              <Autocomplete
+                label="প্রতিষ্ঠান"
+                name="organization"
+                placeholder="প্রতিষ্ঠান বাছাই করুন"
+                isRequired="প্রতিষ্ঠান বাছাই করুন"
+                options={options?.orgList || []}
+                getOptionLabel={(t) => t.nameBn}
+                getOptionValue={(op) => op?.id}
+                onChange={(t) => setValue("organizationId", t?.id)}
+                control={control}
+                isError={!!errors?.organization}
+                errorMessage={errors?.organization?.message as string}
+              />
+            </div>
+            <div className="col-12">
+              <DateInput
+                label="অর্গানোগ্রাম তারিখ"
+                isRequired="অর্গানোগ্রাম তারিখ বাছাই করুন"
+                name="organogramDate"
+                control={control}
+                blockFutureDate
+                isError={!!errors?.organogramDate}
+                errorMessage={errors?.organogramDate?.message as string}
+              />
+            </div>
+            <div className="col-12">
+              <Autocomplete
+                label="সার্ভিস/ক্যাডারের ধরণ"
+                name="serviceTypeDto"
+                placeholder="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
+                isRequired="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
+                options={options?.serviceList || []}
+                getOptionLabel={(t) => t.titleBn}
+                getOptionValue={(op) => op?.metaKey}
+                onChange={(t) => setValue("serviceTypeKey", t?.metaKey)}
+                control={control}
+                isError={!!errors?.serviceTypeDto}
+                errorMessage={errors?.serviceTypeDto?.message as string}
+              />
+            </div>
+            <div className="col-12">
+              <Autocomplete
+                label="পদবি"
+                name="postDTO"
+                placeholder="পদবি বাছাই করুন"
+                isRequired="পদবি বাছাই করুন"
+                options={options?.postList || []}
+                getOptionLabel={(t) => t.nameBn}
+                getOptionValue={(op) => op?.id}
+                onChange={(t) => setValue("postId", t?.id)}
+                control={control}
+                isError={!!errors?.postDTO}
+                errorMessage={errors?.postDTO?.message as string}
+              />
+            </div>
+
+            <div className="col-12">
+              <Autocomplete
+                label="গ্রেড"
+                name="gradeDTO"
+                placeholder="গ্রেড বাছাই করুন"
+                isRequired="গ্রেড বাছাই করুন"
+                options={options?.gradeList || []}
+                getOptionLabel={(t) => t.nameBn}
+                getOptionValue={(op) => op?.id}
+                onChange={(t) => setValue("gradeId", t?.id)}
+                control={control}
+                isError={!!errors?.gradeDTO}
+                errorMessage={errors?.gradeDTO?.message as string}
+              />
+            </div>
+          </div>
+        </DrawerBody>
+
+        <DrawerFooter>
+          <div className="d-flex gap-3 justify-content-end">
+            <Button
+              color="secondary"
+              onClick={onClose}
+              isDisabled={submitLoading}
+            >
+              {COMMON_LABELS.CLOSE}
+            </Button>
+            <Button color="primary" type="submit" isLoading={submitLoading}>
+              {COMMON_LABELS.SAVE}
+            </Button>
+          </div>
+        </DrawerFooter>
+      </form>
+    </Drawer>
+  );
+};
+export default CreateForm;

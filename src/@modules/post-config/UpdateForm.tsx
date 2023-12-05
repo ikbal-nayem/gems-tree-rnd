@@ -2,6 +2,7 @@ import { MENU } from "@constants/menu-titles.constant";
 import {
   Autocomplete,
   Button,
+  DateInput,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -19,7 +20,7 @@ type IOptions = {
   organogramVersionList: IMetaKeyResponse[];
 };
 
-interface ITrainingOrgForm {
+interface IForm {
   isOpen?: boolean;
   onSubmit: (data) => void;
   onClose: () => void;
@@ -28,14 +29,14 @@ interface ITrainingOrgForm {
   submitLoading?: boolean;
 }
 
-const RankMinistryForm = ({
+const UpdateForm = ({
   isOpen,
   onClose,
   onSubmit,
   updateData,
   options,
   submitLoading,
-}: ITrainingOrgForm) => {
+}: IForm) => {
   const formProps = useForm();
   const {
     register,
@@ -57,14 +58,11 @@ const RankMinistryForm = ({
 
   return (
     <Drawer
-      title={
-        MENU.BN.POST_CONFIG +
-        " " +
-        (isObjectNull(updateData) ? COMMON_LABELS.SAVE : COMMON_LABELS.EDIT)
-      }
+      title={MENU.BN.POST_CONFIG + " " + COMMON_LABELS.EDIT}
       isOpen={isOpen}
       handleClose={onClose}
-      className="w-md-50 w-xl-25"
+      // className="w-md-50 w-xl-25"
+      className="w-50"
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
@@ -85,19 +83,29 @@ const RankMinistryForm = ({
               />
             </div>
             <div className="col-12">
-              <Autocomplete
-                label="পদবি"
-                name="postDTO"
-                placeholder="পদবি বাছাই করুন"
-                isRequired="পদবি বাছাই করুন"
-                options={options?.postList || []}
-                getOptionLabel={(t) => t.nameBn}
-                getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("postId", t?.id)}
+              <DateInput
+                label="অর্গানোগ্রাম তারিখ"
+                isRequired="অর্গানোগ্রাম তারিখ বাছাই করুন"
+                name="organogramDate"
                 control={control}
-                isError={!!errors?.postDTO}
-                errorMessage={errors?.postDTO?.message as string}
+                blockFutureDate
+                isError={!!errors?.organogramDate}
+                errorMessage={errors?.organogramDate?.message as string}
+                // onChange={(e) => setValue("chosenDate", e.value)}
               />
+              {/* <Autocomplete
+                label="অর্গানোগ্রাম ভার্সন"
+                name="organogramVersionDto"
+                placeholder="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+                isRequired="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+                options={options?.organogramVersionList || []}
+                getOptionLabel={(t) => t.titleBn}
+                getOptionValue={(op) => op?.metaKey}
+                onChange={(t) => setValue("organogramVersionKey", t?.metaKey)}
+                control={control}
+                isError={!!errors?.organogramVersionDto}
+                errorMessage={errors?.organogramVersionDto?.message as string}
+              /> */}
             </div>
             <div className="col-12">
               <Autocomplete
@@ -112,6 +120,21 @@ const RankMinistryForm = ({
                 control={control}
                 isError={!!errors?.serviceTypeDto}
                 errorMessage={errors?.serviceTypeDto?.message as string}
+              />
+            </div>
+            <div className="col-12">
+              <Autocomplete
+                label="পদবি"
+                name="postDTO"
+                placeholder="পদবি বাছাই করুন"
+                isRequired="পদবি বাছাই করুন"
+                options={options?.postList || []}
+                getOptionLabel={(t) => t.nameBn}
+                getOptionValue={(op) => op?.id}
+                onChange={(t) => setValue("postId", t?.id)}
+                control={control}
+                isError={!!errors?.postDTO}
+                errorMessage={errors?.postDTO?.message as string}
               />
             </div>
 
@@ -148,22 +171,6 @@ const RankMinistryForm = ({
                 errorMessage={errors?.gradeDTO?.message as string}
               />
             </div>
-
-            <div className="col-12">
-              <Autocomplete
-                label="অর্গানোগ্রাম ভার্সন"
-                name="organogramVersionDto"
-                placeholder="অর্গানোগ্রাম ভার্সন বাছাই করুন"
-                isRequired="অর্গানোগ্রাম ভার্সন বাছাই করুন"
-                options={options?.organogramVersionList || []}
-                getOptionLabel={(t) => t.titleBn}
-                getOptionValue={(op) => op?.metaKey}
-                onChange={(t) => setValue("organogramVersionKey", t?.metaKey)}
-                control={control}
-                isError={!!errors?.organogramVersionDto}
-                errorMessage={errors?.organogramVersionDto?.message as string}
-              />
-            </div>
           </div>
         </DrawerBody>
 
@@ -187,4 +194,4 @@ const RankMinistryForm = ({
     </Drawer>
   );
 };
-export default RankMinistryForm;
+export default UpdateForm;
