@@ -1,15 +1,23 @@
+import Drawer from "@components/Drawer";
+import DrawerBody from "@components/Drawer/DrawerBody";
+import DrawerFooter from "@components/Drawer/DrawerFooter";
 import { MENU } from "@constants/menu-titles.constant";
 import {
   Autocomplete,
   Button,
   DateInput,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
+  IconButton,
+  Label,
 } from "@gems/components";
-import { COMMON_LABELS, IMetaKeyResponse, isObjectNull } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  IMetaKeyResponse,
+  META_TYPE,
+  isObjectNull,
+  numEnToBn,
+} from "@gems/utils";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 type IOptions = {
   orgList: IMetaKeyResponse[];
@@ -25,6 +33,7 @@ interface IForm {
   onClose: () => void;
   options?: IOptions;
   submitLoading?: boolean;
+  userOrg: any;
 }
 
 const CreateForm = ({
@@ -33,6 +42,7 @@ const CreateForm = ({
   onSubmit,
   options,
   submitLoading,
+  userOrg,
 }: IForm) => {
   const formProps = useForm();
   const {
@@ -47,15 +57,25 @@ const CreateForm = ({
 
   useEffect(() => {
     reset({});
+    if (isOpen) postListAppend({});
   }, [isOpen]);
+
+  const {
+    fields: postListFields,
+    append: postListAppend,
+    remove: postListRemove,
+  } = useFieldArray({
+    control,
+    name: "postList",
+  });
 
   return (
     <Drawer
       title={MENU.BN.POST_CONFIG + " " + COMMON_LABELS.SAVE}
       isOpen={isOpen}
       handleClose={onClose}
-      // className="w-md-50 w-xl-25"
-      className="w-50"
+      widthXl="50"
+      widthMd="50"
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
@@ -69,6 +89,9 @@ const CreateForm = ({
                 options={options?.orgList || []}
                 getOptionLabel={(t) => t.nameBn}
                 getOptionValue={(op) => op?.id}
+                defaultValue={options?.orgList?.find(
+                  (op) => op?.id === userOrg?.id
+                )}
                 onChange={(t) => setValue("organizationId", t?.id)}
                 control={control}
                 isError={!!errors?.organization}
@@ -86,51 +109,110 @@ const CreateForm = ({
                 errorMessage={errors?.organogramDate?.message as string}
               />
             </div>
-            <div className="col-12">
-              <Autocomplete
-                label="সার্ভিস/ক্যাডারের ধরণ"
-                name="serviceTypeDto"
-                placeholder="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
-                isRequired="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
-                options={options?.serviceList || []}
-                getOptionLabel={(t) => t.titleBn}
-                getOptionValue={(op) => op?.metaKey}
-                onChange={(t) => setValue("serviceTypeKey", t?.metaKey)}
-                control={control}
-                isError={!!errors?.serviceTypeDto}
-                errorMessage={errors?.serviceTypeDto?.message as string}
-              />
-            </div>
-            <div className="col-12">
-              <Autocomplete
-                label="পদবি"
-                name="postDTO"
-                placeholder="পদবি বাছাই করুন"
-                isRequired="পদবি বাছাই করুন"
-                options={options?.postList || []}
-                getOptionLabel={(t) => t.nameBn}
-                getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("postId", t?.id)}
-                control={control}
-                isError={!!errors?.postDTO}
-                errorMessage={errors?.postDTO?.message as string}
-              />
-            </div>
+
+            {/* ============================== POST LIST ======================================= */}
 
             <div className="col-12">
-              <Autocomplete
-                label="গ্রেড"
-                name="gradeDTO"
-                placeholder="গ্রেড বাছাই করুন"
-                isRequired="গ্রেড বাছাই করুন"
-                options={options?.gradeList || []}
-                getOptionLabel={(t) => t.nameBn}
-                getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("gradeId", t?.id)}
-                control={control}
-                isError={!!errors?.gradeDTO}
-                errorMessage={errors?.gradeDTO?.message as string}
-              />
+              {postListFields.map((field, index) => (
+                <div
+                  className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
+                  key={field?.id}
+                >
+                  <div className={index < 1 ? "mt-10" : "mt-3"}>
+                    <Label> {numEnToBn(index + 1) + "।"} </Label>
+                  </div>
+                  <div className="row w-100">
+                    <div className="col-md-4">
+                      <Autocomplete
+                        label={index < 1 ? "পদবি" : ""}
+                        placeholder="পদবি বাছাই করুন"
+                        isRequired=" "
+                        control={control}
+                        options={options?.postList || []}
+                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionValue={(op) => op?.id}
+                        name={`postList.${index}.postDTO`}
+                        onChange={(t) =>
+                          setValue(`postList.${index}.postId`, t?.id)
+                        }
+                        noMargin
+                        isError={!!errors?.postList?.[index]?.postDTO}
+                        errorMessage={
+                          errors?.postList?.[index]?.postDTO?.message as string
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-4">
+                      <Autocomplete
+                        label={index < 1 ? "গ্রেড" : ""}
+                        placeholder="গ্রেড বাছাই করুন"
+                        isRequired=" "
+                        control={control}
+                        options={options?.gradeList || []}
+                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionValue={(op) => op?.id}
+                        name={`postList.${index}.gradeDTO`}
+                        onChange={(t) =>
+                          setValue(`postList.${index}.gradeId`, t?.id)
+                        }
+                        noMargin
+                        isError={!!errors?.postList?.[index]?.gradeDTO}
+                        errorMessage={
+                          errors?.postList?.[index]?.gradeDTO?.message as string
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-4">
+                      <Autocomplete
+                        label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                        placeholder="সার্ভিসের ধরণ বাছাই করুন"
+                        isRequired=" "
+                        control={control}
+                        options={options?.serviceList || []}
+                        getOptionLabel={(op) => op?.titleBn}
+                        getOptionValue={(op) => op?.metaKey}
+                        defaultValue={options?.serviceList?.find(
+                          (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
+                        )}
+                        name={`postList.${index}.serviceTypeDto`}
+                        onChange={(t) =>
+                          setValue(
+                            `postList.${index}.serviceTypeKey`,
+                            t?.metaKey
+                          )
+                        }
+                        noMargin
+                        isError={!!errors?.postList?.[index]?.serviceTypeDto}
+                        errorMessage={
+                          errors?.postList?.[index]?.serviceTypeDto
+                            ?.message as string
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className={index < 1 ? "mt-6" : ""}>
+                    <IconButton
+                      iconName="delete"
+                      color="danger"
+                      rounded={false}
+                      onClick={() => postListRemove(index)}
+                    />
+                  </div>
+                </div>
+              ))}
+              <div className="d-flex justify-content-center mt-8 mb-12">
+                <IconButton
+                  iconName="add"
+                  color="success"
+                  className="w-50 rounded-pill"
+                  rounded={false}
+                  onClick={() => {
+                    postListAppend({});
+                  }}
+                />
+              </div>
             </div>
           </div>
         </DrawerBody>
