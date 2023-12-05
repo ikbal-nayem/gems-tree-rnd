@@ -107,7 +107,6 @@ const TemplateViewComponent = ({
     setPDFLoading(true);
     // Get references to the HTML elements you want to capture
     const elementsToCapture = document.getElementsByClassName("pdfGenarator");
-    let dataBlockClass: any = document.querySelector(".dataBlock");
     // Create a new instance of jsPDF
     const pdf = new jsPDF("l", "px", [
       elementsToCapture[0]?.clientWidth,
@@ -133,8 +132,6 @@ const TemplateViewComponent = ({
           clone.querySelector(".orgchart").style.paddingBottom = "15px";
         },
       });
-
-      dataBlockClass.style.height = "fit-content";
 
       if (i > 0) {
         pdf.addPage(
@@ -181,7 +178,6 @@ const TemplateViewComponent = ({
 
     // Save or display the PDF
     else pdf.save("Organogram.pdf");
-    dataBlockClass.style.height = 0;
     setPDFLoading(false);
   };
 
@@ -205,8 +201,10 @@ const TemplateViewComponent = ({
         ) + " Report"
       : ""
     : updateData?.organogramDate
-    ? generateDateFormat(updateData?.organogramDate, DATE_PATTERN.GOVT_STANDARD) +
-      " রিপোর্ট"
+    ? generateDateFormat(
+        updateData?.organogramDate,
+        DATE_PATTERN.GOVT_STANDARD
+      ) + " রিপোর্ট"
     : "";
 
   return (
