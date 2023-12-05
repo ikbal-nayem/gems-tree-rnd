@@ -179,15 +179,15 @@ const TemplateViewComponent = ({
   let versionName = updateData?.isEnamCommittee
     ? "Enam Committe Report (26/12/1982)"
     : langEn
-    ? updateData?.versionDate
+    ? updateData?.organogramDate
       ? generateDateFormat(
-          updateData?.versionDate,
+          updateData?.organogramDate,
           DATE_PATTERN.GOVT_STANDARD,
           "en"
         ) + " Report"
       : ""
-    : updateData?.versionDate
-    ? generateDateFormat(updateData?.versionDate, DATE_PATTERN.GOVT_STANDARD) +
+    : updateData?.organogramDate
+    ? generateDateFormat(updateData?.organogramDate, DATE_PATTERN.GOVT_STANDARD) +
       " রিপোর্ট"
     : "";
 
@@ -201,7 +201,7 @@ const TemplateViewComponent = ({
             </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
-                <span className="mb-0 fw-bold me-1">{LABEL.VERSION}: </span>
+                <span className="mb-0 fw-bold me-1">{LABEL.ORGANOGRAM_DATE}: </span>
                 {versionName || COMMON_LABELS.NOT_ASSIGN}
               </Label>
             </div>

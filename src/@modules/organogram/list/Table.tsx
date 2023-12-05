@@ -64,9 +64,9 @@ const OrganogramTable: FC<TableProps> = ({
                 text={
                   item?.isEnamCommittee
                     ? "Enam Committe Report (26/12/1982)"
-                    : item?.versionDate
+                    : item?.organogramDate
                     ? generateDateFormat(
-                        item?.versionDate,
+                        item?.organogramDate,
                         DATE_PATTERN.GOVT_STANDARD
                       ) + " রিপোর্ট"
                     : ""
