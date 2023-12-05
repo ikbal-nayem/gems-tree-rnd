@@ -39,7 +39,6 @@ type IOptions = {
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
   gradeList: IMetaKeyResponse[];
-  organogramVersionList: IMetaKeyResponse[];
 };
 
 const initPayload = {
@@ -82,17 +81,15 @@ const PostConfig = () => {
     const req3 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
     const req4 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
     const req5 = CoreService.getGrades();
-    const req6 = CoreService.getByMetaTypeList("ORGANOGRAM");
 
-    Promise.all([req1, req2, req3, req4, req5, req6])
-      .then(([res1, res2, res3, res4, res5, res6]) => {
+    Promise.all([req1, req2, req3, req4, req5])
+      .then(([res1, res2, res3, res4, res5]) => {
         setOptions({
           orgList: res1?.body,
           postList: res2?.body,
           serviceList: res3?.body,
           cadreList: res4?.body,
           gradeList: res5?.body,
-          organogramVersionList: res6?.body,
         });
       })
       .finally(() => setIsLoading(false));

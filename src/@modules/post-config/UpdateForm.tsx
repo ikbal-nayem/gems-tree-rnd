@@ -17,7 +17,6 @@ type IOptions = {
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
   gradeList: IMetaKeyResponse[];
-  organogramVersionList: IMetaKeyResponse[];
 };
 
 interface IForm {
