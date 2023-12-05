@@ -107,7 +107,7 @@ const TemplateViewComponent = ({
     setPDFLoading(true);
     // Get references to the HTML elements you want to capture
     const elementsToCapture = document.getElementsByClassName("pdfGenarator");
-
+    let dataBlockClass: any = document.querySelector(".dataBlock");
     // Create a new instance of jsPDF
     const pdf = new jsPDF("l", "px", [
       elementsToCapture[0]?.clientWidth,
@@ -134,6 +134,27 @@ const TemplateViewComponent = ({
         },
       });
 
+      dataBlockClass.style.height = "fit-content";
+
+      if (i > 0) {
+        pdf.addPage(
+          [
+            canvas.width,
+            canvas.height > elementsToCapture[0]?.clientHeight + 100
+              ? canvas.height
+              : elementsToCapture[0]?.clientHeight + 100,
+          ],
+          "l"
+        );
+      }
+
+      // if (i < elementsToCapture.length - 1) {
+      //   pdf.addPage(
+      //     [elementsToCapture[1]?.clientWidth, dataBlockClass.clientHeight],
+      //     "l"
+      //   );
+      // }
+
       // Convert the canvas to an image and add it to the PDF
       const imageData = canvas.toDataURL("image/png");
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -150,9 +171,6 @@ const TemplateViewComponent = ({
         imageWidth * ratio,
         imageHeight * ratio
       );
-      if (i < elementsToCapture.length - 1) {
-        pdf.addPage(); // Add a new page for each element except the last one
-      }
     }
 
     // For open direct print
@@ -163,7 +181,7 @@ const TemplateViewComponent = ({
 
     // Save or display the PDF
     else pdf.save("Organogram.pdf");
-
+    dataBlockClass.style.height = 0;
     setPDFLoading(false);
   };
 
