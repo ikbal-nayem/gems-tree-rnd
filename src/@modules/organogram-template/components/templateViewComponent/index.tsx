@@ -136,10 +136,10 @@ const TemplateViewComponent = ({
       if (i > 0) {
         pdf.addPage(
           [
-            canvas.width,
-            canvas.height > elementsToCapture[0]?.clientHeight + 100
+            elementsToCapture[0]?.clientWidth,
+            canvas.height > elementsToCapture[0]?.clientHeight
               ? canvas.height
-              : elementsToCapture[0]?.clientHeight + 100,
+              : elementsToCapture[0]?.clientHeight,
           ],
           "l"
         );
@@ -157,7 +157,7 @@ const TemplateViewComponent = ({
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      const imageWidth = i === 1 ? canvas.width + 100 : canvas.width;
+      const imageWidth = canvas.width;
       const imageHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imageWidth, pdfHeight / imageHeight);
       pdf.addImage(
@@ -217,7 +217,9 @@ const TemplateViewComponent = ({
             </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
-                <span className="mb-0 fw-bold me-1">{LABEL.ORGANOGRAM_DATE}: </span>
+                <span className="mb-0 fw-bold me-1">
+                  {LABEL.ORGANOGRAM_DATE}:{" "}
+                </span>
                 {versionName || COMMON_LABELS.NOT_ASSIGN}
               </Label>
             </div>
