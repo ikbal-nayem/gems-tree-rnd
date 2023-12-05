@@ -73,10 +73,12 @@ const PostConfig = () => {
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
   const { currentUser } = useAuth();
-  const [userOrg, setUserOrg] = useState<any>(currentUser?.organization);
+  const userOrg = currentUser?.organization;
+  // const [userOrg, setUserOrg] = useState<any>(currentUser?.organization);
 
   useEffect(() => {
-    const req1 = OMSService.getOrganizationList(initPayload);
+    // const req1 = OMSService.getOrganizationList(initPayload);
+    const req1 = OMSService.FETCH.childOrgByLoggedUser();
     const req2 = CoreService.getPostList();
     const req3 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
     const req4 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
@@ -314,6 +316,7 @@ const PostConfig = () => {
           onSubmit={onSubmit}
           options={options}
           submitLoading={isSubmitLoading}
+          userOrg={userOrg}
         />
         <UpdateForm
           isOpen={isUpdateDrawerOpen}
