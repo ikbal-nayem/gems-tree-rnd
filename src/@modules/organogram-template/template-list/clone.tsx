@@ -55,7 +55,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       cloneIsEnamCommittee: cloneData.isEnamCommittee,
       cloneTitleBn: cloneData.titleBn,
       cloneTitleEn: cloneData.titleEn,
-      cloneVersionDate: cloneData.versionDate,
+      cloneOrganogramDate: cloneData.organogramDate,
       refTemplateId: template?.id,
     };
     OMSService.templateClone(payload)
@@ -95,10 +95,10 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const onIsEnamCommitteeChange = (checked: boolean) => {
     setIsNotEnamCommittee(!checked);
     const enamApprovalDate = new Date("1982-12-26");
-    if (checked) setValue("versionDate", enamApprovalDate);
+    if (checked) setValue("organogramDate", enamApprovalDate);
     else if (notNullOrUndefined(getValues("chosenDate"))) {
       const chosenDate = getValues("chosenDate");
-      setValue("versionDate", new Date(chosenDate));
+      setValue("organogramDate", new Date(chosenDate));
     }
   };
 
@@ -169,20 +169,20 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
             </div>
             <div className="col-md-6 col-12">
               <DateInput
-                label="ভার্শন"
+                label="অর্গানোগ্রাম তারিখ"
                 isRequired=" "
-                name="versionDate"
+                name="organogramDate"
                 control={control}
                 onChange={(e) => setValue("chosenDate", e.value)}
                 blockFutureDate
-                isError={!!errors?.versionDate}
-                errorMessage={errors?.versionDate?.message as string}
+                isError={!!errors?.organogramDate}
+                errorMessage={errors?.organogramDate?.message as string}
               />
             </div>
             {/* <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন (বাংলা)"
-                placeholder="বাংলায় ভার্শন লিখুন"
+                label="অর্গানোগ্রাম তারিখ (বাংলা)"
+                placeholder="বাংলায় অর্গানোগ্রাম তারিখ লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("versionBn", {
@@ -196,8 +196,8 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
             </div>
             <div className="col-md-6 col-12">
               <Input
-                label="ভার্শন (ইংরেজি)"
-                placeholder="ইংরেজিতে ভার্শন লিখুন"
+                label="অর্গানোগ্রাম তারিখ (ইংরেজি)"
+                placeholder="ইংরেজিতে অর্গানোগ্রাম তারিখ লিখুন"
                 isRequired
                 registerProperty={{
                   ...register("versionEn", {
