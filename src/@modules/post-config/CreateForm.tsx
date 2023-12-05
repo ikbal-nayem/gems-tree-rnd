@@ -57,6 +57,7 @@ const CreateForm = ({
 
   useEffect(() => {
     reset({});
+    setValue("organizationId", userOrg?.id);
     if (isOpen) postListAppend({});
   }, [isOpen]);
 
