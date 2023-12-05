@@ -41,12 +41,12 @@ const TemplateTable: FC<TableProps> = ({
   respMeta,
   getDataList,
 }) => {
-  const [templateId, setTemplateId] = useState<any>();
+  const [template, setTemplate] = useState<any>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { currentUser } = useAuth();
   const onClose = () => setIsOpen(false);
-  const onClone = (id) => {
-    setTemplateId(id);
+  const onClone = (template) => {
+    setTemplate(template);
     setIsOpen(true);
   };
 
@@ -121,7 +121,7 @@ const TemplateTable: FC<TableProps> = ({
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
                   >
-                    <DropdownItem onClick={() => onClone(item?.id)}>
+                    <DropdownItem onClick={() => onClone(item)}>
                       <Icon size={19} icon="file_copy" />
                       <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
                     </DropdownItem>
@@ -157,7 +157,7 @@ const TemplateTable: FC<TableProps> = ({
       <TemplateClone
         isOpen={isOpen}
         onClose={onClose}
-        templateId={templateId}
+        template={template}
         getDataList={getDataList}
       />
     </>
