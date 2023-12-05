@@ -74,7 +74,7 @@ export const LABELS = {
     TITLE: "Title",
     TEMPLATE_TITLE_BN: "Title (Bn)",
     TEMPLATE_TITLE_EN: "Title (En)",
-    VERSION: "Version",
+    ORGANOGRAM_DATE: "Organogram Date",
 
     MAIN_ACTIVITIES: "Main Activities",
     EQUIPMENTS: "AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
@@ -95,7 +95,7 @@ export const LABELS = {
     TITLE: "শিরোনাম",
     TEMPLATE_TITLE_BN: "শিরোনাম (বাংলা)",
     TEMPLATE_TITLE_EN: "শিরোনাম (ইংরেজি)",
-    VERSION: "ভার্সন",
+    ORGANOGRAM_DATE: "অর্গানোগ্রাম তারিখ",
 
     MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
     EQUIPMENTS: "পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদন",
