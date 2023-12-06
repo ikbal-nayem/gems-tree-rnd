@@ -53,7 +53,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     setIsSubmitLoading(true);
     const payload = {
       cloneIsEnamCommittee: cloneData.isEnamCommittee,
-      cloneTitleBn: cloneData.titleBn,
+      cloneTitleBn: cloneData.isEnamCommittee ? cloneData.titleEn : cloneData.titleBn,
       cloneTitleEn: cloneData.titleEn,
       cloneOrganogramDate: cloneData.organogramDate,
       refTemplateId: template?.id,
@@ -63,6 +63,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       .catch((error) => toast.error(error?.message))
       .finally(() => {
         setIsSubmitLoading(false);
+        setIsNotEnamCommittee(true);
         onClose();
       });
   };
