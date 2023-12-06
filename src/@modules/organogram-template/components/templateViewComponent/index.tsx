@@ -136,7 +136,9 @@ const TemplateViewComponent = ({
       if (i > 0) {
         pdf.addPage(
           [
-            elementsToCapture[0]?.clientWidth,
+            canvas.width > elementsToCapture[0]?.clientWidth
+              ? canvas.width
+              : elementsToCapture[0]?.clientWidth,
             canvas.height > elementsToCapture[0]?.clientHeight
               ? canvas.height
               : elementsToCapture[0]?.clientHeight,
@@ -166,7 +168,7 @@ const TemplateViewComponent = ({
         0,
         0,
         imageWidth * ratio,
-        imageHeight * ratio
+        imageHeight * ratio,
       );
     }
 
@@ -279,35 +281,24 @@ const TemplateViewComponent = ({
         className="d-flex pdfGenarator dataBlock"
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
-        <div className="pe-3" style={{ minWidth: "700px" }}>
+        <div className="pe-3" style={{ width: "33.33333%" }}>
           <ActivitiesList
             data={updateData?.mainActivitiesDtoList || []}
             langEn={langEn}
           />
-          {organogramView && (
-            <div className="mt-3">
-              <EquipmentsList
-                data={updateData?.miscellaneousPointDtoList || []}
-                inventoryData={inventoryData || []}
-                langEn={langEn}
-              />
-            </div>
-          )}
-          <div className="mt-3">
+          <div>
             <AllocationOfBusinessList
               data={updateData?.businessAllocationDtoList || []}
               langEn={langEn}
             />
           </div>
         </div>
-        <div className="pe-4" style={{ minWidth: "700px" }}>
-          {!organogramView && (
-            <EquipmentsList
-              data={updateData?.miscellaneousPointDtoList || []}
-              inventoryData={inventoryData || []}
-              langEn={langEn}
-            />
-          )}
+        <div className="pe-4" style={{ width: "33.33333%" }}>
+          <EquipmentsList
+            data={updateData?.miscellaneousPointDtoList || []}
+            inventoryData={inventoryData || []}
+            langEn={langEn}
+          />
           {organogramView && (
             <AttachedOrgList
               data={updateData?.attachmentOrganization || []}
@@ -318,19 +309,21 @@ const TemplateViewComponent = ({
             data={updateData?.abbreviationDtoList || []}
             langEn={langEn}
           />
-          <NotesList
-            data={updateData?.organogramNoteDtoList || []}
-            langEn={langEn}
-          />
-        </div>
-        <div className="" style={{ minWidth: "700px" }}>
-          <div>
-            <ManPowerList
-              isLoading={false}
-              data={manpowerData}
+          {!organogramView && (
+            <NotesList
+              data={updateData?.organogramNoteDtoList || []}
               langEn={langEn}
             />
-          </div>
+          )}
+        </div>
+        <div className="" style={{ width: "33.33333%" }}>
+          <ManPowerList isLoading={false} data={manpowerData} langEn={langEn} />
+          {organogramView && (
+            <NotesList
+              data={updateData?.organogramNoteDtoList || []}
+              langEn={langEn}
+            />
+          )}
         </div>
       </div>
       {/* Pdf generating end */}
