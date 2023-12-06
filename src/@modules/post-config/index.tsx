@@ -26,12 +26,12 @@ import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Filter from "./Filter";
-import UpdateForm from "./UpdateForm";
-import Table from "./Table";
 import { MENU } from "@constants/menu-titles.constant";
 import { useAuth } from "@context/Auth";
 import CreateForm from "./CreateForm";
+import UpdateForm from "./UpdateForm";
+import Table from "./Table";
+import Filter from "./Filter";
 
 type IOptions = {
   orgList: IMetaKeyResponse[];
@@ -39,15 +39,6 @@ type IOptions = {
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
   gradeList: IMetaKeyResponse[];
-};
-
-const initPayload = {
-  meta: {
-    page: 0,
-    limit: 25,
-    sort: [{ order: "asc", field: "createdOn" }],
-  },
-  body: { searchKey: "" },
 };
 
 const PostConfig = () => {
@@ -173,11 +164,11 @@ const PostConfig = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    let payload = {
-      body: {
-        ids: [deleteData?.id || ""],
-      },
-    };
+    // let payload = {
+    //   body: {
+    //     ids: [deleteData?.id || ""],
+    //   },
+    // };
     // MasterDataService.rankMinistryDelete(payload)
     //   .then((res) => {
     //     toast.success(res?.message);
