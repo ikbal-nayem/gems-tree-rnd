@@ -217,7 +217,7 @@ const CreateForm = ({
                   className="w-50 rounded-pill"
                   rounded={false}
                   onClick={() => {
-                    postListAppend({});
+                    postListAppend({ serviceTypeDto: cadreObj });
                   }}
                 />
               </div>
