@@ -37,7 +37,7 @@ const OrganogramTable: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.ORGANIZATION_NAME, width: 250 },
-    { title: LABELS.VERSION, width: 100 },
+    { title: LABELS.ORGANOGRAM_DATE, width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
@@ -69,7 +69,7 @@ const OrganogramTable: FC<TableProps> = ({
                         item?.organogramDate,
                         DATE_PATTERN.GOVT_STANDARD
                       ) + " রিপোর্ট"
-                    : ""
+                    : COMMON_LABELS.NOT_ASSIGN
                 }
               />
               <TableCell textAlign="end" verticalAlign="top">
