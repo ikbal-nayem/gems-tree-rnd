@@ -13,7 +13,6 @@ import {
   COMMON_LABELS,
   IMetaKeyResponse,
   META_TYPE,
-  isObjectNull,
   numEnToBn,
 } from "@gems/utils";
 import { useEffect } from "react";
@@ -46,19 +45,29 @@ const CreateForm = ({
 }: IForm) => {
   const formProps = useForm();
   const {
-    register,
     handleSubmit,
     reset,
     formState: { errors },
-    watch,
     control,
     setValue,
   } = formProps;
 
+  const cadreObj = options?.serviceList?.find(
+    (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
+  );
+
+  const rowAppend = () => {
+    postListAppend({ serviceTypeDto: cadreObj });
+    const idx = postListFields?.length || 0;
+    setValue(`postList.${idx}.serviceTypeKey`, cadreObj?.metaKey);
+  };
+
   useEffect(() => {
-    reset({});
+    reset({
+      organization: userOrg,
+    });
     setValue("organizationId", userOrg?.id);
-    if (isOpen) postListAppend({});
+    if (isOpen) rowAppend();
   }, [isOpen]);
 
   const {
@@ -174,9 +183,7 @@ const CreateForm = ({
                         options={options?.serviceList || []}
                         getOptionLabel={(op) => op?.titleBn}
                         getOptionValue={(op) => op?.metaKey}
-                        defaultValue={options?.serviceList?.find(
-                          (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
-                        )}
+                        defaultValue={cadreObj}
                         name={`postList.${index}.serviceTypeDto`}
                         onChange={(t) =>
                           setValue(
@@ -209,9 +216,7 @@ const CreateForm = ({
                   color="success"
                   className="w-50 rounded-pill"
                   rounded={false}
-                  onClick={() => {
-                    postListAppend({});
-                  }}
+                  onClick={() => rowAppend()}
                 />
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import "../style.scss";
-import { breakNewLines, numOfNewLines, numOfTabs } from "utility/utils";
+import { numOfNewLines } from "utility/utils";
 import TextBlock from "@components/TextBlock";
 
 interface IAllocationOfBusinessForm {
