@@ -59,15 +59,18 @@ const CreateForm = ({
     (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
   );
 
+  const rowAppend = () => {
+    postListAppend({ serviceTypeDto: cadreObj });
+    const idx = postListFields?.length || 0;
+    setValue(`postList.${idx}.serviceTypeKey`, cadreObj?.metaKey);
+  };
+
   useEffect(() => {
     reset({
       organization: userOrg,
     });
     setValue("organizationId", userOrg?.id);
-    if (isOpen)
-      postListAppend({
-        serviceTypeDto: cadreObj,
-      });
+    if (isOpen) rowAppend();
   }, [isOpen]);
 
   const {
@@ -216,9 +219,7 @@ const CreateForm = ({
                   color="success"
                   className="w-50 rounded-pill"
                   rounded={false}
-                  onClick={() => {
-                    postListAppend({ serviceTypeDto: cadreObj });
-                  }}
+                  onClick={() => rowAppend()}
                 />
               </div>
             </div>
