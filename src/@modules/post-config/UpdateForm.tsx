@@ -38,11 +38,9 @@ const UpdateForm = ({
 }: IForm) => {
   const formProps = useForm();
   const {
-    register,
     handleSubmit,
     reset,
     formState: { errors },
-    watch,
     control,
     setValue,
   } = formProps;
