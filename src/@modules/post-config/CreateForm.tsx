@@ -13,7 +13,6 @@ import {
   COMMON_LABELS,
   IMetaKeyResponse,
   META_TYPE,
-  isObjectNull,
   numEnToBn,
 } from "@gems/utils";
 import { useEffect } from "react";
@@ -46,11 +45,9 @@ const CreateForm = ({
 }: IForm) => {
   const formProps = useForm();
   const {
-    register,
     handleSubmit,
     reset,
     formState: { errors },
-    watch,
     control,
     setValue,
   } = formProps;

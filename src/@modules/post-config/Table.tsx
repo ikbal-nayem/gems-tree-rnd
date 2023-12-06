@@ -3,7 +3,6 @@ import {
   DropdownItem,
   ITableHeadColumn,
   Icon,
-  IconButton,
   Table,
   TableCell,
   TableRow,
