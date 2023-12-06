@@ -55,10 +55,19 @@ const CreateForm = ({
     setValue,
   } = formProps;
 
+  const cadreObj = options?.serviceList?.find(
+    (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
+  );
+
   useEffect(() => {
-    reset({});
+    reset({
+      organization: userOrg,
+    });
     setValue("organizationId", userOrg?.id);
-    if (isOpen) postListAppend({});
+    if (isOpen)
+      postListAppend({
+        serviceTypeDto: cadreObj,
+      });
   }, [isOpen]);
 
   const {
@@ -174,9 +183,7 @@ const CreateForm = ({
                         options={options?.serviceList || []}
                         getOptionLabel={(op) => op?.titleBn}
                         getOptionValue={(op) => op?.metaKey}
-                        defaultValue={options?.serviceList?.find(
-                          (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
-                        )}
+                        defaultValue={cadreObj}
                         name={`postList.${index}.serviceTypeDto`}
                         onChange={(t) =>
                           setValue(
