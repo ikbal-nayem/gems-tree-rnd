@@ -16,9 +16,15 @@ const initPayload = {
 
 interface IOrganizations {
   formProps: any;
+  notOrganizationData: boolean;
+  setNotOrganizationData: (validateCheck: boolean) => void;
 }
 
-const Organizations = ({ formProps }: IOrganizations) => {
+const Organizations = ({
+  formProps,
+  notOrganizationData,
+  setNotOrganizationData,
+}: IOrganizations) => {
   const { setValue, getValues, watch } = formProps;
 
   const getOrgList = (searchKey, callback) => {
@@ -34,6 +40,7 @@ const Organizations = ({ formProps }: IOrganizations) => {
     if (cIdx < 0) currentOrg.push(selected);
     else if (toggle) currentOrg.splice(cIdx, 1);
     setValue("templateOrganizationsDtoList", [...currentOrg]);
+    setNotOrganizationData(false);
   };
 
   const onMultiOrgSelect = (selected: IObject[], isAdd: boolean) => {
@@ -44,6 +51,7 @@ const Organizations = ({ formProps }: IOrganizations) => {
       else if (cIdx >= 0 && !isAdd) currentOrg.splice(cIdx, 1);
     });
     setValue("templateOrganizationsDtoList", [...currentOrg]);
+    setNotOrganizationData(false);
   };
 
   const onOrgCancle = (idx) => {
@@ -54,8 +62,12 @@ const Organizations = ({ formProps }: IOrganizations) => {
 
   const selectedOrgList = watch("templateOrganizationsDtoList");
 
+  // if (selectedOrgList?.length > 0)
+
   return (
-    <div className="card border p-3">
+    <div
+      className={`card border p-3 ${notOrganizationData && "border-danger"}`}
+    >
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABELS.BN.ORGANIZATION}</h4>
       </div>
@@ -71,6 +83,7 @@ const Organizations = ({ formProps }: IOrganizations) => {
         <div className="col-md-6">
           <Autocomplete
             placeholder="প্রতিষ্ঠান"
+            isRequired
             isAsync
             noMargin
             closeMenuOnSelect={false}
@@ -81,7 +94,11 @@ const Organizations = ({ formProps }: IOrganizations) => {
           />
         </div>
       </div>
+
       <OrgList selectedOrgList={selectedOrgList} onOrgCancle={onOrgCancle} />
+      {notOrganizationData && (
+        <p className="text-danger fs-6 mb-0">প্রতিষ্ঠান যুক্ত করুন</p>
+      )}
     </div>
   );
 };

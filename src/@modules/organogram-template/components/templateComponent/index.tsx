@@ -53,6 +53,8 @@ const TemplateComponent = ({
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
+  const [notOrganizationData, setNotOrganizationData] =
+    useState<boolean>(false);
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -171,6 +173,13 @@ const TemplateComponent = ({
         organizationNameBn: d?.nameBn || d?.organizationNameBn,
       })
     );
+    if (
+      data?.templateOrganizationsDtoList === undefined ||
+      data?.templateOrganizationsDtoList?.length <= 0
+    ) {
+      setNotOrganizationData(true);
+      return;
+    } else setNotOrganizationData(false);
 
     const reqPayload = {
       ...data,
@@ -342,7 +351,11 @@ const TemplateComponent = ({
             />
           </div>
           <div className="col-md-6 mt-3">
-            <Organizations formProps={formProps} />
+            <Organizations
+              formProps={formProps}
+              notOrganizationData={notOrganizationData}
+              setNotOrganizationData={setNotOrganizationData}
+            />
           </div>
           <div className="col-md-6 mt-3">
             <AbbreviationForm formProps={formProps} />
