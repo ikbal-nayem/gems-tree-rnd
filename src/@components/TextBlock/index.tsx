@@ -5,23 +5,25 @@ type ITextBlockProps = {
   value: any | string;
   subPointGap?: number;
   subSubPointGap?: number;
+  className?: string;
 };
 
 const TextBlock = ({
   value,
   subPointGap = 4,
   subSubPointGap = 10,
+  className,
 }: ITextBlockProps) => {
   return breakNewLines(value)?.map((line, idx) => {
     return (
       <Fragment key={idx}>
         <span
-          className={
-            idx > 0
+          className={ (className || " d-flex justify-content-start ") + 
+            (idx > 0
               ? numOfTabs(line) > 0
                 ? `ps-${subSubPointGap}`
                 : `ps-${subPointGap}`
-              : ""
+              : "")
           }
         >
           {line}

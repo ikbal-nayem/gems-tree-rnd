@@ -1,9 +1,10 @@
-import { Icon } from "@gems/components";
+import { Icon, Separator } from "@gems/components";
 // import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
 import { COMMON_LABELS } from "@constants/common.constant";
 import { isNotEmptyList } from "utility/utils";
-import { numEnToBn } from "@gems/utils";
+import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import TextBlock from "@components/TextBlock";
 // import { Dropdown, DropdownItem } from "../Dropdown";
 // import { Button, Modal } from "react-bootstrap";
 // const propTypes = {
@@ -27,10 +28,14 @@ const MyNode = ({
             size={20}
             color="warning"
             onClick={() => treeDispatch("EDIT", nodeData)}
-            hoverTitle={isNotEnamCommittee ? "এই নোড আপডেট করুন" : "Update this node"}
+            hoverTitle={
+              isNotEnamCommittee ? "এই নোড আপডেট করুন" : "Update this node"
+            }
           />
           <div>
-            <p className="p-1 mb-0 fs-7">{isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn}</p>
+            <p className="p-1 mb-0 fs-7">
+              {isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn}
+            </p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
           {/* <Dropdown
@@ -57,7 +62,11 @@ const MyNode = ({
               size={20}
               color="success"
               onClick={() => treeDispatch("ADD", nodeData)}
-              hoverTitle={isNotEnamCommittee ? "পরবর্তী স্তরে নতুন নোড যোগ করুন" : "Add new node into next layer"}
+              hoverTitle={
+                isNotEnamCommittee
+                  ? "পরবর্তী স্তরে নতুন নোড যোগ করুন"
+                  : "Add new node into next layer"
+              }
             />
             {!firstNode && (
               <Icon
@@ -65,7 +74,9 @@ const MyNode = ({
                 size={20}
                 color="danger"
                 onClick={() => treeDispatch("REMOVE", nodeData)}
-                hoverTitle={isNotEnamCommittee ? "এই নোড মুছুন" : "Delete this node"}
+                hoverTitle={
+                  isNotEnamCommittee ? "এই নোড মুছুন" : "Delete this node"
+                }
               />
             )}
           </div>
@@ -103,6 +114,12 @@ const MyNode = ({
               );
             })}
         </div>
+        {notNullOrUndefined(nodeData?.commentNode) && (
+          <div className="pt-3 ps-2 bg-light text-start ">
+            {/* <u className="d-flex justify-content-start ">{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
+            <TextBlock value={nodeData?.commentNode} />
+          </div>
+        )}
       </div>
     </div>
   );

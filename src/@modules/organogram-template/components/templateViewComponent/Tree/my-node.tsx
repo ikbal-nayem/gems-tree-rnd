@@ -1,7 +1,8 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { numEnToBn } from "@gems/utils";
+import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import "./my-node.css";
+import TextBlock from "@components/TextBlock";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
   let COMMON_LABEL,
@@ -77,6 +78,13 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             );
           })}
       </div>
+      {notNullOrUndefined(nodeData?.commentNode) && (
+          <div className="pt-3 ps-2 bg-light text-start ">
+            {/* <u className="d-flex justify-content-start ">{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
+            {/* <TextBlock value={nodeData?.commentNode} /> */}
+            {nodeData?.commentNode}
+          </div>
+        )}
     </div>
   );
 };

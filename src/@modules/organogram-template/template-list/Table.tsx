@@ -34,6 +34,7 @@ type TableProps = {
   isLoading: boolean;
   respMeta?: IMeta;
   getDataList: () => void;
+  onDelete: (data) => void;
 };
 
 const TemplateTable: FC<TableProps> = ({
@@ -42,6 +43,7 @@ const TemplateTable: FC<TableProps> = ({
   isLoading,
   respMeta,
   getDataList,
+  onDelete,
 }) => {
   const [template, setTemplate] = useState<any>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -145,7 +147,7 @@ const TemplateTable: FC<TableProps> = ({
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
                   >
-                    <DropdownItem onClick={() => null}>
+                    <DropdownItem onClick={() => onDelete(item)}>
                       <Icon size={19} icon="delete" color="danger" />
                       <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                     </DropdownItem>
