@@ -54,7 +54,7 @@ const NotesForm = ({ formProps }: INotesForm) => {
                     }),
                   }}
                   isError={
-                    !!errors?.organogramNoteDtoList?.[idx]?.mainActivityEn
+                    !!errors?.organogramNoteDtoList?.[idx]?.note
                   }
                 />
               </div>

@@ -230,6 +230,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
                       noMargin
+                      isRequired={idx < 1}
                       registerProperty={{
                         ...register(
                           `miscellaneousPointDtoList.${idx}.titleBn`,
@@ -266,6 +267,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     placeholder={labelEn + " লিখুন"}
                     autoFocus
                     noMargin
+                    isRequired={idx < 1 && !isNotEnamCommittee}
                     registerProperty={{
                       ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {
                         onChange: (e) => {

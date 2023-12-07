@@ -1,6 +1,7 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
 import {
+  ConfirmationModal,
   Input,
   ListDownload,
   Pagination,
@@ -43,6 +44,10 @@ const TemplateList = () => {
   );
   const searchKey = useDebounce(search, 500);
 
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
+
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
@@ -53,6 +58,32 @@ const TemplateList = () => {
   useEffect(() => {
     getDataList();
   }, [searchParams]);
+
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+
+  const onDelete = (data) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+    
+  };
+
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    OMSService.DELETE.organogramByID(deleteData?.id)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
 
   const getDataList = (reqMeta = null) => {
     topProgress.show();
@@ -163,6 +194,7 @@ const TemplateList = () => {
             getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
+            onDelete={onDelete}
           >
             <Pagination
               meta={respMeta}
@@ -173,6 +205,15 @@ const TemplateList = () => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
+        <ConfirmationModal
+        isOpen={isDeleteModal}
+        onClose={onCancelDelete}
+        onConfirm={onConfirmDelete}
+        isSubmitting={isDeleteLoading}
+        onConfirmLabel={"মুছে ফেলুন"}
+      >
+        আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+      </ConfirmationModal>
       </div>
     </>
   );
