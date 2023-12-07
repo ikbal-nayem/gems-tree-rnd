@@ -18,7 +18,9 @@ const TextBlock = ({
     return (
       <Fragment key={idx}>
         <span
-          className={ (className || " d-flex justify-content-start ") + 
+          className={
+            (className || "") +
+            " " +
             (idx > 0
               ? numOfTabs(line) > 0
                 ? `ps-${subSubPointGap}`

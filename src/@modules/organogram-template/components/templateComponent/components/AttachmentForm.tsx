@@ -188,11 +188,11 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                 <div className="col-xl-3 col-12">
                   <DateInput
                     label={idx < 1 ? labelGODate : ""}
-                    isRequired={labelGODate + "লিখুন"}
+                    isRequired={" "}
                     name={`attachmentDtoList.${idx}.goDate`}
                     control={control}
-                    isError={!!errors?.goDate}
-                    errorMessage={errors?.goDate?.message as string}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.goDate}
+                    errorMessage={errors?.attachmentDtoList?.[idx]?.goDate?.message as string}
                   />
                 </div>
                 {/* <div

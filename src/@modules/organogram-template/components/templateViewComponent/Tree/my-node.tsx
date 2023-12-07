@@ -80,9 +80,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
           <div className="pt-3 ps-2 bg-light text-start ">
-            {/* <u className="d-flex justify-content-start ">{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
-            {/* <TextBlock value={nodeData?.commentNode} /> */}
-            {nodeData?.commentNode}
+            {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
+            <TextBlock value={nodeData?.commentNode} />
+            {/* {nodeData?.commentNode} */}
           </div>
         )}
     </div>
