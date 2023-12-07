@@ -27,6 +27,7 @@ import TemplateClone from "./clone";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { useAuth } from "@context/Auth";
+import OrganizationReport from "./organizatioReport";
 
 type TableProps = {
   children: ReactNode;
@@ -46,9 +47,12 @@ const TemplateTable: FC<TableProps> = ({
   onDelete,
 }) => {
   const [template, setTemplate] = useState<any>();
+  const [templateId, setTemplateId] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isReportOpen, setReportOpen] = useState<boolean>(false);
   const { currentUser } = useAuth();
   const onClose = () => setIsOpen(false);
+  const onReportClose = () => setReportOpen(false);
   const onClone = (template) => {
     setTemplate(template);
     setIsOpen(true);
@@ -70,6 +74,11 @@ const TemplateTable: FC<TableProps> = ({
     navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
   };
 
+  const onReportView = (item) => {
+    setTemplateId(item?.id);
+    setReportOpen(true);
+  };
+
   return (
     <>
       {dataList?.length ? (
@@ -86,13 +95,11 @@ const TemplateTable: FC<TableProps> = ({
               />
               <TableCell
                 text={
-                  item?.isEnamCommittee
-                    ? "Enam Committe Report (26/12/1982)"
-                    : item?.organogramDate
+                  item?.organogramDate
                     ? generateDateFormat(
                         item?.organogramDate,
                         DATE_PATTERN.GOVT_STANDARD
-                      ) + " রিপোর্ট"
+                      )
                     : COMMON_LABELS.NOT_ASSIGN
                 }
               />
@@ -134,15 +141,14 @@ const TemplateTable: FC<TableProps> = ({
                       <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                     </DropdownItem>
                   </ACLWrapper>
-                  <ACLWrapper
-                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
-                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
-                  >
-                    <DropdownItem onClick={() => onClone(item)}>
-                      <Icon size={19} icon="file_copy" />
-                      <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
-                    </DropdownItem>
-                  </ACLWrapper>
+                  <DropdownItem onClick={() => onClone(item)}>
+                    <Icon size={19} icon="file_copy" />
+                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => onReportView(item)}>
+                    <Icon size={19} icon="summarize" />
+                    <h6 className="mb-0 ms-3">রিপোর্ট দেখুন</h6>
+                  </DropdownItem>
                   <ACLWrapper
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
@@ -176,6 +182,11 @@ const TemplateTable: FC<TableProps> = ({
         onClose={onClose}
         template={template}
         getDataList={getDataList}
+      />
+      <OrganizationReport
+        isOpen={isReportOpen}
+        onClose={onReportClose}
+        templateId={templateId}
       />
     </>
   );
