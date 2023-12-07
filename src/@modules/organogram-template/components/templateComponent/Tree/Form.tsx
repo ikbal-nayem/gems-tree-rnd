@@ -9,6 +9,7 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
+  Textarea,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -441,6 +442,17 @@ const NodeForm = ({
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-6">
+          <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
+            <Textarea
+              placeholder={LABELS.BN.NOTES + " লিখুন"}
+              noMargin
+              registerProperty={{
+                ...register(`commentNode`),
+              }}
+              isError={!!errors?.commentNode}
+            />
           </div>
         </ModalBody>
 
