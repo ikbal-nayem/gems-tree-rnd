@@ -1,6 +1,7 @@
 import { LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import "../style.scss";
+import TextBlock from "@components/TextBlock";
 
 interface INotesList {
   data: any;
@@ -19,8 +20,9 @@ const NotesList = ({ data, langEn }: INotesList) => {
           {data?.map((item, i) => {
             return (
               <li key={i}>
-                &nbsp;&nbsp;
-                {langEn ? item?.note : item?.note}
+                <TextBlock value={item?.note} />
+                {/* &nbsp;&nbsp;
+                {langEn ? item?.note : item?.note} */}
               </li>
             );
           })}

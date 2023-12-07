@@ -1,3 +1,4 @@
+import { notNullOrUndefined } from "@gems/utils";
 import { Fragment } from "react";
 import { breakNewLines, numOfTabs } from "utility/utils";
 
@@ -14,26 +15,28 @@ const TextBlock = ({
   subSubPointGap = 10,
   className,
 }: ITextBlockProps) => {
-  return breakNewLines(value)?.map((line, idx) => {
-    return (
-      <Fragment key={idx}>
-        <span
-          className={
-            (className || "") +
-            " " +
-            (idx > 0
-              ? numOfTabs(line) > 0
-                ? `ps-${subSubPointGap}`
-                : `ps-${subPointGap}`
-              : "")
-          }
-        >
-          {line}
-        </span>
-        <br />
-      </Fragment>
-    );
-  });
+  return !notNullOrUndefined(value)
+    ? null
+    : breakNewLines(value)?.map((line, idx) => {
+        return (
+          <Fragment key={idx}>
+            <span
+              className={
+                (className || "") +
+                " " +
+                (idx > 0
+                  ? numOfTabs(line) > 0
+                    ? `ps-${subSubPointGap}`
+                    : `ps-${subPointGap}`
+                  : "")
+              }
+            >
+              {line}
+            </span>
+            <br />
+          </Fragment>
+        );
+      });
 };
 
 export default TextBlock;
