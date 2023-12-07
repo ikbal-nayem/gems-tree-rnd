@@ -41,16 +41,15 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
 
   const onTitleChange = (val, idx, fieldLang: "en" | "bn") => {
     if (!notNullOrUndefined(val)) return;
+    let suggestedValue;
     if (fieldLang === "en") {
-      setValue(
-        `attachmentDtoList.${idx}.titleBn`,
-        checklist?.find((obj) => obj?.titleEn === val)?.titleBn
-      );
+      suggestedValue = checklist?.find((obj) => obj?.titleEn === val);
+      if (notNullOrUndefined(suggestedValue))
+        setValue(`attachmentDtoList.${idx}.titleBn`, suggestedValue?.titleBn);
     } else {
-      setValue(
-        `attachmentDtoList.${idx}.titleEn`,
-        checklist?.find((obj) => obj?.titleBn === val)?.titleEn
-      );
+      suggestedValue = checklist?.find((obj) => obj?.titleBn === val);
+      if (notNullOrUndefined(suggestedValue))
+        setValue(`attachmentDtoList.${idx}.titleEn`, suggestedValue?.titleEn);
     }
   };
 

@@ -97,7 +97,7 @@ const AllocationOfBusinessForm = ({
                               }
                             },
                             required: " ",
-                            validate: bnCheck,
+                            // validate: bnCheck,
                           }
                         ),
                       }}

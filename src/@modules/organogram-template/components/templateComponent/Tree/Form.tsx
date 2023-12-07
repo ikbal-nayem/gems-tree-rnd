@@ -81,16 +81,15 @@ const NodeForm = ({
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
     if (!notNullOrUndefined(val)) return;
+    let suggestedValue;
     if (fieldLang === "en") {
-      setValue(
-        "titleBn",
-        titleList?.find((obj) => obj?.titleEn === val)?.titleBn
-      );
+      suggestedValue = titleList?.find((obj) => obj?.titleEn === val);
+      if (notNullOrUndefined(suggestedValue))
+        setValue("titleBn", suggestedValue?.titleBn);
     } else {
-      setValue(
-        "titleEn",
-        titleList?.find((obj) => obj?.titleBn === val)?.titleEn
-      );
+      suggestedValue = titleList?.find((obj) => obj?.titleBn === val);
+      if (notNullOrUndefined(suggestedValue))
+        setValue("titleEn", suggestedValue?.titleEn);
     }
   };
 
