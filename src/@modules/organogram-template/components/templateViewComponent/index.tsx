@@ -15,6 +15,7 @@ import {
   generateDateFormat,
   generateUUID,
   isObjectNull,
+  searchParamsToObject,
 } from "@gems/utils";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
@@ -35,7 +36,7 @@ import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AttachmentList from "./components/AttachmentList";
 import AttachedOrgList from "./components/AttachedOrgList";
 import Switch from "@components/Switch";
@@ -69,6 +70,9 @@ const TemplateViewComponent = ({
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
+  const [searchParam] = useSearchParams();
+
+  const orgData = searchParamsToObject(searchParam) || {};
 
   const navigate = useNavigate();
 
@@ -183,6 +187,11 @@ const TemplateViewComponent = ({
     setPDFLoading(false);
   };
 
+  let orgName = langEn
+    ? orgData?.organizationNameEn
+    : orgData?.organizationNameBn;
+  let orgParentName = langEn ? orgData?.parentNameEN : orgData?.parentNameBN;
+
   let titleName =
     (organogramView
       ? langEn
@@ -214,8 +223,13 @@ const TemplateViewComponent = ({
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
+            {orgParentName && (
+              <div className="fs-2 text-center fw-bolder mb-0">
+                {orgParentName || COMMON_LABELS.NOT_ASSIGN}
+              </div>
+            )}
             <div className="fs-2 text-center fw-bolder mb-0">
-              {titleName || COMMON_LABELS.NOT_ASSIGN}
+              {orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
             </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
@@ -246,8 +260,16 @@ const TemplateViewComponent = ({
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
-          templateName={titleName}
-          versionName={versionName}
+          headerData={{
+            titleName: titleName || null,
+            versionName: versionName || null,
+            orgName: orgName || null,
+            orgParentName: orgParentName || null,
+          }}
+          // templateName={titleName}
+          // versionName={versionName}
+          // orgName={orgName}
+          // orgParentName={orgParentName}
         />
         <div className="position-absolute" style={{ top: 10, right: 175 }}>
           <IconButton
@@ -270,8 +292,12 @@ const TemplateViewComponent = ({
               onCapturePDF={captureAndConvertToPDF}
               pdfClass=""
               isPDFLoading={isPDFLoading}
-              templateName={titleName}
-              versionName={versionName}
+              headerData={{
+                titleName: titleName || null,
+                versionName: versionName || null,
+                orgName: orgName || null,
+                orgParentName: orgParentName || null,
+              }}
             />
           </ModalBody>
         </Modal>
@@ -299,7 +325,7 @@ const TemplateViewComponent = ({
             inventoryData={inventoryData || []}
             langEn={langEn}
           />
-          {organogramView && (
+          {(orgName || orgParentName || organogramView) && (
             <AttachedOrgList
               data={updateData?.attachmentOrganization || []}
               langEn={langEn}
@@ -341,7 +367,7 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          {!organogramView && (
+          {(!orgName || !orgParentName) && !organogramView && (
             <div className="mt-3">
               <OrgList
                 data={updateData?.templateOrganizationsDtoList || []}
@@ -362,7 +388,7 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          {organogramView && (
+          {(orgName || orgParentName || organogramView) && (
             <div className="mt-3">
               <AttachedOrgList
                 data={updateData?.attachmentOrganization || []}
@@ -409,7 +435,7 @@ const TemplateViewComponent = ({
                 color="success"
                 onClick={() => onStatusChange("IN_REVIEW")}
               >
-                <span> {BTN_LABELS.CONFIRM} </span>
+                <span> {BTN_LABELS.SEND} </span>
                 <Icon icon="check" size={15} className="fw-bold ms-1" />
               </Button>
             </ACLWrapper>
@@ -431,7 +457,7 @@ const TemplateViewComponent = ({
                 color="success"
                 onClick={() => onStatusChange("IN_APPROVE")}
               >
-                <span> {BTN_LABELS.REVIEW} </span>
+                <span> {BTN_LABELS.SEND} </span>
                 <Icon icon="check" size={15} className="fw-bold ms-1" />
               </Button>
             </ACLWrapper>
