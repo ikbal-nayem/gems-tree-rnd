@@ -1,5 +1,5 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
-import { IObject, generateUUID, isObjectNull } from "@gems/utils";
+import { generateUUID, isObjectNull, notNullOrUndefined } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
@@ -10,7 +10,12 @@ const addNode = (nd, parentId, templateData) => {
   if (nd.id === parentId) {
     nd.children = [
       ...nd.children,
-      { ...templateData, id: generateUUID(), children: [] },
+      {
+        ...templateData,
+        id: generateUUID(),
+        // displayOrder: nd.children.length + 1 || 1,
+        children: [],
+      },
     ];
     return nd;
   }
@@ -45,7 +50,11 @@ const deleteNode = (nd, nodeId) => {
   return { ...nd };
 };
 
-const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee }) => {
+const OrganizationTemplateTree = ({
+  treeData,
+  setTreeData,
+  isNotEnamCommittee,
+}) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
   const selectedNode = useRef(null);
@@ -54,6 +63,7 @@ const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee })
   const [postList, setPostist] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [deleteData, setDeleteData] = useState();
+  const [displayOrder, setDisplayOrder] = useState(1);
 
   useEffect(() => {
     OMSService.getPostList().then((resp) => setPostist(resp.body || []));
@@ -63,6 +73,7 @@ const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee })
     switch (actionType) {
       case "ADD":
         selectedNode.current = data;
+        setDisplayOrder(selectedNode.current?.children?.length + 1 || 1);
         setFormOpen(true);
         break;
       case "EDIT":
@@ -89,14 +100,32 @@ const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee })
   const onFormClose = () => {
     selectedNode.current = null;
     updateNodeData.current = null;
+    setDisplayOrder(displayOrder > 1 ? displayOrder - 1 : 1);
     setFormOpen(false);
   };
 
   const onSubmit = (formData) => {
+    // const pushIndex =
+    // selectedNode.current?.children?.forEach((cnd, idx) => {
+    //   if (formData?.displayOrder === cnd?.displayOrder) {
+    //     return idx;
+    //     selectedNode.current?.children[idx] =  {
+    //       ...cnd,
+    //       displayOrder: cnd?.displayOrder + 1,
+    //     };
+    //     console.log("============= duplicate Found ==============");
+    //   }
+    // });
+
+    // if(notNullOrUndefined(pushIndex)){
+
+    // }
+
     const ad = isObjectNull(updateNodeData.current)
       ? addNode(treeData, selectedNode.current?.id, formData)
       : editNode(treeData, updateNodeData.current?.id, formData);
     setTreeData(ad);
+    // selectedNode.current?.children?.forEach((cnd) => console.log(cnd?.displayOrder));
     onFormClose();
   };
 
@@ -154,6 +183,7 @@ const OrganizationTemplateTree = ({ treeData, setTreeData, isNotEnamCommittee })
           isOpen={formOpen}
           postList={postList}
           updateData={updateNodeData.current}
+          defaultDisplayOrder={displayOrder}
           onClose={onFormClose}
           onSubmit={onSubmit}
           isNotEnamCommittee={isNotEnamCommittee}

@@ -31,6 +31,7 @@ interface INodeForm {
   onClose: () => void;
   onSubmit: (data) => void;
   updateData?: IObject;
+  defaultDisplayOrder?: number;
   postList: IObject[];
   isNotEnamCommittee: boolean;
 }
@@ -41,6 +42,7 @@ const NodeForm = ({
   onClose,
   onSubmit,
   updateData,
+  defaultDisplayOrder,
   isNotEnamCommittee,
 }: INodeForm) => {
   const {
@@ -171,6 +173,26 @@ const NodeForm = ({
     >
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
+          <div className="row mb-4 d-flex justify-content-center">
+            <div className="col-12 col-md-4 col-lg-3 col-xl-2 border rounded-4 p-2 bg-gray-100">
+              <Input
+                label="প্রদর্শন ক্রম"
+                placeholder="প্রদর্শন ক্রম লিখুন"
+                isRequired
+                noMargin
+                numaricOnly
+                defaultValue={defaultDisplayOrder}
+                min={1}
+                type="number"
+                registerProperty={{
+                  ...register("displayOrder", {
+                    required: " ",
+                  }),
+                }}
+                isError={!!errors?.displayOrder}
+              />
+            </div>
+          </div>
           <div className="row border rounded p-2 my-1 bg-gray-100">
             {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
@@ -444,7 +466,7 @@ const NodeForm = ({
             ))}
           </div>
           <div className="mt-6">
-          <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
+            <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
             <Textarea
               placeholder={LABELS.BN.NOTES + " লিখুন"}
               noMargin
