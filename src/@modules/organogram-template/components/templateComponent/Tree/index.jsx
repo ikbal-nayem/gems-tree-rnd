@@ -105,21 +105,13 @@ const OrganizationTemplateTree = ({
   };
 
   const onSubmit = (formData) => {
-    // const pushIndex =
-    // selectedNode.current?.children?.forEach((cnd, idx) => {
-    //   if (formData?.displayOrder === cnd?.displayOrder) {
-    //     return idx;
-    //     selectedNode.current?.children[idx] =  {
-    //       ...cnd,
-    //       displayOrder: cnd?.displayOrder + 1,
-    //     };
-    //     console.log("============= duplicate Found ==============");
-    //   }
-    // });
-
-    // if(notNullOrUndefined(pushIndex)){
-
-    // }
+    selectedNode.current?.children?.forEach((cnd, idx) => {
+      if (formData?.displayOrder === cnd?.displayOrder) {
+        // selectedNode.current?.children[idx]?.displayOrder =  cnd?.displayOrder + 1
+        console.log("============= DUPLICATE FOUND ==============");
+        // todo: Re-Ordering
+      }
+    });
 
     const ad = isObjectNull(updateNodeData.current)
       ? addNode(treeData, selectedNode.current?.id, formData)
