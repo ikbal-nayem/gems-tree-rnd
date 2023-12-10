@@ -168,7 +168,7 @@ const TemplateViewComponent = ({
         0,
         0,
         imageWidth * ratio,
-        imageHeight * ratio,
+        imageHeight * ratio
       );
     }
 

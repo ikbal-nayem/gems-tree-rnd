@@ -145,10 +145,10 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => onReportView(item)}>
+                  {/* <DropdownItem onClick={() => onReportView(item)}>
                     <Icon size={19} icon="summarize" />
                     <h6 className="mb-0 ms-3">রিপোর্ট দেখুন</h6>
-                  </DropdownItem>
+                  </DropdownItem> */}
                   <ACLWrapper
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={item?.status === TEMPLATE_STATUS.NEW}

@@ -1,8 +1,9 @@
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ContentPreloader, Modal, ModalBody, NoData } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, makeObjectToString } from "@gems/utils";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { objectToQueryString } from "utility/makeObject";
 
 interface IForm {
   templateId: string;
@@ -19,7 +20,12 @@ const OrganizationReport = ({ templateId, isOpen, onClose }: IForm) => {
   const navigate = useNavigate();
 
   const onOrgSelect = (org) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + templateId + `&org=${org}`);
+    navigate(
+      ROUTE_L2.ORG_TEMPLATE_VIEW +
+        "?id=" +
+        templateId +
+        `&${objectToQueryString(org)}`
+    );
   };
   return (
     <Modal
