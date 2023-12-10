@@ -1,6 +1,6 @@
 export const ROUTE_L1 = {
   DASHBOARD: "/dashboard",
-  ORG_TEMPLATE: "/template-organogram",
+  ORG_TEMPLATE: "/organogram-template",
   OMS_ORGANOGRAM: "/organogram",
   OMS_ORG_EMPLOYEE_LIST: "/employee-list",
   OMS_POST_CONFIG: "/post-config",
