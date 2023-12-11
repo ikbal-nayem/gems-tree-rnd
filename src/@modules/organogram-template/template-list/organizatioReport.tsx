@@ -1,7 +1,8 @@
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ContentPreloader, Modal, ModalBody, NoData } from "@gems/components";
-import { IObject, makeObjectToString } from "@gems/utils";
-import { useState } from "react";
+import { IObject } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { objectToQueryString } from "utility/makeObject";
 
@@ -12,12 +13,29 @@ interface IForm {
 }
 
 const OrganizationReport = ({ templateId, isOpen, onClose }: IForm) => {
-  const [orgList, setOrgList] = useState<IObject[]>([
-    { nameBn: "some", orgParent: "dad", id: 444 },
-  ]);
+  const [orgList, setOrgList] = useState<IObject[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (templateId) {
+      OMSService.getAttachedOrganizationByTemplateId(templateId)
+        .then((resp) => {
+          setOrgList(resp?.body || []);
+          if (!(resp?.body?.length > 1)) {
+            navigate(
+              ROUTE_L2.ORG_TEMPLATE_VIEW +
+                "?id=" +
+                templateId +
+                `&${objectToQueryString(resp?.body?.[0])}`
+            );
+          }
+        })
+        .catch((e) => console.log(e?.message))
+        .finally(() => setLoading(false));
+    }
+  }, [templateId]);
 
   const onOrgSelect = (org) => {
     navigate(
@@ -36,14 +54,14 @@ const OrganizationReport = ({ templateId, isOpen, onClose }: IForm) => {
     >
       <ModalBody className="min-h-200px p-0">
         <ul className="list-group list-group-flush">
-          {orgList?.map((org) => {
+          {orgList?.map((org, i) => {
             return (
               <li
                 className="list-group-item list-group-item-action cursor-pointer d-flex align-items-center gap-2"
                 onClick={() => onOrgSelect(org)}
-                key={org?.id}
+                key={i}
               >
-                {org?.nameBn}
+                {org?.organizationNameBn}
               </li>
             );
           })}

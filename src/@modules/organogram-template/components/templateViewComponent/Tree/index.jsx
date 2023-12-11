@@ -10,9 +10,8 @@ const OrganizationTemplateTree = ({
   langEn,
   onCapturePDF,
   pdfClass,
-  templateName,
+  headerData,
   isPDFLoading,
-  versionName
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -79,8 +78,7 @@ const OrganizationTemplateTree = ({
           />
         )}
         ref={download}
-        templateName={templateName}
-        versionName={versionName}
+        headerData={headerData}
         // exportPDF={exportPDF}
         pan={true}
         zoom={true}
@@ -104,7 +102,7 @@ const OrganizationTemplateTree = ({
         <Button
           color="info"
           className="rounded-circle px-3 py-3"
-          isDisabled={!isDownloadButton||isPDFLoading}
+          isDisabled={!isDownloadButton || isPDFLoading}
           size="sm"
           onClick={onDownload}
         >

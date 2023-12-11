@@ -21,7 +21,7 @@ export const COMMON_LABELS = {
   SEND_BACK: "ফেরত পাঠান",
   SEND_BACK_TO_REVIEW: "রিভিউতে ফেরত পাঠান",
   CLOSE: "বন্ধ করুন",
-  CONFIRM: "প্রেরন করুন",
+  SEND: "প্রেরন করুন",
 
   // ========= Others =============
   ACTIVE_STATUS: "প্রকৃতি",
@@ -53,7 +53,7 @@ export const COMMON_LABELS = {
     SEND_BACK: "Send Back",
     SEND_BACK_TO_REVIEW: " Send Back To Review",
     CLOSE: "Close",
-    CONFIRM: "Confirm",
+    SEND: "Send",
 
     // ========= Others =============
     ACTIVE_STATUS: "Actice Status",

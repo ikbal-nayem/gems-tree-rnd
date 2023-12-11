@@ -28,8 +28,7 @@ const propTypes = {
   onClickNode: PropTypes.func,
   onClickChart: PropTypes.func,
   exportPDF: PropTypes.func,
-  templateName: PropTypes.string,
-  versionName: PropTypes.string,
+  // headerData:PropTypes.elementType
 };
 
 const defaultProps = {
@@ -42,8 +41,6 @@ const defaultProps = {
   draggable: false,
   collapsible: true,
   multipleSelect: false,
-  templateName: "",
-  versionName:""
 };
 
 const ChartContainer = forwardRef(
@@ -63,8 +60,7 @@ const ChartContainer = forwardRef(
       onClickNode,
       onClickChart,
       exportPDF,
-      templateName,
-      versionName
+      headerData,
     },
     ref
   ) => {
@@ -320,8 +316,13 @@ const ChartContainer = forwardRef(
               className="mb-3 treeTitle text-center"
               style={{ height: 0, overflow: "hidden" }}
             >
-              <p className="fs-2 mb-0">{templateName}</p>
-              <p className="fs-3 mb-0">{versionName}</p>
+              {headerData?.orgParentName && (
+                <p className="fs-2 mb-0">{headerData?.orgParentName || null}</p>
+              )}
+              <p className="fs-2 mb-0">
+                {headerData?.orgName || headerData?.templateName || null}
+              </p>
+              <p className="fs-3 mb-0">{headerData?.versionName}</p>
             </div>
             <ul>
               <ChartNode

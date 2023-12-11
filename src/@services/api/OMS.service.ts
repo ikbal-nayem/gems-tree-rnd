@@ -27,11 +27,19 @@ export const OMSService = {
       OMS_SERVICE + "organogram-template/custom/get-list",
       payload
     ),
-
   getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
     await axiosIns.get(
       OMS_SERVICE +
         "organogram-template/get-organogram-template-by-id/" +
+        templateId
+    ),
+
+  getAttachedOrganizationByTemplateId: async (
+    templateId: string
+  ): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-attached-organizations/" +
         templateId
     ),
 
