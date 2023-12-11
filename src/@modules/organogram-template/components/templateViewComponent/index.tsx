@@ -41,6 +41,8 @@ import AttachmentList from "./components/AttachmentList";
 import AttachedOrgList from "./components/AttachedOrgList";
 import Switch from "@components/Switch";
 import NotesList from "./components/NotesList";
+import { BUTTON_LABEL, MSG } from "./message";
+import { ConfirmationModal } from "@components/ConfirmationModal/ConfirmationModal";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -74,12 +76,67 @@ const TemplateViewComponent = ({
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
   const [searchParam] = useSearchParams();
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [modalButtonLabel, setModalButtonLabel] = useState<any>();
+  const [modalMsg, setModalMsg] = useState<any>();
+  const [modalAction, setModalAction] = useState<any>();
+  const msg = langEn ? MSG.EN : MSG.BN;
+  const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
+
   const orgData = searchParamsToObject(searchParam) || {};
 
   const navigate = useNavigate();
 
   const switchLang = () => {
     setLangEn(!langEn);
+  };
+
+  const onModalClose = () => {
+    setIsModalOpen(false);
+    setModalAction(null);
+  };
+
+  const openModal = (currentStat, action) => {
+    setIsModalOpen(true);
+    if (currentStat === "TEMPLATE_ENTRY") {
+      setModalMsg(msg.SEND_TO_REVIEW);
+      setModalButtonLabel(modalBtnLabel.SEND);
+      setModalAction(action);
+    } else if (currentStat === "TEMPLATE_REVIEW") {
+      if (action === "BACK_TO_NEW") {
+        setModalMsg(msg.SEND_BACK_TO_NEW);
+        setModalButtonLabel(modalBtnLabel.SEND_BACK);
+        setModalAction(action);
+      } else if (action === "SEND_TO_APPROVE") {
+        setModalMsg(msg.SEND_TO_APPROVE);
+        setModalButtonLabel(modalBtnLabel.SEND);
+        setModalAction(action);
+      }
+    } else if (currentStat === "TEMPLATE_APPROVE") {
+      if (action === "BACK_TO_REVIEW") {
+        setModalMsg(msg.SEND_BACK_TO_REVIEW);
+        setModalButtonLabel(modalBtnLabel.SEND_BACK);
+        setModalAction(action);
+      } else if (action === "APPROVE") {
+        setModalMsg(msg.APPROVE);
+        setModalButtonLabel(modalBtnLabel.APPROVE);
+        setModalAction(action);
+      }
+    }
+  };
+
+  const onModalActionConfirm = () => {
+    if (modalAction === "SEND_TO_REVIEW" || modalAction === "BACK_TO_REVIEW") {
+      onStatusChange("IN_REVIEW");
+    } else if (modalAction === "BACK_TO_NEW") {
+      onStatusChange("NEW");
+    } else if (modalAction === "SEND_TO_APPROVE") {
+      onStatusChange("IN_APPROVE");
+    } else if (modalAction === "APPROVE") {
+      onTemplateApprove();
+    }
+    setIsModalOpen(false);
   };
 
   const onFormClose = () => {
@@ -374,7 +431,7 @@ const TemplateViewComponent = ({
           <div className="pe-4" style={{ width: "33.33333%" }}>
             {(orgName || orgParentName || organogramView) && (
               <AttachedOrgList
-                data={attachedOrganizationData?.attachedOrganization||[]}
+                data={attachedOrganizationData?.attachedOrganization || []}
                 langEn={langEn}
               />
             )}
@@ -465,7 +522,7 @@ const TemplateViewComponent = ({
 
       {!organogramView && (
         <>
-          <div className="d-flex justify-content-center gap-8 mt-12">
+          <div className="d-flex justify-content-center gap-14 mt-12">
             <ACLWrapper
               visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
               visibleCustom={updateData?.status === TEMPLATE_STATUS.NEW}
@@ -473,10 +530,10 @@ const TemplateViewComponent = ({
               <Button
                 className="rounded-pill px-8 fw-bold"
                 color="success"
-                onClick={() => onStatusChange("IN_REVIEW")}
+                onClick={() => openModal("TEMPLATE_ENTRY", "SEND_TO_REVIEW")}
               >
                 <span> {BTN_LABELS.SEND} </span>
-                <Icon icon="check" size={15} className="fw-bold ms-1" />
+                <Icon icon="send" size={12} className="fw-bold ms-2" />
               </Button>
             </ACLWrapper>
 
@@ -487,18 +544,18 @@ const TemplateViewComponent = ({
               <Button
                 className="rounded-pill fw-bold pe-8"
                 color="danger"
-                onClick={() => onStatusChange("NEW")}
+                onClick={() => openModal("TEMPLATE_REVIEW", "BACK_TO_NEW")}
               >
                 <Icon icon="arrow_back" className="fw-bold me-2" />
                 <span> {BTN_LABELS.SEND_BACK} </span>
               </Button>
               <Button
-                className="rounded-pill px-8 fw-bold"
+                className="rounded-pill px-10 ps-12 fw-bold"
                 color="success"
-                onClick={() => onStatusChange("IN_APPROVE")}
+                onClick={() => openModal("TEMPLATE_REVIEW", "SEND_TO_APPROVE")}
               >
                 <span> {BTN_LABELS.SEND} </span>
-                <Icon icon="check" size={15} className="fw-bold ms-1" />
+                <Icon icon="send" size={15} className="fw-bold ms-1" />
               </Button>
             </ACLWrapper>
 
@@ -509,7 +566,7 @@ const TemplateViewComponent = ({
               <Button
                 className="rounded-pill fw-bold pe-8"
                 color="danger"
-                onClick={() => onStatusChange("IN_REVIEW")}
+                onClick={() => openModal("TEMPLATE_APPROVE", "BACK_TO_REVIEW")}
               >
                 <Icon icon="arrow_back" className="fw-bold me-2" />
                 <span> {BTN_LABELS.SEND_BACK} </span>
@@ -518,13 +575,23 @@ const TemplateViewComponent = ({
                 className="rounded-pill px-8 fw-bold"
                 color="success"
                 isLoading={isApproveLoading}
-                onClick={() => onTemplateApprove()}
+                onClick={() => openModal("TEMPLATE_APPROVE", "APPROVE")}
               >
                 <span> {BTN_LABELS.APPROVE} </span>
                 <Icon icon="check" size={15} className="fw-bold ms-1" />
               </Button>
             </ACLWrapper>
           </div>
+          <ConfirmationModal
+            isOpen={isModalOpen}
+            onClose={onModalClose}
+            onConfirm={onModalActionConfirm}
+            isSubmitting={isSubmitting}
+            onConfirmLabel={modalButtonLabel}
+            isEng={langEn}
+          >
+            {modalMsg}
+          </ConfirmationModal>
         </>
       )}
     </div>
