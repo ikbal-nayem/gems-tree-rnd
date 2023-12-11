@@ -10,14 +10,17 @@ import {
   TableCell,
   TableRow,
   Tag,
+  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
   IColors,
   IMeta,
+  IObject,
   generateDateFormat,
   generateRowNumBn,
+  notNullOrUndefined,
   statusColorMapping,
 } from "@gems/utils";
 import { FC, ReactNode, useState } from "react";
@@ -28,6 +31,8 @@ import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { useAuth } from "@context/Auth";
 import OrganizationReport from "./organizatioReport";
+import { OMSService } from "@services/api/OMS.service";
+import { objectToQueryString } from "utility/makeObject";
 
 type TableProps = {
   children: ReactNode;
@@ -50,9 +55,13 @@ const TemplateTable: FC<TableProps> = ({
   const [templateId, setTemplateId] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isReportOpen, setReportOpen] = useState<boolean>(false);
+  const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
   const { currentUser } = useAuth();
   const onClose = () => setIsOpen(false);
-  const onReportClose = () => setReportOpen(false);
+  const onReportClose = () => {
+    setAttachedOrgList(null);
+    setReportOpen(false);
+  };
   const onClone = (template) => {
     setTemplate(template);
     setIsOpen(true);
@@ -76,7 +85,29 @@ const TemplateTable: FC<TableProps> = ({
 
   const onReportView = (item) => {
     setTemplateId(item?.id);
-    setReportOpen(true);
+    if (item?.id) {
+      OMSService.getAttachedOrganizationByTemplateId(item?.id)
+        .then((resp) => {
+          if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
+            toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
+            return;
+          }
+          setAttachedOrgList(resp?.body || []);
+
+          // if (!(resp?.body?.length > 1)) {
+          if (resp?.body?.length === 1) {
+            navigate(
+              ROUTE_L2.ORG_TEMPLATE_VIEW +
+                "?id=" +
+                item?.id +
+                `&${objectToQueryString(resp?.body?.[0])}`
+            );
+          } else {
+            setReportOpen(true);
+          }
+        })
+        .catch((e) => console.log(e?.message));
+    }
   };
 
   return (
@@ -187,6 +218,7 @@ const TemplateTable: FC<TableProps> = ({
         isOpen={isReportOpen}
         onClose={onReportClose}
         templateId={templateId}
+        orgList={attachedOrgList}
       />
     </>
   );

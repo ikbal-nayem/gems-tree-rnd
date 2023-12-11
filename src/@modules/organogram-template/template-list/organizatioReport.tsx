@@ -1,42 +1,25 @@
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ContentPreloader, Modal, ModalBody, NoData } from "@gems/components";
 import { IObject } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { objectToQueryString } from "utility/makeObject";
 
 interface IForm {
   templateId: string;
+  orgList: IObject[];
   isOpen: boolean;
   onClose: () => void;
 }
 
-const OrganizationReport = ({ templateId, isOpen, onClose }: IForm) => {
-  const [orgList, setOrgList] = useState<IObject[]>([]);
+const OrganizationReport = ({
+  templateId,
+  orgList,
+  isOpen,
+  onClose,
+}: IForm) => {
   const [isLoading, setLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (templateId) {
-      OMSService.getAttachedOrganizationByTemplateId(templateId)
-        .then((resp) => {
-          setOrgList(resp?.body || []);
-          if (!(resp?.body?.length > 1)) {
-            navigate(
-              ROUTE_L2.ORG_TEMPLATE_VIEW +
-                "?id=" +
-                templateId +
-                `&${objectToQueryString(resp?.body?.[0])}`
-            );
-          }
-        })
-        .catch((e) => console.log(e?.message))
-        .finally(() => setLoading(false));
-    }
-  }, [templateId]);
-
   const onOrgSelect = (org) => {
     navigate(
       ROUTE_L2.ORG_TEMPLATE_VIEW +
@@ -47,7 +30,7 @@ const OrganizationReport = ({ templateId, isOpen, onClose }: IForm) => {
   };
   return (
     <Modal
-      title={"প্রতিষ্ঠান"}
+      title={"কোন প্রতিষ্ঠানের অর্গানোগ্রাম দেখতে চান ?"}
       isOpen={isOpen}
       handleClose={onClose}
       scrollBody
