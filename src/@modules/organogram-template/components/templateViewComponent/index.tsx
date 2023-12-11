@@ -46,6 +46,7 @@ interface ITemplateViewComponent {
   updateData: IObject;
   inventoryData?: IObject[];
   manpowerData?: IObject;
+  attachedOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
 }
@@ -54,6 +55,7 @@ const TemplateViewComponent = ({
   updateData,
   inventoryData,
   manpowerData,
+  attachedOrganizationData,
   organogramView = false,
 }: ITemplateViewComponent) => {
   const treeData =
@@ -112,10 +114,7 @@ const TemplateViewComponent = ({
     // Get references to the HTML elements you want to capture
     const elementsToCapture = document.getElementsByClassName("pdfGenarator");
     // Create a new instance of jsPDF
-    const pdf = new jsPDF("l", "px", [
-      elementsToCapture[0]?.clientWidth,
-      elementsToCapture[0]?.clientHeight + 100,
-    ]);
+    const pdf = new jsPDF("l", "px", "letter");
 
     // Loop through the elements and capture each one
     for (let i = 0; i < elementsToCapture.length; i++) {
@@ -127,6 +126,10 @@ const TemplateViewComponent = ({
         onclone: (clone: any) => {
           clone.querySelector(".animate__fadeIn") &&
             (clone.querySelector(".animate__fadeIn").style.animation = "none");
+          clone.querySelector(".allocationBlock").style.overflow = "auto";
+          clone.querySelector(".allocationBlock").style.height = "fit-content";
+          clone.querySelector(".allocationBlock").style.padding = "20px";
+          clone.querySelector(".allocationBlock").style.paddingBottom = "30px";
           clone.querySelector(".treeTitle").style.overflow = "visible";
           clone.querySelector(".treeTitle").style.height = "fit-content";
           clone.querySelector(".dataBlock").style.overflow = "auto";
@@ -134,30 +137,47 @@ const TemplateViewComponent = ({
           clone.querySelector(".dataBlock").style.padding = "20px";
           clone.querySelector(".dataBlock").style.paddingBottom = "30px";
           clone.querySelector(".orgchart").style.paddingBottom = "15px";
+          clone.querySelector(".orgchart").style.minWidth = "2140px";
         },
       });
 
-      if (i > 0) {
-        pdf.addPage(
-          [
-            canvas.width > elementsToCapture[0]?.clientWidth
-              ? canvas.width
-              : elementsToCapture[0]?.clientWidth,
-            canvas.height > elementsToCapture[0]?.clientHeight
-              ? canvas.height
-              : elementsToCapture[0]?.clientHeight,
-          ],
-          "l"
-        );
-      }
-
-      // if (i < elementsToCapture.length - 1) {
+      // if (i === 1) {
+      // pdf.addPage(
+      // [
+      // elementsToCapture[1]?.clientWidth,
+      // elementsToCapture[1]?.clientHeight + 100,
+      // ],
+      // "l"
+      // );
+      // }
+      //
+      // if (i === 2) {
+      // pdf.addPage(
+      // [
+      // canvas.width > elementsToCapture[1]?.clientWidth
+      // ? canvas.width
+      // : elementsToCapture[1]?.clientWidth,
+      // canvas.height > elementsToCapture[1]?.clientHeight
+      // ? canvas.height
+      // : elementsToCapture[1]?.clientHeight,
+      // ],
+      // "l"
+      // );
+      // }
+      // if (i > 0) {
       //   pdf.addPage(
-      //     [elementsToCapture[1]?.clientWidth, dataBlockClass.clientHeight],
+      //     [
+      //       canvas.width > elementsToCapture[0]?.clientWidth
+      //         ? canvas.width
+      //         : elementsToCapture[0]?.clientWidth,
+      //       canvas.height > elementsToCapture[0]?.clientHeight
+      //         ? canvas.height
+      //         : elementsToCapture[0]?.clientHeight,
+      //     ],
       //     "l"
       //   );
       // }
-
+      if (i > 0) pdf.addPage();
       // Convert the canvas to an image and add it to the PDF
       const imageData = canvas.toDataURL("image/png");
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -183,7 +203,7 @@ const TemplateViewComponent = ({
     }
 
     // Save or display the PDF
-    else pdf.save("Organogram.pdf");
+    else pdf.save("Organogram With Data.pdf");
     setPDFLoading(false);
   };
 
@@ -253,6 +273,22 @@ const TemplateViewComponent = ({
           )}
         </div>
       </div>
+      <div
+        className="pdfGenarator allocationBlock"
+        style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
+      >
+        <div className="mb-6 text-center">
+          {orgParentName && (
+            <p className="fs-2 mb-0">{orgParentName || null}</p>
+          )}
+          <p className="fs-2 mb-0">{orgName || titleName || null}</p>
+          <p className="fs-3 mb-0">{versionName}</p>
+        </div>
+        <AllocationOfBusinessList
+          data={updateData?.businessAllocationDtoList || []}
+          langEn={langEn}
+        />
+      </div>
       <div className="position-relative border border-secondary mb-3">
         <OrganizationTemplateTree
           treeData={treeData}
@@ -303,53 +339,57 @@ const TemplateViewComponent = ({
         </Modal>
       </div>
       {/* For pdf generating start */}
+
       <div
-        className="d-flex pdfGenarator dataBlock"
+        className="pdfGenarator dataBlock"
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
-        <div className="pe-3" style={{ width: "33.33333%" }}>
-          <ActivitiesList
-            data={updateData?.mainActivitiesDtoList || []}
-            langEn={langEn}
-          />
-          <div>
-            <AllocationOfBusinessList
-              data={updateData?.businessAllocationDtoList || []}
+        <div className="mb-6 text-center">
+          {orgParentName && (
+            <p className="fs-2 mb-0">{orgParentName || null}</p>
+          )}
+          <p className="fs-2 mb-0">{orgName || titleName || null}</p>
+          <p className="fs-3 mb-0">{versionName}</p>
+        </div>
+        <div className="d-flex">
+          <div className="pe-3" style={{ width: "33.33333%" }}>
+            {updateData?.mainActivitiesDtoList?.length > 0 && (
+              <ActivitiesList
+                data={updateData?.mainActivitiesDtoList || []}
+                langEn={langEn}
+              />
+            )}
+            <EquipmentsList
+              data={updateData?.miscellaneousPointDtoList || []}
+              inventoryData={inventoryData || []}
+              langEn={langEn}
+            />
+            {updateData?.organogramNoteDtoList?.length > 0 && (
+              <NotesList
+                data={updateData?.organogramNoteDtoList || []}
+                langEn={langEn}
+              />
+            )}
+          </div>
+          <div className="pe-4" style={{ width: "33.33333%" }}>
+            {(orgName || orgParentName || organogramView) && (
+              <AttachedOrgList
+                data={attachedOrganizationData?.attachedOrganization||[]}
+                langEn={langEn}
+              />
+            )}
+            <AbbreviationList
+              data={updateData?.abbreviationDtoList || []}
               langEn={langEn}
             />
           </div>
-        </div>
-        <div className="pe-4" style={{ width: "33.33333%" }}>
-          <EquipmentsList
-            data={updateData?.miscellaneousPointDtoList || []}
-            inventoryData={inventoryData || []}
-            langEn={langEn}
-          />
-          {(orgName || orgParentName || organogramView) && (
-            <AttachedOrgList
-              data={updateData?.attachmentOrganization || []}
+          <div className="" style={{ width: "33.33333%" }}>
+            <ManPowerList
+              isLoading={false}
+              data={manpowerData}
               langEn={langEn}
             />
-          )}
-          <AbbreviationList
-            data={updateData?.abbreviationDtoList || []}
-            langEn={langEn}
-          />
-          {!organogramView && (
-            <NotesList
-              data={updateData?.organogramNoteDtoList || []}
-              langEn={langEn}
-            />
-          )}
-        </div>
-        <div className="" style={{ width: "33.33333%" }}>
-          <ManPowerList isLoading={false} data={manpowerData} langEn={langEn} />
-          {organogramView && (
-            <NotesList
-              data={updateData?.organogramNoteDtoList || []}
-              langEn={langEn}
-            />
-          )}
+          </div>
         </div>
       </div>
       {/* Pdf generating end */}
@@ -391,7 +431,7 @@ const TemplateViewComponent = ({
           {(orgName || orgParentName || organogramView) && (
             <div className="mt-3">
               <AttachedOrgList
-                data={updateData?.attachmentOrganization || []}
+                data={attachedOrganizationData?.attachedOrganization || []}
                 langEn={langEn}
               />
             </div>

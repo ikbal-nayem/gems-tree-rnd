@@ -11,14 +11,17 @@ const TemplateView = () => {
   const [data, setData] = useState<IObject>({});
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [manpowerData, setManpowerData] = useState<IObject>();
+  const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [searchParam] = useSearchParams();
 
   const templateId = searchParam.get("id") || "";
+  const organizationId = searchParam.get("organizationId") || "";
 
   useEffect(() => {
     getTemplateDetailsDetailsById();
     getTemplateInventoryById();
     getManpowerSummaryById();
+    getAttachedOrganizationById();
   }, []);
 
   const getTemplateDetailsDetailsById = () => {
@@ -50,6 +53,19 @@ const TemplateView = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const getAttachedOrganizationById = () => {
+    setIsLoading(true);
+    OMSService.getAttachedOrganizationByTemplateAndOrgId(
+      templateId,
+      organizationId
+    )
+      .then((resp) => {
+        setAttachOrgData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <>
       {isLoading && <ContentPreloader />}
@@ -58,6 +74,7 @@ const TemplateView = () => {
           updateData={data}
           inventoryData={inventoryData}
           manpowerData={manpowerData}
+          attachedOrganizationData={attachOrgData}
         />
       )}
       {!isLoading && isObjectNull(data) && (

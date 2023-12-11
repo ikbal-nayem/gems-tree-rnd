@@ -313,18 +313,18 @@ const ChartContainer = forwardRef(
             onMouseMove={pan && panning ? panHandler : undefined}
           >
             <div
-              className="mb-3 treeTitle text-center"
+              className="mb-6 treeTitle text-center"
               style={{ height: 0, overflow: "hidden" }}
             >
               {headerData?.orgParentName && (
                 <p className="fs-2 mb-0">{headerData?.orgParentName || null}</p>
               )}
               <p className="fs-2 mb-0">
-                {headerData?.orgName || headerData?.templateName || null}
+                {headerData?.orgName || headerData?.titleName || null}
               </p>
               <p className="fs-3 mb-0">{headerData?.versionName}</p>
             </div>
-            <ul>
+            <ul className="justify-content-center">
               <ChartNode
                 datasource={attachRel(ds, "00")}
                 NodeTemplate={NodeTemplate}
