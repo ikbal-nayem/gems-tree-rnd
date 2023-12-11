@@ -21,7 +21,7 @@ const TemplateView = () => {
     getTemplateDetailsDetailsById();
     getTemplateInventoryById();
     getManpowerSummaryById();
-    getAttachedOrganizationById();
+    if (organizationId) getAttachedOrganizationById();
   }, []);
 
   const getTemplateDetailsDetailsById = () => {
