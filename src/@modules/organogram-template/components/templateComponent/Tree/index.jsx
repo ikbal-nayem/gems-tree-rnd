@@ -105,13 +105,34 @@ const OrganizationTemplateTree = ({
   };
 
   const onSubmit = (formData) => {
+    let tempChildList = [],
+      duplicateOrderFound = false;
     selectedNode.current?.children?.forEach((cnd, idx) => {
-      if (formData?.displayOrder === cnd?.displayOrder) {
+      if (
+        +formData?.displayOrder === cnd?.displayOrder ||
+        duplicateOrderFound
+      ) {
         // selectedNode.current?.children[idx]?.displayOrder =  cnd?.displayOrder + 1
         console.log("============= DUPLICATE FOUND ==============");
+        duplicateOrderFound = true;
         // todo: Re-Ordering
+        tempChildList.push({
+          ...cnd,
+          displayOrder: +cnd?.displayOrder + 1,
+        });
+      } else {
+        tempChildList.push(cnd);
       }
     });
+    // console.log("duplicate Order Found", duplicateOrderFound);
+    selectedNode.current = duplicateOrderFound
+      ? {
+          ...selectedNode.current,
+          children: tempChildList,
+        }
+      : selectedNode.current;
+
+    console.log("selected Node current: " , selectedNode.current);
 
     const ad = isObjectNull(updateNodeData.current)
       ? addNode(treeData, selectedNode.current?.id, formData)
