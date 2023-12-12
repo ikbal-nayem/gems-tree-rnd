@@ -25,6 +25,7 @@ const OrganogramView = () => {
   const [data, setData] = useState<IObject>({});
   const [searchParam, setSearchParam] = useSearchParams();
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
+  const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
 
   const organogramId = searchParam.get("id") || "";
@@ -44,6 +45,7 @@ const OrganogramView = () => {
     getTemplateDetailsDetailsById();
     getTemplateInventoryById();
     getManpowerSummaryById();
+    getAttachedOrganizationById();
   }, []);
 
   const getTemplateDetailsDetailsById = () => {
@@ -76,6 +78,16 @@ const OrganogramView = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const getAttachedOrganizationById = () => {
+    setIsLoading(true);
+    OMSService.getAttachedOrganizationById(organogramId)
+      .then((resp) => {
+        setAttachOrgData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <>
       {isLoading && <ContentPreloader />}
@@ -95,6 +107,7 @@ const OrganogramView = () => {
                 updateData={data}
                 inventoryData={inventoryData}
                 manpowerData={manpowerData}
+                attachedOrganizationData={attachOrgData}
                 organogramView={true}
               />
             </TabBlock>

@@ -27,11 +27,19 @@ export const OMSService = {
       OMS_SERVICE + "organogram-template/custom/get-list",
       payload
     ),
-
   getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
     await axiosIns.get(
       OMS_SERVICE +
         "organogram-template/get-organogram-template-by-id/" +
+        templateId
+    ),
+
+  getAttachedOrganizationByTemplateId: async (
+    templateId: string
+  ): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-attached-organizations/" +
         templateId
     ),
 
@@ -47,6 +55,23 @@ export const OMSService = {
       OMS_SERVICE +
         "organogram-template/get-summary-manpower-list-by-organogramId/" +
         templateId
+    ),
+  getAttachedOrganizationById: async (templateId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organization-organogram/get-attached-by-organogram-id/" +
+        templateId
+    ),
+  getAttachedOrganizationByTemplateAndOrgId: async (
+    templateId: string,
+    orgId
+  ): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-attached-by-organogram-temp-id-org-id/" +
+        templateId +
+        "/" +
+        orgId
     ),
 
   duplicateTemplateTitleCheck: async (

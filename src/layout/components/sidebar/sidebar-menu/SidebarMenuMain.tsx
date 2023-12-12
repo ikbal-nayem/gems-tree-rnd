@@ -6,13 +6,33 @@ import { MENU } from "@constants/menu-titles.constant";
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 
 const menuData = [
+  // {
+  //   routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE,
+  //   link: ROUTE_L1.ORG_TEMPLATE,
+  //   title: MENU.BN.TEMPLATE,
+  //   icon: "history",
+  //   childrens: [
+  //     {
+  //       routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
+  //       link: ROUTE_L2.ORG_TEMPLATE_CREATE,
+  //       title: MENU.BN.TEMPLATE_CREATE,
+  //       hasBullet: true,
+  //     },
+  //     {
+  //       routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_LIST,
+  //       link: ROUTE_L2.ORG_TEMPLATE_LIST,
+  //       title: MENU.BN.TEMPLATE_LIST,
+  //       hasBullet: true,
+  //     },
+  //   ],
+  // },
   {
-    routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE,
-    link: ROUTE_L1.ORG_TEMPLATE,
-    title: MENU.BN.TEMPLATE,
-    icon: "history",
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM,
+    link: ROUTE_L1.OMS_ORGANOGRAM,
+    title: MENU.BN.ORGANOGRAM,
+    icon: "account_tree",
     childrens: [
-      {
+       {
         routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
         link: ROUTE_L2.ORG_TEMPLATE_CREATE,
         title: MENU.BN.TEMPLATE_CREATE,
@@ -24,14 +44,6 @@ const menuData = [
         title: MENU.BN.TEMPLATE_LIST,
         hasBullet: true,
       },
-    ],
-  },
-  {
-    routeKey: ROUTE_KEY.OMS_ORGANOGRAM,
-    link: ROUTE_L1.OMS_ORGANOGRAM,
-    title: MENU.BN.ORGANOGRAM,
-    icon: "account_tree",
-    childrens: [
       {
         routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
         link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
