@@ -185,7 +185,9 @@ const TemplateViewComponent = ({
             (clone.querySelector(".animate__fadeIn").style.animation = "none");
           clone.querySelector(".allocationBlock").style.overflow = "auto";
           clone.querySelector(".allocationBlock").style.height = "fit-content";
-          clone.querySelector(".allocationBlock").style.padding = "20px";
+          clone.querySelector(".allocationBlock").style.paddingTop = "20px";
+          clone.querySelector(".allocationBlock").style.paddingLeft = "200px";
+          clone.querySelector(".allocationBlock").style.paddingRight = "200px";
           clone.querySelector(".allocationBlock").style.paddingBottom = "30px";
           clone.querySelector(".treeTitle").style.overflow = "visible";
           clone.querySelector(".treeTitle").style.height = "fit-content";
@@ -249,7 +251,9 @@ const TemplateViewComponent = ({
         0,
         0,
         imageWidth * ratio,
-        imageHeight * ratio
+        imageHeight * ratio,
+        "",
+        "FAST"
       );
     }
 
