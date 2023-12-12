@@ -88,6 +88,13 @@ const TemplateViewComponent = ({
 
   const navigate = useNavigate();
 
+  const currentURL = window.location.href;
+  // alert("currentURL includes organizationId : " + currentURL.includes("organizationId"));
+  // alert("is organogram : " + organogramView);
+  organogramView = currentURL.includes("organizationId")
+    ? true
+    : organogramView;
+    
   const switchLang = () => {
     setLangEn(!langEn);
   };
