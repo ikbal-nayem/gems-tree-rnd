@@ -364,6 +364,7 @@ const TemplateViewComponent = ({
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
+          organogramView={organogramView}
           headerData={{
             titleName: titleName || null,
             versionName: versionName || null,
@@ -375,7 +376,7 @@ const TemplateViewComponent = ({
           // orgName={orgName}
           // orgParentName={orgParentName}
         />
-        <div className="position-absolute" style={{ top: 10, right: 175 }}>
+        <div className="position-absolute" style={{ top: 10, right: (organogramView ? 175 : 125) }}>
           <IconButton
             iconName="fullscreen"
             color="info"
@@ -396,6 +397,7 @@ const TemplateViewComponent = ({
               onCapturePDF={captureAndConvertToPDF}
               pdfClass=""
               isPDFLoading={isPDFLoading}
+              organogramView={organogramView}
               headerData={{
                 titleName: titleName || null,
                 versionName: versionName || null,

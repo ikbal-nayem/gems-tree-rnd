@@ -12,6 +12,7 @@ const OrganizationTemplateTree = ({
   pdfClass,
   headerData,
   isPDFLoading,
+  organogramView = false,
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -89,32 +90,40 @@ const OrganizationTemplateTree = ({
         isOpen={formOpen}
         onClose={onFormClose}
       />
-      <div className="position-absolute" style={{ top: 0, right: 125 }}>
-        <IconButton
-          iconName="print"
-          color="info"
-          variant="fill"
-          onClick={onPrint}
-          isDisabled={!isDownloadButton}
-        />
-      </div>
-      <div className="position-absolute" style={{ top: 0, right: 20 }}>
-        <Button
-          color="info"
-          className="rounded-circle px-3 py-3"
-          isDisabled={!isDownloadButton || isPDFLoading}
-          size="sm"
-          onClick={onDownload}
-        >
-          {isPDFLoading ? (
-            <span
-              className={`spinner-border spinner-border-md align-middle`}
-            ></span>
-          ) : (
-            <Icon icon="download" className="" size={20} />
-          )}
-        </Button>
-      </div>
+      {/* =========================  PRINT BUTTON ========================== */}
+
+      {organogramView && (
+        <div className="position-absolute" style={{ top: 0, right: 125 }}>
+          <IconButton
+            iconName="print"
+            color="info"
+            variant="fill"
+            onClick={onPrint}
+            isDisabled={!isDownloadButton}
+          />
+        </div>
+      )}
+
+      {/* =========================  DOWNLOAD BUTTON ========================== */}
+      {organogramView && (
+        <div className="position-absolute" style={{ top: 0, right: 20 }}>
+          <Button
+            color="info"
+            className="rounded-circle px-3 py-3"
+            isDisabled={!isDownloadButton || isPDFLoading}
+            size="sm"
+            onClick={onDownload}
+          >
+            {isPDFLoading ? (
+              <span
+                className={`spinner-border spinner-border-md align-middle`}
+              ></span>
+            ) : (
+              <Icon icon="download" className="" size={20} />
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
