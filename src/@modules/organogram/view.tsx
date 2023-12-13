@@ -27,6 +27,9 @@ const OrganogramView = () => {
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
+  const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
+    {}
+  );
 
   const organogramId = searchParam.get("id") || "";
 
@@ -83,6 +86,16 @@ const OrganogramView = () => {
     OMSService.getAttachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getParentOrganization = () => {
+    setIsLoading(true);
+    OMSService.getOrganizationParentByOrgId(organogramId)
+      .then((resp) => {
+        setParentOrganizationData(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));

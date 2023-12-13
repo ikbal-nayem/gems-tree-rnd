@@ -62,6 +62,10 @@ export const OMSService = {
         "organization-organogram/get-attached-by-organogram-id/" +
         templateId
     ),
+  getOrganizationParentByOrgId: async (organizationId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE + "/organization-organogram/get-parent-org/" + organizationId
+    ),
   getAttachedOrganizationByTemplateAndOrgId: async (
     templateId: string,
     orgId
