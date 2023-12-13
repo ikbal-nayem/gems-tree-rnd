@@ -34,6 +34,7 @@ const MyNode = ({
           />
           <div>
             <p className="p-1 mb-0 fs-7">
+              {/* {(isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn) + " | " + nodeData?.displayOrder} */}
               {isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn}
             </p>
           </div>

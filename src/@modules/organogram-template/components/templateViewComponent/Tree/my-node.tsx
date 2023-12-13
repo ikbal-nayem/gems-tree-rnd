@@ -36,6 +36,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           onClick={() => onView(nodeData)}
         />
         <p className="mb-0 fs-8  text-start">
+        {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {langEn ? nodeData.titleEn : nodeData.titleBn}
         </p>
         <p className="mb-0 fs-8">{manPower}</p>
