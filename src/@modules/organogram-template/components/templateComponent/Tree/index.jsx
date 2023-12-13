@@ -109,7 +109,7 @@ const OrganizationTemplateTree = ({
       duplicateOrderFound = false;
     parent?.children?.forEach((cnd) => {
       if (
-        +formData?.displayOrder === cnd?.displayOrder ||
+        +formData?.displayOrder === +cnd?.displayOrder ||
         duplicateOrderFound
       ) {
         // console.log("============= DUPLICATE FOUND ==============");
@@ -120,10 +120,14 @@ const OrganizationTemplateTree = ({
           displayOrder: +cnd?.displayOrder + 1,
         });
       } else {
-        tempChildList.push(cnd);
+        tempChildList.push({
+          ...cnd,
+          displayOrder: +cnd?.displayOrder,
+        });
       }
     });
     // console.log("duplicate Order Found: ", duplicateOrderFound);
+    // console.log("Temp Child List: ", tempChildList);
     return duplicateOrderFound
       ? {
           ...parent,
@@ -133,14 +137,16 @@ const OrganizationTemplateTree = ({
   };
 
   const onSubmit = (formData) => {
-    let parent = isObjectNull(updateNodeData.current)
-      ? selectedNode.current
-      : updateNodeData.current;
-    parent = reOrder(parent, formData);
-
-    const ad = isObjectNull(updateNodeData.current)
-      ? addNode(treeData, parent?.id, formData)
-      : editNode(treeData, parent?.id, formData);
+    let ad;
+    if (isObjectNull(updateNodeData.current)) {
+      selectedNode.current = reOrder(selectedNode.current, formData);
+      // console.log("Selected Node: ", selectedNode.current);
+      ad = addNode(treeData, selectedNode.current?.id, formData);
+    } else {
+      updateNodeData.current = reOrder(updateNodeData.current, formData);
+      // console.log("Update Node: ", updateNodeData.current);
+      ad = editNode(treeData, updateNodeData.current?.id, formData);
+    }
     setTreeData(ad);
     onFormClose();
   };
