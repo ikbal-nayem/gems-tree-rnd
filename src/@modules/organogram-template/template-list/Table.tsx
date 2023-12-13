@@ -77,7 +77,15 @@ const TemplateTable: FC<TableProps> = ({
 
   const navigate = useNavigate();
   const navigateToDetails = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id);
+    OMSService.getCheckUserOrgPermissionByTemplateId(id)
+      .then((resp) => {
+        if (resp?.body) {
+          navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id);
+        } else {
+          alert("This is not your organogram");
+        }
+      })
+      .catch(() => navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id));
   };
   const navigateToView = (id: string) => {
     navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);

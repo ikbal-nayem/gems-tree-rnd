@@ -27,10 +27,17 @@ export const OMSService = {
       OMS_SERVICE + "organogram-template/custom/get-list",
       payload
     ),
+
   getTemplateDetailsByTemplateId: async (templateId: string): Promise<any> =>
     await axiosIns.get(
       OMS_SERVICE +
         "organogram-template/get-organogram-template-by-id/" +
+        templateId
+    ),
+  getCheckUserOrgPermissionByTemplateId: async (templateId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/check-user-org-organogram/" +
         templateId
     ),
 
@@ -61,6 +68,10 @@ export const OMSService = {
       OMS_SERVICE +
         "organization-organogram/get-attached-by-organogram-id/" +
         templateId
+    ),
+  getOrganizationParentByOrgId: async (organizationId: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE + "organization-organogram/get-parent-org/" + organizationId
     ),
   getAttachedOrganizationByTemplateAndOrgId: async (
     templateId: string,

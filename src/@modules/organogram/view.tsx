@@ -27,6 +27,9 @@ const OrganogramView = () => {
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
+  const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
+    {}
+  );
 
   const organogramId = searchParam.get("id") || "";
 
@@ -88,6 +91,22 @@ const OrganogramView = () => {
       .finally(() => setIsLoading(false));
   };
 
+  useEffect(() => {
+    if (data?.organization?.id) {
+      getParentOrganization();
+    }
+  }, [data]);
+
+  const getParentOrganization = () => {
+    setIsLoading(true);
+    OMSService.getOrganizationParentByOrgId(data?.organization?.id)
+      .then((resp) => {
+        setParentOrganizationData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <>
       {isLoading && <ContentPreloader />}
@@ -109,6 +128,7 @@ const OrganogramView = () => {
                 manpowerData={manpowerData}
                 attachedOrganizationData={attachOrgData}
                 organogramView={true}
+                parentOrganizationData={parentOrganizationData}
               />
             </TabBlock>
           </div>
