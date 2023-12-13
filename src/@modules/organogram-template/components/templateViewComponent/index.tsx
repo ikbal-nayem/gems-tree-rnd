@@ -49,6 +49,7 @@ interface ITemplateViewComponent {
   inventoryData?: IObject[];
   manpowerData?: IObject;
   attachedOrganizationData?: IObject;
+  parentOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
 }
@@ -58,6 +59,7 @@ const TemplateViewComponent = ({
   inventoryData,
   manpowerData,
   attachedOrganizationData,
+  parentOrganizationData,
   organogramView = false,
 }: ITemplateViewComponent) => {
   const treeData =
@@ -94,7 +96,7 @@ const TemplateViewComponent = ({
   organogramView = currentURL.includes("organizationId")
     ? true
     : organogramView;
-    
+
   const switchLang = () => {
     setLangEn(!langEn);
   };
@@ -278,7 +280,10 @@ const TemplateViewComponent = ({
   let orgName = langEn
     ? orgData?.organizationNameEn
     : orgData?.organizationNameBn;
-  let orgParentName = langEn ? orgData?.parentNameEN : orgData?.parentNameBN;
+
+  let orgParentName = langEn
+    ? orgData?.parentNameEN || parentOrganizationData?.nameEn
+    : orgData?.parentNameBN || parentOrganizationData?.nameBn;
 
   let titleName =
     (organogramView
@@ -376,7 +381,10 @@ const TemplateViewComponent = ({
           // orgName={orgName}
           // orgParentName={orgParentName}
         />
-        <div className="position-absolute" style={{ top: 10, right: (organogramView ? 175 : 125) }}>
+        <div
+          className="position-absolute"
+          style={{ top: 10, right: organogramView ? 175 : 125 }}
+        >
           <IconButton
             iconName="fullscreen"
             color="info"

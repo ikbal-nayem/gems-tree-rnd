@@ -91,9 +91,15 @@ const OrganogramView = () => {
       .finally(() => setIsLoading(false));
   };
 
+  useEffect(() => {
+    if (data?.organization?.id) {
+      getParentOrganization();
+    }
+  }, [data]);
+
   const getParentOrganization = () => {
     setIsLoading(true);
-    OMSService.getOrganizationParentByOrgId(organogramId)
+    OMSService.getOrganizationParentByOrgId(data?.organization?.id)
       .then((resp) => {
         setParentOrganizationData(resp?.body);
       })
@@ -122,6 +128,7 @@ const OrganogramView = () => {
                 manpowerData={manpowerData}
                 attachedOrganizationData={attachOrgData}
                 organogramView={true}
+                parentOrganizationData={parentOrganizationData}
               />
             </TabBlock>
           </div>
