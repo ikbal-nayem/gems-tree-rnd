@@ -3,6 +3,7 @@ import { Icon } from "@gems/components";
 import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import "./my-node.css";
 import TextBlock from "@components/TextBlock";
+import { longLineBreaker, slashBreaker } from "utility/utils";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
   let COMMON_LABEL,
@@ -37,7 +38,8 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
         />
         <p className="mb-0 fs-8  text-start">
         {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
-          {langEn ? nodeData.titleEn : nodeData.titleBn}
+          {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 15)} */}
+          {slashBreaker(langEn ? nodeData.titleEn : nodeData.titleBn)}
         </p>
         <p className="mb-0 fs-8">{manPower}</p>
       </div>

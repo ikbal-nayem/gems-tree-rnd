@@ -2,7 +2,7 @@ import { Icon, Separator } from "@gems/components";
 // import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import "./my-node.css";
 import { COMMON_LABELS } from "@constants/common.constant";
-import { isNotEmptyList } from "utility/utils";
+import { isNotEmptyList, longLineBreaker, slashBreaker } from "utility/utils";
 import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import TextBlock from "@components/TextBlock";
 // import { Dropdown, DropdownItem } from "../Dropdown";
@@ -35,7 +35,8 @@ const MyNode = ({
           <div>
             <p className="p-1 mb-0 fs-7">
               {/* {(isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn) + " | " + nodeData?.displayOrder} */}
-              {isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn}
+              {/* {longLineBreaker(isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn)} */}
+              {slashBreaker(isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn)}
             </p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
