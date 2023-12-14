@@ -258,7 +258,7 @@ const TemplateViewComponent = ({
         imageData,
         "PNG",
         0,
-        0,
+        8,
         imageWidth * ratio,
         imageHeight * ratio,
         "",
@@ -310,8 +310,6 @@ const TemplateViewComponent = ({
         DATE_PATTERN.GOVT_STANDARD
       ) + " রিপোর্ট"
     : "";
-
-  console.log("dd", organogramView);
 
   return (
     <div>
