@@ -93,7 +93,7 @@ const TemplateViewComponent = ({
   const currentURL = window.location.href;
   // alert("currentURL includes organizationId : " + currentURL.includes("organizationId"));
   // alert("is organogram : " + organogramView);
-  organogramView = currentURL.includes("organizationId")
+  let organogramOrganizationView = currentURL.includes("organizationId")
     ? true
     : organogramView;
 
@@ -311,6 +311,8 @@ const TemplateViewComponent = ({
       ) + " রিপোর্ট"
     : "";
 
+  console.log("dd", organogramView);
+
   return (
     <div>
       <div className="card border p-3 mb-4">
@@ -369,7 +371,7 @@ const TemplateViewComponent = ({
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
-          organogramView={organogramView}
+          organogramView={organogramOrganizationView}
           headerData={{
             titleName: titleName || null,
             versionName: versionName || null,
@@ -383,7 +385,7 @@ const TemplateViewComponent = ({
         />
         <div
           className="position-absolute"
-          style={{ top: 10, right: organogramView ? 175 : 125 }}
+          style={{ top: 10, right: organogramOrganizationView ? 175 : 125 }}
         >
           <IconButton
             iconName="fullscreen"
@@ -405,7 +407,7 @@ const TemplateViewComponent = ({
               onCapturePDF={captureAndConvertToPDF}
               pdfClass=""
               isPDFLoading={isPDFLoading}
-              organogramView={organogramView}
+              organogramView={organogramOrganizationView}
               headerData={{
                 titleName: titleName || null,
                 versionName: versionName || null,

@@ -55,7 +55,7 @@ const TemplateList = () => {
         ? reqMeta
           ? { ...reqMeta, sort: null }
           : { ...respMeta, page: 0, sort: null }
-        : reqMeta || { ...respMeta, page: 0 },
+        : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
         isTemplate: false,
@@ -66,13 +66,13 @@ const TemplateList = () => {
 
     OMSService.getTemplateList(reqData)
       .then((resp) => {
-        setDataList(resp?.body);
-        setRespMeta(resp?.meta);
+        setDataList(resp?.body || []);
+        setRespMeta(
+          resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
+        );
       })
       .catch((err) => {
         toast.error(err?.message);
-        setDataList([]);
-        setRespMeta({});
       })
       .finally(() => {
         topProgress.hide();
