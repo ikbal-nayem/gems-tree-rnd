@@ -109,3 +109,19 @@ export const numOfTabs = (val) => {
 };
 
 export const breakNewLines = (val) => val.split("\n");
+
+export const longLineBreaker = (val, threshHoldLength: number = 10) => {
+  if (!notNullOrUndefined(val)) return val;
+  if (val.length < 11) return val;
+
+  let repeat = Math.trunc(val.length / threshHoldLength);
+  for (let i = 1; i <= repeat; i++) {
+    threshHoldLength = (threshHoldLength * i); // + i - 1;
+    if (val.charAt(threshHoldLength) !== " ") {
+      val = val.substring(0, threshHoldLength + i - 2) + "- " + val.substring(threshHoldLength + i - 2);
+    }
+  }
+
+  // return repeat;
+  return val;
+};
