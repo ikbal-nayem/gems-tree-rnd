@@ -98,8 +98,6 @@ const TemplateList = () => {
       });
   };
 
-  console.log(respMeta);
-
   const getDataList = (reqMeta = null) => {
     topProgress.show();
     setLoading(true);
