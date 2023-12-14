@@ -120,7 +120,9 @@ const TemplateList = () => {
     OMSService.getTemplateList(reqData)
       .then((resp) => {
         setDataList(resp?.body);
-        setRespMeta(resp?.meta ? { ...resp?.meta } : { ...respMeta, page: 0 });
+        setRespMeta(
+          resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
+        );
       })
       .catch((err) => {
         toast.error(err?.message);
