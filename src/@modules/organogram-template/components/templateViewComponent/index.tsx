@@ -15,7 +15,6 @@ import {
   generateDateFormat,
   generateUUID,
   isObjectNull,
-  searchParamsToObject,
 } from "@gems/utils";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
@@ -31,18 +30,18 @@ import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
 import OrgList from "./components/Organization";
 
+import { ConfirmationModal } from "@components/ConfirmationModal/ConfirmationModal";
+import Switch from "@components/Switch";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import AttachmentList from "./components/AttachmentList";
+import { useLocation, useNavigate } from "react-router-dom";
 import AttachedOrgList from "./components/AttachedOrgList";
-import Switch from "@components/Switch";
+import AttachmentList from "./components/AttachmentList";
 import NotesList from "./components/NotesList";
 import { BUTTON_LABEL, MSG } from "./message";
-import { ConfirmationModal } from "@components/ConfirmationModal/ConfirmationModal";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -76,7 +75,6 @@ const TemplateViewComponent = ({
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
-  const [searchParam] = useSearchParams();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -86,12 +84,10 @@ const TemplateViewComponent = ({
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
 
-  const orgData = searchParamsToObject(searchParam) || {};
-
   const navigate = useNavigate();
 
   const { state } = useLocation();
-  console.log(state);
+  const orgData = state || {};
 
   const currentURL = window.location.href;
   // alert("currentURL includes organizationId : " + currentURL.includes("organizationId"));
