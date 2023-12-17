@@ -1,3 +1,6 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
+import { useAuth } from "@context/Auth";
 import {
   ACLWrapper,
   ContentPreloader,
@@ -23,16 +26,12 @@ import {
   notNullOrUndefined,
   statusColorMapping,
 } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode, useState } from "react";
-import { LABELS } from "./labels";
 import { useNavigate } from "react-router-dom";
 import TemplateClone from "./clone";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
-import { useAuth } from "@context/Auth";
+import { LABELS } from "./labels";
 import OrganizationReport from "./organizatioReport";
-import { OMSService } from "@services/api/OMS.service";
-import { objectToQueryString } from "utility/makeObject";
 
 type TableProps = {
   children: ReactNode;
@@ -105,10 +104,9 @@ const TemplateTable: FC<TableProps> = ({
           // if (!(resp?.body?.length > 1)) {
           if (resp?.body?.length === 1) {
             navigate(
-              ROUTE_L2.ORG_TEMPLATE_VIEW +
-                "?id=" +
-                item?.id +
-                `&${objectToQueryString(resp?.body?.[0])}`
+              ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id,
+              { state: resp?.body?.[0] }
+              // `&${objectToQueryString(resp?.body?.[0])}`
             );
           } else {
             setReportOpen(true);

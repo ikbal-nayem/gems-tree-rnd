@@ -101,7 +101,7 @@ pipeline {
         stage('Creating production building and Docker image') {
             steps {
                 script {
-                    dockerImage = docker.build("$DOCKER_TAG", "-f k8s.Dockerfile .")
+                    dockerImage = docker.build("$DOCKER_TAG", "-f ./k8s_deploy/stage/k8s.Dockerfile .")
                 }
                 sh '''
                 docker images|grep $PROJECT_NAME
