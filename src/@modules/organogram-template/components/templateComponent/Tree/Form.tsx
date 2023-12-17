@@ -12,7 +12,6 @@ import {
   Textarea,
 } from "@gems/components";
 import {
-  COMMON_INSTRUCTION,
   COMMON_LABELS,
   IObject,
   isObjectNull,
@@ -25,7 +24,7 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
-import { isNotEmptyList, longLineBreaker } from "utility/utils";
+import { isNotEmptyList } from "utility/utils";
 
 interface INodeForm {
   isOpen: boolean;
@@ -81,8 +80,6 @@ const NodeForm = ({
     name: "manpowerList",
   });
 
-  console.log("FORM: ",isNotEnamCommittee);
-  
   const [titleList, setTitleList] = useState<IObject[]>([]);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
@@ -158,7 +155,7 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data) );
+    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
   const onFormClose = () => {

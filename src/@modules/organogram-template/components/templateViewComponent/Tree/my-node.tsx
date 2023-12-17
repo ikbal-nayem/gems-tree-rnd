@@ -1,9 +1,9 @@
+import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
 import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
-import TextBlock from "@components/TextBlock";
-import { longLineBreaker, slashBreaker } from "utility/utils";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
   let COMMON_LABEL,

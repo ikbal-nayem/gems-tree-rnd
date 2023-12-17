@@ -166,18 +166,16 @@ const TemplateComponent = ({
     if (isObjectNull(updateData)) {
       if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
     }
-    // console.log("1. Template Organizations DTO List: ");
-    // console.log(data?.templateOrganizationsDtoList);
-    
+
     data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
       (d) => ({
-        organizationId: !isObjectNull(updateData) ? d?.organizationId || d?.id : d?.id,
+        organizationId: !isObjectNull(updateData)
+          ? d?.organizationId || d?.id
+          : d?.id,
         organizationNameEn: d?.nameEn || d?.organizationNameEn,
         organizationNameBn: d?.nameBn || d?.organizationNameBn,
       })
     );
-    // console.log("2. Template Organizations DTO List: ");
-    // console.log(data?.templateOrganizationsDtoList);
     if (
       data?.templateOrganizationsDtoList === undefined ||
       data?.templateOrganizationsDtoList?.length <= 0
