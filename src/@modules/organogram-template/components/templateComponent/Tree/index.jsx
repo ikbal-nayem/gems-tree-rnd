@@ -1,15 +1,15 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
-import { generateUUID, isObjectNull, notNullOrUndefined } from "@gems/utils";
+import { generateUUID, isObjectNull } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
 import { OMSService } from "@services/api/OMS.service";
 import { ConfirmationModal } from "@gems/components";
 
-const addNode = (nd, parentId, templateData) => {
-  if (nd.id === parentId) {
+const addNode = (nd, parent, templateData) => {
+  if (nd.id === parent?.id) {
     nd.children = [
-      ...nd.children,
+      ...parent.children,
       {
         ...templateData,
         id: generateUUID(),
@@ -20,17 +20,24 @@ const addNode = (nd, parentId, templateData) => {
     return nd;
   }
   nd.children.forEach((cnd) => {
-    cnd = addNode(cnd, parentId, templateData);
+    cnd = addNode(cnd, parent, templateData);
   });
   return { ...nd };
 };
 
-const editNode = (nd, nodeId, updateData) => {
-  if (nd.id === nodeId) {
-    return { ...nd, ...updateData };
+const editNode = (nd, node, updateData) => {
+  if (nd.id === node?.id) {
+    return { ...node, ...updateData };
   }
   for (var i = 0; i < nd.children.length; i++) {
-    nd.children[i] = editNode(nd.children[i], nodeId, updateData);
+    nd.children[i] = editNode(nd.children[i], node, updateData);
+    if (
+      nd.children[i].id === node.id &&
+      node.displayOrder !== updateData.displayOrder
+    ) {
+      nd = reOrder(nd, updateData, "update");
+      nd = childSerializerOnUpdate(nd);
+    }
   }
   return { ...nd };
 };
@@ -48,6 +55,63 @@ const deleteNode = (nd, nodeId) => {
     }
   }
   return { ...nd };
+};
+
+const childSerializerOnUpdate = (parent) => {
+  let tempChildList = [];
+  parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
+  parent?.children?.forEach((cnd, i) => {
+    tempChildList.push({
+      ...cnd,
+      displayOrder: i + 1,
+    });
+  });
+  return {
+    ...parent,
+    children: tempChildList,
+  };
+};
+
+const reOrder = (parent, formData, mode) => {
+  let tempChildList = [],
+    duplicateOrderFound = false;
+  parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
+  parent?.children?.forEach((cnd) => {
+    if (+formData?.displayOrder === +cnd?.displayOrder || duplicateOrderFound) {
+      // console.log("============= DUPLICATE FOUND ==============");
+      duplicateOrderFound = true;
+      if (mode === "add") {
+        tempChildList.push({
+          ...cnd,
+          displayOrder: +cnd?.displayOrder + 1,
+        });
+      } else {
+        // UPDATE MODE
+        if (cnd?.id === formData?.id) {
+          tempChildList.push({
+            ...cnd,
+            displayOrder: +cnd?.displayOrder,
+          });
+        } else {
+          tempChildList.push({
+            ...cnd,
+            displayOrder: +cnd?.displayOrder + 1,
+          });
+        }
+      }
+    } else {
+      tempChildList.push({
+        ...cnd,
+        displayOrder: +cnd?.displayOrder,
+      });
+    }
+  });
+  return duplicateOrderFound
+    ? {
+        ...parent,
+        children: tempChildList,
+      }
+    : parent;
 };
 
 const OrganizationTemplateTree = ({
@@ -104,48 +168,13 @@ const OrganizationTemplateTree = ({
     setFormOpen(false);
   };
 
-  const reOrder = (parent, formData) => {
-    let tempChildList = [],
-      duplicateOrderFound = false;
-    parent?.children?.forEach((cnd) => {
-      if (
-        +formData?.displayOrder === +cnd?.displayOrder ||
-        duplicateOrderFound
-      ) {
-        // console.log("============= DUPLICATE FOUND ==============");
-        duplicateOrderFound = true;
-
-        tempChildList.push({
-          ...cnd,
-          displayOrder: +cnd?.displayOrder + 1,
-        });
-      } else {
-        tempChildList.push({
-          ...cnd,
-          displayOrder: +cnd?.displayOrder,
-        });
-      }
-    });
-    // console.log("duplicate Order Found: ", duplicateOrderFound);
-    // console.log("Temp Child List: ", tempChildList);
-    return duplicateOrderFound
-      ? {
-          ...parent,
-          children: tempChildList,
-        }
-      : parent;
-  };
-
   const onSubmit = (formData) => {
     let ad;
     if (isObjectNull(updateNodeData.current)) {
-      selectedNode.current = reOrder(selectedNode.current, formData);
-      // console.log("Selected Node: ", selectedNode.current);
-      ad = addNode(treeData, selectedNode.current?.id, formData);
+      selectedNode.current = reOrder(selectedNode.current, formData, "add");
+      ad = addNode(treeData, selectedNode.current, formData);
     } else {
-      updateNodeData.current = reOrder(updateNodeData.current, formData);
-      // console.log("Update Node: ", updateNodeData.current);
-      ad = editNode(treeData, updateNodeData.current?.id, formData);
+      ad = editNode(treeData, updateNodeData.current, formData);
     }
     setTreeData(ad);
     onFormClose();

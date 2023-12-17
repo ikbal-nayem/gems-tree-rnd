@@ -37,9 +37,11 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           onClick={() => onView(nodeData)}
         />
         <p className="mb-0 fs-8  text-start">
-        {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
-          {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 15)} */}
-          {slashBreaker(langEn ? nodeData.titleEn : nodeData.titleBn)}
+          {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
+          {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
+          {langEn
+            ? longLineBreaker(nodeData.titleEn, 17)
+            : longLineBreaker(nodeData.titleBn, 20)}
         </p>
         <p className="mb-0 fs-8">{manPower}</p>
       </div>
@@ -82,12 +84,12 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           })}
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
-          <div className="pt-3 ps-2 bg-light text-start ">
-            {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
-            <TextBlock value={nodeData?.commentNode} />
-            {/* {nodeData?.commentNode} */}
-          </div>
-        )}
+        <div className="pt-3 ps-2 bg-light text-start ">
+          {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
+          <TextBlock value={nodeData?.commentNode} />
+          {/* {nodeData?.commentNode} */}
+        </div>
+      )}
     </div>
   );
 };
