@@ -89,10 +89,7 @@ const TemplateViewComponent = ({
   const { state } = useLocation();
   const orgData = state || {};
 
-  const currentURL = window.location.href;
-  // alert("currentURL includes organizationId : " + currentURL.includes("organizationId"));
-  // alert("is organogram : " + organogramView);
-  let organogramOrganizationView = currentURL.includes("organizationId")
+  let organogramOrganizationView = orgData?.organizationId
     ? true
     : organogramView;
 
