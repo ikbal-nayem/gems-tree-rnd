@@ -112,18 +112,22 @@ export const breakNewLines = (val) => val.split("\n");
 
 export const slashBreaker = (val) => val.replaceAll("/", "/ ");
 
-export const longLineBreaker = (val, threshHoldLength: number = 10, result = "") => {
-  if (!notNullOrUndefined(val)) return result += val;
+export const longWordBreaker = (
+  val,
+  threshHoldLength: number = 10,
+  result = ""
+) => {
+  if (!notNullOrUndefined(val)) return (result += val);
   if (val.length < threshHoldLength + 1) result += val;
   else {
     if (val.charAt(threshHoldLength) === " ") {
-      return longLineBreaker(
+      return longWordBreaker(
         val.substring(threshHoldLength + 1),
         threshHoldLength,
         result + val.substring(0, threshHoldLength + 1)
       );
     } else {
-      return longLineBreaker(
+      return longWordBreaker(
         val.substring(threshHoldLength - 1),
         threshHoldLength,
         result + val.substring(0, threshHoldLength - 1) + "- "
@@ -131,4 +135,11 @@ export const longLineBreaker = (val, threshHoldLength: number = 10, result = "")
     }
   }
   return result;
+};
+
+export const longLineBreaker = (line, threshHoldLength: number = 20) => {
+  const words = slashBreaker(line).split(" ");
+  for (let i = 0; i < words?.length; i++)
+    words[i] = longWordBreaker(words[i], threshHoldLength);
+  return words.join(" ");
 };

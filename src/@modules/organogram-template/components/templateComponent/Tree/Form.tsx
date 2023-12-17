@@ -81,6 +81,8 @@ const NodeForm = ({
     name: "manpowerList",
   });
 
+  console.log("FORM: ",isNotEnamCommittee);
+  
   const [titleList, setTitleList] = useState<IObject[]>([]);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
@@ -156,7 +158,7 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    onSubmit(setEnIntoBnFields(data));
+    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data) );
   };
 
   const onFormClose = () => {
