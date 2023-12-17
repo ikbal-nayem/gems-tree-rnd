@@ -181,6 +181,9 @@ const TemplateComponent = ({
       data?.templateOrganizationsDtoList?.length <= 0
     ) {
       setNotOrganizationData(true);
+      document
+        .getElementById("organizationBlock")
+        .scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     } else setNotOrganizationData(false);
 
