@@ -36,7 +36,7 @@ import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import AttachmentList from "./components/AttachmentList";
 import AttachedOrgList from "./components/AttachedOrgList";
 import Switch from "@components/Switch";
@@ -89,6 +89,9 @@ const TemplateViewComponent = ({
   const orgData = searchParamsToObject(searchParam) || {};
 
   const navigate = useNavigate();
+
+  const { state } = useLocation();
+  console.log(state);
 
   const currentURL = window.location.href;
   // alert("currentURL includes organizationId : " + currentURL.includes("organizationId"));

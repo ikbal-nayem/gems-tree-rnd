@@ -105,10 +105,9 @@ const TemplateTable: FC<TableProps> = ({
           // if (!(resp?.body?.length > 1)) {
           if (resp?.body?.length === 1) {
             navigate(
-              ROUTE_L2.ORG_TEMPLATE_VIEW +
-                "?id=" +
-                item?.id +
-                `&${objectToQueryString(resp?.body?.[0])}`
+              ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id,
+              { state: resp?.body?.[0] }
+              // `&${objectToQueryString(resp?.body?.[0])}`
             );
           } else {
             setReportOpen(true);
