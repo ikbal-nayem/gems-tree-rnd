@@ -177,10 +177,6 @@ const TemplateComponent = ({
         organizationNameBn: d?.nameBn || d?.organizationNameBn,
       })
     );
-    // console.log(data.organogramDate);
-    // if (!notNullOrUndefined(data.organogramDate))
-    //   alert("=======Organogram Date Nai"); // focusById("orgDateBlock");
-    // else deFocusById("orgDateBlock");
 
     if (
       data?.templateOrganizationsDtoList === undefined ||
@@ -190,7 +186,6 @@ const TemplateComponent = ({
       focusById("organizationBlock", true);
       return;
     } else {
-      // alert(notOrganizationData);
       setNotOrganizationData(false);
       deFocusById("organizationBlock");
     }
@@ -300,7 +295,6 @@ const TemplateComponent = ({
               onChange={(e) => setValue("chosenDate", e.value)}
               blockFutureDate
               isError={!!errors?.organogramDate}
-              errorMessage={errors?.organogramDate?.message as string}
             />
           </div>
         </div>
@@ -313,7 +307,7 @@ const TemplateComponent = ({
           isNotEnamCommittee={isNotEnamCommittee}
         />
       </div>
-      <form onSubmit={handleSubmit(onFinalSubmit)}  id="templateForm">
+      <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
         <div className="row">
           <div className="col-md-6">
             <ActivitiesForm
@@ -359,6 +353,10 @@ const TemplateComponent = ({
             type="submit"
             isLoading={isSubmitLoading}
             form="templateForm"
+            onClick={() => {
+              if (!notNullOrUndefined(watch("organogramDate")))
+                focusById("orgDateBlock");
+            }}
           >
             {!isObjectNull(updateData)
               ? COMMON_LABELS.UPDATE
