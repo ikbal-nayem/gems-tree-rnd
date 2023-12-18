@@ -438,12 +438,6 @@ const TemplateViewComponent = ({
               inventoryData={inventoryData || []}
               langEn={langEn}
             />
-            {updateData?.organogramNoteDtoList?.length > 0 && (
-              <NotesList
-                data={updateData?.organogramNoteDtoList || []}
-                langEn={langEn}
-              />
-            )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
             {(orgName || orgParentName || organogramView) && (
@@ -496,12 +490,14 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          <div className="mt-3">
-            <NotesList
-              data={updateData?.organogramNoteDtoList || []}
-              langEn={langEn}
-            />
-          </div>
+          {!organogramView && !orgData?.organizationId && (
+            <div className="mt-3">
+              <NotesList
+                data={updateData?.organogramNoteDtoList || []}
+                langEn={langEn}
+              />
+            </div>
+          )}
           {(orgName || orgParentName || organogramView) && (
             <div className="mt-3">
               <AttachedOrgList
