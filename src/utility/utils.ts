@@ -143,3 +143,16 @@ export const longLineBreaker = (line, threshHoldLength: number = 20) => {
     words[i] = longWordBreaker(words[i], threshHoldLength);
   return words.join(" ");
 };
+
+export const focusById = (id: string, markAsErrorBlock: boolean = false) => {
+  const block = document.getElementById(id);
+  block?.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+  if (markAsErrorBlock) block?.classList.add("border-danger");
+};
+
+export const deFocusById = (id: string) => {
+  document.getElementById(id)?.classList.remove("border-danger");
+};

@@ -25,6 +25,7 @@ import EquipmentsForm from "./components/EquipmentsForm";
 import Organizations from "./components/organization";
 import AttachmentForm from "./components/AttachmentForm";
 import NotesForm from "./components/NotesForm";
+import { deFocusById, focusById } from "utility/utils";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -176,16 +177,23 @@ const TemplateComponent = ({
         organizationNameBn: d?.nameBn || d?.organizationNameBn,
       })
     );
+    // console.log(data.organogramDate);
+    // if (!notNullOrUndefined(data.organogramDate))
+    //   alert("=======Organogram Date Nai"); // focusById("orgDateBlock");
+    // else deFocusById("orgDateBlock");
+
     if (
       data?.templateOrganizationsDtoList === undefined ||
       data?.templateOrganizationsDtoList?.length <= 0
     ) {
       setNotOrganizationData(true);
-      document
-        .getElementById("organizationBlock")
-        .scrollIntoView({ behavior: "smooth", block: "center" });
+      focusById("organizationBlock", true);
       return;
-    } else setNotOrganizationData(false);
+    } else {
+      // alert(notOrganizationData);
+      setNotOrganizationData(false);
+      deFocusById("organizationBlock");
+    }
 
     const reqPayload = {
       ...data,
@@ -283,41 +291,10 @@ const TemplateComponent = ({
               errorMessage={errors?.titleEn?.message as string}
             />
           </div>
-          {/* {isNotEnamCommittee && (
-              <div className="col-md-6 col-12">
-                <Input
-                  label="অর্গানোগ্রাম তারিখ (বাংলা)"
-                  placeholder="বাংলায় অর্গানোগ্রাম তারিখ লিখুন"
-                  isRequired
-                  registerProperty={{
-                    ...register("versionBn", {
-                      required: " ",
-                    }),
-                  }}
-                  isError={!!errors?.versionBn}
-                  errorMessage={errors?.versionBn?.message as string}
-                />
-              </div>
-            )} */}
-          {/* <div className="col-md-6 col-12">
-              <Input
-                label="অর্গানোগ্রাম তারিখ (ইংরেজি)"
-                placeholder="ইংরেজিতে অর্গানোগ্রাম তারিখ লিখুন"
-                isRequired
-                registerProperty={{
-                  ...register("versionEn", {
-                    required: " ",
-                    validate: enCheck,
-                  }),
-                }}
-                isError={!!errors?.versionEn}
-                errorMessage={errors?.versionEn?.message as string}
-              />
-            </div> */}
-          <div className="col-md-6 col-12">
+          <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
-              isRequired="অর্গানোগ্রাম তারিখ লিখুন"
+              isRequired
               name="organogramDate"
               control={control}
               onChange={(e) => setValue("chosenDate", e.value)}
@@ -336,7 +313,7 @@ const TemplateComponent = ({
           isNotEnamCommittee={isNotEnamCommittee}
         />
       </div>
-      <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
+      <form onSubmit={handleSubmit(onFinalSubmit)}  id="templateForm">
         <div className="row">
           <div className="col-md-6">
             <ActivitiesForm
