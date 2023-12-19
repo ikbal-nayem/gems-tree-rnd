@@ -111,7 +111,7 @@ const reOrder = (parent, formData, mode) => {
     }
   });
   tempOrderList.sort((a, b) => (a > b ? 1 : -1));
-  alert(tempOrderList.join(" "));
+  // alert(tempOrderList.join(" "));
   tempChildList.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   return duplicateOrderFound
     ? {
