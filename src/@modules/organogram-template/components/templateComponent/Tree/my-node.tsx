@@ -34,10 +34,12 @@ const MyNode = ({
           />
           <div>
             <p className="p-1 mb-0 fs-7">
-              {/* {(isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn) + " | " + nodeData?.displayOrder} */}
-              {isNotEnamCommittee
+              {(isNotEnamCommittee
                 ? longLineBreaker(nodeData.titleBn, 20)
-                : longLineBreaker(nodeData.titleEn, 17)}
+                : longLineBreaker(nodeData.titleEn, 17))}
+                {/* + " (" +
+                nodeData.displayOrder +
+                ")"} */}
             </p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}

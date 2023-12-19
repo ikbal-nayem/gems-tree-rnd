@@ -74,6 +74,7 @@ const childSerializerOnUpdate = (parent) => {
 
 const reOrder = (parent, formData, mode) => {
   let tempChildList = [],
+    tempOrderList = [],
     duplicateOrderFound = false;
   parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   parent?.children?.forEach((cnd) => {
@@ -90,13 +91,15 @@ const reOrder = (parent, formData, mode) => {
         if (cnd?.id === formData?.id) {
           tempChildList.push({
             ...cnd,
-            displayOrder: +cnd?.displayOrder,
+            displayOrder: +formData?.displayOrder + 1,
           });
+          tempOrderList.push("(" + (+formData?.displayOrder + 1) + ")");
         } else {
           tempChildList.push({
             ...cnd,
-            displayOrder: +cnd?.displayOrder + 1,
+            displayOrder: +cnd?.displayOrder + 2,
           });
+          tempOrderList.push(+cnd?.displayOrder + 2);
         }
       }
     } else {
@@ -104,8 +107,12 @@ const reOrder = (parent, formData, mode) => {
         ...cnd,
         displayOrder: +cnd?.displayOrder,
       });
+      tempOrderList.push(+cnd?.displayOrder);
     }
   });
+  tempOrderList.sort((a, b) => (a > b ? 1 : -1));
+  alert(tempOrderList.join(" "));
+  tempChildList.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   return duplicateOrderFound
     ? {
         ...parent,

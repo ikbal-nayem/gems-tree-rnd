@@ -291,7 +291,7 @@ const TemplateViewComponent = ({
       : updateData?.titleBn) || "";
 
   let versionName = updateData?.isEnamCommittee
-    ? "Enam Committe Report (26/12/1982)"
+    ? "Enam Committee Report (26/12/1982)"
     : langEn
     ? updateData?.organogramDate
       ? generateDateFormat(
