@@ -11,5 +11,5 @@ RUN npm run build:dev
 
 ### STAGE 2: Run ###
 FROM nginx
-COPY ./k8s_deploy/stage/uat-nginx.conf /etc/nginx/nginx.conf
+COPY ./k8s_deploy/training/training-nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/build/ /usr/share/nginx/html/
