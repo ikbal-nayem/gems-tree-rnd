@@ -11,4 +11,4 @@ spec:
       port: $K8S_SERVICE_PORT
       targetPort: $K8S_CONTAINER_PORT
       nodePort: $K8S_NODE_PORT
-  type: NodePort
+  type: ClusterIP
