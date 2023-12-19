@@ -24,7 +24,6 @@ import {
   generateDateFormat,
   generateRowNumBn,
   notNullOrUndefined,
-  statusColorMapping,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode, useState } from "react";
@@ -32,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import TemplateClone from "./clone";
 import { LABELS } from "./labels";
 import OrganizationReport from "./organizatioReport";
+import { statusColorMapping } from "utility/colorMap";
 
 type TableProps = {
   children: ReactNode;
@@ -145,7 +145,7 @@ const TemplateTable: FC<TableProps> = ({
                   <Tag
                     title={item?.status || COMMON_LABELS.NOT_ASSIGN}
                     color={
-                      statusColorMapping(item?.status || "IN_REVIEW") as IColors
+                      statusColorMapping(item?.status || "IN_REVIEW","class") as IColors
                     }
                   />
                 </div>
