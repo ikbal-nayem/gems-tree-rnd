@@ -57,12 +57,12 @@ export const NoteWithConfirmationModal = ({
           {(modalAction === "BACK_TO_NEW" ||
             modalAction === "BACK_TO_REVIEW") && (
             <Textarea
-              placeholder={"মন্তব্য লিখুন"}
+              placeholder={isEng ? "Write Remarks" : "মন্তব্য লিখুন"}
               isRequired
               noMargin
               registerProperty={{
                 ...register(`note`, {
-                  required: "মন্তব্য লিখুন",
+                  required: isEng ? "Remarks Required" : "মন্তব্য লিখুন",
                 }),
               }}
               isError={!!errors?.note}
