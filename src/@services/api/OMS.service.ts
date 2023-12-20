@@ -34,7 +34,9 @@ export const OMSService = {
         "organogram-template/get-organogram-template-by-id/" +
         templateId
     ),
-  getCheckUserOrgPermissionByTemplateId: async (templateId: string): Promise<any> =>
+  getCheckUserOrgPermissionByTemplateId: async (
+    templateId: string
+  ): Promise<any> =>
     await axiosIns.get(
       OMS_SERVICE +
         "organogram-template/check-user-org-organogram/" +
@@ -102,13 +104,14 @@ export const OMSService = {
       OMS_SERVICE + "organogram-template/update-organogram-template-by-id",
       payload
     ),
-  updateTemplateStatusById: async (templateId, status): Promise<any> =>
+  updateTemplateStatusById: async (templateId, status, payload): Promise<any> =>
     await axiosIns.put(
       OMS_SERVICE +
         "organogram-template/update-template-status-by-id/" +
         templateId +
         "/" +
-        status
+        status,
+      payload
     ),
   approveTemplateById: async (templateId): Promise<any> =>
     await axiosIns.put(
