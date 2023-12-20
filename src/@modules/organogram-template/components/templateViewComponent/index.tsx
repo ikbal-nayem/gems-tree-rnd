@@ -30,7 +30,6 @@ import EquipmentsList from "./components/EquipmentsList";
 import ManPowerList from "./components/ManPowerList";
 import OrgList from "./components/Organization";
 
-import { ConfirmationModal } from "@components/ConfirmationModal/ConfirmationModal";
 import Switch from "@components/Switch";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
@@ -42,6 +41,7 @@ import AttachedOrgList from "./components/AttachedOrgList";
 import AttachmentList from "./components/AttachmentList";
 import NotesList from "./components/NotesList";
 import { BUTTON_LABEL, MSG } from "./message";
+import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModal";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -131,11 +131,13 @@ const TemplateViewComponent = ({
     }
   };
 
-  const onModalActionConfirm = () => {
-    if (modalAction === "SEND_TO_REVIEW" || modalAction === "BACK_TO_REVIEW") {
+  const onModalActionConfirm = (note = null) => {
+    if (modalAction === "SEND_TO_REVIEW") {
       onStatusChange("IN_REVIEW");
+    } else if (modalAction === "BACK_TO_REVIEW") {
+      onStatusChange("IN_REVIEW", note);
     } else if (modalAction === "BACK_TO_NEW") {
-      onStatusChange("NEW");
+      onStatusChange("NEW", note);
     } else if (modalAction === "SEND_TO_APPROVE") {
       onStatusChange("IN_APPROVE");
     } else if (modalAction === "APPROVE") {
@@ -151,8 +153,11 @@ const TemplateViewComponent = ({
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
 
-  const onStatusChange = (status: string) => {
-    OMSService.updateTemplateStatusById(updateData?.id, status)
+  const onStatusChange = (status: string, note = null) => {
+    OMSService.updateTemplateStatusById(updateData?.id, status, {
+      note: note,
+      status: updateData?.status,
+    })
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
@@ -205,42 +210,6 @@ const TemplateViewComponent = ({
         },
       });
 
-      // if (i === 1) {
-      // pdf.addPage(
-      // [
-      // elementsToCapture[1]?.clientWidth,
-      // elementsToCapture[1]?.clientHeight + 100,
-      // ],
-      // "l"
-      // );
-      // }
-      //
-      // if (i === 2) {
-      // pdf.addPage(
-      // [
-      // canvas.width > elementsToCapture[1]?.clientWidth
-      // ? canvas.width
-      // : elementsToCapture[1]?.clientWidth,
-      // canvas.height > elementsToCapture[1]?.clientHeight
-      // ? canvas.height
-      // : elementsToCapture[1]?.clientHeight,
-      // ],
-      // "l"
-      // );
-      // }
-      // if (i > 0) {
-      //   pdf.addPage(
-      //     [
-      //       canvas.width > elementsToCapture[0]?.clientWidth
-      //         ? canvas.width
-      //         : elementsToCapture[0]?.clientWidth,
-      //       canvas.height > elementsToCapture[0]?.clientHeight
-      //         ? canvas.height
-      //         : elementsToCapture[0]?.clientHeight,
-      //     ],
-      //     "l"
-      //   );
-      // }
       if (i > 0) pdf.addPage();
       // Convert the canvas to an image and add it to the PDF
       const imageData = canvas.toDataURL("image/png");
@@ -493,7 +462,7 @@ const TemplateViewComponent = ({
           {!organogramView && !orgData?.organizationId && (
             <div className="mt-3">
               <NotesList
-                data={updateData?.organogramNoteDtoList || []}
+                data={updateData?.organogramNoteGroupDtoList || []}
                 langEn={langEn}
               />
             </div>
@@ -595,16 +564,17 @@ const TemplateViewComponent = ({
               </Button>
             </ACLWrapper>
           </div>
-          <ConfirmationModal
+          <NoteWithConfirmationModal
             isOpen={isModalOpen}
             onClose={onModalClose}
             onConfirm={onModalActionConfirm}
             isSubmitting={isSubmitting}
             onConfirmLabel={modalButtonLabel}
+            modalAction={modalAction}
             isEng={langEn}
           >
             {modalMsg}
-          </ConfirmationModal>
+          </NoteWithConfirmationModal>
         </>
       )}
     </div>
