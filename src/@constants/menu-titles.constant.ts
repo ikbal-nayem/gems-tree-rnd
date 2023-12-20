@@ -4,7 +4,7 @@ export const MENU = {
     TEMPLATE_CREATE: "নতুন অর্গানোগ্রাম তৈরি",
     EMPLOYEE_LIST: "কর্মকর্তা/কর্মচারী",
     TEMPLATE_LIST: "টেমপ্লেট থেকে অর্গানোগ্রাম তৈরি",
-    PROPOSAL_LIST: "সকল প্রস্তাব সমূহ",
+    PROPOSAL_LIST: "সকল প্রস্তাবসমূহ",
     ORGANOGRAM: "অর্গানোগ্রাম",
     ORGANOGRAM_LIST: "সংরক্ষিত অর্গানোগ্রাম সমূহ",
     POST_CONFIG: "পদবি কনফিগারেশন",
