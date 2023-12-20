@@ -61,6 +61,7 @@ const deleteNode = (nd, nodeId) => {
       break;
     }
   }
+  nd = childSerializer(nd);
   return { ...nd };
 };
 
