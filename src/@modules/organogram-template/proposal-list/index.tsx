@@ -70,6 +70,36 @@ const ProposalList = () => {
         setRespMeta(
           resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
         );
+        setDataList([
+          {
+            id: "asd-asda-sdsad",
+            organization: {
+              id: "wwwww-aaaa-yyyyyy",
+              nameBn: "জনপ্রশাসন মন্ত্রণালয়",
+              nameEn: "Ministry Of Public Administration",
+            },
+            actionType: {
+              id: "weq-asc-889-weqe",
+              titleBn: "পদ-সৃজন",
+              titleEn: "Post Creation",
+            },
+            receivedOn: 1701927381134,
+          },
+          {
+            id: "ff-ss-rrrrr",
+            organization: {
+              id: "ccccc-vvvv-aaaaa",
+              nameBn: "স্বাস্থ্য শিক্ষা ও পরিবার কল্যাণ বিভাগ",
+              nameEn: "Medical Education And Family Welfare Division",
+            },
+            actionType: {
+              id: "weq-asc-889-weqe",
+              titleBn: "পদ-বিলুপ্ত করন",
+              titleEn: "Post Deletation",
+            },
+            receivedOn: 1701827381134,
+          },
+        ]);
       })
       .catch((err) => {
         toast.error(err?.message);
@@ -117,7 +147,7 @@ const ProposalList = () => {
           <Input
             type="search"
             noMargin
-            placeholder="অর্গানোগ্রামের নাম অনুসন্ধান করুন ..."
+            placeholder="প্রেরকের নাম অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

@@ -20,6 +20,7 @@ import {
 import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
+import { TIME_PATTERN } from "@constants/common.constant";
 
 type TableProps = {
   children: ReactNode;
@@ -58,19 +59,23 @@ const ProposalTable: FC<TableProps> = ({
             <TableRow key={idx}>
               <TableCell text={generateRowNumBn(idx, respMeta)} />
               <TableCell
-                text={item?.organizationNameBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.organizationNameEn || null}
+                text={item?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.organization?.nameEn || null}
               />
               <TableCell
                 text={item?.actionType?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.organizationNameEn || null}
+                subText={item?.actionType?.titleEn || null}
               />
               <TableCell
                 text={
                   generateDateFormat(
-                    item?.ReceivedOn,
+                    item?.receivedOn,
                     DATE_PATTERN.GOVT_STANDARD
                   ) || COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={
+                  generateDateFormat(item?.receivedOn, TIME_PATTERN.HM12) ||
+                  null
                 }
               />
               <TableCell textAlign="end" verticalAlign="top">

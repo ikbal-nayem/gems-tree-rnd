@@ -120,3 +120,7 @@ export const ERR_MSG = {
     MIN_NUM_1: "সর্বনিম্ন ১ হবে",
   },
 };
+
+export const TIME_PATTERN = {
+  HM12: "%hour% : %minute% %ampm%",
+};
