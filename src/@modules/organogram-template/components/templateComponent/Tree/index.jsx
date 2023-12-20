@@ -17,7 +17,7 @@ const addNode = (nd, parent, templateData) => {
         children: [],
       },
     ];
-    return nd;
+    return childSerializer(nd);
   }
   nd.children.forEach((cnd) => {
     cnd = addNode(cnd, parent, templateData);
@@ -35,8 +35,15 @@ const editNode = (nd, node, updateData) => {
       nd.children[i].id === node.id &&
       node.displayOrder !== updateData.displayOrder
     ) {
-      nd = reOrder(nd, updateData, "update");
-      nd = childSerializerOnUpdate(nd);
+      nd = reOrder(
+        nd,
+        updateData,
+        "update",
+        node.displayOrder < updateData.displayOrder
+          ? "pushForward"
+          : "pullBackward"
+      );
+      nd = childSerializer(nd);
     }
   }
   return { ...nd };
@@ -57,7 +64,7 @@ const deleteNode = (nd, nodeId) => {
   return { ...nd };
 };
 
-const childSerializerOnUpdate = (parent) => {
+const childSerializer = (parent) => {
   let tempChildList = [];
   parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   parent?.children?.forEach((cnd, i) => {
@@ -72,9 +79,9 @@ const childSerializerOnUpdate = (parent) => {
   };
 };
 
-const reOrder = (parent, formData, mode) => {
+const reOrder = (parent, formData, mode, direction) => {
   let tempChildList = [],
-    tempOrderList = [],
+    // tempOrderList = [],
     duplicateOrderFound = false;
   parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   parent?.children?.forEach((cnd) => {
@@ -89,17 +96,44 @@ const reOrder = (parent, formData, mode) => {
       } else {
         // UPDATE MODE
         if (cnd?.id === formData?.id) {
-          tempChildList.push({
-            ...cnd,
-            displayOrder: +formData?.displayOrder + 1,
-          });
-          tempOrderList.push("(" + (+formData?.displayOrder + 1) + ")");
+          if (direction === "pushForward") {
+            // PUSH_FORWARD >>>>>>>>>>>>>>>>>>>>>
+            tempChildList.push({
+              ...cnd,
+              displayOrder: +formData?.displayOrder + 1,
+            });
+            // tempOrderList.push(+formData?.displayOrder + 1);
+          } else {
+            // <<<<<<<<<<<<<<<<<<<<< PULL_BACKWARD
+            tempChildList.push({
+              ...cnd,
+              displayOrder: +cnd?.displayOrder,
+            });
+            // tempOrderList.push(+formData?.displayOrder);
+          }
         } else {
-          tempChildList.push({
-            ...cnd,
-            displayOrder: +cnd?.displayOrder + 2,
-          });
-          tempOrderList.push(+cnd?.displayOrder + 2);
+          // Children Otherthan the matched node
+          if (direction === "pushForward") {
+            if (+cnd?.displayOrder > +formData?.displayOrder) {
+              tempChildList.push({
+                ...cnd,
+                displayOrder: +cnd?.displayOrder + 1,
+              });
+              // tempOrderList.push(+cnd?.displayOrder + 1);
+            } else {
+              tempChildList.push({
+                ...cnd,
+                displayOrder: +cnd?.displayOrder,
+              });
+              // tempOrderList.push(+cnd?.displayOrder);
+            }
+          } else {
+            tempChildList.push({
+              ...cnd,
+              displayOrder: +cnd?.displayOrder + 1,
+            });
+            // tempOrderList.push(+cnd?.displayOrder + 1);
+          }
         }
       }
     } else {
@@ -107,11 +141,12 @@ const reOrder = (parent, formData, mode) => {
         ...cnd,
         displayOrder: +cnd?.displayOrder,
       });
-      tempOrderList.push(+cnd?.displayOrder);
+      // tempOrderList.push(+cnd?.displayOrder);
     }
   });
-  tempOrderList.sort((a, b) => (a > b ? 1 : -1));
+  // tempOrderList.sort((a, b) => (a > b ? 1 : -1));
   // alert(tempOrderList.join(" "));
+  // alert(duplicateOrderFound);
   tempChildList.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   return duplicateOrderFound
     ? {
@@ -178,7 +213,7 @@ const OrganizationTemplateTree = ({
   const onSubmit = (formData) => {
     let ad;
     if (isObjectNull(updateNodeData.current)) {
-      selectedNode.current = reOrder(selectedNode.current, formData, "add");
+      selectedNode.current = reOrder(selectedNode.current, formData, "add", "");
       ad = addNode(treeData, selectedNode.current, formData);
     } else {
       ad = editNode(treeData, updateNodeData.current, formData);
