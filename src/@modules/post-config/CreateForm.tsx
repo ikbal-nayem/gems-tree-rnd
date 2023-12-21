@@ -67,7 +67,7 @@ const CreateForm = ({
       organization: userOrg,
     });
     setValue("organizationId", userOrg?.id);
-    if (isOpen) rowAppend();
+    if (isOpen && postListFields?.length < 1) rowAppend();
   }, [isOpen]);
 
   const {
