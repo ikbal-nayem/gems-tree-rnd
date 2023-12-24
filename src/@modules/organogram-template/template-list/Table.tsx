@@ -28,7 +28,7 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TemplateClone from "./clone";
+import TemplateClone from "./templateClone";
 import { LABELS } from "./labels";
 import OrganizationReport from "./organizatioReport";
 import { statusColorMapping } from "utility/colorMap";

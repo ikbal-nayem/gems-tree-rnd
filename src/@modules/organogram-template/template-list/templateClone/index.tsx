@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { META_TYPE } from "@constants/common.constant";
 import {
+  Autocomplete,
   Button,
   Checkbox,
   DateInput,
@@ -10,10 +11,14 @@ import {
   Separator,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, notNullOrUndefined } from "@gems/utils";
-import { OMSService } from "../../../@services/api/OMS.service";
+import { COMMON_LABELS, IObject, notNullOrUndefined } from "@gems/utils";
+import { CoreService } from "@services/api/Core.service";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { bnCheck, enCheck } from "utility/checkValidation";
+import { deFocusById, focusById } from "utility/utils";
+import { OMSService } from "../../../../@services/api/OMS.service";
+import Organizations from "./organization";
 
 interface IForm {
   template: any;
@@ -29,6 +34,13 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
+  const [notOrganizationData, setNotOrganizationData] =
+    useState<boolean>(false);
+  const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
+    IObject[]
+  >([]);
+
+  const formProps = useForm<any>();
 
   const {
     register,
@@ -40,7 +52,15 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useForm<any>();
+  } = formProps;
+
+  useEffect(() => {
+    CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
+      (resp) => {
+        setOrganogramChangeActionList(resp?.body);
+      }
+    );
+  }, []);
 
   useEffect(() => {
     reset({});
@@ -50,14 +70,45 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const onSubmit = (cloneData) => {
     if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
 
-    setIsSubmitLoading(true);
     const payload = {
       cloneIsEnamCommittee: cloneData.isEnamCommittee,
-      cloneTitleBn: cloneData.isEnamCommittee ? cloneData.titleEn : cloneData.titleBn,
+      cloneTitleBn: cloneData.isEnamCommittee
+        ? cloneData.titleEn
+        : cloneData.titleBn,
       cloneTitleEn: cloneData.titleEn,
       cloneOrganogramDate: cloneData.organogramDate,
       refTemplateId: template?.id,
+      organogramChangeActionDtoList:
+        cloneData?.organogramChangeActionDtoList?.length > 0
+          ? cloneData?.organogramChangeActionDtoList?.map((d) => ({
+              titleEn: d?.titleEn,
+              titleBn: d?.titleBn,
+            }))
+          : null,
+      templateOrganizationsDtoList:
+        cloneData?.templateOrganizationsDtoList?.length > 0
+          ? cloneData?.templateOrganizationsDtoList?.map((d) => ({
+              organizationId: d?.id,
+              organizationNameEn: d?.nameEn || d?.organizationNameEn,
+              organizationNameBn: d?.nameBn || d?.organizationNameBn,
+            }))
+          : null,
     };
+
+    // Organization Empty Check
+    if (
+      cloneData?.templateOrganizationsDtoList === undefined ||
+      cloneData?.templateOrganizationsDtoList?.length <= 0
+    ) {
+      setNotOrganizationData(true);
+      focusById("organizationBlock", true);
+      return;
+    } else {
+      setNotOrganizationData(false);
+      deFocusById("organizationBlock");
+    }
+    setIsSubmitLoading(true);
+
     OMSService.templateClone(payload)
       .then((res) => toast.success(res?.message))
       .catch((error) => toast.error(error?.message))
@@ -180,36 +231,27 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 errorMessage={errors?.organogramDate?.message as string}
               />
             </div>
-            {/* <div className="col-md-6 col-12">
-              <Input
-                label="অর্গানোগ্রাম তারিখ (বাংলা)"
-                placeholder="বাংলায় অর্গানোগ্রাম তারিখ লিখুন"
-                isRequired
-                registerProperty={{
-                  ...register("versionBn", {
-                    required: " ",
-                    validate: bnCheck,
-                  }),
-                }}
-                isError={!!errors?.versionBn}
-                errorMessage={errors?.versionBn?.message as string}
+            <div className="col-md-6 col-12">
+              <Autocomplete
+                label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
+                placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                options={organogramChangeActionList || []}
+                getOptionLabel={(op) =>
+                  isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                }
+                getOptionValue={(op) => op?.titleEn}
+                isMulti
+                closeMenuOnSelect={false}
+                // isRequired="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                name="organogramChangeActionDtoList"
+                control={control}
               />
             </div>
-            <div className="col-md-6 col-12">
-              <Input
-                label="অর্গানোগ্রাম তারিখ (ইংরেজি)"
-                placeholder="ইংরেজিতে অর্গানোগ্রাম তারিখ লিখুন"
-                isRequired
-                registerProperty={{
-                  ...register("versionEn", {
-                    required: " ",
-                    validate: enCheck,
-                  }),
-                }}
-                isError={!!errors?.versionEn}
-                errorMessage={errors?.versionEn?.message as string}
-              />
-            </div> */}
+            <Organizations
+              formProps={formProps}
+              notOrganizationData={notOrganizationData}
+              setNotOrganizationData={setNotOrganizationData}
+            />
           </div>
         </ModalBody>
 
