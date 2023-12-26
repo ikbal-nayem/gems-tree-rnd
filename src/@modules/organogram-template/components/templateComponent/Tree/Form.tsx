@@ -99,7 +99,6 @@ const NodeForm = ({
   useEffect(() => {
     OMSService.FETCH.nodeTitle().then((resp) => {
       setTitleList(resp?.body);
-      console.log(resp?.body);
     });
   }, []);
 
