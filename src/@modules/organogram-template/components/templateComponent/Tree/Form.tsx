@@ -55,7 +55,7 @@ const NodeForm = ({
   } = useForm<any>({
     defaultValues: {
       postFunctionalityList: [{}],
-      manpowerList: [{}],
+      manpowerList: [],
     },
   });
 
@@ -150,6 +150,11 @@ const NodeForm = ({
       ...data,
       titleBn: data?.titleEn,
       postFunctionalityList: postFunctionalityListNew,
+      manpowerList: isNotEmptyList(data?.manpowerList)
+        ? data?.manpowerList?.map((item) => {
+            return { ...item, isPermanent: true };
+          })
+        : null,
     };
   };
 
@@ -379,7 +384,7 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-5">
+                  <div className="col-md-6 col-xl-6">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
@@ -405,7 +410,7 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-5">
+                  <div className="col-md-6 col-xl-3">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -431,27 +436,42 @@ const NodeForm = ({
 
                   <div
                     className={
-                      "col-md-6 col-xl-2 d-flex align-items-center  " +
+                      "col-md-6 col-xl-3 d-flex align-items-center  " +
                       (index < 1 ? "mt-8" : "my-1")
                     }
                   >
-                    {isHeadIndex === null || isHeadIndex === index ? (
-                      <Checkbox
-                        noMargin
-                        label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
-                        // label='প্রধান ?'
-                        isDisabled={isHeadIndex ? isHeadIndex !== index : false}
-                        registerProperty={{
-                          ...register(`manpowerList.${index}.isHead`, {
-                            onChange: (e) => {
-                              e.target.checked
-                                ? setIsHeadIndex(index)
-                                : setIsHeadIndex(null);
-                            },
-                          }),
-                        }}
-                      />
-                    ) : null}
+                    <div className="col-6">
+                      {isHeadIndex === null || isHeadIndex === index ? (
+                        <Checkbox
+                          noMargin
+                          label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
+                          // label='প্রধান ?'
+                          isDisabled={
+                            isHeadIndex ? isHeadIndex !== index : false
+                          }
+                          registerProperty={{
+                            ...register(`manpowerList.${index}.isHead`, {
+                              onChange: (e) => {
+                                e.target.checked
+                                  ? setIsHeadIndex(index)
+                                  : setIsHeadIndex(null);
+                              },
+                            }),
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                    {isNotEnamCommittee && (
+                      <div className="ms-3 col-6">
+                        <Checkbox
+                          noMargin
+                          label={"স্থায়ী ?"}
+                          registerProperty={{
+                            ...register(`manpowerList.${index}.isPermanent`),
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className={index < 1 ? "mt-6" : ""}>
