@@ -99,6 +99,7 @@ const NodeForm = ({
   useEffect(() => {
     OMSService.FETCH.nodeTitle().then((resp) => {
       setTitleList(resp?.body);
+      console.log(resp?.body);
     });
   }, []);
 
@@ -212,9 +213,9 @@ const NodeForm = ({
                       required: " ",
                     }),
                   }}
-                  autoSuggestionKey="titleBn"
-                  suggestionTextKey="titleBn"
                   suggestionOptions={titleList || []}
+                  autoSuggestionKey="nodeTitleBn"
+                  suggestionTextKey="titleBn"
                   isError={!!errors?.titleBn}
                   errorMessage={errors?.titleBn?.message as string}
                 />
@@ -233,9 +234,9 @@ const NodeForm = ({
                     validate: enCheck,
                   }),
                 }}
-                autoSuggestionKey="titleEn"
-                suggestionTextKey="titleEn"
                 suggestionOptions={titleList || []}
+                autoSuggestionKey="nodeTitleEn"
+                suggestionTextKey="titleEn"
                 isError={!!errors?.titleEn}
                 errorMessage={errors?.titleEn?.message as string}
               />
