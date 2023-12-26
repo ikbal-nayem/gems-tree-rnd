@@ -194,6 +194,7 @@ const TemplateComponent = ({
     );
     if (data.organogramChangeActionDtoList?.length > 0) {
       data.organogramChangeActionDtoList =
+        !data?.isEnamCommittee &&
         data?.organogramChangeActionDtoList?.length > 0
           ? data?.organogramChangeActionDtoList?.map((d) => ({
               titleEn: d?.titleEn,
@@ -315,24 +316,25 @@ const TemplateComponent = ({
               isError={!!errors?.organogramDate}
             />
           </div>
-          {updateData?.organogramChangeActionDtoList?.length > 0 && (
-            <div className="col-md-6 col-12">
-              <Autocomplete
-                label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
-                placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
-                options={organogramChangeActionList || []}
-                getOptionLabel={(op) =>
-                  isNotEnamCommittee ? op?.titleBn : op?.titleEn
-                }
-                getOptionValue={(op) => op?.titleEn}
-                isMulti
-                closeMenuOnSelect={false}
-                // isRequired="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
-                name="organogramChangeActionDtoList"
-                control={control}
-              />
-            </div>
-          )}
+          {isNotEnamCommittee &&
+            updateData?.organogramChangeActionDtoList?.length > 0 && (
+              <div className="col-md-6 col-12">
+                <Autocomplete
+                  label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
+                  placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                  options={organogramChangeActionList || []}
+                  getOptionLabel={(op) =>
+                    isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                  }
+                  getOptionValue={(op) => op?.titleEn}
+                  isMulti
+                  closeMenuOnSelect={false}
+                  // isRequired="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                  name="organogramChangeActionDtoList"
+                  control={control}
+                />
+              </div>
+            )}
         </div>
       </div>
 

@@ -70,7 +70,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const onSubmit = (cloneData) => {
     if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
 
-    const payload = {
+    const reqPayload = {
       cloneIsEnamCommittee: cloneData.isEnamCommittee,
       cloneTitleBn: cloneData.isEnamCommittee
         ? cloneData.titleEn
@@ -79,6 +79,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       cloneOrganogramDate: cloneData.organogramDate,
       refTemplateId: template?.id,
       organogramChangeActionDtoList:
+        !cloneData.isEnamCommittee &&
         cloneData?.organogramChangeActionDtoList?.length > 0
           ? cloneData?.organogramChangeActionDtoList?.map((d) => ({
               titleEn: d?.titleEn,
@@ -107,9 +108,10 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       setNotOrganizationData(false);
       deFocusById("organizationBlock");
     }
+
     setIsSubmitLoading(true);
 
-    OMSService.templateClone(payload)
+    OMSService.templateClone(reqPayload)
       .then((res) => toast.success(res?.message))
       .catch((error) => toast.error(error?.message))
       .finally(() => {
@@ -157,7 +159,6 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const MODAL_TITLE =
     (template?.titleBn ? "'" + template?.titleBn + "' এর " : "") +
     "ডুপ্লিকেট টেমপ্লেটের তথ্য প্রদান করুন";
-
   return (
     <Modal
       title={MODAL_TITLE}
@@ -174,6 +175,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
               <Checkbox
                 label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
                 labelClass="fw-bold"
+                defaultChecked={!isNotEnamCommittee}
                 noMargin
                 registerProperty={{
                   ...register("isEnamCommittee", {
@@ -231,22 +233,24 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 errorMessage={errors?.organogramDate?.message as string}
               />
             </div>
-            <div className="col-md-6 col-12">
-              <Autocomplete
-                label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
-                placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
-                options={organogramChangeActionList || []}
-                getOptionLabel={(op) =>
-                  isNotEnamCommittee ? op?.titleBn : op?.titleEn
-                }
-                getOptionValue={(op) => op?.titleEn}
-                isMulti
-                closeMenuOnSelect={false}
-                // isRequired="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
-                name="organogramChangeActionDtoList"
-                control={control}
-              />
-            </div>
+            {isNotEnamCommittee && (
+              <div className="col-md-6 col-12">
+                <Autocomplete
+                  label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
+                  placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                  options={organogramChangeActionList || []}
+                  getOptionLabel={(op) =>
+                    isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                  }
+                  getOptionValue={(op) => op?.titleEn}
+                  isMulti
+                  closeMenuOnSelect={false}
+                  // isRequired="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                  name="organogramChangeActionDtoList"
+                  control={control}
+                />
+              </div>
+            )}
             <Organizations
               formProps={formProps}
               notOrganizationData={notOrganizationData}
