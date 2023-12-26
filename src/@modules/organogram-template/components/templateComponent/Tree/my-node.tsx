@@ -109,7 +109,7 @@ const MyNode = ({
               return (
                 <div key={i}>
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                    <div className="d-flex">
+                    <div className={`d-flex ${!item?.isPermanent && "text-success"}`}>
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">{postName}</p>

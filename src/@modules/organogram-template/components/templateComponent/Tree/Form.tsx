@@ -54,8 +54,8 @@ const NodeForm = ({
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
-      postFunctionalityList: [{}],
-      manpowerList: [],
+      postFunctionalityList: [],
+      manpowerList: [{}],
     },
   });
 

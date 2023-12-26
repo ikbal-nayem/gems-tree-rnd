@@ -56,7 +56,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                  <div className="d-flex">
+                  <div
+                    className={`d-flex ${!item?.isPermanent && "text-success"}`}
+                  >
                     <p className="mb-0 fs-8">
                       {langEn
                         ? item?.numberOfEmployee || 0
