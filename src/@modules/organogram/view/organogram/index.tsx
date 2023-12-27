@@ -4,11 +4,10 @@ import {
   IObject,
   generateDateFormat,
   isObjectNull,
-  searchParamsToObject,
 } from "@gems/utils";
 import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { OMSService } from "@services/api/OMS.service";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const OrganogramTab = () => {
@@ -21,12 +20,11 @@ const OrganogramTab = () => {
     {}
   );
   const [verisonList, setVersionList] = useState<IObject[]>([]);
-  const [searchParam, setSearchParam] = useSearchParams();
+  const [searchParam] = useSearchParams();
 
   const [organogramId, setOrganogramId] = useState<string>(
     searchParam.get("id") || ""
   );
-  const [selectedVersion, setSelectedVersion] = useState<string>(organogramId);
   useEffect(() => {
     getTemplateDetailsDetailsById();
     getTemplateInventoryById();
@@ -103,10 +101,8 @@ const OrganogramTab = () => {
   };
 
   const handleVersionChange = (item) => {
-    setOrganogramId(item?.id);
-    setSelectedVersion(item?.id);
+    setOrganogramId(item?.organogramId);
   };
-
   return (
     <div>
       {verisonList?.length > 0 && (
@@ -116,7 +112,7 @@ const OrganogramTab = () => {
               <Button onClick={() => handleVersionChange(d)} key={idx}>
                 <span
                   className={`fs-5 ${
-                    selectedVersion === d?.id ? "text-primary" : ""
+                    organogramId === d?.organogramId ? "text-primary" : ""
                   }`}
                 >
                   {d?.organogramDate &&

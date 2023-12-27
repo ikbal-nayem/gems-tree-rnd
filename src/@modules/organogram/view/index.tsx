@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { OMSService } from "@services/api/OMS.service";
 import { Tab, TabBlock } from "@gems/components";
 import { searchParamsToObject } from "@gems/utils";
 import { useSearchParams } from "react-router-dom";
@@ -29,8 +28,6 @@ const OrganogramView = () => {
 
   return (
     <>
-      {/* {isLoading && <ContentPreloader />}
-      {!isLoading && !isObjectNull(data) && ( */}
       <div className="p-5">
         <div className="d-flex bg-white rounded ps-4">
           <NewProposalMenu />
@@ -43,10 +40,6 @@ const OrganogramView = () => {
           </TabBlock>
         </div>
       </div>
-      {/* )} */}
-      {/* {!isLoading && isObjectNull(data) && (
-        <NoData details="কোনো টেমপ্লেট তথ্য খুঁজে পাওয়া যায় নি !!" />
-      )} */}
     </>
   );
 };
