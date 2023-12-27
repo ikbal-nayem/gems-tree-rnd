@@ -1,9 +1,8 @@
-import { TopProgressCom } from "@gems/components";
 import MasterLayout from "layout/MasterLayout";
 import { Suspense } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { AppRouteList } from "./routes/app.routes";
-import { IAppRoutes } from "@gems/utils";
+import { IAppRoutes, TopProgressCom } from "@gems/utils";
 
 const routeList = (routes: IAppRoutes[]) =>
   routes.map((route, index: number) => {

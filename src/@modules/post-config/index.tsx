@@ -4,11 +4,10 @@ import {
   ConfirmationModal,
   ContentPreloader,
   Input,
-  ListDownload,
+  DownloadMenu,
   NoData,
   Pagination,
   toast,
-  topProgress,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -20,6 +19,7 @@ import {
   initPayloadMeta,
   makeBoolean,
   searchParamsToObject,
+  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
@@ -274,7 +274,7 @@ const PostConfig = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
           <Filter onFilterDone={onFilterDone} options={options} />
-          <ListDownload fnDownloadExcel={getXLSXStoreList} />
+          <DownloadMenu fnDownloadExcel={getXLSXStoreList} />
         </div>
 
         {/* ============================================================ TABLE STARTS ============================================================ */}

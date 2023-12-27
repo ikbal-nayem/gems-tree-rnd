@@ -4,10 +4,9 @@ import {
   Autocomplete,
   ConfirmationModal,
   Input,
-  ListDownload,
+  DownloadMenu,
   Pagination,
   toast,
-  topProgress,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -16,6 +15,7 @@ import {
   exportXLSX,
   numEnToBn,
   searchParamsToObject,
+  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
@@ -187,7 +187,7 @@ const TemplateList = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <ListDownload
+          <DownloadMenu
             fnDownloadExcel={() =>
               getXLSXStoreList({
                 page: 0,

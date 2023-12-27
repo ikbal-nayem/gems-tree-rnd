@@ -1,6 +1,5 @@
-import { topProgress } from "@gems/components";
 import { TemplateListPDFcontent } from "./pdf";
-import { generatePDF } from "@gems/utils";
+import { generatePDF, topProgress } from "@gems/utils";
 
 export const downloadAsPDF = (reqPayload, totalRecords) => {
 	topProgress.show();

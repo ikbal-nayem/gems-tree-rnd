@@ -8,9 +8,8 @@ import {
 	ModalBody,
 	ModalHeader,
 	NoData,
-	topProgress,
 } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, topProgress } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
 import clsx from "clsx";
