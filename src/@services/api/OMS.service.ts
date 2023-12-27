@@ -129,7 +129,7 @@ export const OMSService = {
         "organization-organogram/get-by-organogram-id/" +
         organogramId
     ),
-  getOrganogramByVersionId: async (organogramId: string): Promise<any> =>
+  getVersionListByOrganogramId: async (organogramId: string): Promise<any> =>
     await axiosIns.get(
       OMS_SERVICE +
         "organization-organogram/get-by-organogram-version-id/" +

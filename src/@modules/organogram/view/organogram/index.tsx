@@ -1,5 +1,11 @@
-import { ContentPreloader, toast } from "@gems/components";
-import { IObject, isObjectNull, searchParamsToObject } from "@gems/utils";
+import { Button, ContentPreloader, toast } from "@gems/components";
+import {
+  DATE_PATTERN,
+  IObject,
+  generateDateFormat,
+  isObjectNull,
+  searchParamsToObject,
+} from "@gems/utils";
 import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { OMSService } from "@services/api/OMS.service";
 import React, { useEffect, useState } from "react";
@@ -14,11 +20,13 @@ const OrganogramTab = () => {
   const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
     {}
   );
+  const [verisonList, setVersionList] = useState<IObject[]>([]);
   const [searchParam, setSearchParam] = useSearchParams();
 
   const [organogramId, setOrganogramId] = useState<string>(
     searchParam.get("id") || ""
   );
+  const [selectedVersion, setSelectedVersion] = useState<string>(organogramId);
   useEffect(() => {
     getTemplateDetailsDetailsById();
     getTemplateInventoryById();
@@ -82,21 +90,60 @@ const OrganogramTab = () => {
       .finally(() => setIsLoading(false));
   };
 
-  
+  useEffect(() => {
+    getVersionListById();
+  }, []);
+
+  const getVersionListById = () => {
+    OMSService.getVersionListByOrganogramId(organogramId)
+      .then((resp) => {
+        setVersionList(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message));
+  };
+
+  const handleVersionChange = (item) => {
+    setOrganogramId(item?.id);
+    setSelectedVersion(item?.id);
+  };
+
   return (
-    <>
+    <div>
+      {verisonList?.length > 0 && (
+        <div className="d-flex bg-white rounded mb-3">
+          {verisonList?.map((d, idx) => {
+            return (
+              <Button onClick={() => handleVersionChange(d)} key={idx}>
+                <span
+                  className={`fs-5 ${
+                    selectedVersion === d?.id ? "text-primary" : ""
+                  }`}
+                >
+                  {d?.organogramDate &&
+                    generateDateFormat(
+                      d?.organogramDate,
+                      DATE_PATTERN.GOVT_STANDARD
+                    )}
+                </span>
+              </Button>
+            );
+          })}
+        </div>
+      )}
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(data) && (
-        <TemplateViewComponent
-          updateData={data}
-          inventoryData={inventoryData}
-          manpowerData={manpowerData}
-          attachedOrganizationData={attachOrgData}
-          organogramView={true}
-          parentOrganizationData={parentOrganizationData}
-        />
+        <div>
+          <TemplateViewComponent
+            updateData={data}
+            inventoryData={inventoryData}
+            manpowerData={manpowerData}
+            attachedOrganizationData={attachOrgData}
+            organogramView={true}
+            parentOrganizationData={parentOrganizationData}
+          />
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
