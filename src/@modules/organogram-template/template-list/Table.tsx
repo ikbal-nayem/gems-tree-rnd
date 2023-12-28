@@ -101,13 +101,10 @@ const TemplateTable: FC<TableProps> = ({
           }
           setAttachedOrgList(resp?.body || []);
 
-          // if (!(resp?.body?.length > 1)) {
           if (resp?.body?.length === 1) {
-            navigate(
-              ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id,
-              { state: resp?.body?.[0] }
-              // `&${objectToQueryString(resp?.body?.[0])}`
-            );
+            navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
+              state: resp?.body?.[0],
+            });
           } else {
             setReportOpen(true);
           }
@@ -145,7 +142,10 @@ const TemplateTable: FC<TableProps> = ({
                   <Tag
                     title={item?.status || COMMON_LABELS.NOT_ASSIGN}
                     color={
-                      statusColorMapping(item?.status || "IN_REVIEW","class") as IColors
+                      statusColorMapping(
+                        item?.status || "IN_REVIEW",
+                        "class"
+                      ) as IColors
                     }
                   />
                 </div>

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import TemplateComponent from "../components/templateComponent";
-// import { OMSService } from "@services/api/OMS.service";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import TemplateComponent from "../components/templateComponent";
 import { OMSService } from "../../../@services/api/OMS.service";
+import { ContentPreloader, NoData, toast } from "@gems/components";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,7 +30,7 @@ const TemplateUpdate = () => {
   };
 
   const onSubmit = (templateData) => {
-    // setIsSubmitLoading(true);
+    setIsSubmitLoading(true);
 
     let fileList =
       (templateData?.attachmentDtoList?.length > 0 &&
@@ -57,13 +56,13 @@ const TemplateUpdate = () => {
     };
 
     let fd = new FormData();
-    // console.log("Req Payload: ", reqPayload);
+
     fd.append("body", JSON.stringify(reqPayload));
     fileList?.length > 0 &&
       fileList.forEach((element) => {
         if (element !== undefined) fd.append("files", element);
       });
-    // console.log("form data: " + fd);
+
     OMSService.templateUpdate(fd)
       .then((res) => {
         toast.success(res?.message);

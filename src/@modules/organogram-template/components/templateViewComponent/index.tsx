@@ -1,3 +1,8 @@
+import { useState } from "react";
+import {
+  COMMON_LABELS as COMN_LABELS,
+  LABELS,
+} from "@constants/common.constant";
 import {
   ACLWrapper,
   Button,
@@ -16,31 +21,24 @@ import {
   generateUUID,
   isObjectNull,
 } from "@gems/utils";
-import OrganizationTemplateTree from "./Tree";
-// import { orgData } from "./Tree/data2";
-import {
-  COMMON_LABELS as COMN_LABELS,
-  LABELS,
-} from "@constants/common.constant";
-import { useState } from "react";
-import AbbreviationList from "./components/AbbreviationList";
-import ActivitiesList from "./components/ActivitesList";
-import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
-import EquipmentsList from "./components/EquipmentsList";
-import ManPowerList from "./components/ManPowerList";
-import OrgList from "./components/Organization";
-
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import Switch from "@components/Switch";
+import OrganizationTemplateTree from "./Tree";
+import { BUTTON_LABEL, MSG } from "./message";
+import { useNavigate } from "react-router-dom";
+import NotesList from "./components/NotesList";
+import OrgList from "./components/Organization";
+import ManPowerList from "./components/ManPowerList";
+import { OMSService } from "@services/api/OMS.service";
+import ActivitiesList from "./components/ActivitesList";
+import EquipmentsList from "./components/EquipmentsList";
+import AttachmentList from "./components/AttachmentList";
+import AttachedOrgList from "./components/AttachedOrgList";
+import AbbreviationList from "./components/AbbreviationList";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
-import { OMSService } from "@services/api/OMS.service";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { useLocation, useNavigate } from "react-router-dom";
-import AttachedOrgList from "./components/AttachedOrgList";
-import AttachmentList from "./components/AttachmentList";
-import NotesList from "./components/NotesList";
-import { BUTTON_LABEL, MSG } from "./message";
+import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
 import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModal";
 
 interface ITemplateViewComponent {
@@ -53,6 +51,7 @@ interface ITemplateViewComponent {
   organogramView?: boolean;
   organogramId?: string;
   isBeginningVersion?: boolean;
+  stateOrganizationData?: IObject;
 }
 
 const TemplateViewComponent = ({
@@ -64,6 +63,7 @@ const TemplateViewComponent = ({
   organogramView = false,
   organogramId,
   isBeginningVersion = false,
+  stateOrganizationData,
 }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
@@ -79,7 +79,6 @@ const TemplateViewComponent = ({
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [modalButtonLabel, setModalButtonLabel] = useState<any>();
@@ -87,13 +86,9 @@ const TemplateViewComponent = ({
   const [modalAction, setModalAction] = useState<any>();
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
-
   const navigate = useNavigate();
 
-  const { state } = useLocation();
-  const orgData = state || {};
-
-  let organogramOrganizationView = orgData?.organizationId
+  let organogramOrganizationView = stateOrganizationData?.organizationId
     ? true
     : organogramView;
 
@@ -158,6 +153,7 @@ const TemplateViewComponent = ({
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
 
   const onStatusChange = (status: string, note = null) => {
+    setIsSubmitting(true);
     OMSService.updateTemplateStatusById(updateData?.id, status, {
       note: note,
       status: updateData?.status,
@@ -166,7 +162,8 @@ const TemplateViewComponent = ({
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
       })
-      .catch((error) => toast.error(error?.message));
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitting(false));
   };
 
   const onTemplateApprove = () => {
@@ -247,12 +244,12 @@ const TemplateViewComponent = ({
   };
 
   let orgName = langEn
-    ? orgData?.organizationNameEn
-    : orgData?.organizationNameBn;
+    ? stateOrganizationData?.organizationNameEn
+    : stateOrganizationData?.organizationNameBn;
 
   let orgParentName = langEn
-    ? orgData?.parentNameEN || parentOrganizationData?.nameEn
-    : orgData?.parentNameBN || parentOrganizationData?.nameBn;
+    ? stateOrganizationData?.parentNameEN || parentOrganizationData?.nameEn
+    : stateOrganizationData?.parentNameBN || parentOrganizationData?.nameBn;
 
   let titleName =
     (organogramView
@@ -302,7 +299,6 @@ const TemplateViewComponent = ({
               </Label>
             </div>
           </div>
-
           {!updateData?.isEnamCommittee && (
             <div className="d-flex ms-auto">
               <Switch
@@ -345,10 +341,6 @@ const TemplateViewComponent = ({
             orgName: orgName || null,
             orgParentName: orgParentName || null,
           }}
-          // templateName={titleName}
-          // versionName={versionName}
-          // orgName={orgName}
-          // orgParentName={orgParentName}
         />
         <div
           className="position-absolute"
@@ -385,8 +377,8 @@ const TemplateViewComponent = ({
           </ModalBody>
         </Modal>
       </div>
-      {/* For pdf generating start */}
 
+      {/* For pdf generating start */}
       <div
         className="pdfGenarator dataBlock"
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
@@ -433,6 +425,7 @@ const TemplateViewComponent = ({
           </div>
         </div>
       </div>
+
       {/* Pdf generating end */}
       <div className="row">
         <div className="col-md-6">
@@ -463,7 +456,7 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          {!organogramView && !orgData?.organizationId && (
+          {!organogramView && !stateOrganizationData?.organizationId && (
             <div className="mt-3">
               <NotesList
                 data={updateData?.organogramNoteGroupDtoList || []}
@@ -507,7 +500,6 @@ const TemplateViewComponent = ({
           )}
         </div>
       </div>
-      {/* )} attachmentOrganization */}
 
       {!organogramView && (
         <>

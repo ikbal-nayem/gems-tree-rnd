@@ -1,9 +1,9 @@
-import { Icon, Modal, ModalBody } from "@gems/components";
 import { IObject } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
 import ManPowerList from "./ManPowerList";
+import { useEffect, useState } from "react";
 import { LABELS } from "@constants/common.constant";
+import { OMSService } from "@services/api/OMS.service";
+import { Icon, Modal, ModalBody } from "@gems/components";
 
 interface IForm {
   organogramId: any;
@@ -23,12 +23,13 @@ const MPListChanges = ({
   const [prevManpower, setPrevManpower] = useState<IObject>();
 
   useEffect(() => {
-    OMSService.FETCH.manpowerDifferenceByOrganogram(organogramId).then(
-      (resp) => {
-        setPrevManpower(resp?.body);
-      }
-    );
-  }, []);
+    if (organogramId)
+      OMSService.FETCH.manpowerDifferenceByOrganogram(organogramId).then(
+        (resp) => {
+          setPrevManpower(resp?.body);
+        }
+      );
+  }, [organogramId]);
 
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
 

@@ -116,7 +116,7 @@ const OrganogramTab = () => {
   return (
     <div>
       {verisonList?.length > 0 && (
-        <div className="d-flex bg-white rounded mb-3">
+        <div className="d-flex bg-white rounded mb-3 overflow-auto">
           {verisonList?.map((d, idx) => {
             return (
               <Button onClick={() => handleVersionChange(d)} key={idx}>
