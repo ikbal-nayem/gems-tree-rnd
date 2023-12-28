@@ -100,8 +100,7 @@ const OrganogramTab = () => {
         setIsBeginningVersion(
           resp?.body?.length &&
             (resp?.body.length < 2 ||
-              resp?.body[resp?.body.length - 1]?.organogramId ===
-                organogramId)
+              resp?.body[resp?.body.length - 1]?.organogramId === organogramId)
         );
       })
       .catch((e) => toast.error(e?.message));
@@ -111,9 +110,8 @@ const OrganogramTab = () => {
     setOrganogramId(item?.organogramId);
     setIsBeginningVersion(
       verisonList?.length &&
-        verisonList[verisonList.length - 1]?.organogramId === organogramId
+        verisonList[verisonList.length - 1]?.organogramId === item?.organogramId
     );
-    // alert(isBeginningVersion);
   };
   return (
     <div>

@@ -1,8 +1,4 @@
-import {
-  Icon,
-  Modal,
-  ModalBody,
-} from "@gems/components";
+import { Icon, Modal, ModalBody } from "@gems/components";
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
@@ -27,15 +23,23 @@ const MPListChanges = ({
   const [prevManpower, setPrevManpower] = useState<IObject>();
 
   useEffect(() => {
-    OMSService.FETCH.manpowerDifferenceByOrganogram(organogramId).then((resp) => {
-      setPrevManpower(resp?.body);
-    });
+    OMSService.FETCH.manpowerDifferenceByOrganogram(organogramId).then(
+      (resp) => {
+        setPrevManpower(resp?.body);
+      }
+    );
   }, []);
 
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
 
   return (
-    <Modal isOpen={isOpen} handleClose={onClose} holdOn size="xl" title={LABEL.CHANGE_IN_MANPOWER}>
+    <Modal
+      isOpen={isOpen}
+      handleClose={onClose}
+      holdOn
+      size="xl"
+      title={LABEL.CHANGE_IN_MANPOWER}
+    >
       <ModalBody>
         <div className="row">
           <div className="col-5">
@@ -48,14 +52,15 @@ const MPListChanges = ({
             />
           </div>
           <div className="col-2 d-flex justify-content-center align-items-center">
-          <Icon
+            <Icon
               icon="arrow_right_alt"
               variants="outlined"
+              color="info"
               size={60}
             />
           </div>
           <div className="col-5">
-          <ManPowerList
+            <ManPowerList
               isLoading={false}
               data={currentManpower}
               langEn={langEn}

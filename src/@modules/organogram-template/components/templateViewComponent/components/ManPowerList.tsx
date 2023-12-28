@@ -54,10 +54,10 @@ const ManPowerList: FC<TableProps> = ({
           </h4>
           {organogramId && !isBeginningVersion && !insideModal && (
             <Icon
-              icon="fact_check"
+              icon="swap_horiz"
               variants="outlined"
               hoverTitle={LABEL.CHANGES}
-              size={20}
+              size={25}
               className="text-primary text-hover-warning"
               onClick={() => setIsOpen(true)}
             />
