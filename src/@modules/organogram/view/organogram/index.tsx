@@ -12,6 +12,7 @@ import { useSearchParams } from "react-router-dom";
 
 const OrganogramTab = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
@@ -96,12 +97,23 @@ const OrganogramTab = () => {
     OMSService.getVersionListByOrganogramId(organogramId)
       .then((resp) => {
         setVersionList(resp?.body);
+        setIsBeginningVersion(
+          resp?.body?.length &&
+            (resp?.body.length < 2 ||
+              resp?.body[resp?.body.length - 1]?.organogramId ===
+                organogramId)
+        );
       })
       .catch((e) => toast.error(e?.message));
   };
 
   const handleVersionChange = (item) => {
     setOrganogramId(item?.organogramId);
+    setIsBeginningVersion(
+      verisonList?.length &&
+        verisonList[verisonList.length - 1]?.organogramId === organogramId
+    );
+    // alert(isBeginningVersion);
   };
   return (
     <div>
@@ -136,6 +148,8 @@ const OrganogramTab = () => {
             attachedOrganizationData={attachOrgData}
             organogramView={true}
             parentOrganizationData={parentOrganizationData}
+            isBeginningVersion={isBeginningVersion}
+            organogramId={organogramId}
           />
         </div>
       )}

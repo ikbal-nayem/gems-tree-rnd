@@ -51,6 +51,8 @@ interface ITemplateViewComponent {
   parentOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
+  organogramId?: string;
+  isBeginningVersion?: boolean;
 }
 
 const TemplateViewComponent = ({
@@ -60,6 +62,8 @@ const TemplateViewComponent = ({
   attachedOrganizationData,
   parentOrganizationData,
   organogramView = false,
+  organogramId,
+  isBeginningVersion = false,
 }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
@@ -488,6 +492,9 @@ const TemplateViewComponent = ({
               isLoading={false}
               data={manpowerData}
               langEn={langEn}
+              isBeginningVersion={isBeginningVersion}
+              organogramId={organogramId}
+              insideModal={false}
             />
           </div>
           {langEn && (
