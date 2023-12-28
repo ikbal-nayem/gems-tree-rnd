@@ -124,7 +124,7 @@ const NodeForm = ({
       reset({
         ...resetData,
       });
-    } else reset({});
+    } else reset({ manpowerList: [{}], postFunctionalityList: [] });
   }, [isOpen, updateData, reset]);
 
   const manpowerNumberCheck = (val) => {
@@ -370,7 +370,7 @@ const NodeForm = ({
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    manpowerListAppend({});
+                    manpowerListAppend({ isPermanent: true });
                   }}
                 />
               </div>
@@ -466,6 +466,7 @@ const NodeForm = ({
                         <Checkbox
                           noMargin
                           label={"স্থায়ী ?"}
+                          defaultChecked={isObjectNull(updateData) && true}
                           registerProperty={{
                             ...register(`manpowerList.${index}.isPermanent`),
                           }}
