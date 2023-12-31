@@ -12,13 +12,9 @@ export const NewProposalMenu = (organogramId, organizationId) => {
   const onSubmit = (data) => {
     const reqPayload = {
       organizationId: organizationId,
-      organogramChangeActionDtoList:
-        !data.isEnamCommittee && data?.organogramChangeActionDtoList?.length > 0
-          ? data?.organogramChangeActionDtoList?.map((d) => ({
-              titleEn: d?.titleEn,
-              titleBn: d?.titleBn,
-            }))
-          : null,
+      subjects: data?.subjects?.length > 0 ? data?.subjects : null,
+      proposedDate: new Date(),
+      status: "NEW",
     };
 
     setIsSubmitLoading(true);

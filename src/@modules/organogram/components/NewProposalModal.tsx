@@ -68,12 +68,10 @@ const NewProposalModal = ({
             getOptionValue={(op) => op?.titleEn}
             isMulti
             closeMenuOnSelect={false}
-            name="organogramChangeActionDtoList"
+            name="subjects"
             control={control}
-            isError={!!errors?.organogramChangeActionDtoList}
-            errorMessage={
-              errors?.organogramChangeActionDtoList?.message as string
-            }
+            isError={!!errors?.subjects}
+            errorMessage={errors?.subjects?.message as string}
           />
         </ModalBody>
 
