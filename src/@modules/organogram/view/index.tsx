@@ -14,7 +14,9 @@ const tabs = [
 
 const OrganogramView = () => {
   const [searchParam, setSearchParam] = useSearchParams();
-
+  const [isLatestVersion, setIsLatestVersion] = useState<boolean>(true);
+  const [organogramId, setOrganogramId] = useState<string>();
+  const [organizationId, setOrganizationId] = useState<string>();
   const active = tabs.findIndex((t) => t.key === searchParam.get("active"));
   const [activeTab, setActiveTab] = useState<number>(active > -1 ? active : 0);
 
@@ -26,17 +28,21 @@ const OrganogramView = () => {
     });
   };
 
+  
   return (
     <>
       <div className="p-5">
         <div className="d-flex bg-white rounded ps-4">
-          <NewProposalMenu />
+          {isLatestVersion && <NewProposalMenu organogramId={organogramId}  organizationId={organizationId} />}
           <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} />
         </div>
         <div className="mt-3">
           <TabBlock index={0} activeIndex={activeTab}>
-            {" "}
-            <OrganogramTab />
+            <OrganogramTab
+              receiveOrganogramId={setOrganogramId}
+              setOrganizationId={setOrganizationId}
+              setIsLatestVersion={setIsLatestVersion}
+            />
           </TabBlock>
         </div>
       </div>

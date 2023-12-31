@@ -1,20 +1,51 @@
 import clsx from "clsx";
+import NewProposalModal from "./NewProposalModal";
+import { useState } from "react";
+import { OMSService } from "@services/api/OMS.service";
+import { toast } from "@gems/components";
 
-export const NewProposalMenu = () => {
+export const NewProposalMenu = (organogramId, organizationId) => {
+  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onProposalClose = () => setIsOpen(false);
+  alert(organizationId);
+  const onSubmit = (data) => {
+    const reqPayload = {
+      organizationId: organizationId,
+      organogramChangeActionDtoList:
+        !data.isEnamCommittee && data?.organogramChangeActionDtoList?.length > 0
+          ? data?.organogramChangeActionDtoList?.map((d) => ({
+              titleEn: d?.titleEn,
+              titleBn: d?.titleBn,
+            }))
+          : null,
+    };
+
+    setIsSubmitLoading(true);
+
+    OMSService.templateClone(reqPayload)
+      .then((res) => toast.success(res?.message))
+      .catch((error) => toast.error(error?.message))
+      .finally(() => {
+        setIsSubmitLoading(false);
+        onProposalClose();
+      });
+  };
   return (
     <div className={clsx("app-navbar-item")}>
       <div
         className="cursor-pointer"
         data-kt-menu-trigger="{default: 'click'}"
-        data-kt-menu-attach="parent"
-        data-kt-menu-placement="bottom-start"
+        // data-kt-menu-attach="parent"
+        // data-kt-menu-placement="bottom-start"
+        onClick={() => setIsOpen(true)}
       >
         <span
           className={`nav-link text-active-primary cursor-pointer me-8 mt-2 fw-bold text-gray-700 fs-5`}
         >
           নতুন প্রস্তাব
         </span>
-        <div
+        {/* <div
           className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-700 menu-state-bg menu-state-primary fw-bold py-2 fs-6 w-200px"
           data-kt-menu="true"
         >
@@ -44,7 +75,13 @@ export const NewProposalMenu = () => {
           <div className="menu-item px-2">
             <div className="menu-link">১০% সংরক্ষিত শূন্যপদ পূরণ</div>
           </div>
-        </div>
+        </div> */}
+        <NewProposalModal
+          isOpen={isOpen}
+          onSubmit={onSubmit}
+          onClose={onProposalClose}
+          isSubmitLoading={isSubmitLoading}
+        />
       </div>
     </div>
   );

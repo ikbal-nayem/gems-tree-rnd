@@ -10,7 +10,13 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-const OrganogramTab = () => {
+interface ITab {
+  receiveOrganogramId: (d) => void;
+  setIsLatestVersion: (d) => void;
+  setOrganizationId: (d) => void;
+}
+
+const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizationId }: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
@@ -75,6 +81,7 @@ const OrganogramTab = () => {
 
   useEffect(() => {
     if (data?.organization?.id) {
+      setOrganizationId(data?.organization?.id);
       getParentOrganization();
     }
   }, [data]);
@@ -90,6 +97,7 @@ const OrganogramTab = () => {
   };
 
   useEffect(() => {
+    receiveOrganogramId(organogramId);
     getVersionListById();
   }, []);
 
@@ -102,15 +110,24 @@ const OrganogramTab = () => {
             (resp?.body.length < 2 ||
               resp?.body[resp?.body.length - 1]?.organogramId === organogramId)
         );
+        setIsLatestVersion(
+          resp?.body?.length &&
+            (resp?.body.length < 2 ||
+              resp?.body[0]?.organogramId === organogramId)
+        );
       })
       .catch((e) => toast.error(e?.message));
   };
 
   const handleVersionChange = (item) => {
     setOrganogramId(item?.organogramId);
+    receiveOrganogramId(item?.organogramId);
     setIsBeginningVersion(
       verisonList?.length &&
         verisonList[verisonList.length - 1]?.organogramId === item?.organogramId
+    );
+    setIsLatestVersion(
+      verisonList?.length && verisonList[0]?.organogramId === item?.organogramId
     );
   };
   return (
