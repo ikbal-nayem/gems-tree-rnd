@@ -8,7 +8,7 @@ export const NewProposalMenu = (organogramId, organizationId) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onProposalClose = () => setIsOpen(false);
-  alert(organizationId);
+  // alert(organizationId);
   const onSubmit = (data) => {
     const reqPayload = {
       organizationId: organizationId,
