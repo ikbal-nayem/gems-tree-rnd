@@ -124,8 +124,8 @@ const TemplateTable: FC<TableProps> = ({
                 verticalAlign="top"
               />
               <TableCell
-                text={item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
+                text={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.titleBn || null}
               />
               <TableCell
                 text={

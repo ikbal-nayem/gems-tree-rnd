@@ -57,7 +57,13 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
               <div key={i}>
                 {item?.numberOfEmployee || item?.postDto?.nameBn ? (
                   <div
-                    className={`d-flex ${!item?.isPermanent && "text-success"}`}
+                    className={`d-flex ${
+                      item?.postType === "proposed"
+                        ? "text-primary"
+                        : item?.postType === "nonPermanent"
+                        ? "text-success"
+                        : ""
+                    }`}
                   >
                     <p className="mb-0 fs-8">
                       {langEn

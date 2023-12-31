@@ -217,12 +217,13 @@ const TemplateComponent = ({
 
     const reqPayload = {
       ...data,
-      titleBn: getValues(isNotEnamCommittee ? "titleBn" : "titleEn"),
+      titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
       organizationStructureDto: treeData,
     };
+    console.log(reqPayload);
 
-    onSubmit(reqPayload);
+    // onSubmit(reqPayload);
   };
 
   const onIsEnamCommitteeChange = (checked: boolean) => {

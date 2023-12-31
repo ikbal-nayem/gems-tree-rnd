@@ -51,17 +51,28 @@ const editNode = (nd, node, updateData) => {
 
 const deleteNode = (nd, nodeId) => {
   if (nd.id === nodeId) {
-    return null;
+    return nd?.children && nd?.children?.length > 0
+      ? nd?.children?.map((d) => {
+          return { ...d, isDeleted: true };
+        })
+      : null;
   }
   for (var i = 0; i < nd.children.length; i++) {
     const nodeState = deleteNode(nd.children[i], nodeId);
-
+    console.log(nodeState);
+    if (nodeState?.length > 0) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: nodeState,
+        isDeleted: true,
+      };
+    }
     if (!nodeState) {
-      nd.children.splice(i, 1);
-      break;
+      nd.children[i] = { ...nd.children[i], isDeleted: true };
     }
   }
   nd = childSerializer(nd);
+  console.log("dssasdad", nd);
   return { ...nd };
 };
 

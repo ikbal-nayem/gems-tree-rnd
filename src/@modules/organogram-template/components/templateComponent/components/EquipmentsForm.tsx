@@ -257,11 +257,13 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     />
                   </div>
                 )}
-                <div className={
+                <div
+                  className={
                     isNotEnamCommittee
                       ? "col-xl-6 col-12 mt-1 mt-xl-0"
                       : "col-12 mt-1 mt-xl-0"
-                  }>
+                  }
+                >
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
@@ -271,13 +273,6 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     registerProperty={{
                       ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {
                         onChange: (e) => {
-                          if (!isNotEnamCommittee) {
-                            setValue(
-                              `miscellaneousPointDtoList.${idx}.titleBn`,
-                              e.target.value
-                            );
-                          }
-
                           if (notNullOrUndefined(e.target.value)) {
                             setValue(
                               `miscellaneousPointDtoList.${idx}.displayOrder`,

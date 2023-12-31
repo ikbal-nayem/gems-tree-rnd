@@ -87,12 +87,6 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                         `mainActivitiesDtoList.${idx}.mainActivityEn`,
                         {
                           onChange: (e) => {
-                            if (!isNotEnamCommittee) {
-                              setValue(
-                                `mainActivitiesDtoList.${idx}.mainActivityBn`,
-                                e.target.value
-                              );
-                            }
                             if (notNullOrUndefined(e.target.value)) {
                               setValue(
                                 `mainActivitiesDtoList.${idx}.displayOrder`,
