@@ -14,14 +14,14 @@ import { useForm } from "react-hook-form";
 interface IForm {
   isOpen: boolean;
   onSubmit: (d) => void;
-  onClose: () => void;
+  onProposalClose: () => void;
   isSubmitLoading: boolean;
 }
 
 const NewProposalModal = ({
   isOpen,
   onSubmit,
-  onClose,
+  onProposalClose,
   isSubmitLoading,
 }: IForm) => {
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
@@ -52,8 +52,8 @@ const NewProposalModal = ({
   return (
     <Modal
       title="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ"
-      isOpen={isOpen}
-      handleClose={onClose}
+      isOpen={false}
+      handleClose={onProposalClose}
       holdOn
       size="lg"
     >
@@ -77,7 +77,7 @@ const NewProposalModal = ({
 
         <ModalFooter>
           <div className="d-flex gap-3 justify-content-end">
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={onProposalClose}>
               {COMMON_LABELS.CANCEL}
             </Button>
             <Button color="primary" type="submit" isLoading={isSubmitLoading}>

@@ -19,7 +19,7 @@ export const NewProposalMenu = (organogramId, organizationId) => {
 
     setIsSubmitLoading(true);
 
-    OMSService.templateClone(reqPayload)
+    OMSService.SAVE.proposal(reqPayload)
       .then((res) => toast.success(res?.message))
       .catch((error) => toast.error(error?.message))
       .finally(() => {
@@ -75,7 +75,7 @@ export const NewProposalMenu = (organogramId, organizationId) => {
         <NewProposalModal
           isOpen={isOpen}
           onSubmit={onSubmit}
-          onClose={onProposalClose}
+          onProposalClose={onProposalClose}
           isSubmitLoading={isSubmitLoading}
         />
       </div>
