@@ -112,15 +112,12 @@ const Graph = ({ data }: IGraph) => {
     yaxis: yaxis,
   };
   return (
-    <div>
-      {" "}
-      <ReactApexChart
-        options={options}
-        series={data?.series || []}
-        type="bar"
-        height={300}
-      />
-    </div>
+    <ReactApexChart
+      options={options}
+      series={data?.series || []}
+      type="bar"
+      height={300}
+    />
   );
 };
 export default Graph;
