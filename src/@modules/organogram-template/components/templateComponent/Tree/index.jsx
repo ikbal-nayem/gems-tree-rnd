@@ -53,13 +53,16 @@ const deleteNode = (nd, nodeId) => {
   if (nd.id === nodeId) {
     return nd?.children && nd?.children?.length > 0
       ? nd?.children?.map((d) => {
-          return { ...d, isDeleted: true };
+          return {
+            ...d,
+            children: d?.children?.length > 0 ? deleteNode(d, d?.id) : [],
+            isDeleted: true,
+          };
         })
       : null;
   }
   for (var i = 0; i < nd.children.length; i++) {
     const nodeState = deleteNode(nd.children[i], nodeId);
-    console.log(nodeState);
     if (nodeState?.length > 0) {
       nd.children[i] = {
         ...nd.children[i],
@@ -72,7 +75,6 @@ const deleteNode = (nd, nodeId) => {
     }
   }
   nd = childSerializer(nd);
-  console.log("dssasdad", nd);
   return { ...nd };
 };
 

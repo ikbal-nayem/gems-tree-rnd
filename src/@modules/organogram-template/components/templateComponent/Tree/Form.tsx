@@ -123,7 +123,6 @@ const NodeForm = ({
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
-      console.log("upDa", updateData);
 
       let resetData = updateData;
       if (!isObjectNull(updateData?.manpowerList)) {
