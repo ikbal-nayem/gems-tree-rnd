@@ -28,25 +28,27 @@ const OrganogramView = () => {
     });
   };
 
-  
   return (
-    <>
-      <div className="p-5">
-        <div className="d-flex bg-white rounded ps-4">
-          {isLatestVersion && <NewProposalMenu organogramId={organogramId}  organizationId={organizationId} />}
-          <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} />
-        </div>
-        <div className="mt-3">
-          <TabBlock index={0} activeIndex={activeTab}>
-            <OrganogramTab
-              receiveOrganogramId={setOrganogramId}
-              setOrganizationId={setOrganizationId}
-              setIsLatestVersion={setIsLatestVersion}
-            />
-          </TabBlock>
-        </div>
+    <div className="p-5">
+      <div className="d-flex bg-white rounded ps-4">
+        {isLatestVersion && (
+          <NewProposalMenu
+            organogramId={organogramId}
+            organizationId={organizationId}
+          />
+        )}
+        <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} />
       </div>
-    </>
+      <div className="mt-3">
+        <TabBlock index={0} activeIndex={activeTab}>
+          <OrganogramTab
+            receiveOrganogramId={setOrganogramId}
+            setOrganizationId={setOrganizationId}
+            setIsLatestVersion={setIsLatestVersion}
+          />
+        </TabBlock>
+      </div>
+    </div>
   );
 };
 
