@@ -12,7 +12,7 @@ const ProposalStatistics = ({ reqBody }) => {
     series: [
       {
         name: "প্রস্তাবের পরিসংখ্যান",
-        data: [4613, 1884, 1234],
+        data: [120, 35, 85],
       },
     ],
     categories: [
