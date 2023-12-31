@@ -156,3 +156,29 @@ export const focusById = (id: string, markAsErrorBlock: boolean = false) => {
 export const deFocusById = (id: string) => {
   document.getElementById(id)?.classList.remove("border-danger");
 };
+
+export const chartRespValidate = (resp: any) => {
+  return resp?.body?.series?.length > 0 && resp?.body?.categories?.length > 0;
+}
+
+export const donutChartRespValidate = (resp: any) => {
+  return resp?.body?.series?.length > 0 && resp?.body?.labels?.length > 0;
+}
+
+export const arryEnToBn = (enArray, step: number = 1): any[] => {
+	let arry = [];
+	for (let i = 0; i < enArray.length; i++) {
+		if (step === 1) {
+			// no Intervals
+			arry.push(numEnToBn(enArray[i]));
+		} else {
+			// Intervals inserted
+			if (i % step === 0) {
+				arry.push(numEnToBn(enArray[i]));
+			} else {
+				arry.push("");
+			}
+		}
+	}
+	return arry;
+};
