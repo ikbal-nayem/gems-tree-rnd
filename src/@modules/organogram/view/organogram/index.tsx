@@ -11,15 +11,13 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface ITab {
-  receiveOrganogramId: (d) => void;
+  templateData: IObject;
   setIsLatestVersion: (d) => void;
-  setOrganizationId: (d) => void;
 }
 
-const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizationId }: ITab) => {
+const OrganogramTab = ({ templateData, setIsLatestVersion }: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
-  const [data, setData] = useState<IObject>({});
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
@@ -33,21 +31,10 @@ const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizatio
     searchParam.get("id") || ""
   );
   useEffect(() => {
-    getTemplateDetailsDetailsById();
     getTemplateInventoryById();
     getManpowerSummaryById();
     getAttachedOrganizationById();
   }, [organogramId]);
-
-  const getTemplateDetailsDetailsById = () => {
-    setIsLoading(true);
-    OMSService.getOrganogramDetailsByOrganogramId(organogramId)
-      .then((resp) => {
-        setData(resp?.body);
-      })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
-  };
 
   const getTemplateInventoryById = () => {
     setIsLoading(true);
@@ -80,15 +67,14 @@ const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizatio
   };
 
   useEffect(() => {
-    if (data?.organization?.id) {
-      setOrganizationId(data?.organization?.id);
+    if (templateData?.organization?.id) {
       getParentOrganization();
     }
-  }, [data]);
+  }, [templateData]);
 
   const getParentOrganization = () => {
     setIsLoading(true);
-    OMSService.getOrganizationParentByOrgId(data?.organization?.id)
+    OMSService.getOrganizationParentByOrgId(templateData?.organization?.id)
       .then((resp) => {
         setParentOrganizationData(resp?.body);
       })
@@ -97,7 +83,6 @@ const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizatio
   };
 
   useEffect(() => {
-    receiveOrganogramId(organogramId);
     getVersionListById();
   }, []);
 
@@ -121,7 +106,6 @@ const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizatio
 
   const handleVersionChange = (item) => {
     setOrganogramId(item?.organogramId);
-    receiveOrganogramId(item?.organogramId);
     setIsBeginningVersion(
       verisonList?.length &&
         verisonList[verisonList.length - 1]?.organogramId === item?.organogramId
@@ -154,10 +138,10 @@ const OrganogramTab = ({ receiveOrganogramId, setIsLatestVersion, setOrganizatio
         </div>
       )}
       {isLoading && <ContentPreloader />}
-      {!isLoading && !isObjectNull(data) && (
+      {!isLoading && !isObjectNull(templateData) && (
         <div>
           <TemplateViewComponent
-            updateData={data}
+            updateData={templateData}
             inventoryData={inventoryData}
             manpowerData={manpowerData}
             attachedOrganizationData={attachOrgData}

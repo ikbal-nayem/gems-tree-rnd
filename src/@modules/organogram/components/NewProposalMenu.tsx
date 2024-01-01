@@ -4,15 +4,23 @@ import { useState } from "react";
 import { OMSService } from "@services/api/OMS.service";
 import { toast } from "@gems/components";
 
-export const NewProposalMenu = (organogramId, organizationId) => {
+interface IMenu {
+  organogramId: string;
+  organizationId: string;
+}
+export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onClose = () => setIsOpen(false);
 
-  // alert(organizationId);
+  // alert(
+  //   "Organization Id:- " + organizationId +
+  //   "\n\nOrganogram Id:- " + organogramId
+  // );
   const onSubmit = (data) => {
     const reqPayload = {
       organizationId: organizationId,
+      previousOrganogramId: organogramId,
       subjects: data?.subjects?.length > 0 ? data?.subjects : null,
       proposedDate: new Date(),
       status: "NEW",
