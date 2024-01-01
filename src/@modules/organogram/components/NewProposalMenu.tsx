@@ -3,6 +3,8 @@ import NewProposalModal from "./NewProposalModal";
 import { useState } from "react";
 import { OMSService } from "@services/api/OMS.service";
 import { toast } from "@gems/components";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 interface IMenu {
   organogramId: string;
@@ -12,7 +14,7 @@ export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onClose = () => setIsOpen(false);
-
+  const navigate = useNavigate();
   // alert(
   //   "Organization Id:- " + organizationId +
   //   "\n\nOrganogram Id:- " + organogramId
@@ -34,6 +36,7 @@ export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
       .finally(() => {
         setIsSubmitLoading(false);
         onClose();
+        navigate(ROUTE_L2.OMS_PROPOSAL_LIST);
       });
   };
 
