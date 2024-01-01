@@ -75,6 +75,7 @@ const deleteNode = (nd, nodeId) => {
     }
   }
   nd = childSerializer(nd);
+  console.log("ddd",nd);
   return { ...nd };
 };
 

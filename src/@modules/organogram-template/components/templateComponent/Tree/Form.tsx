@@ -123,7 +123,6 @@ const NodeForm = ({
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
-
       let resetData = updateData;
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
@@ -179,7 +178,9 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+    console.log(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+
+    // onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
   const onFormClose = () => {
@@ -482,7 +483,7 @@ const NodeForm = ({
                   >
                     {isHeadIndex === null || isHeadIndex === index ? (
                       <Checkbox
-                      noMargin
+                        noMargin
                         label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
                         // label='প্রধান ?'
                         isDisabled={isHeadIndex ? isHeadIndex !== index : false}
@@ -504,7 +505,9 @@ const NodeForm = ({
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() => manpowerListRemove(index)}
+                    onClick={() =>
+                      setValue(`manpowerList.${index}.isDeleted`, true)
+                    }
                   />
                 </div>
               </div>

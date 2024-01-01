@@ -34,6 +34,14 @@ export const OMSService = {
         "organogram-template/get-organogram-template-by-id/" +
         templateId
     ),
+  getDetailsWithDeletedDataByTemplateId: async (
+    templateId: string
+  ): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE +
+        "organogram-template/get-organogram-template-by-id-with-is-deleted/" +
+        templateId
+    ),
   getCheckUserOrgPermissionByTemplateId: async (
     templateId: string
   ): Promise<any> =>

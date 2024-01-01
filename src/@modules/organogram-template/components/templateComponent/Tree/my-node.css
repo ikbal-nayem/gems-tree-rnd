@@ -36,14 +36,14 @@
   border: 1px solid #215a88;
 }
 
-.orgchart-container{
+.orgchart-container {
   height: 700px !important;
   /* max-height: 300px !important; */
   border: none;
   background-color: transparent;
 }
 
-.orgchart{
+.orgchart {
   background: none;
 }
 
@@ -64,3 +64,8 @@
 .orgchart ul li .oc-node.selected {
   background-color: #fff !important;
 } */
+
+.text-line-through-color-red {
+  text-decoration: line-through;
+  text-decoration-color: red;
+}
