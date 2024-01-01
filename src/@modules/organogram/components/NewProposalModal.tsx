@@ -14,14 +14,14 @@ import { useForm } from "react-hook-form";
 interface IForm {
   isOpen: boolean;
   onSubmit: (d) => void;
-  onProposalClose: () => void;
+  onClose: () => void;
   isSubmitLoading: boolean;
 }
 
 const NewProposalModal = ({
   isOpen,
   onSubmit,
-  onProposalClose,
+  onClose,
   isSubmitLoading,
 }: IForm) => {
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
@@ -51,18 +51,18 @@ const NewProposalModal = ({
 
   return (
     <Modal
-      title="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ"
-      isOpen={false}
-      handleClose={onProposalClose}
+      title="নতুন প্রস্তাব"
+      isOpen={isOpen}
+      handleClose={onClose}
       holdOn
       size="lg"
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
           <Autocomplete
-            label="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ"
-            placeholder="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ বাছাই করুন"
-            isRequired="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ বাছাই করুন"
+            label="নতুন প্রস্তাবে অর্গানোগ্রামের পরিবর্তনসমূহ"
+            placeholder="নতুন প্রস্তাবে অর্গানোগ্রামের পরিবর্তনসমূহ বাছাই করুন"
+            isRequired="নতুন প্রস্তাবে অর্গানোগ্রামের পরিবর্তনসমূহ বাছাই করুন"
             options={organogramChangeActionList || []}
             getOptionLabel={(op) => op?.titleBn}
             getOptionValue={(op) => op?.titleEn}
@@ -77,7 +77,7 @@ const NewProposalModal = ({
 
         <ModalFooter>
           <div className="d-flex gap-3 justify-content-end">
-            <Button color="secondary" onClick={onProposalClose}>
+            <Button color="secondary" onClick={onClose}>
               {COMMON_LABELS.CANCEL}
             </Button>
             <Button color="primary" type="submit" isLoading={isSubmitLoading}>

@@ -7,7 +7,8 @@ import { toast } from "@gems/components";
 export const NewProposalMenu = (organogramId, organizationId) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const onProposalClose = () => setIsOpen(false);
+  const onClose = () => setIsOpen(false);
+
   // alert(organizationId);
   const onSubmit = (data) => {
     const reqPayload = {
@@ -19,21 +20,20 @@ export const NewProposalMenu = (organogramId, organizationId) => {
 
     setIsSubmitLoading(true);
 
-    OMSService.SAVE.proposal(reqPayload)
+    OMSService.SAVE.organogramProposal(reqPayload)
       .then((res) => toast.success(res?.message))
       .catch((error) => toast.error(error?.message))
       .finally(() => {
         setIsSubmitLoading(false);
-        onProposalClose();
+        onClose();
       });
   };
+
   return (
     <div className={clsx("app-navbar-item")}>
       <div
         className="cursor-pointer"
         data-kt-menu-trigger="{default: 'click'}"
-        // data-kt-menu-attach="parent"
-        // data-kt-menu-placement="bottom-start"
         onClick={() => setIsOpen(true)}
       >
         <span
@@ -72,13 +72,13 @@ export const NewProposalMenu = (organogramId, organizationId) => {
             <div className="menu-link">১০% সংরক্ষিত শূন্যপদ পূরণ</div>
           </div>
         </div> */}
-        <NewProposalModal
-          isOpen={isOpen}
-          onSubmit={onSubmit}
-          onProposalClose={onProposalClose}
-          isSubmitLoading={isSubmitLoading}
-        />
       </div>
+      <NewProposalModal
+        isOpen={isOpen}
+        onSubmit={onSubmit}
+        onClose={onClose}
+        isSubmitLoading={isSubmitLoading}
+      />
     </div>
   );
 };

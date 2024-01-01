@@ -165,8 +165,8 @@ export const OMSService = {
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-post/save", payload),
       
-    proposal: async (payload): Promise<any> =>
-      await axiosIns.post(OMS_SERVICE + "proposal/save", payload),
+      organogramProposal: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "organogram-proposal/save", payload),
   },
 
   UPDATE: {
