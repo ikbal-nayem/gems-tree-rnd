@@ -34,10 +34,10 @@ const MyNode = ({
           />
           <div>
             <p className="p-1 mb-0 fs-7">
-              {(isNotEnamCommittee
-                ? longLineBreaker(nodeData.titleBn, 20)
-                : longLineBreaker(nodeData.titleEn, 17))}
-                {/* + " (" +
+              {isNotEnamCommittee
+                ? longLineBreaker(nodeData.titleBn||"", 20)
+                : longLineBreaker(nodeData.titleEn||"", 17)}
+              {/* + " (" +
                 nodeData.displayOrder +
                 ")"} */}
             </p>
@@ -109,7 +109,15 @@ const MyNode = ({
               return (
                 <div key={i}>
                   {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                    <div className={`d-flex ${!item?.isPermanent && "text-success"}`}>
+                    <div
+                      className={`d-flex ${
+                        item?.postType === "proposed"
+                          ? "text-primary"
+                          : item?.postType === "nonPermanent"
+                          ? "text-success"
+                          : ""
+                      }`}
+                    >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">{postName}</p>

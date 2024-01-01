@@ -92,12 +92,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
                         onChange: (e) => {
-                          if (!isNotEnamCommittee) {
-                            setValue(
-                              `attachmentDtoList.${idx}.titleBn`,
-                              e.target.value
-                            );
-                          } else {
+                          if (isNotEnamCommittee) {
                             onTitleChange(e.target.value, idx, "en");
                           }
                         },
@@ -147,14 +142,6 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                       isRequired={!isNotEnamCommittee}
                       registerProperty={{
                         ...register(`attachmentDtoList.${idx}.goNoEn`, {
-                          onChange: (e) => {
-                            if (!isNotEnamCommittee) {
-                              setValue(
-                                `attachmentDtoList.${idx}.goNoBn`,
-                                e.target.value
-                              );
-                            }
-                          },
                           required: !isNotEnamCommittee,
                           validate: enCheck,
                         }),
@@ -192,7 +179,10 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     name={`attachmentDtoList.${idx}.goDate`}
                     control={control}
                     isError={!!errors?.attachmentDtoList?.[idx]?.goDate}
-                    errorMessage={errors?.attachmentDtoList?.[idx]?.goDate?.message as string}
+                    errorMessage={
+                      errors?.attachmentDtoList?.[idx]?.goDate
+                        ?.message as string
+                    }
                   />
                 </div>
                 {/* <div

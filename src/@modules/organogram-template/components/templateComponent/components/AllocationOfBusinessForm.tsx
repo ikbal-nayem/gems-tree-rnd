@@ -1,13 +1,7 @@
 import { LABELS } from "@constants/common.constant";
-import {
-  IconButton,
-  Label,
-  Separator,
-  Textarea,
-} from "@gems/components";
-import { bnCheck, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { IconButton, Label, Separator, Textarea } from "@gems/components";
+import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import { enCheck } from "utility/checkValidation";
 
 interface IAllocationOfBusinessForm {
   formProps: any;
@@ -106,8 +100,8 @@ const AllocationOfBusinessForm = ({
                           ?.businessOfAllocationBn
                       }
                       errorMessage={
-                        errors?.businessAllocationDtoList?.[idx]?.businessOfAllocationBn
-                          ?.message as string
+                        errors?.businessAllocationDtoList?.[idx]
+                          ?.businessOfAllocationBn?.message as string
                       }
                     />
                   </div>
@@ -163,13 +157,6 @@ const AllocationOfBusinessForm = ({
                         `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
                         {
                           onChange: (e) => {
-                            if (!isNotEnamCommittee) {
-                              setValue(
-                                `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
-                                e.target.value
-                              );
-                            }
-
                             if (notNullOrUndefined(e.target.value)) {
                               setValue(
                                 `businessAllocationDtoList.${idx}.displayOrder`,
@@ -187,8 +174,8 @@ const AllocationOfBusinessForm = ({
                         ?.businessOfAllocationEn
                     }
                     errorMessage={
-                      errors?.businessAllocationDtoList?.[idx]?.businessOfAllocationEn
-                        ?.message as string
+                      errors?.businessAllocationDtoList?.[idx]
+                        ?.businessOfAllocationEn?.message as string
                     }
                   />
                 </div>

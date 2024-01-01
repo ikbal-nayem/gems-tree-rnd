@@ -9,6 +9,7 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
+  Select,
   Textarea,
 } from "@gems/components";
 import {
@@ -35,6 +36,24 @@ interface INodeForm {
   postList: IObject[];
   isNotEnamCommittee: boolean;
 }
+
+const postTypeList = [
+  {
+    titleEn: "Proposed",
+    key: "proposed",
+    titleBn: "প্রস্তাবিত",
+  },
+  {
+    titleEn: "Permanent",
+    key: "permanent",
+    titleBn: "স্থায়ী",
+  },
+  {
+    titleEn: "Non Permanent",
+    key: "nonPermanent",
+    titleBn: "অস্থায়ী",
+  },
+];
 
 const NodeForm = ({
   isOpen,
@@ -104,6 +123,7 @@ const NodeForm = ({
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
+
       let resetData = updateData;
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
@@ -148,11 +168,10 @@ const NodeForm = ({
 
     return {
       ...data,
-      titleBn: data?.titleEn,
       postFunctionalityList: postFunctionalityListNew,
       manpowerList: isNotEmptyList(data?.manpowerList)
         ? data?.manpowerList?.map((item) => {
-            return { ...item, isPermanent: true };
+            return { ...item };
           })
         : null,
     };
@@ -229,7 +248,10 @@ const NodeForm = ({
                 registerProperty={{
                   ...register("titleEn", {
                     required: !isNotEnamCommittee,
-                    onChange: (e) => onTitleChange(e.target.value, "en"),
+                    onChange: (e) => {
+                      if (isNotEnamCommittee)
+                        onTitleChange(e.target.value, "en");
+                    },
                     validate: enCheck,
                   }),
                 }}
@@ -370,7 +392,7 @@ const NodeForm = ({
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    manpowerListAppend({ isPermanent: true });
+                    manpowerListAppend({});
                   }}
                 />
               </div>
@@ -384,7 +406,7 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-6">
+                  <div className="col-md-6 col-xl-4">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
@@ -411,6 +433,24 @@ const NodeForm = ({
                   </div>
 
                   <div className="col-md-6 col-xl-3">
+                    <Select
+                      label={index < 1 ? "পদের ধরণ" : ""}
+                      options={postTypeList || []}
+                      noMargin
+                      placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
+                      isRequired
+                      textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
+                      defaultValue={"permanent"}
+                      valueKey="key"
+                      registerProperty={{
+                        ...register(`manpowerList.${index}.postType`, {
+                          required: " ",
+                        }),
+                      }}
+                      isError={!!errors?.manpowerList?.[index]?.postType}
+                    />
+                  </div>
+                  <div className="col-md-6 col-xl-3">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -436,43 +476,27 @@ const NodeForm = ({
 
                   <div
                     className={
-                      "col-md-6 col-xl-3 d-flex align-items-center  " +
-                      (index < 1 ? "mt-8" : "my-1")
+                      "col-md-6 col-xl-2 d-flex align-items-center " +
+                      (index < 1 ? "mt-5" : "my-0")
                     }
                   >
-                    <div className="col-6">
-                      {isHeadIndex === null || isHeadIndex === index ? (
-                        <Checkbox
-                          noMargin
-                          label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
-                          // label='প্রধান ?'
-                          isDisabled={
-                            isHeadIndex ? isHeadIndex !== index : false
-                          }
-                          registerProperty={{
-                            ...register(`manpowerList.${index}.isHead`, {
-                              onChange: (e) => {
-                                e.target.checked
-                                  ? setIsHeadIndex(index)
-                                  : setIsHeadIndex(null);
-                              },
-                            }),
-                          }}
-                        />
-                      ) : null}
-                    </div>
-                    {isNotEnamCommittee && (
-                      <div className="ms-3 col-6">
-                        <Checkbox
-                          noMargin
-                          label={"স্থায়ী ?"}
-                          defaultChecked={isObjectNull(updateData) && true}
-                          registerProperty={{
-                            ...register(`manpowerList.${index}.isPermanent`),
-                          }}
-                        />
-                      </div>
-                    )}
+                    {isHeadIndex === null || isHeadIndex === index ? (
+                      <Checkbox
+                      noMargin
+                        label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
+                        // label='প্রধান ?'
+                        isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                        registerProperty={{
+                          ...register(`manpowerList.${index}.isHead`, {
+                            onChange: (e) => {
+                              e.target.checked
+                                ? setIsHeadIndex(index)
+                                : setIsHeadIndex(null);
+                            },
+                          }),
+                        }}
+                      />
+                    ) : null}
                   </div>
                 </div>
                 <div className={index < 1 ? "mt-6" : ""}>

@@ -48,7 +48,6 @@ const editNode = (nd, node, updateData) => {
   }
   return { ...nd };
 };
-
 const deleteNode = (nd, nodeId) => {
   if (nd.id === nodeId) {
     return null;
@@ -64,6 +63,36 @@ const deleteNode = (nd, nodeId) => {
   nd = childSerializer(nd);
   return { ...nd };
 };
+
+
+// const deleteNode = (nd, nodeId) => {
+//   if (nd.id === nodeId) {
+//     return nd?.children && nd?.children?.length > 0
+//       ? nd?.children?.map((d) => {
+//           return {
+//             ...d,
+//             children: d?.children?.length > 0 ? deleteNode(d, d?.id) : [],
+//             isDeleted: true,
+//           };
+//         })
+//       : null;
+//   }
+//   for (var i = 0; i < nd.children.length; i++) {
+//     const nodeState = deleteNode(nd.children[i], nodeId);
+//     if (nodeState?.length > 0) {
+//       nd.children[i] = {
+//         ...nd.children[i],
+//         children: nodeState,
+//         isDeleted: true,
+//       };
+//     }
+//     if (!nodeState) {
+//       nd.children[i] = { ...nd.children[i], isDeleted: true };
+//     }
+//   }
+//   nd = childSerializer(nd);
+//   return { ...nd };
+// };
 
 const childSerializer = (parent) => {
   let tempChildList = [];
