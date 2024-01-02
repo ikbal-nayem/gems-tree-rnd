@@ -1,6 +1,6 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { Input, Pagination, toast } from "@gems/components";
+import { Autocomplete, Input, Pagination, toast } from "@gems/components";
 import {
   IMeta,
   IObject,
@@ -13,6 +13,8 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProposalTable from "./Table";
+import { CoreService } from "@services/api/Core.service";
+import { useForm } from "react-hook-form";
 
 const initMeta: IMeta = {
   page: 0,
@@ -27,14 +29,21 @@ const initMeta: IMeta = {
 
 const ProposalList = () => {
   const [dataList, setDataList] = useState<IObject[]>();
+  const [officeScopeList, setOfficeScopeList] = useState<IObject[]>();
+  const [proposalStatusList, setProposalStatusList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
+  const [officeScopeKey, setOfficeScopeKey] = useState<string>();
+  const [proposalStatusKey, setProposalStatusKey] = useState<string>();
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
+
+  const formProps = useForm();
+  const { control } = formProps;
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -47,6 +56,16 @@ const ProposalList = () => {
     getDataList();
   }, [searchParams]);
 
+  useEffect(() => {
+    CoreService.getByMetaTypeList("OFFICE_SCOPE/asc").then((resp) =>
+      setOfficeScopeList(resp?.body)
+    );
+
+    CoreService.getByMetaTypeList("PROPOSAL_STATUS/asc").then((resp) =>
+      setProposalStatusList(resp?.body)
+    );
+  }, []);
+
   const getDataList = (reqMeta = null) => {
     topProgress.show();
     setLoading(true);
@@ -57,50 +76,61 @@ const ProposalList = () => {
           ? { ...reqMeta, sort: null }
           : { ...respMeta, page: 0, sort: null }
         : reqMeta || respMeta,
-      body: {
-        searchKey: searchKey || null,
-        isTemplate: false,
-      },
+      body:
+        officeScopeKey && proposalStatusKey
+          ? {
+              officeScopeKey: officeScopeKey,
+              proposalStatusKey: proposalStatusKey,
+            }
+          : officeScopeKey
+          ? {
+              officeScopeKey: officeScopeKey,
+            }
+          : proposalStatusKey
+          ? {
+              proposalStatusKey: proposalStatusKey,
+            }
+          : {},
     };
 
     const reqData = { ...payload, body: payload?.body };
 
-    OMSService.getTemplateList(reqData)
+    OMSService.FETCH.organogramProposalList(reqData)
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
           resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
         );
-        setDataList([
-          {
-            id: "asd-asda-sdsad",
-            organization: {
-              id: "wwwww-aaaa-yyyyyy",
-              nameBn: "জনপ্রশাসন মন্ত্রণালয়",
-              nameEn: "Ministry Of Public Administration",
-            },
-            actionType: {
-              id: "weq-asc-889-weqe",
-              titleBn: "পদ-সৃজন",
-              titleEn: "Post Creation",
-            },
-            receivedOn: 1701927381134,
-          },
-          {
-            id: "ff-ss-rrrrr",
-            organization: {
-              id: "ccccc-vvvv-aaaaa",
-              nameBn: "স্বাস্থ্য শিক্ষা ও পরিবার কল্যাণ বিভাগ",
-              nameEn: "Medical Education And Family Welfare Division",
-            },
-            actionType: {
-              id: "weq-asc-889-weqe",
-              titleBn: "পদ-বিলুপ্ত করন",
-              titleEn: "Post Deletation",
-            },
-            receivedOn: 1701827381134,
-          },
-        ]);
+        // setDataList([
+        //   {
+        //     id: "asd-asda-sdsad",
+        //     organization: {
+        //       id: "wwwww-aaaa-yyyyyy",
+        //       nameBn: "জনপ্রশাসন মন্ত্রণালয়",
+        //       nameEn: "Ministry Of Public Administration",
+        //     },
+        //     actionType: {
+        //       id: "weq-asc-889-weqe",
+        //       titleBn: "পদ-সৃজন",
+        //       titleEn: "Post Creation",
+        //     },
+        //     receivedOn: 1701927381134,
+        //   },
+        //   {
+        //     id: "ff-ss-rrrrr",
+        //     organization: {
+        //       id: "ccccc-vvvv-aaaaa",
+        //       nameBn: "স্বাস্থ্য শিক্ষা ও পরিবার কল্যাণ বিভাগ",
+        //       nameEn: "Medical Education And Family Welfare Division",
+        //     },
+        //     actionType: {
+        //       id: "weq-asc-889-weqe",
+        //       titleBn: "পদ-বিলুপ্ত করন",
+        //       titleEn: "Post Deletation",
+        //     },
+        //     receivedOn: 1701827381134,
+        //   },
+        // ]);
       })
       .catch((err) => {
         toast.error(err?.message);
@@ -145,13 +175,13 @@ const ProposalList = () => {
         {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
         <div className="d-flex gap-3 mb-4">
-          <Input
+          {/* <Input
             type="search"
             noMargin
             placeholder="প্রেরকের নাম অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          />
+          /> */}
           {/* <ListDownload
             fnDownloadExcel={() =>
               getXLSXStoreList({
@@ -163,6 +193,28 @@ const ProposalList = () => {
               downloadAsPDF(reqPayload.current, respMeta?.totalRecords)
             }
           /> */}
+          <span className="w-50">
+            <Autocomplete
+              placeholder="অফিসের পরিধি বাছাই করুন"
+              options={officeScopeList || []}
+              getOptionValue={(op) => op?.id}
+              getOptionLabel={(op) => op.titleBn}
+              name="officeScope"
+              control={control}
+              onChange={(val) => setOfficeScopeKey(val?.metaKey || null)}
+            />
+          </span>
+          <span className="w-50">
+            <Autocomplete
+              placeholder="প্রস্তাবের অবস্থা বাছাই করুন"
+              options={proposalStatusList || []}
+              getOptionValue={(op) => op?.id}
+              getOptionLabel={(op) => op.titleBn}
+              name="proposalStatus"
+              control={control}
+              onChange={(val) => setProposalStatusKey(val?.metaKey || null)}
+            />
+          </span>
         </div>
         {!!dataList?.length && (
           <div className="d-flex justify-content-between gap-3">

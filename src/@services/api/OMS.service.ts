@@ -159,13 +159,16 @@ export const OMSService = {
           "organization-organogram/summary-manpower-difference-by-organogram/" +
           id
       ),
+
+    organogramProposalList: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "organogram-proposal/get-list", payload),
   },
 
   SAVE: {
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-post/save", payload),
-      
-      organogramProposal: async (payload): Promise<any> =>
+
+    organogramProposal: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "organogram-proposal/save", payload),
   },
 

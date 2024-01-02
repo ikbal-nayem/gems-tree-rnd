@@ -59,8 +59,8 @@ const ProposalTable: FC<TableProps> = ({
             <TableRow key={idx}>
               <TableCell text={generateRowNumBn(idx, respMeta)} />
               <TableCell
-                text={item?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.organization?.nameEn || null}
+                text={item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={item?.proposedOrganization?.nameEn || null}
               />
               <TableCell
                 text={item?.actionType?.titleBn || COMMON_LABELS.NOT_ASSIGN}
@@ -69,12 +69,12 @@ const ProposalTable: FC<TableProps> = ({
               <TableCell
                 text={
                   generateDateFormat(
-                    item?.receivedOn,
+                    item?.proposedDate,
                     DATE_PATTERN.GOVT_STANDARD
                   ) || COMMON_LABELS.NOT_ASSIGN
                 }
                 subText={
-                  generateDateFormat(item?.receivedOn, TIME_PATTERN.HM12) ||
+                  generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
                   null
                 }
               />
