@@ -75,7 +75,7 @@ const TemplateViewComponent = ({
           children: [],
         };
 
-  const [langEn, setLangEn] = useState<boolean>(true);
+  const [langEn, setLangEn] = useState<boolean>(updateData?.isEnamCommittee);
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
