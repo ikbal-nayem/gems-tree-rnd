@@ -52,28 +52,26 @@ const Dashboard = () => {
 
   return (
     <>
-      <ACLWrapper visibleToRoles={[ROLES.OFFICE_ADMIN]} showInstead={<Dammy />}>
-        {/* <PageTitle>
+      {/* <PageTitle>
           <Filter onFilter={onFilter} />
         </PageTitle> */}
 
-        <div className="row">
-          {/* 01 => "Piramid Chart Demo" */}
-          {/* <div className="col-xl-6 col-lg-6 col-sm-12">
+      <div className="row">
+        {/* 01 => "Piramid Chart Demo" */}
+        {/* <div className="col-xl-6 col-lg-6 col-sm-12">
             <RankBasedManpower reqBody={null} />
           </div> */}
 
-          {/* 02 => "Pi Chart Demo" */}
-          {/* <div className="col-xxl-3 col-md-6 col-sm-6">
+        {/* 02 => "Pi Chart Demo" */}
+        {/* <div className="col-xxl-3 col-md-6 col-sm-6">
             <GenderBasedManpower reqBody={null} />
           </div> */}
 
-          {/* 03 => "প্রস্তাবের পরিসংখ্যান" */}
-          <div className="col-lg-6 col-sm-12">
-            <ProposalStatistics reqBody={null} />
-          </div>
+        {/* 03 => "প্রস্তাবের পরিসংখ্যান" */}
+        <div className="col-lg-6 col-sm-12">
+          <ProposalStatistics reqBody={null} />
         </div>
-      </ACLWrapper>
+      </div>
     </>
   );
 };
