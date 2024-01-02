@@ -178,9 +178,21 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    console.log(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+    // console.log(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+    let requestData = {
+      ...data,
+      manpowerList: isNotEmptyList(data?.manpowerList)
+        ? data?.manpowerList?.map((item) => {
+            return { ...item };
+          })
+        : null,
+    };
+    console.log(
+      "form",
+      isNotEnamCommittee ? requestData : setEnIntoBnFields(requestData)
+    );
 
-    // onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
   const onFormClose = () => {
@@ -505,9 +517,10 @@ const NodeForm = ({
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() =>
-                      setValue(`manpowerList.${index}.isDeleted`, true)
-                    }
+                    onClick={() => {
+                      console.log("df", field);
+                      manpowerListRemove(index);
+                    }}
                   />
                 </div>
               </div>

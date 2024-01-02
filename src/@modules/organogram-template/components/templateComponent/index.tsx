@@ -45,7 +45,7 @@ const TemplateComponent = ({
       !isObjectNull(updateData?.organizationStructureDto)
       ? updateData?.organizationStructureDto
       : {
-          id: generateUUID(),
+          nodeId: generateUUID(),
           titleBn: "অর্গানোগ্রাম তৈরি শুরু করুন",
           titleEn: "Start the Organogram here",
           children: [],
@@ -61,6 +61,7 @@ const TemplateComponent = ({
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
+  const [nodeDeletedIds, setNodeDeletedIds] = useState<any>([]);
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -176,6 +177,9 @@ const TemplateComponent = ({
     }
     return isUnique;
   };
+
+  console.log("node",nodeDeletedIds);
+  
 
   const onFinalSubmit = (data) => {
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
@@ -344,6 +348,8 @@ const TemplateComponent = ({
           treeData={treeData}
           setTreeData={setTreeData}
           isNotEnamCommittee={isNotEnamCommittee}
+          nodeDeletedIds={nodeDeletedIds}
+          setNodeDeletedIds={setNodeDeletedIds}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">

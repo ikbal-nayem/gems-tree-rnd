@@ -7,12 +7,12 @@ import { OMSService } from "@services/api/OMS.service";
 import { ConfirmationModal } from "@gems/components";
 
 const addNode = (nd, parent, templateData) => {
-  if (nd.id === parent?.id) {
+  if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
     nd.children = [
       ...parent.children,
       {
         ...templateData,
-        id: generateUUID(),
+        nodeId: generateUUID(),
         // displayOrder: nd.children.length + 1 || 1,
         children: [],
       },
@@ -26,13 +26,13 @@ const addNode = (nd, parent, templateData) => {
 };
 
 const editNode = (nd, node, updateData) => {
-  if (nd.id === node?.id) {
+  if ((nd?.id || nd?.nodeId) === (node?.id || node?.nodeId)) {
     return { ...node, ...updateData };
   }
   for (var i = 0; i < nd.children.length; i++) {
     nd.children[i] = editNode(nd.children[i], node, updateData);
     if (
-      nd.children[i].id === node.id &&
+      nd.children[i]?.nodeId === node?.nodeId &&
       node.displayOrder !== updateData.displayOrder
     ) {
       nd = reOrder(
@@ -49,33 +49,49 @@ const editNode = (nd, node, updateData) => {
   return { ...nd };
 };
 
+// const deleteNode = (nd, nodeId) => {
+//   if (nd.id === nodeId) {
+//     return nd?.children && nd?.children?.length > 0
+//       ? nd?.children?.map((d) => {
+//           return {
+//             ...d,
+//             children: d?.children?.length > 0 ? deleteNode(d, d?.id) : [],
+//             isDeleted: true,
+//           };
+//         })
+//       : null;
+//   }
+//   for (var i = 0; i < nd.children.length; i++) {
+//     const nodeState = deleteNode(nd.children[i], nodeId);
+//     if (nodeState?.length > 0) {
+//       nd.children[i] = {
+//         ...nd.children[i],
+//         children: nodeState,
+//         isDeleted: true,
+//       };
+//     }
+//     if (!nodeState) {
+//       nd.children[i] = { ...nd.children[i], isDeleted: true };
+//     }
+//   }
+//   nd = childSerializer(nd);
+//   console.log("ddd",nd);
+//   return { ...nd };
+// };
+
 const deleteNode = (nd, nodeId) => {
-  if (nd.id === nodeId) {
-    return nd?.children && nd?.children?.length > 0
-      ? nd?.children?.map((d) => {
-          return {
-            ...d,
-            children: d?.children?.length > 0 ? deleteNode(d, d?.id) : [],
-            isDeleted: true,
-          };
-        })
-      : null;
+  if (nd.id === nodeId || nd.nodeId === nodeId) {
+    return null;
   }
   for (var i = 0; i < nd.children.length; i++) {
     const nodeState = deleteNode(nd.children[i], nodeId);
-    if (nodeState?.length > 0) {
-      nd.children[i] = {
-        ...nd.children[i],
-        children: nodeState,
-        isDeleted: true,
-      };
-    }
+
     if (!nodeState) {
-      nd.children[i] = { ...nd.children[i], isDeleted: true };
+      nd.children.splice(i, 1);
+      break;
     }
   }
   nd = childSerializer(nd);
-  console.log("ddd",nd);
   return { ...nd };
 };
 
@@ -175,6 +191,8 @@ const OrganizationTemplateTree = ({
   treeData,
   setTreeData,
   isNotEnamCommittee,
+  nodeDeletedIds,
+  setNodeDeletedIds,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
@@ -214,7 +232,8 @@ const OrganizationTemplateTree = ({
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData.id));
+    if (deleteData?.id) setNodeDeletedIds([...nodeDeletedIds, deleteData.id]);
+    setTreeData(deleteNode(treeData, deleteData.id || deleteData.nodeId));
     setIsDeleteModal(false);
   };
 
@@ -280,7 +299,10 @@ const OrganizationTemplateTree = ({
               nodeData={nodeData}
               treeDispatch={treeDispatch}
               postList={postList}
-              firstNode={treeData?.id === nodeData?.id}
+              firstNode={
+                (treeData?.id || treeData?.nodeId) ===
+                (nodeData?.id || nodeData?.nodeId)
+              }
               isNotEnamCommittee={isNotEnamCommittee}
             />
           )}
