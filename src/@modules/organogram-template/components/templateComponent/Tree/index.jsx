@@ -5,6 +5,8 @@ import NodeForm from "./Form";
 import MyNode from "./my-node";
 import { OMSService } from "@services/api/OMS.service";
 import { ConfirmationModal } from "@gems/components";
+import { isNotEmptyList } from "utility/utils";
+import { empty } from "rxjs";
 
 const addNode = (nd, parent, templateData) => {
   if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
@@ -49,52 +51,78 @@ const editNode = (nd, node, updateData) => {
   return { ...nd };
 };
 
-// const deleteNode = (nd, nodeId) => {
-//   if (nd.id === nodeId) {
-//     return nd?.children && nd?.children?.length > 0
-//       ? nd?.children?.map((d) => {
-//           return {
-//             ...d,
-//             children: d?.children?.length > 0 ? deleteNode(d, d?.id) : [],
-//             isDeleted: true,
-//           };
-//         })
-//       : null;
-//   }
-//   for (var i = 0; i < nd.children.length; i++) {
-//     const nodeState = deleteNode(nd.children[i], nodeId);
-//     if (nodeState?.length > 0) {
-//       nd.children[i] = {
-//         ...nd.children[i],
-//         children: nodeState,
-//         isDeleted: true,
-//       };
-//     }
-//     if (!nodeState) {
-//       nd.children[i] = { ...nd.children[i], isDeleted: true };
-//     }
-//   }
-//   nd = childSerializer(nd);
-//   console.log("ddd",nd);
-//   return { ...nd };
-// };
+const deleteNode = (nd, deleteItem) => {
+  if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
+    if (nd?.children && nd?.children?.length > 0) {
+      let test = nd?.children?.map((d, idx) => {
+        if (d?.nodeId) {
+          nd?.children.splice(idx, 1);
+          return undefined;
+        } else
+          return {
+            ...d,
+            children: d?.children?.length > 0 ? deleteNode(d, d) : [],
+            isDeleted: true,
+          };
+      });
+      console.log("ami nai", test);
+      let re =
+        test?.filter(function (element) {
+          return element !== undefined || element !== empty;
+        }) || null;
+      console.log("ar", re);
+      return re?.length > 0 ? re : null;
+    } else return null;
+  }
 
-const deleteNode = (nd, nodeId) => {
-  if (nd.id === nodeId || nd.nodeId === nodeId) {
+  if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
     return null;
   }
-  for (var i = 0; i < nd.children.length; i++) {
-    const nodeState = deleteNode(nd.children[i], nodeId);
 
+  for (var i = 0; i < nd.children.length; i++) {
+    const nodeState = deleteNode(nd.children[i], deleteItem);
+    console.log("nodes", nodeState);
+    if (
+      nodeState?.length > 0 &&
+      nodeState.filter(function (element) {
+        return element !== null;
+      })
+    ) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: nodeState || [],
+        isDeleted: true,
+      };
+    }
     if (!nodeState) {
-      nd.children.splice(i, 1);
-      break;
+      if (nd?.children[i]?.id)
+        nd.children[i] = { ...nd.children[i], isDeleted: true };
+      else {
+        nd.children.splice(i, 1);
+        break;
+      }
     }
   }
   nd = childSerializer(nd);
+  console.log("ddd", nd);
   return { ...nd };
 };
 
+// const deleteNode = (nd, nodeId) => {
+//   if (nd.id === nodeId || nd.nodeId === nodeId) {
+//     return null;
+//   }
+//   for (var i = 0; i < nd.children.length; i++) {
+//     const nodeState = deleteNode(nd.children[i], nodeId);
+
+//     if (!nodeState) {
+//       nd.children.splice(i, 1);
+//       break;
+//     }
+//   }
+//   nd = childSerializer(nd);
+//   return { ...nd };
+// };
 
 // const deleteNode = (nd, nodeId) => {
 //   if (nd.id === nodeId) {
@@ -263,7 +291,7 @@ const OrganizationTemplateTree = ({
   };
   const onConfirmDelete = () => {
     if (deleteData?.id) setNodeDeletedIds([...nodeDeletedIds, deleteData.id]);
-    setTreeData(deleteNode(treeData, deleteData.id || deleteData.nodeId));
+    setTreeData(deleteNode(treeData, deleteData));
     setIsDeleteModal(false);
   };
 

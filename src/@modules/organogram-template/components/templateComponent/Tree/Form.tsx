@@ -22,7 +22,6 @@ import {
   numericCheck,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { json } from "node:stream/consumers";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
@@ -418,7 +417,7 @@ const NodeForm = ({
                 className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
                 key={field?.id}
               >
-                <div>{JSON.stringify(field)}</div>
+                {/* <div>{JSON.stringify(field)}</div> */}
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>

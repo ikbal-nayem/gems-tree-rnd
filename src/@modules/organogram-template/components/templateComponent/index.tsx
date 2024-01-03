@@ -178,7 +178,7 @@ const TemplateComponent = ({
     return isUnique;
   };
 
-  console.log("node",nodeDeletedIds);
+  // console.log("node",nodeDeletedIds);
   
 
   const onFinalSubmit = (data) => {
