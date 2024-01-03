@@ -225,9 +225,9 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationStructureDto: treeData,
     };
-    // console.log(reqPayload);
+    console.log(reqPayload);
 
-    onSubmit(reqPayload);
+    // onSubmit(reqPayload);
   };
 
   const onIsEnamCommitteeChange = (checked: boolean) => {
