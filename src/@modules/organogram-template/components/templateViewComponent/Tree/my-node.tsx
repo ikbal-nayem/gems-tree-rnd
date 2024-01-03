@@ -21,7 +21,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
 
   return (
     <div className="position rounded border border-gray-400 border-1">
-      <div className="d-flex justify-content-between">
+      <div className="bg-light rounded-top d-flex justify-content-between">
         <Icon
           icon="fact_check"
           variants="outlined"
@@ -47,7 +47,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
       </div>
 
       <div
-        className={`bg-light text-start ${
+        className={`text-start ${
           nodeData?.manpowerList?.length ? "p-1" : ""
         }`}
       >
@@ -92,7 +92,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           })}
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
-        <div className="pt-3 ps-2 bg-light text-start ">
+        <div className="pt-3 ps-2 text-start ">
           {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
           <TextBlock value={nodeData?.commentNode} />
           {/* {nodeData?.commentNode} */}
