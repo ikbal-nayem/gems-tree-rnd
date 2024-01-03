@@ -31,7 +31,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           color={
             nodeData?.postFunctionalityList &&
             nodeData?.postFunctionalityList?.length > 0
-              ? "primary"
+              ? "dark"
               : "light"
           }
           onClick={() => onView(nodeData)}
