@@ -15,6 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import ProposalTable from "./Table";
 import { CoreService } from "@services/api/Core.service";
 import { useForm } from "react-hook-form";
+import { useAuth } from "@context/Auth";
 
 const initMeta: IMeta = {
   page: 0,
@@ -41,7 +42,7 @@ const ProposalList = () => {
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
-
+  const { currentUser } = useAuth();
   const formProps = useForm();
   const { control } = formProps;
 
@@ -57,9 +58,18 @@ const ProposalList = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    CoreService.getByMetaTypeList("OFFICE_SCOPE/asc").then((resp) =>
-      setOfficeScopeList(resp?.body)
-    );
+    CoreService.getByMetaTypeList("OFFICE_SCOPE/asc").then((resp) => {
+      // Mopa: 77848f4b-3874-4cd5-b0a3-660660c046b3
+      if (
+        resp?.body &&
+        resp?.body.length > 0 &&
+        currentUser?.organization?.id !== "77848f4b-3874-4cd5-b0a3-660660c046b3"
+      ) {
+        setOfficeScopeList(resp?.body.splice(1, 2));
+      } else {
+        setOfficeScopeList(resp?.body);
+      }
+    });
 
     CoreService.getByMetaTypeList("PROPOSAL_STATUS/asc").then((resp) =>
       setProposalStatusList(resp?.body)
