@@ -126,6 +126,8 @@ const MyNode = ({
                           : item?.postType === "permanent"
                           ? "text-gray-900"
                           : ""
+                      } ${
+                        item?.isDeleted ? "text-line-through-color-red" : ""
                       }`}
                     >
                       <p className="mb-0 fs-7">{mp} </p>

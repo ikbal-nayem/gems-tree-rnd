@@ -61,7 +61,6 @@ const TemplateComponent = ({
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
-  const [nodeDeletedIds, setNodeDeletedIds] = useState<any>([]);
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -178,9 +177,6 @@ const TemplateComponent = ({
     return isUnique;
   };
 
-  // console.log("node",nodeDeletedIds);
-  
-
   const onFinalSubmit = (data) => {
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
     if (isObjectNull(updateData)) {
@@ -225,9 +221,8 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationStructureDto: treeData,
     };
-    console.log(reqPayload);
 
-    // onSubmit(reqPayload);
+    onSubmit(reqPayload);
   };
 
   const onIsEnamCommitteeChange = (checked: boolean) => {
@@ -348,8 +343,6 @@ const TemplateComponent = ({
           treeData={treeData}
           setTreeData={setTreeData}
           isNotEnamCommittee={isNotEnamCommittee}
-          nodeDeletedIds={nodeDeletedIds}
-          setNodeDeletedIds={setNodeDeletedIds}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">

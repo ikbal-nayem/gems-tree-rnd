@@ -74,7 +74,7 @@ const NodeForm = ({
   } = useForm<any>({
     defaultValues: {
       postFunctionalityList: [],
-      manpowerList: [{}],
+      manpowerList: [{ isNewManpower: true }],
     },
   });
 
@@ -94,6 +94,7 @@ const NodeForm = ({
     fields: manpowerListFields,
     append: manpowerListAppend,
     remove: manpowerListRemove,
+    update: manpowerListUpdate,
   } = useFieldArray({
     control,
     name: "manpowerList",
@@ -123,8 +124,6 @@ const NodeForm = ({
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
-      console.log("up",updateData);
-      
       let resetData = updateData;
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
@@ -145,7 +144,11 @@ const NodeForm = ({
       reset({
         ...resetData,
       });
-    } else reset({ manpowerList: [{}], postFunctionalityList: [] });
+    } else
+      reset({
+        manpowerList: [{ isNewManpower: true }],
+        postFunctionalityList: [],
+      });
   }, [isOpen, updateData, reset]);
 
   const manpowerNumberCheck = (val) => {
@@ -154,6 +157,20 @@ const NodeForm = ({
         ? ERR.MIN_NUM_1
         : true
       : COMMON_LABELS.NUMERIC_ONLY;
+  };
+
+  const checkFieldIsDeleted = (field) => {
+    return field?.isDeleted ? true : false;
+  };
+
+  const handleManpowerDelete = (field, index) => {
+    if (index >= 0) {
+      if (!isObjectNull(field) && field?.isNewManpower) {
+        manpowerListRemove(index);
+      } else {
+        manpowerListUpdate(index, { ...field, isDeleted: true });
+      }
+    }
   };
 
   const setEnIntoBnFields = (data) => {
@@ -180,19 +197,6 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    // console.log(isNotEnamCommittee ? data : setEnIntoBnFields(data));
-    let requestData = {
-      ...data,
-      manpowerList: isNotEmptyList(data?.manpowerList)
-        ? data?.manpowerList?.map((item) => {
-            return { ...item };
-          })
-        : null,
-    };
-    console.log(
-      "form",
-      isNotEnamCommittee ? requestData : setEnIntoBnFields(requestData)
-    );
 
     onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
@@ -407,17 +411,20 @@ const NodeForm = ({
                   color="success"
                   rounded={false}
                   onClick={() => {
-                    manpowerListAppend({});
+                    manpowerListAppend({ isNewManpower: true });
                   }}
                 />
               </div>
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
+                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100 ${
+                  checkFieldIsDeleted(field)
+                    ? "disabledDiv border-danger p-1"
+                    : ""
+                }`}
                 key={field?.id}
               >
-                {/* <div>{JSON.stringify(field)}</div> */}
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
@@ -515,18 +522,19 @@ const NodeForm = ({
                     ) : null}
                   </div>
                 </div>
-                <div className={index < 1 ? "mt-6" : ""}>
-                  <IconButton
-                    iconName="delete"
-                    color="danger"
-                    rounded={false}
-                    onClick={() => {
-                      console.log("df", field);
-                      console.log("manpf", manpowerListFields);
-                      manpowerListRemove(index);
-                    }}
-                  />
-                </div>
+                {!checkFieldIsDeleted(field) && (
+                  <div className={index < 1 ? "mt-6" : ""}>
+                    <IconButton
+                      iconName="delete"
+                      color="danger"
+                      rounded={false}
+                      onClick={() => {
+                        handleManpowerDelete(field, index);
+                        // manpowerListRemove(index);
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>

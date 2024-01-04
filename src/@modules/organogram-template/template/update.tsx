@@ -52,6 +52,7 @@ const TemplateUpdate = () => {
       ...templateData,
       attachmentDtoList: attachmentDto,
       id: templateId,
+      isTemplate: data?.isTemplate,
       status: data?.status,
     };
 

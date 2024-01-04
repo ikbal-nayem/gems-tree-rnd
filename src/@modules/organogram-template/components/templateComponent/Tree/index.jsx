@@ -92,7 +92,6 @@ const deleteNode = (nd, deleteItem) => {
     }
   }
   nd = childSerializer(nd);
-  console.log("node", nd);
   return { ...nd };
 };
 
@@ -208,8 +207,6 @@ const OrganizationTemplateTree = ({
   treeData,
   setTreeData,
   isNotEnamCommittee,
-  nodeDeletedIds,
-  setNodeDeletedIds,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
@@ -249,7 +246,6 @@ const OrganizationTemplateTree = ({
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    if (deleteData?.id) setNodeDeletedIds([...nodeDeletedIds, deleteData.id]);
     setTreeData(deleteNode(treeData, deleteData));
     setIsDeleteModal(false);
   };
