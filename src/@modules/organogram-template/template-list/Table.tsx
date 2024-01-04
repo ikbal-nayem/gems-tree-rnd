@@ -70,7 +70,7 @@ const TemplateTable: FC<TableProps> = ({
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.NAME, width: 250 },
     { title: LABELS.ORGANOGRAM_DATE, width: 50 },
-    { title: LABELS.IS_ENAM_COMMITTEE, width: 50, align: "center"},
+    { title: LABELS.IS_ENAM_COMMITTEE, width: 50, align: "center" },
     { title: LABELS.STATUS, width: 100, align: "center" },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
@@ -163,17 +163,8 @@ const TemplateTable: FC<TableProps> = ({
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
                   <ACLWrapper
-                    visibleToRoles={[
-                      ROLES.OMS_TEMPLATE_ENTRY,
-                      ROLES.OMS_TEMPLATE_REVIEW,
-                    ]}
-                    visibleCustom={
-                      item?.status === TEMPLATE_STATUS.NEW ||
-                      (currentUser?.roles?.some(
-                        (r) => r.roleCode === ROLES.OMS_TEMPLATE_REVIEW
-                      ) &&
-                        item?.status === TEMPLATE_STATUS.IN_REVIEW)
-                    }
+                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
                   >
                     <DropdownItem onClick={() => navigateToDetails(item?.id)}>
                       <Icon size={19} icon="edit" />
