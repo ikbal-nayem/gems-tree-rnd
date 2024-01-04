@@ -1,9 +1,19 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { Autocomplete, Input, Pagination, toast } from "@gems/components";
 import {
+  Autocomplete,
+  DownloadMenu,
+  Input,
+  Pagination,
+  toast,
+} from "@gems/components";
+import {
+  COMMON_LABELS,
+  DATE_PATTERN,
   IMeta,
   IObject,
+  exportXLSX,
+  generateDateFormat,
   numEnToBn,
   searchParamsToObject,
   topProgress,
@@ -16,6 +26,8 @@ import ProposalTable from "./Table";
 import { CoreService } from "@services/api/Core.service";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@context/Auth";
+import { LABELS } from "./labels";
+import { TIME_PATTERN } from "@constants/common.constant";
 
 const initMeta: IMeta = {
   page: 0,
@@ -76,20 +88,20 @@ const ProposalList = () => {
     );
   }, []);
 
-  const prepareFilterData = (filterSl: number, op: string) => {
-    if (filterSl === 1) {
+  const prepareFilterData = (sl: number, op: string) => {
+    if (sl === 1) {
+      if (op === "OFFICE_SCOPE_UNDER_OFFICE") return "UNDER";
+      if (op === "OFFICE_SCOPE_OWN_OFFICE") return "OWN";
     }
-    if (filterSl === 2) {
-      if(op === "PROPOSAL_STATUS_PENDING_PROPOSAL") return "NEW";
-      if(op === "PROPOSAL_STATUS_RESOLVED_PROPOSAL") return "RESOLVED";
+    if (sl === 2) {
+      if (op === "PROPOSAL_STATUS_PENDING_PROPOSAL") return "NEW";
+      if (op === "PROPOSAL_STATUS_RESOLVED_PROPOSAL") return "RESOLVED";
     }
     return null;
   };
-  const getDataList = (reqMeta = null) => {
-    topProgress.show();
-    setLoading(true);
 
-    const payload = {
+  const preparePayload = (reqMeta = null) => {
+    return {
       meta: searchKey
         ? reqMeta
           ? { ...reqMeta, sort: null }
@@ -111,7 +123,13 @@ const ProposalList = () => {
             }
           : {},
     };
+  };
 
+  const getDataList = (reqMeta = null) => {
+    topProgress.show();
+    setLoading(true);
+
+    const payload = preparePayload(reqMeta);
     const reqData = { ...payload, body: payload?.body };
 
     OMSService.FETCH.organogramProposalList(reqData)
@@ -120,40 +138,8 @@ const ProposalList = () => {
         setRespMeta(
           resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
         );
-        // setDataList([
-        //   {
-        //     id: "asd-asda-sdsad",
-        //     organization: {
-        //       id: "wwwww-aaaa-yyyyyy",
-        //       nameBn: "জনপ্রশাসন মন্ত্রণালয়",
-        //       nameEn: "Ministry Of Public Administration",
-        //     },
-        //     actionType: {
-        //       id: "weq-asc-889-weqe",
-        //       titleBn: "পদ-সৃজন",
-        //       titleEn: "Post Creation",
-        //     },
-        //     receivedOn: 1701927381134,
-        //   },
-        //   {
-        //     id: "ff-ss-rrrrr",
-        //     organization: {
-        //       id: "ccccc-vvvv-aaaaa",
-        //       nameBn: "স্বাস্থ্য শিক্ষা ও পরিবার কল্যাণ বিভাগ",
-        //       nameEn: "Medical Education And Family Welfare Division",
-        //     },
-        //     actionType: {
-        //       id: "weq-asc-889-weqe",
-        //       titleBn: "পদ-বিলুপ্ত করন",
-        //       titleEn: "Post Deletation",
-        //     },
-        //     receivedOn: 1701827381134,
-        //   },
-        // ]);
       })
-      .catch((err) => {
-        toast.error(err?.message);
-      })
+      .catch((err) => toast.error(err?.message))
       .finally(() => {
         topProgress.hide();
         setLoading(false);
@@ -164,28 +150,35 @@ const ProposalList = () => {
     getDataList({ ...metaParams });
   };
 
-  // const getXLSXStoreList = (reqMeta = null) => {
-  //   const payload = {
-  //     meta: reqMeta ? { ...reqMeta } : { ...respMeta, page: 0, sort: null },
-  //     body: {
-  //       searchKey: searchKey || null,
-  //     },
-  //   };
+  const getXLSXStoreList = (reqMeta = null) => {
+    const payload = preparePayload(reqMeta);
+    const reqData = { ...payload, body: payload?.body };
 
-  //   OMSService.getOrganizationOrganogramList(payload)
-  //     .then((res) => {
-  //       exportXLSX(exportData(res?.body || []), "Template list");
-  //     })
-  //     .catch((err) => toast.error(err?.message));
-  // };
+    OMSService.FETCH.organogramProposalList(reqData)
+      .then((res) => {
+        exportXLSX(exportData(res?.body || []), "Template list");
+      })
+      .catch((err) => toast.error(err?.message));
+  };
 
-  // const exportData = (data: any[]) =>
-  //   data.map((d, i) => ({
-  //     [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
-  //     [LABELS.NAME]: d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-  //     [LABELS.ORGANIZATION_NAME]: d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
-  //     [LABELS.VERSION]: d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-  //   }));
+  const exportData = (data: any[]) =>
+    data.map((d, i) => ({
+      [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.BN.SENDER]:
+        d?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.BN.TOPIC]:
+        d?.subjects?.map((i) => i.titleBn).join(" , ") ||
+        COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.BN.STATUS]:
+        d?.status === "NEW"
+          ? "অপেক্ষমান"
+          : d?.status || COMMON_LABELS.NOT_ASSIGN,
+      [LABELS.BN.RECEIVED_DATE_TIME]:
+        generateDateFormat(
+          d?.proposedDate,
+          DATE_PATTERN.GOVT_STANDARD + " | " + TIME_PATTERN.HM12
+        ) || COMMON_LABELS.NOT_ASSIGN,
+    }));
 
   return (
     <>
@@ -200,17 +193,6 @@ const ProposalList = () => {
             placeholder="প্রেরকের নাম অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          /> */}
-          {/* <ListDownload
-            fnDownloadExcel={() =>
-              getXLSXStoreList({
-                page: 0,
-                limit: respMeta?.totalRecords || 0,
-              })
-            }
-            fnDownloadPDF={() =>
-              downloadAsPDF(reqPayload.current, respMeta?.totalRecords)
-            }
           /> */}
           <span className="w-50">
             <Autocomplete
@@ -238,6 +220,17 @@ const ProposalList = () => {
               }
             />
           </span>
+          <DownloadMenu
+            fnDownloadExcel={() =>
+              getXLSXStoreList({
+                page: 0,
+                limit: respMeta?.totalRecords || 0,
+              })
+            }
+            // fnDownloadPDF={() =>
+            //   downloadAsPDF(reqPayload.current, respMeta?.totalRecords)
+            // }
+          />
         </div>
         {!!dataList?.length && (
           <div className="d-flex justify-content-between gap-3">
