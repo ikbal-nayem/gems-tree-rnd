@@ -30,6 +30,7 @@ const TemplateCreate = () => {
     let reqPayload = {
       ...data,
       attachmentDtoList: attachmentDto,
+      isTemplate: true,
       status: "NEW",
     };
 

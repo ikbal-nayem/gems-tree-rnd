@@ -1,18 +1,18 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
+import { ConfirmationModal } from "@gems/components";
 import { generateUUID, isObjectNull } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
-import { OMSService } from "@services/api/OMS.service";
-import { ConfirmationModal } from "@gems/components";
 
 const addNode = (nd, parent, templateData) => {
-  if (nd.id === parent?.id) {
+  if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
     nd.children = [
       ...parent.children,
       {
         ...templateData,
-        id: generateUUID(),
+        nodeId: generateUUID(),
         // displayOrder: nd.children.length + 1 || 1,
         children: [],
       },
@@ -26,13 +26,13 @@ const addNode = (nd, parent, templateData) => {
 };
 
 const editNode = (nd, node, updateData) => {
-  if (nd.id === node?.id) {
+  if ((nd?.id || nd?.nodeId) === (node?.id || node?.nodeId)) {
     return { ...node, ...updateData };
   }
   for (var i = 0; i < nd.children.length; i++) {
     nd.children[i] = editNode(nd.children[i], node, updateData);
     if (
-      nd.children[i].id === node.id &&
+      nd.children[i]?.nodeId === node?.nodeId &&
       node.displayOrder !== updateData.displayOrder
     ) {
       nd = reOrder(
@@ -48,46 +48,63 @@ const editNode = (nd, node, updateData) => {
   }
   return { ...nd };
 };
-const deleteNode = (nd, nodeId) => {
-  if (nd.id === nodeId) {
+
+const deleteNode = (nd, deleteItem) => {
+  if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
+    return nd?.children && nd?.children?.length > 0
+      ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
+          nd?.children
+            ?.filter((s) => !s?.nodeId)
+            ?.map((d) => {
+              return {
+                ...d,
+                children: d?.children?.length > 0 ? deleteNode(d, d) : [],
+                isDeleted: true,
+              };
+            })
+      : null;
+  }
+
+  if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
     return null;
   }
-  for (var i = 0; i < nd.children.length; i++) {
-    const nodeState = deleteNode(nd.children[i], nodeId);
 
+  for (var i = 0; i < nd.children.length; i++) {
+    const nodeState = deleteNode(nd.children[i], deleteItem);
+    if (nodeState && nodeState?.length > 0) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: nodeState,
+        isDeleted: true,
+      };
+    }
     if (!nodeState) {
-      nd.children.splice(i, 1);
-      break;
+      if (nd?.children[i]?.id)
+        nd.children[i] = {
+          ...nd.children[i],
+          children: [],
+          isDeleted: true,
+        };
+      else {
+        nd.children.splice(i, 1);
+        break;
+      }
     }
   }
   nd = childSerializer(nd);
   return { ...nd };
 };
 
-
 // const deleteNode = (nd, nodeId) => {
-//   if (nd.id === nodeId) {
-//     return nd?.children && nd?.children?.length > 0
-//       ? nd?.children?.map((d) => {
-//           return {
-//             ...d,
-//             children: d?.children?.length > 0 ? deleteNode(d, d?.id) : [],
-//             isDeleted: true,
-//           };
-//         })
-//       : null;
+//   if (nd.id === nodeId || nd.nodeId === nodeId) {
+//     return null;
 //   }
 //   for (var i = 0; i < nd.children.length; i++) {
 //     const nodeState = deleteNode(nd.children[i], nodeId);
-//     if (nodeState?.length > 0) {
-//       nd.children[i] = {
-//         ...nd.children[i],
-//         children: nodeState,
-//         isDeleted: true,
-//       };
-//     }
+
 //     if (!nodeState) {
-//       nd.children[i] = { ...nd.children[i], isDeleted: true };
+//       nd.children.splice(i, 1);
+//       break;
 //     }
 //   }
 //   nd = childSerializer(nd);
@@ -229,7 +246,7 @@ const OrganizationTemplateTree = ({
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData.id));
+    setTreeData(deleteNode(treeData, deleteData));
     setIsDeleteModal(false);
   };
 
@@ -295,7 +312,10 @@ const OrganizationTemplateTree = ({
               nodeData={nodeData}
               treeDispatch={treeDispatch}
               postList={postList}
-              firstNode={treeData?.id === nodeData?.id}
+              firstNode={
+                (treeData?.id || treeData?.nodeId) ===
+                (nodeData?.id || nodeData?.nodeId)
+              }
               isNotEnamCommittee={isNotEnamCommittee}
             />
           )}

@@ -284,8 +284,8 @@ const ChartNode = ({
 						<ChartNode
 							datasource={node}
 							NodeTemplate={NodeTemplate}
-							id={node.id}
-							key={node.id}
+							id={node.id||node.nodeId}
+							key={node.id||node.nodeId}
 							draggable={draggable}
 							collapsible={collapsible}
 							multipleSelect={multipleSelect}

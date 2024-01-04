@@ -64,3 +64,8 @@
 .orgchart ul li .oc-node.selected {
   background-color: #fff !important;
 } */
+
+.text-line-through-color-red {
+  text-decoration: line-through;
+  text-decoration-color: red;
+}

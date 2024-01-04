@@ -45,7 +45,7 @@ const TemplateComponent = ({
       !isObjectNull(updateData?.organizationStructureDto)
       ? updateData?.organizationStructureDto
       : {
-          id: generateUUID(),
+          nodeId: generateUUID(),
           titleBn: "অর্গানোগ্রাম তৈরি শুরু করুন",
           titleEn: "Start the Organogram here",
           children: [],
@@ -221,7 +221,6 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationStructureDto: treeData,
     };
-    // console.log(reqPayload);
 
     onSubmit(reqPayload);
   };
