@@ -168,7 +168,7 @@ const TemplateList = () => {
       <div className="card p-4">
         {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
-        <div className="d-flex justify-content-between gap-2 mb-4">
+        <div className="d-flex justify-content-between gap-2 mb-2">
           <span className="w-25">
             <Autocomplete
               placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
@@ -202,7 +202,7 @@ const TemplateList = () => {
         {!!dataList?.length && (
           <div className="d-flex justify-content-between gap-3">
             <div className="text-primary text-center">
-              <h5 className="my-3">
+              <h5 className="mt-3">
                 মোট টেমপ্লেট {numEnToBn(respMeta?.totalRecords)} টি
               </h5>
             </div>
@@ -211,7 +211,7 @@ const TemplateList = () => {
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
-        <div className="p-4">
+        <div className="px-4 pb-4">
           <TemplateTable
             dataList={dataList}
             // dataList={[

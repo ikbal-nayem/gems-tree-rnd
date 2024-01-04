@@ -25,7 +25,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
         nodeData?.isDeleted ? "text-line-through-color-red" : ""
       }`}
     >
-      <div className="d-flex justify-content-between">
+      <div className="bg-light rounded-top d-flex justify-content-between">
         {!nodeData?.isDeleted && (
           <div>
             <Icon
@@ -56,9 +56,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
       </div>
 
       <div
-        className={`bg-light text-start ${
-          nodeData?.manpowerList?.length ? "p-1" : ""
-        }`}
+        className={`text-start ${nodeData?.manpowerList?.length ? "p-1" : ""}`}
       >
         {nodeData?.manpowerList?.length > 0 &&
           nodeData?.manpowerList?.map((item, i) => {
@@ -103,7 +101,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           })}
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
-        <div className="pt-3 ps-2 bg-light text-start ">
+        <div className="pt-3 ps-2 text-start ">
           {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
           <TextBlock value={nodeData?.commentNode} />
           {/* {nodeData?.commentNode} */}

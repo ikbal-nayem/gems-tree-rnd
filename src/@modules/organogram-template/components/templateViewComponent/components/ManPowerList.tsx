@@ -83,8 +83,9 @@ const ManPowerList: FC<TableProps> = ({
                     </TableRow>
                     {classs?.manpowerDtoList?.map((itr) => (
                       <TableRow key={idx++}>
-                        <TableCell className="remove-padding">
-                          {langEn ? slNo++ : numEnToBn(slNo++)}
+                        <TableCell className="remove-padding text-end">
+                          {(langEn ? slNo++ : numEnToBn(slNo++)) + "."}
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </TableCell>
                         <TableCell className="remove-padding">
                           <p className="mb-0 fs-7">

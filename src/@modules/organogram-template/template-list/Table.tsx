@@ -69,8 +69,9 @@ const TemplateTable: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.NAME, width: 250 },
-    { title: LABELS.ORGANOGRAM_DATE, width: 100 },
-    { title: LABELS.STATUS, width: 150, align: "center" },
+    { title: LABELS.ORGANOGRAM_DATE, width: 50 },
+    { title: LABELS.IS_ENAM_COMMITTEE, width: 50, align: "center"},
+    { title: LABELS.STATUS, width: 100, align: "center" },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
@@ -137,6 +138,7 @@ const TemplateTable: FC<TableProps> = ({
                     : COMMON_LABELS.NOT_ASSIGN
                 }
               />
+              <TableCell textAlign="center" isActive={item?.isEnamCommittee} />
               <TableCell>
                 <div className="d-flex justify-content-center">
                   <Tag

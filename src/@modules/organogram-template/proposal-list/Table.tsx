@@ -9,6 +9,7 @@ import {
   Table,
   TableCell,
   TableRow,
+  Tag,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -38,7 +39,8 @@ const ProposalTable: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.BN.SENDER, width: 250 },
-    { title: LABELS.BN.TOPIC, width: 100 },
+    { title: LABELS.BN.TOPIC, width: 150 },
+    { title: LABELS.BN.STATUS, width: 100 },
     { title: LABELS.BN.RECEIVED_DATE_TIME, width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
@@ -59,13 +61,21 @@ const ProposalTable: FC<TableProps> = ({
             <TableRow key={idx}>
               <TableCell text={generateRowNumBn(idx, respMeta)} />
               <TableCell
-                text={item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={
+                  item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                }
                 subText={item?.proposedOrganization?.nameEn || null}
               />
               <TableCell
-                text={item?.actionType?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.actionType?.titleEn || null}
+                text={item?.subjects?.map((i) => i.titleBn).join(" , ") || COMMON_LABELS.NOT_ASSIGN}
+                // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
               />
+              <TableCell>
+                <Tag
+                  title={item?.status === "NEW" ? "অপেক্ষমান" : item?.status}
+                  color={item?.status === "NEW" ? "primary" : "dark"}
+                />
+              </TableCell>
               <TableCell
                 text={
                   generateDateFormat(
@@ -78,6 +88,7 @@ const ProposalTable: FC<TableProps> = ({
                   null
                 }
               />
+
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
                   btnIcon={true}

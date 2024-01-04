@@ -73,7 +73,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     const reqPayload = {
       cloneIsEnamCommittee: cloneData.isEnamCommittee,
       cloneTitleBn: cloneData.isEnamCommittee
-        ? cloneData.titleEn
+        ? "" // cloneData.titleEn
         : cloneData.titleBn,
       cloneTitleEn: cloneData.titleEn,
       cloneOrganogramDate: cloneData.organogramDate,
