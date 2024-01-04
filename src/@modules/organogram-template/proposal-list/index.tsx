@@ -55,7 +55,7 @@ const ProposalList = () => {
 
   useEffect(() => {
     getDataList();
-  }, [searchParams]);
+  }, [searchParams, officeScopeKey, proposalStatusKey]);
 
   useEffect(() => {
     CoreService.getByMetaTypeList("OFFICE_SCOPE/asc").then((resp) => {
@@ -76,6 +76,15 @@ const ProposalList = () => {
     );
   }, []);
 
+  const prepareFilterData = (filterSl: number, op: string) => {
+    if (filterSl === 1) {
+    }
+    if (filterSl === 2) {
+      if(op === "PROPOSAL_STATUS_PENDING_PROPOSAL") return "NEW";
+      if(op === "PROPOSAL_STATUS_RESOLVED_PROPOSAL") return "RESOLVED";
+    }
+    return null;
+  };
   const getDataList = (reqMeta = null) => {
     topProgress.show();
     setLoading(true);
@@ -90,7 +99,7 @@ const ProposalList = () => {
         officeScopeKey && proposalStatusKey
           ? {
               officeScopeKey: officeScopeKey,
-              proposalStatusKey: proposalStatusKey,
+              status: proposalStatusKey,
             }
           : officeScopeKey
           ? {
@@ -98,7 +107,7 @@ const ProposalList = () => {
             }
           : proposalStatusKey
           ? {
-              proposalStatusKey: proposalStatusKey,
+              status: proposalStatusKey,
             }
           : {},
     };
@@ -211,7 +220,9 @@ const ProposalList = () => {
               getOptionLabel={(op) => op.titleBn}
               name="officeScope"
               control={control}
-              onChange={(val) => setOfficeScopeKey(val?.metaKey || null)}
+              onChange={(val) =>
+                setOfficeScopeKey(prepareFilterData(1, val?.metaKey) || null)
+              }
             />
           </span>
           <span className="w-50">
@@ -222,7 +233,9 @@ const ProposalList = () => {
               getOptionLabel={(op) => op.titleBn}
               name="proposalStatus"
               control={control}
-              onChange={(val) => setProposalStatusKey(val?.metaKey || null)}
+              onChange={(val) =>
+                setProposalStatusKey(prepareFilterData(2, val?.metaKey) || null)
+              }
             />
           </span>
         </div>
