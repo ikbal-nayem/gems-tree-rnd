@@ -1,10 +1,12 @@
+import { MENU } from "@constants/menu-titles.constant";
+import { useAuth } from "@context/Auth";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
   Button,
   ConfirmationModal,
   ContentPreloader,
-  Input,
   DownloadMenu,
+  Input,
   NoData,
   Pagination,
   toast,
@@ -26,15 +28,12 @@ import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MENU } from "@constants/menu-titles.constant";
-import { useAuth } from "@context/Auth";
 import CreateForm from "./CreateForm";
-import UpdateForm from "./UpdateForm";
-import Table from "./Table";
 import Filter from "./Filter";
+import Table from "./Table";
+import UpdateForm from "./UpdateForm";
 
 type IOptions = {
-  orgList: IMetaKeyResponse[];
   postList: IMetaKeyResponse[];
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
@@ -69,20 +68,18 @@ const PostConfig = () => {
 
   useEffect(() => {
     // const req1 = OMSService.getOrganizationList(initPayload);
-    const req1 = OMSService.FETCH.childOrgByLoggedUser();
-    const req2 = CoreService.getPostList();
-    const req3 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
-    const req4 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
-    const req5 = CoreService.getGrades();
+    const req1 = CoreService.getPostList();
+    const req2 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
+    const req3 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
+    const req4 = CoreService.getGrades();
 
-    Promise.all([req1, req2, req3, req4, req5])
-      .then(([res1, res2, res3, res4, res5]) => {
+    Promise.all([req1, req2, req3, req4])
+      .then(([res1, res2, res3, res4]) => {
         setOptions({
-          orgList: res1?.body,
-          postList: res2?.body,
-          serviceList: res3?.body,
-          cadreList: res4?.body,
-          gradeList: res5?.body,
+          postList: res1?.body,
+          serviceList: res2?.body,
+          cadreList: res3?.body,
+          gradeList: res4?.body,
         });
       })
       .finally(() => setIsLoading(false));
@@ -165,21 +162,21 @@ const PostConfig = () => {
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
     // let payload = {
-    //   body: {
-    //     ids: [deleteData?.id || ""],
-    //   },
+    // body: {
+    // ids: [deleteData?.id || ""],
+    // },
     // };
     // MasterDataService.rankMinistryDelete(payload)
-    //   .then((res) => {
-    //     toast.success(res?.message);
-    //     getDataList();
-    //     setDeleteData(null);
-    //   })
-    //   .catch((err) => toast.error(err?.message))
-    //   .finally(() => {
-    //     setIsDeleteLoading(false);
-    //     setIsDeleteModal(false);
-    //   });
+    // .then((res) => {
+    // toast.success(res?.message);
+    // getDataList();
+    // setDeleteData(null);
+    // })
+    // .catch((err) => toast.error(err?.message))
+    // .finally(() => {
+    // setIsDeleteLoading(false);
+    // setIsDeleteModal(false);
+    // });
   };
 
   const onSubmit = (data) => {

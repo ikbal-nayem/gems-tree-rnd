@@ -17,9 +17,9 @@ import {
 } from "@gems/utils";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import WorkSpaceComponent from "./WorkSpaceComponent";
 
 type IOptions = {
-  orgList: IMetaKeyResponse[];
   postList: IMetaKeyResponse[];
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
@@ -91,21 +91,25 @@ const CreateForm = ({
         <DrawerBody>
           <div className="row">
             <div className="col-12">
-              <Autocomplete
-                label="প্রতিষ্ঠান"
-                name="organization"
-                placeholder="প্রতিষ্ঠান বাছাই করুন"
+              {/* <Autocomplete
+label="প্রতিষ্ঠান"
+name="organization"
+placeholder="প্রতিষ্ঠান বাছাই করুন"
+isRequired="প্রতিষ্ঠান বাছাই করুন"
+options={options?.orgList || []}
+getOptionLabel={(t) => t.nameBn}
+getOptionValue={(op) => op?.id}
+defaultValue={options?.orgList?.find(
+(op) => op?.id === userOrg?.id
+)}
+onChange={(t) => setValue("organizationId", t?.id)}
+control={control}
+isError={!!errors?.organization}
+errorMessage={errors?.organization?.message as string}
+/> */}
+              <WorkSpaceComponent
+                {...formProps}
                 isRequired="প্রতিষ্ঠান বাছাই করুন"
-                options={options?.orgList || []}
-                getOptionLabel={(t) => t.nameBn}
-                getOptionValue={(op) => op?.id}
-                defaultValue={options?.orgList?.find(
-                  (op) => op?.id === userOrg?.id
-                )}
-                onChange={(t) => setValue("organizationId", t?.id)}
-                control={control}
-                isError={!!errors?.organization}
-                errorMessage={errors?.organization?.message as string}
               />
             </div>
             <div className="col-12">
