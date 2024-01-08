@@ -121,9 +121,7 @@ const TemplateList = () => {
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
-          resp?.meta
-            ? { ...resp?.meta }
-            : { limit: respMeta?.limit, page: 0 }
+          resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
         );
       })
       .catch((err) => {

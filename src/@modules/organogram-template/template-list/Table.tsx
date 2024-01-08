@@ -1,6 +1,5 @@
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
-import { useAuth } from "@context/Auth";
 import {
   ACLWrapper,
   ContentPreloader,
@@ -28,10 +27,10 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TemplateClone from "./templateClone";
+import { statusColorMapping } from "utility/colorMap";
 import { LABELS } from "./labels";
 import OrganizationReport from "./organizatioReport";
-import { statusColorMapping } from "utility/colorMap";
+import TemplateClone from "./templateClone";
 
 type TableProps = {
   children: ReactNode;
@@ -55,7 +54,6 @@ const TemplateTable: FC<TableProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isReportOpen, setReportOpen] = useState<boolean>(false);
   const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
-  const { currentUser } = useAuth();
   const onClose = () => setIsOpen(false);
   const onReportClose = () => {
     setAttachedOrgList(null);
