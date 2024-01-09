@@ -118,7 +118,6 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
             onChange={() => {}}
             value={field.value?.nameBn || ""}
             isError={!!errors?.organization}
-            errorMessage={errors?.organization?.message as string}
           />
         )}
       />

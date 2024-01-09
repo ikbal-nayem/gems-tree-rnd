@@ -107,20 +107,19 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
             <div className="col-md-6 col-12">
               <DateInput
                 label="অর্গানোগ্রাম তারিখ"
-                isRequired=" "
+                isRequired={true}
                 name="organogramDate"
                 control={control}
                 onChange={(e) => setValue("chosenDate", e.value)}
                 blockFutureDate
                 isError={!!errors?.organogramDate}
-                errorMessage={errors?.organogramDate?.message as string}
               />
             </div>
             <div className="col-12">
               <Autocomplete
                 label="অর্গানোগ্রামের পরিবর্তনসমূহ"
-                placeholder="অর্গানোগ্রামের পরিবর্তনসমূহ দিন"
-                isRequired="অর্গানোগ্রামের পরিবর্তনসমূহ দিন"
+                placeholder="অর্গানোগ্রামের পরিবর্তনসমূহ বাছাই করুন"
+                isRequired={true}
                 name="organogramChangeActionDtoList"
                 isMulti
                 options={organogramChangeActionList || []}
@@ -128,6 +127,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 getOptionValue={(op) => op?.titleEn}
                 closeMenuOnSelect={false}
                 control={control}
+                isError={!!errors?.organogramChangeActionDtoList}
               />
             </div>
           </div>
