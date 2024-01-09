@@ -26,9 +26,7 @@ interface IForm {
 
 const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
-    IObject[]
-  >([]);
+  const [changeActionList, setChangeActionList] = useState<IObject[]>([]);
 
   const formProps = useForm<any>();
 
@@ -42,15 +40,13 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const navigate = useNavigate();
   useEffect(() => {
     CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
-      (resp) => {
-        setOrganogramChangeActionList(resp?.body);
-      }
+      (resp) => setChangeActionList(resp?.body)
     );
   }, []);
 
   useEffect(() => {
     reset({});
-    getDataList();
+    if (!isOpen) getDataList();
   }, [isOpen]);
 
   const onSubmit = (data) => {
@@ -122,7 +118,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 isRequired={true}
                 name="organogramChangeActionDtoList"
                 isMulti
-                options={organogramChangeActionList || []}
+                options={changeActionList || []}
                 getOptionLabel={(op) => op?.titleBn}
                 getOptionValue={(op) => op?.titleEn}
                 closeMenuOnSelect={false}
