@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { OMSService } from "../../../../@services/api/OMS.service";
 import WorkSpaceComponent from "./WorkSpaceComponent";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 interface IForm {
   template: any;
@@ -37,7 +39,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     setValue,
     formState: { errors },
   } = formProps;
-
+  const navigate = useNavigate();
   useEffect(() => {
     CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
       (resp) => {
@@ -76,7 +78,8 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
         .catch((error) => toast.error(error?.message))
         .finally(() => {
           setIsSubmitLoading(false);
-          onClose();
+          // onClose();
+          navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
         });
     }
   };
