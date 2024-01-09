@@ -28,6 +28,7 @@ import EquipmentsForm from "./components/EquipmentsForm";
 import Organizations from "./components/organization";
 import { CoreService } from "@services/api/Core.service";
 import { META_TYPE } from "@constants/common.constant";
+import NotesForm from "./components/NotesForm";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -70,7 +71,6 @@ const TemplateComponent = ({
       attachmentDtoList: [],
       inventoryDtoList: [],
       miscellaneousPointDtoList: [],
-      organogramNoteDtoList: [],
     },
   });
   const {
@@ -121,7 +121,7 @@ const TemplateComponent = ({
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
-        organogramNoteDtoList: updateData?.organogramNoteDtoList,
+        organogramNoteDto: updateData?.organogramNoteDto,
       });
     }
   }, [updateData]);
@@ -220,6 +220,12 @@ const TemplateComponent = ({
       titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
       organizationStructureDto: treeData,
+      organogramNoteDto: data?.organogramNoteDto?.note
+        ? {
+            ...data?.organogramNoteDto,
+            status: "ORGANOGRAM",
+          }
+        : null,
     };
 
     onSubmit(reqPayload);
@@ -381,9 +387,9 @@ const TemplateComponent = ({
               isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
-          {/* <div className="col-md-6 mt-3">
+          <div className="col-md-6 mt-3">
             <NotesForm formProps={formProps} />
-          </div> */}
+          </div>
         </div>
         <div className="d-flex gap-3 justify-content-center mt-5">
           <Button

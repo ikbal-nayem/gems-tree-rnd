@@ -1,8 +1,10 @@
-import { useState } from "react";
+import Switch from "@components/Switch";
 import {
   COMMON_LABELS as COMN_LABELS,
   LABELS,
 } from "@constants/common.constant";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import {
   ACLWrapper,
   Button,
@@ -21,25 +23,24 @@ import {
   generateUUID,
   isObjectNull,
 } from "@gems/utils";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import Switch from "@components/Switch";
-import OrganizationTemplateTree from "./Tree";
-import { BUTTON_LABEL, MSG } from "./message";
-import { useNavigate } from "react-router-dom";
-import NotesList from "./components/NotesList";
-import OrgList from "./components/Organization";
-import ManPowerList from "./components/ManPowerList";
 import { OMSService } from "@services/api/OMS.service";
-import ActivitiesList from "./components/ActivitesList";
-import EquipmentsList from "./components/EquipmentsList";
-import AttachmentList from "./components/AttachmentList";
-import AttachedOrgList from "./components/AttachedOrgList";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import OrganizationTemplateTree from "./Tree";
 import AbbreviationList from "./components/AbbreviationList";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
+import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
+import AttachedOrgList from "./components/AttachedOrgList";
+import AttachmentList from "./components/AttachmentList";
+import EquipmentsList from "./components/EquipmentsList";
+import ManPowerList from "./components/ManPowerList";
 import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModal";
+import NotesList from "./components/NotesList";
+import NotesReviewApproverList from "./components/NotesReviewApproverList";
+import OrgList from "./components/Organization";
+import { BUTTON_LABEL, MSG } from "./message";
 
 interface ITemplateViewComponent {
   updateData: IObject;
@@ -403,6 +404,12 @@ const TemplateViewComponent = ({
               inventoryData={inventoryData || []}
               langEn={langEn}
             />
+            {!isObjectNull(updateData?.organogramNoteDto) && (
+              <NotesList
+                data={updateData?.organogramNoteDto || {}}
+                langEn={langEn}
+              />
+            )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
             {(orgName || orgParentName || organogramView) && (
@@ -456,9 +463,17 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          {!organogramView && !stateOrganizationData?.organizationId && (
+          {!isObjectNull(updateData?.organogramNoteDto) && (
             <div className="mt-3">
               <NotesList
+                data={updateData?.organogramNoteDto || {}}
+                langEn={langEn}
+              />
+            </div>
+          )}
+          {!organogramView && !stateOrganizationData?.organizationId && (
+            <div className="mt-3">
+              <NotesReviewApproverList
                 data={updateData?.organogramNoteGroupDtoList || []}
                 langEn={langEn}
               />

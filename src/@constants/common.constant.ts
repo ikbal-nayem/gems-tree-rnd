@@ -91,6 +91,7 @@ export const LABELS = {
     CHANGE_IN_MANPOWER: "Comparison of Manpower",
     ORGANIZATION: "Organization",
     NOTES: "Notes",
+    REVIEW_APPROVE_NOTES: "Review & Approve Notes",
     CHANGES: "Changes",
   },
 
@@ -116,6 +117,7 @@ export const LABELS = {
     CHANGE_IN_MANPOWER: "জনবলের তুলনামূলক তালিকা",
     ORGANIZATION: "প্রতিষ্ঠান",
     NOTES: "মন্তব্য",
+    REVIEW_APPROVE_NOTES:"পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",
     CHANGES: "পরিবর্তনসমূহ",
   },
 };
