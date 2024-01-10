@@ -17,15 +17,17 @@ import {
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
+import OrganogramClone from "./organogramClone";
 
 type TableProps = {
   children: ReactNode;
   dataList: any[];
   isLoading: boolean;
   respMeta?: IMeta;
+  getDataList: () => void;
 };
 
 const OrganogramTable: FC<TableProps> = ({
@@ -33,6 +35,7 @@ const OrganogramTable: FC<TableProps> = ({
   dataList,
   isLoading,
   respMeta,
+  getDataList,
 }) => {
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
@@ -47,6 +50,15 @@ const OrganogramTable: FC<TableProps> = ({
   //   };
   const navigateToView = (id: string) => {
     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
+  };
+
+
+  const [template, setTemplate] = useState<any>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onClose = () => setIsOpen(false);
+  const onClone = (template) => {
+    setTemplate(template);
+    setIsOpen(true);
   };
 
   return (
@@ -82,6 +94,10 @@ const OrganogramTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
+                  <DropdownItem onClick={() => onClone(item)}>
+                    <Icon size={19} icon="file_copy" />
+                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
+                  </DropdownItem>
                   {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
@@ -95,12 +111,20 @@ const OrganogramTable: FC<TableProps> = ({
             </TableRow>
           ))}
         </Table>
+        
       ) : isLoading ? (
         <ContentPreloader />
       ) : (
         <NoData details="কোনো অর্গানোগ্রামের তথ্য পাওয়া যায়নি!" />
       )}
       {children}
+
+      <OrganogramClone
+        isOpen={isOpen}
+        onClose={onClose}
+        template={template}
+        getDataList={getDataList}
+      />
     </>
   );
 };

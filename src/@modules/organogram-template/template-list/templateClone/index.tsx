@@ -36,9 +36,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
   const [notOrganizationData, setNotOrganizationData] =
     useState<boolean>(false);
-  const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
-    IObject[]
-  >([]);
+  // const [organogramChangeActionList, setOrganogramChangeActionList] = useState<IObject[]>([]);
 
   const formProps = useForm<any>();
 
@@ -54,13 +52,13 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     formState: { errors },
   } = formProps;
 
-  useEffect(() => {
-    CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
-      (resp) => {
-        setOrganogramChangeActionList(resp?.body);
-      }
-    );
-  }, []);
+  // useEffect(() => {
+  //   CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
+  //     (resp) => {
+  //       setOrganogramChangeActionList(resp?.body);
+  //     }
+  //   );
+  // }, []);
 
   useEffect(() => {
     reset({});
@@ -78,14 +76,14 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       cloneTitleEn: cloneData.titleEn,
       cloneOrganogramDate: cloneData.organogramDate,
       refTemplateId: template?.id,
-      organogramChangeActionDtoList:
-        !cloneData.isEnamCommittee &&
-        cloneData?.organogramChangeActionDtoList?.length > 0
-          ? cloneData?.organogramChangeActionDtoList?.map((d) => ({
-              titleEn: d?.titleEn,
-              titleBn: d?.titleBn,
-            }))
-          : null,
+      // organogramChangeActionDtoList:
+      //   !cloneData.isEnamCommittee &&
+      //   cloneData?.organogramChangeActionDtoList?.length > 0
+      //     ? cloneData?.organogramChangeActionDtoList?.map((d) => ({
+      //         titleEn: d?.titleEn,
+      //         titleBn: d?.titleBn,
+      //       }))
+      //     : null,
       templateOrganizationsDtoList:
         cloneData?.templateOrganizationsDtoList?.length > 0
           ? cloneData?.templateOrganizationsDtoList?.map((d) => ({
@@ -233,7 +231,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 errorMessage={errors?.organogramDate?.message as string}
               />
             </div>
-            {isNotEnamCommittee && (
+            {/* {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
                 <Autocomplete
                   label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
@@ -250,7 +248,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                   control={control}
                 />
               </div>
-            )}
+            )} */}
             <Organizations
               formProps={formProps}
               notOrganizationData={notOrganizationData}
