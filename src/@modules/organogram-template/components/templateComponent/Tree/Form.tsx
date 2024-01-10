@@ -159,20 +159,6 @@ const NodeForm = ({
       : COMMON_LABELS.NUMERIC_ONLY;
   };
 
-  const checkFieldIsDeleted = (field) => {
-    return field?.isDeleted ? true : false;
-  };
-
-  const handleManpowerDelete = (field, index) => {
-    if (index >= 0) {
-      if (!isObjectNull(field) && field?.isNewManpower) {
-        manpowerListRemove(index);
-      } else {
-        manpowerListUpdate(index, { ...field, isDeleted: true });
-      }
-    }
-  };
-
   const setEnIntoBnFields = (data) => {
     let postFunctionalityListNew = [];
     if (isNotEmptyList(data?.postFunctionalityList)) {
@@ -418,11 +404,7 @@ const NodeForm = ({
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100 ${
-                  checkFieldIsDeleted(field)
-                    ? "disabledDiv border-danger p-1"
-                    : ""
-                }`}
+                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100`}
                 key={field?.id}
               >
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
@@ -522,19 +504,17 @@ const NodeForm = ({
                     ) : null}
                   </div>
                 </div>
-                {!checkFieldIsDeleted(field) && (
-                  <div className={index < 1 ? "mt-6" : ""}>
-                    <IconButton
-                      iconName="delete"
-                      color="danger"
-                      rounded={false}
-                      onClick={() => {
-                        handleManpowerDelete(field, index);
-                        // manpowerListRemove(index);
-                      }}
-                    />
-                  </div>
-                )}
+
+                <div className={index < 1 ? "mt-6" : ""}>
+                  <IconButton
+                    iconName="delete"
+                    color="danger"
+                    rounded={false}
+                    onClick={() => {
+                      manpowerListRemove(index);
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>

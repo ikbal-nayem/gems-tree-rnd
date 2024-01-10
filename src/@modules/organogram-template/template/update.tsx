@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IObject, isObjectNull } from "@gems/utils";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TemplateComponent from "../components/templateComponent";
 import { OMSService } from "../../../@services/api/OMS.service";
 import { ContentPreloader, NoData, toast } from "@gems/components";
@@ -13,6 +13,8 @@ const TemplateUpdate = () => {
   const [data, setData] = useState<IObject>({});
   const [searchParam] = useSearchParams();
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const organizationId = state?.organizationId || null;
 
   const templateId = searchParam.get("id") || "";
 
@@ -77,18 +79,21 @@ const TemplateUpdate = () => {
   return (
     <>
       {isLoading && <ContentPreloader />}
-      {!isLoading && !isObjectNull(data) && (
-        // <TemplateComponent
-        //   onSubmit={onSubmit}
-        //   isSubmitLoading={isSubmitLoading}
-        //   updateData={data}
-        // />
-        <TemplateEditComponent
-          onSubmit={onSubmit}
-          isSubmitLoading={isSubmitLoading}
-          updateData={data}
-        />
-      )}
+      {!isLoading &&
+        !isObjectNull(data) &&
+        (organizationId ? (
+          <TemplateEditComponent
+            onSubmit={onSubmit}
+            isSubmitLoading={isSubmitLoading}
+            updateData={data}
+          />
+        ) : (
+          <TemplateComponent
+            onSubmit={onSubmit}
+            isSubmitLoading={isSubmitLoading}
+            updateData={data}
+          />
+        ))}
       {!isLoading && isObjectNull(data) && (
         <NoData details="কোনো টেমপ্লেট তথ্য খুঁজে পাওয়া যায় নি !!" />
       )}

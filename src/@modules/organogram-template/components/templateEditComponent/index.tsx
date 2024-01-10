@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  Button,
-  Checkbox,
-  DateInput,
-  Input,
-  Separator,
-} from "@gems/components";
+import { Autocomplete, Button, DateInput } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -17,18 +10,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
-import { OMSService } from "@services/api/OMS.service";
+import { META_TYPE } from "@constants/common.constant";
+import { CoreService } from "@services/api/Core.service";
 import { deFocusById, focusById } from "utility/utils";
-import { enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
-import Organizations from "./components/organization";
-import { CoreService } from "@services/api/Core.service";
-import { META_TYPE } from "@constants/common.constant";
 import NotesForm from "./components/NotesForm";
+import WorkSpaceComponent from "./components/WorkSpaceComponent";
 
 interface ITemplateEditComponent {
   updateData?: IObject;
@@ -52,12 +43,6 @@ const TemplateEditComponent = ({
           children: [],
         }
   );
-  const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
-    useState<boolean>(false);
-  const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
-    useState<boolean>(false);
-  const [notOrganizationData, setNotOrganizationData] =
-    useState<boolean>(false);
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
@@ -108,13 +93,14 @@ const TemplateEditComponent = ({
       reset({
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        isEnamCommittee: updateData?.isEnamCommittee,
         organogramDate: updateData?.organogramDate,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
         inventoryDtoList: updateData?.inventoryDtoList,
-        templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
+        organization: updateData?.organization,
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
@@ -122,35 +108,6 @@ const TemplateEditComponent = ({
       });
     }
   }, [updateData]);
-
-  const duplicateTitleCheck = (title, isEn: boolean) => {
-    const field = isEn ? "titleEn" : "titleBn";
-    OMSService.duplicateTemplateTitleCheck(title, isEn)
-      .then((res) => {
-        if (res?.body) {
-          const msg = (isEn ? "ইংরেজি" : "বাংলা") + " শিরোনামটি অনন্য নয় !";
-
-          setError(field, {
-            type: "manaul",
-            message: msg,
-          });
-
-          isEn
-            ? setDuplicateTitleEnDitected(true)
-            : setDuplicateTitleBnDitected(true);
-        } else {
-          clearErrors(field);
-          if (isEn) {
-            setDuplicateTitleEnDitected(false);
-            setValue("titleEn", title);
-          } else {
-            setDuplicateTitleBnDitected(false);
-            setValue("titleBn", title);
-          }
-        }
-      })
-      .catch((e) => console.log(e.message));
-  };
 
   const uniqueCheck = (list, listName: string) => {
     let isUnique = true;
@@ -176,22 +133,18 @@ const TemplateEditComponent = ({
 
   const onFinalSubmit = (data) => {
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
-    if (isObjectNull(updateData)) {
-      if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
-    }
 
-    data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
-      (d) => ({
-        organizationId: !isObjectNull(updateData)
-          ? d?.organizationId || d?.id
-          : d?.id,
-        organizationNameEn: d?.nameEn || d?.organizationNameEn,
-        organizationNameBn: d?.nameBn || d?.organizationNameBn,
-      })
-    );
+    // data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
+    //   (d) => ({
+    //     organizationId: !isObjectNull(updateData)
+    //       ? d?.organizationId || d?.id
+    //       : d?.id,
+    //     organizationNameEn: d?.nameEn || d?.organizationNameEn,
+    //     organizationNameBn: d?.nameBn || d?.organizationNameBn,
+    //   })
+    // );
     if (data.organogramChangeActionDtoList?.length > 0) {
       data.organogramChangeActionDtoList =
-        // !data?.isEnamCommittee &&
         data?.organogramChangeActionDtoList?.length > 0
           ? data?.organogramChangeActionDtoList?.map((d) => ({
               titleEn: d?.titleEn,
@@ -200,22 +153,10 @@ const TemplateEditComponent = ({
           : null;
     }
 
-    if (
-      data?.templateOrganizationsDtoList === undefined ||
-      data?.templateOrganizationsDtoList?.length <= 0
-    ) {
-      setNotOrganizationData(true);
-      focusById("organizationBlock", true);
-      return;
-    } else {
-      setNotOrganizationData(false);
-      deFocusById("organizationBlock");
-    }
-
     const reqPayload = {
       ...data,
-      titleBn: getValues("titleBn"),
-      titleEn: getValues("titleEn"),
+      titleBn: getValues("titleBn") || null,
+      titleEn: getValues("titleEn") || null,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
@@ -225,8 +166,8 @@ const TemplateEditComponent = ({
         : null,
     };
 
-    // onSubmit(reqPayload);
-    console.log(reqPayload);
+    onSubmit(reqPayload);
+    // console.log(reqPayload);
   };
 
   // const onIsEnamCommitteeChange = (checked: boolean) => {
@@ -305,6 +246,12 @@ const TemplateEditComponent = ({
               errorMessage={errors?.titleEn?.message as string}
             />
           </div> */}
+          <div className="col-md-6 col-12">
+            <WorkSpaceComponent
+              {...formProps}
+              isRequired="প্রতিষ্ঠান বাছাই করুন"
+            />
+          </div>
           <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
@@ -367,14 +314,14 @@ const TemplateEditComponent = ({
               setNotOrganizationData={setNotOrganizationData}
             />
           </div> */}
-          <div className="col-md-6 mt-3">
-            <AbbreviationForm formProps={formProps} />
-          </div>
           <div className="col-12 mt-3">
             <AttachmentForm
               formProps={formProps}
               // isNotEnamCommittee={isNotEnamCommittee}
             />
+          </div>
+          <div className="col-md-6 mt-3">
+            <AbbreviationForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-3">
             <NotesForm formProps={formProps} />

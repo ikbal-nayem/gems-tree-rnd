@@ -108,12 +108,10 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     <Input
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
-                      isRequired
                       registerProperty={{
                         ...register(`attachmentDtoList.${idx}.titleBn`, {
                           onChange: (e) =>
                             onTitleChange(e.target.value, idx, "bn"),
-                          required: " ",
                         }),
                       }}
                       isError={!!errors?.attachmentDtoList?.[idx]?.titleBn}
@@ -146,10 +144,8 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     <Input
                       label={idx < 1 ? labelGONoBn : ""}
                       placeholder={labelGONoBn + " লিখুন"}
-                      isRequired
                       registerProperty={{
                         ...register(`attachmentDtoList.${idx}.goNoBn`, {
-                          required: " ",
                           setValueAs: (v) => numEnToBn(v),
                         }),
                       }}

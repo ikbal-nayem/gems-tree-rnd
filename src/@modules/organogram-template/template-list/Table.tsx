@@ -74,16 +74,22 @@ const TemplateTable: FC<TableProps> = ({
   ];
 
   const navigate = useNavigate();
-  const navigateToDetails = (id: string) => {
-    OMSService.getCheckUserOrgPermissionByTemplateId(id)
+  const navigateToDetails = (item: IObject) => {
+    OMSService.getCheckUserOrgPermissionByTemplateId(item?.id)
       .then((resp) => {
         if (resp?.body) {
-          navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id);
+          navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+            state: { organizationId: item?.organizationId || null },
+          });
         } else {
           alert("This is not your organogram");
         }
       })
-      .catch(() => navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + id));
+      .catch(() =>
+        navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+          state: { organizationId: item?.organizationId || null },
+        })
+      );
   };
   const navigateToView = (id: string) => {
     navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
@@ -164,7 +170,7 @@ const TemplateTable: FC<TableProps> = ({
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
                   >
-                    <DropdownItem onClick={() => navigateToDetails(item?.id)}>
+                    <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="edit" />
                       <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                     </DropdownItem>
