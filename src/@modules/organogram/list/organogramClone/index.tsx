@@ -52,9 +52,9 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const onSubmit = (data) => {
     if (data) {
       const reqPayload = {
-        cloneOrganogramDate: data.organogramDate,
-        refTemplateId: template?.id,
-
+        organogramId: template?.id,
+        organogramDate: data.organogramDate,
+        organizationId: data?.organizationId || null,
         organogramChangeActionDtoList:
           data?.organogramChangeActionDtoList?.length > 0
             ? data?.organogramChangeActionDtoList?.map((d) => ({
@@ -62,14 +62,11 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 titleBn: d?.titleBn,
               }))
             : null,
-
-        organization: data?.organization || null,
-        organizationId: data?.organizationId || null,
       };
 
       setIsSubmitLoading(true);
 
-      OMSService.templateClone(reqPayload)
+      OMSService.SAVE.organogramClone(reqPayload)
         .then((res) => toast.success(res?.message))
         .catch((error) => toast.error(error?.message))
         .finally(() => {
