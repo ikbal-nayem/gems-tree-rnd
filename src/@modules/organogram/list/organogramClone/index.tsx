@@ -27,7 +27,14 @@ interface IForm {
 const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [changeActionList, setChangeActionList] = useState<IObject[]>([]);
+  const [organization, setOrganization] = useState<IObject>();
 
+  const onCustomSelection = (organization) => {
+    setOrganization({
+      id: organization?.id,
+      nameBn: organization?.nameBn,
+    });
+  };
   const formProps = useForm<any>();
 
   const {
@@ -35,6 +42,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     reset,
     control,
     setValue,
+    clearErrors,
     formState: { errors },
   } = formProps;
   const navigate = useNavigate();
@@ -46,7 +54,19 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
 
   useEffect(() => {
     reset({});
-    if (!isOpen) getDataList();
+    if (
+      isOpen &&
+      notNullOrUndefined(template?.organizationId) &&
+      notNullOrUndefined(template?.organizationNameBn)
+    ) {
+      setOrganization({
+        id: template?.organizationId,
+        nameBn: template?.organizationNameBn,
+      });
+      clearErrors("organization");
+      setValue("organization", template);
+      setValue("organizationId", template?.id);
+    }
   }, [isOpen]);
 
   const onSubmit = (data) => {
@@ -72,6 +92,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
         .finally(() => {
           setIsSubmitLoading(false);
           // onClose();
+          // getDataList();
           navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
         });
     }
@@ -95,6 +116,8 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
               <WorkSpaceComponent
                 {...formProps}
                 isRequired="প্রতিষ্ঠান বাছাই করুন"
+                organization={organization}
+                onCustomSelection={onCustomSelection}
               />
             </div>
             <div className="col-md-6 col-12">

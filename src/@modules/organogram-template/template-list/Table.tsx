@@ -23,6 +23,7 @@ import {
   generateDateFormat,
   generateRowNumBn,
   notNullOrUndefined,
+  numEnToBn,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode, useState } from "react";
@@ -124,7 +125,7 @@ const TemplateTable: FC<TableProps> = ({
               />
               <TableCell
                 text={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
-                subText={item?.titleBn || null}
+                subText={numEnToBn(item?.titleBn) || null}
               />
               <TableCell
                 text={

@@ -148,6 +148,9 @@ export const OMSService = {
     await axiosIns.get(OMS_SERVICE + "organization/get-by-org-type/" + type),
 
   FETCH: {
+    organizationById: async (id): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "organization/get-by-id/" + id),
+
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-post/get-list", payload),
 

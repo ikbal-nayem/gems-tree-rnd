@@ -32,6 +32,8 @@ type WorkSpaceComponentProps = {
   isRequired?: boolean | string;
   onInstitutionChange?: (data) => void;
   disabled?: boolean;
+  organization?: IObject;
+  onCustomSelection?: (organization) => void;
 };
 
 const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
@@ -42,6 +44,8 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
   clearErrors,
   onInstitutionChange,
   disabled,
+  organization,
+  onCustomSelection,
 }) => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
@@ -53,11 +57,20 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
 
   useEffect(() => {
     if (searchOpen) {
-      reqPayload.current.body = {
-        ...reqPayload.current.body,
-        searchKey: searchKeyDebounce,
-        // trainingOfficeTag: "TRAINING",
-      };
+      if (organization && searchKeyDebounce === "") {
+        setValue("organization", organization);
+        setValue("organizationId", organization?.id);
+        reqPayload.current.body = {
+          ...reqPayload.current.body,
+          searchKey: organization.nameBn,
+        };
+      } else {
+        reqPayload.current.body = {
+          ...reqPayload.current.body,
+          searchKey: searchKeyDebounce,
+        };
+      }
+
       reqPayload.current.meta.page = 0;
       onSearch();
     }
@@ -66,7 +79,6 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
   const onSearch = () => {
     setLoading(true);
     OMSService.getOrganizationList(reqPayload.current)
-      // OMSService.FETCH.childOrgByLoggedUser()
       .then((resp) => {
         setWSList(resp?.body);
         reqPayload.current.meta = resp?.meta;
@@ -86,6 +98,7 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
     setValue("organization", ws);
     setValue("organizationId", ws?.id);
     onInstitutionChange && onInstitutionChange(ws);
+    onCustomSelection(ws);
     setSearchOpen(false);
   };
 
@@ -116,7 +129,13 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
                 : null
             }
             onChange={() => {}}
-            value={field.value?.nameBn || ""}
+            value={
+              field.value
+                ? field.value?.nameBn
+                : organization
+                ? organization.nameBn
+                : ""
+            }
             isError={!!errors?.organization}
           />
         )}
