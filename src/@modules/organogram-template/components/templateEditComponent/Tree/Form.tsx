@@ -34,7 +34,6 @@ interface INodeForm {
   updateData?: IObject;
   defaultDisplayOrder?: number;
   postList: IObject[];
-  isNotEnamCommittee: boolean;
 }
 
 const postTypeList = [
@@ -62,7 +61,6 @@ const NodeForm = ({
   onSubmit,
   updateData,
   defaultDisplayOrder,
-  isNotEnamCommittee,
 }: INodeForm) => {
   const {
     register,
@@ -159,32 +157,46 @@ const NodeForm = ({
       : COMMON_LABELS.NUMERIC_ONLY;
   };
 
-  const setEnIntoBnFields = (data) => {
-    let postFunctionalityListNew = [];
-    if (isNotEmptyList(data?.postFunctionalityList)) {
-      data?.postFunctionalityList.forEach((pf) => {
-        postFunctionalityListNew.push({
-          functionalityBn: pf?.functionalityEn,
-          functionalityEn: pf?.functionalityEn,
-        });
-      });
-    }
-
-    return {
-      ...data,
-      postFunctionalityList: postFunctionalityListNew,
-      manpowerList: isNotEmptyList(data?.manpowerList)
-        ? data?.manpowerList?.map((item) => {
-            return { ...item };
-          })
-        : null,
-    };
+  const checkFieldIsDeleted = (field) => {
+    return field?.isDeleted ? true : false;
   };
+
+  const handleManpowerDelete = (field, index) => {
+    if (index >= 0) {
+      if (!isObjectNull(field) && field?.isNewManpower) {
+        manpowerListRemove(index);
+      } else {
+        manpowerListUpdate(index, { ...field, isDeleted: true });
+      }
+    }
+  };
+
+  // const setEnIntoBnFields = (data) => {
+  //   let postFunctionalityListNew = [];
+  //   if (isNotEmptyList(data?.postFunctionalityList)) {
+  //     data?.postFunctionalityList.forEach((pf) => {
+  //       postFunctionalityListNew.push({
+  //         functionalityBn: pf?.functionalityEn,
+  //         functionalityEn: pf?.functionalityEn,
+  //       });
+  //     });
+  //   }
+
+  //   return {
+  //     ...data,
+  //     postFunctionalityList: postFunctionalityListNew,
+  //     manpowerList: isNotEmptyList(data?.manpowerList)
+  //       ? data?.manpowerList?.map((item) => {
+  //           return { ...item };
+  //         })
+  //       : null,
+  //   };
+  // };
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
 
-    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+    onSubmit(data);
   };
 
   const onFormClose = () => {
@@ -223,39 +235,35 @@ const NodeForm = ({
             </div>
           </div>
           <div className="row border rounded p-2 my-1 bg-gray-100">
-            {isNotEnamCommittee && (
-              <div className="col-md-6 col-12">
-                <Input
-                  label="বাংলা নাম"
-                  placeholder="বাংলা নাম লিখুন"
-                  isRequired
-                  noMargin
-                  registerProperty={{
-                    ...register("titleBn", {
-                      onChange: (e) => onTitleChange(e.target.value, "bn"),
-                      required: " ",
-                    }),
-                  }}
-                  suggestionOptions={titleList || []}
-                  autoSuggestionKey="nodeTitleBn"
-                  suggestionTextKey="titleBn"
-                  isError={!!errors?.titleBn}
-                  errorMessage={errors?.titleBn?.message as string}
-                />
-              </div>
-            )}
-            <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
+            <div className="col-md-6 col-12">
+              <Input
+                label="বাংলা নাম"
+                placeholder="বাংলা নাম লিখুন"
+                isRequired
+                noMargin
+                registerProperty={{
+                  ...register("titleBn", {
+                    onChange: (e) => onTitleChange(e.target.value, "bn"),
+                    required: " ",
+                  }),
+                }}
+                suggestionOptions={titleList || []}
+                autoSuggestionKey="nodeTitleBn"
+                suggestionTextKey="titleBn"
+                isError={!!errors?.titleBn}
+                errorMessage={errors?.titleBn?.message as string}
+              />
+            </div>
+            {/* )} */}
+            <div className={"col-md-6 col-12"}>
               <Input
                 label="ইংরেজি নাম"
                 placeholder="নাম ইংরেজিতে লিখুন"
-                isRequired={!isNotEnamCommittee}
                 noMargin
                 registerProperty={{
                   ...register("titleEn", {
-                    required: !isNotEnamCommittee,
                     onChange: (e) => {
-                      if (isNotEnamCommittee)
-                        onTitleChange(e.target.value, "en");
+                      onTitleChange(e.target.value, "en");
                     },
                     validate: enCheck,
                   }),
@@ -293,48 +301,41 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  {isNotEnamCommittee && (
-                    <div className="col-md-6">
-                      <Input
-                        label={index < 1 ? "দায়িত্ব (বাংলা)" : ""}
-                        noMargin
-                        placeholder="দায়িত্ব বাংলায় লিখুন"
-                        registerProperty={{
-                          ...register(
-                            `postFunctionalityList.${index}.functionalityBn`,
-                            {
-                              required: " ",
-                              onChange: (e) => {
-                                if (notNullOrUndefined(e.target.value)) {
-                                  setValue(
-                                    `postFunctionalityList.${index}.displayOrder`,
-                                    index + 1
-                                  );
-                                }
-                              },
-                            }
-                          ),
-                        }}
-                        isRequired
-                        isError={
-                          !!errors?.postFunctionalityList?.[index]
-                            ?.functionalityBn
-                        }
-                        errorMessage={
-                          errors?.postFunctionalityList?.[index]
-                            ?.functionalityBn?.message as string
-                        }
-                      />
-                    </div>
-                  )}
+                  <div className="col-md-6">
+                    <Input
+                      label={index < 1 ? "দায়িত্ব (বাংলা)" : ""}
+                      noMargin
+                      placeholder="দায়িত্ব বাংলায় লিখুন"
+                      registerProperty={{
+                        ...register(
+                          `postFunctionalityList.${index}.functionalityBn`,
+                          {
+                            required: " ",
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `postFunctionalityList.${index}.displayOrder`,
+                                  index + 1
+                                );
+                              }
+                            },
+                          }
+                        ),
+                      }}
+                      isRequired
+                      isError={
+                        !!errors?.postFunctionalityList?.[index]
+                          ?.functionalityBn
+                      }
+                      errorMessage={
+                        errors?.postFunctionalityList?.[index]?.functionalityBn
+                          ?.message as string
+                      }
+                    />
+                  </div>
+                  {/* )} */}
 
-                  <div
-                    className={
-                      isNotEnamCommittee
-                        ? "col-md-6 mt-1 mt-xl-0"
-                        : "col-md-12 mt-1 mt-xl-0"
-                    }
-                  >
+                  <div className={"col-md-6 mt-1 mt-xl-0"}>
                     <Input
                       label={index < 1 ? "দায়িত্ব (ইংরেজি)" : ""}
                       noMargin
@@ -344,13 +345,6 @@ const NodeForm = ({
                           `postFunctionalityList.${index}.functionalityEn`,
                           {
                             onChange: (e) => {
-                              if (!isNotEnamCommittee) {
-                                setValue(
-                                  `postFunctionalityList.${index}.functionalityBn`,
-                                  e.target.value
-                                );
-                              }
-
                               if (notNullOrUndefined(e.target.value)) {
                                 setValue(
                                   `postFunctionalityList.${index}.displayOrder`,
@@ -358,7 +352,6 @@ const NodeForm = ({
                                 );
                               }
                             },
-                            required: !isNotEnamCommittee,
                             validate: enCheck,
                           }
                         ),
@@ -404,7 +397,11 @@ const NodeForm = ({
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100`}
+                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100 ${
+                  checkFieldIsDeleted(field)
+                    ? "disabledDiv border-danger p-1"
+                    : ""
+                }`}
                 key={field?.id}
               >
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
@@ -418,9 +415,7 @@ const NodeForm = ({
                       isRequired=" "
                       control={control}
                       options={postList || []}
-                      getOptionLabel={(op) =>
-                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
-                      }
+                      getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.organizationPost`}
                       // onChange={onDataChange}
@@ -442,9 +437,9 @@ const NodeForm = ({
                       label={index < 1 ? "পদের ধরণ" : ""}
                       options={postTypeList || []}
                       noMargin
-                      placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
+                      placeholder={"বাছাই করুন"}
                       isRequired
-                      textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
+                      textKey={"titleBn"}
                       defaultValue={"permanent"}
                       valueKey="key"
                       registerProperty={{
@@ -504,17 +499,19 @@ const NodeForm = ({
                     ) : null}
                   </div>
                 </div>
-
-                <div className={index < 1 ? "mt-6" : ""}>
-                  <IconButton
-                    iconName="delete"
-                    color="danger"
-                    rounded={false}
-                    onClick={() => {
-                      manpowerListRemove(index);
-                    }}
-                  />
-                </div>
+                {!checkFieldIsDeleted(field) && (
+                  <div className={index < 1 ? "mt-6" : ""}>
+                    <IconButton
+                      iconName="delete"
+                      color="danger"
+                      rounded={false}
+                      onClick={() => {
+                        handleManpowerDelete(field, index);
+                        // manpowerListRemove(index);
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>
