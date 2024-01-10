@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import TemplateComponent from "../components/templateComponent";
 import { OMSService } from "../../../@services/api/OMS.service";
 import { ContentPreloader, NoData, toast } from "@gems/components";
+import TemplateEditComponent from "../components/templateEditComponent";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -77,7 +78,12 @@ const TemplateUpdate = () => {
     <>
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(data) && (
-        <TemplateComponent
+        // <TemplateComponent
+        //   onSubmit={onSubmit}
+        //   isSubmitLoading={isSubmitLoading}
+        //   updateData={data}
+        // />
+        <TemplateEditComponent
           onSubmit={onSubmit}
           isSubmitLoading={isSubmitLoading}
           updateData={data}
