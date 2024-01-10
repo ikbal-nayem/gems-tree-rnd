@@ -49,67 +49,67 @@ const editNode = (nd, node, updateData) => {
   return { ...nd };
 };
 
-const deleteNode = (nd, deleteItem) => {
-  if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
-    return nd?.children && nd?.children?.length > 0
-      ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
-          nd?.children
-            ?.filter((s) => !s?.nodeId)
-            ?.map((d) => {
-              return {
-                ...d,
-                children: d?.children?.length > 0 ? deleteNode(d, d) : [],
-                isDeleted: true,
-              };
-            })
-      : null;
-  }
+// const deleteNode = (nd, deleteItem) => {
+//   if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
+//     return nd?.children && nd?.children?.length > 0
+//       ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
+//           nd?.children
+//             ?.filter((s) => !s?.nodeId)
+//             ?.map((d) => {
+//               return {
+//                 ...d,
+//                 children: d?.children?.length > 0 ? deleteNode(d, d) : [],
+//                 isDeleted: true,
+//               };
+//             })
+//       : null;
+//   }
 
-  if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
-    return null;
-  }
-
-  for (var i = 0; i < nd.children.length; i++) {
-    const nodeState = deleteNode(nd.children[i], deleteItem);
-    if (nodeState && nodeState?.length > 0) {
-      nd.children[i] = {
-        ...nd.children[i],
-        children: nodeState,
-        isDeleted: true,
-      };
-    }
-    if (!nodeState) {
-      if (nd?.children[i]?.id)
-        nd.children[i] = {
-          ...nd.children[i],
-          children: [],
-          isDeleted: true,
-        };
-      else {
-        nd.children.splice(i, 1);
-        break;
-      }
-    }
-  }
-  nd = childSerializer(nd);
-  return { ...nd };
-};
-
-// const deleteNode = (nd, nodeId) => {
-//   if (nd.id === nodeId || nd.nodeId === nodeId) {
+//   if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
 //     return null;
 //   }
-//   for (var i = 0; i < nd.children.length; i++) {
-//     const nodeState = deleteNode(nd.children[i], nodeId);
 
+//   for (var i = 0; i < nd.children.length; i++) {
+//     const nodeState = deleteNode(nd.children[i], deleteItem);
+//     if (nodeState && nodeState?.length > 0) {
+//       nd.children[i] = {
+//         ...nd.children[i],
+//         children: nodeState,
+//         isDeleted: true,
+//       };
+//     }
 //     if (!nodeState) {
-//       nd.children.splice(i, 1);
-//       break;
+//       if (nd?.children[i]?.id)
+//         nd.children[i] = {
+//           ...nd.children[i],
+//           children: [],
+//           isDeleted: true,
+//         };
+//       else {
+//         nd.children.splice(i, 1);
+//         break;
+//       }
 //     }
 //   }
 //   nd = childSerializer(nd);
 //   return { ...nd };
 // };
+
+const deleteNode = (nd, nodeId) => {
+  if (nd.id === nodeId || nd.nodeId === nodeId) {
+    return null;
+  }
+  for (var i = 0; i < nd.children.length; i++) {
+    const nodeState = deleteNode(nd.children[i], nodeId);
+
+    if (!nodeState) {
+      nd.children.splice(i, 1);
+      break;
+    }
+  }
+  nd = childSerializer(nd);
+  return { ...nd };
+};
 
 const childSerializer = (parent) => {
   let tempChildList = [];
@@ -246,7 +246,7 @@ const OrganizationTemplateTree = ({
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData));
+    setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
     setIsDeleteModal(false);
   };
 
