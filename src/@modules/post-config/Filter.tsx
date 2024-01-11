@@ -9,11 +9,12 @@ import {
 import { IObject } from "@gems/utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import WorkSpaceComponent from "./WorkSpaceComponent";
 
 const Filter = ({ onFilterDone, options }) => {
   const [open, setOpen] = useState<boolean>(false);
   const { control, handleSubmit, setValue, reset } = useForm<any>();
-
+  const formProps = useForm();
   const onClose = () => {
     reset({});
     setOpen(false);
@@ -39,7 +40,7 @@ const Filter = ({ onFilterDone, options }) => {
           <DrawerBody>
             <div className="row">
               <div className="col-12">
-                <Autocomplete
+                {/* <Autocomplete
                   label="প্রতিষ্ঠান"
                   name="organization"
                   placeholder="প্রতিষ্ঠান বাছাই করুন"
@@ -48,7 +49,10 @@ const Filter = ({ onFilterDone, options }) => {
                   getOptionValue={(op) => op?.id}
                   onChange={(t) => setValue("organizationId", t?.id)}
                   control={control}
-                />
+                /> */}
+                <WorkSpaceComponent
+                {...formProps}
+              />
               </div>
               <div className="col-12">
                 <Autocomplete

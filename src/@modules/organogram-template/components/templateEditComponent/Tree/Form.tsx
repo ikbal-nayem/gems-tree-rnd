@@ -479,6 +479,28 @@ const NodeForm = ({
                   </div>
 
                   <div className="col-md-6 col-xl-2">
+                    <Autocomplete
+                      label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                      placeholder="সার্ভিসের ধরণ বাছাই করুন"
+                      isRequired={true}
+                      control={control}
+                      options={serviceList || []}
+                      getOptionLabel={(op) => op?.titleBn}
+                      getOptionValue={(op) => op?.metaKey}
+                      defaultValue={cadreObj}
+                      name={`manpowerList.${index}.serviceTypeDto`}
+                      onChange={(t) =>
+                        setValue(
+                          `manpowerList.${index}.serviceTypeKey`,
+                          t?.metaKey
+                        )
+                      }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
+                    />
+                  </div>
+                  
+                  <div className="col-md-6 col-xl-2">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -520,27 +542,6 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-2">
-                    <Autocomplete
-                      label={index < 1 ? "সার্ভিসের ধরণ" : ""}
-                      placeholder="সার্ভিসের ধরণ বাছাই করুন"
-                      isRequired={true}
-                      control={control}
-                      options={serviceList || []}
-                      getOptionLabel={(op) => op?.titleBn}
-                      getOptionValue={(op) => op?.metaKey}
-                      defaultValue={cadreObj}
-                      name={`manpowerList.${index}.serviceTypeDto`}
-                      onChange={(t) =>
-                        setValue(
-                          `manpowerList.${index}.serviceTypeKey`,
-                          t?.metaKey
-                        )
-                      }
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
-                    />
-                  </div>
 
                   <div
                     className={
