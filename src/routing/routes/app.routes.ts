@@ -3,6 +3,7 @@ import { IAppRoutes } from "@interface/common.interface";
 import { lazy } from "react";
 import { OrganogramRoutes } from "./organogram.routes";
 import { TemplateRoutes } from "./template.routes";
+import { OtherRoutes } from "./other.routes";
 
 export const AppRouteList: IAppRoutes[] = [
   {
@@ -11,14 +12,7 @@ export const AppRouteList: IAppRoutes[] = [
   },
   { ...TemplateRoutes },
   { ...OrganogramRoutes },
-  {
-    link: ROUTE_L1.OMS_ORG_EMPLOYEE_LIST,
-    element: lazy(() => import("@modules/employee-list")),
-  },
-  {
-    link: ROUTE_L1.OMS_POST_CONFIG,
-    element: lazy(() => import("@modules/post-config")),
-  },
+  ...OtherRoutes,
   {
     link: "*",
     redirect: ROUTE_L1.DASHBOARD,

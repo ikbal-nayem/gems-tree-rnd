@@ -25,7 +25,6 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
-import { isNotEmptyList } from "utility/utils";
 
 interface INodeForm {
   isOpen: boolean;

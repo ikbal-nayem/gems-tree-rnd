@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { makeTwoDigit } from "./splitDate";
 import { numEnToBn } from "./textMapping";
 import { getUser } from "@services/helper/auth.helper";
+const userInfo = getUser();
 
 export const viewMenuGroup = (item) => {
   let ability: any = useContext(AbilityContext);
@@ -181,4 +182,11 @@ export const arryEnToBn = (enArray, step: number = 1): any[] => {
 		}
 	}
 	return arry;
+};
+
+export const checkTabPermission = (key: string) => {
+  let isHide = userInfo?.userPermissionDTO?.sitemapList?.some(
+    (d) => d?.routeKey === key
+  );
+  return !isHide;
 };

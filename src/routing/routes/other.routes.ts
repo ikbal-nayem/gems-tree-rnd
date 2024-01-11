@@ -14,6 +14,11 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_POST_CONFIG,
     element: lazy(() => import("@modules/post-config")),
   },
+  {
+    link: ROUTE_L1.OMS_MASTER_ORGANIZATION,
+    routeKey: ROUTE_KEY.OMS_MASTER_ORGANIZATION,
+    element: lazy(() => import("@modules/organization")),
+  },
 ];
 
 export const  OtherRoutes = getPermittedRouteList(routeList);
