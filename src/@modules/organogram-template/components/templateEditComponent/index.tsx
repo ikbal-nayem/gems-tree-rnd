@@ -12,7 +12,7 @@ import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
 import { META_TYPE } from "@constants/common.constant";
 import { CoreService } from "@services/api/Core.service";
-import { deFocusById, focusById } from "utility/utils";
+import { focusById } from "utility/utils";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
@@ -58,11 +58,9 @@ const TemplateEditComponent = ({
     },
   });
   const {
-    register,
     handleSubmit,
     reset,
     setError,
-    clearErrors,
     setValue,
     getValues,
     watch,
@@ -170,86 +168,15 @@ const TemplateEditComponent = ({
     // console.log(reqPayload);
   };
 
-  // const onIsEnamCommitteeChange = (checked: boolean) => {
-  //   setIsNotEnamCommittee(!checked);
-  //   const enamApprovalDate = new Date("1982-12-26");
-  //   const hasChosenDate = notNullOrUndefined(getValues("chosenDate"));
-  //   if (checked) setValue("organogramDate", enamApprovalDate);
-  //   else {
-  //     if (hasChosenDate) {
-  //       const chosenDate = getValues("chosenDate");
-  //       setValue("organogramDate", new Date(chosenDate));
-  //     } else {
-  //       if (notNullOrUndefined(updateData?.organogramDate)) {
-  //         setValue("organogramDate", new Date(updateData?.organogramDate));
-  //       }
-  //     }
-  //   }
-  // };
-
   return (
     <div>
       <div className="card col-md-12 border p-3 mb-4">
-        {/* <div className="d-flex justify-content-start gap-6">
-          <h2 className="m-0">টেমপ্লেট</h2>
-          <span className="text-primary">|</span>
-          <Checkbox
-            label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
-            labelClass="fw-bold"
-            noMargin
-            registerProperty={{
-              ...register("isEnamCommittee", {
-                onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
-              }),
-            }}
-          />
-        </div> */}
-
-        {/* <Separator className="mt-1 mb-4" /> */}
-
         <div className="row">
-          {/* <div className="col-md-6 col-12">
-            <Input
-              label="শিরোনাম বাংলা"
-              placeholder="বাংলায় শিরোনাম লিখুন"
-              isRequired
-              defaultValue={
-                !isObjectNull(updateData) ? updateData?.titleBn : ""
-              }
-              registerProperty={{
-                ...register("titleBn", {
-                  required: " ",
-                  onChange: (e) => duplicateTitleCheck(e.target.value, false),
-                }),
-              }}
-              autoFocus={watch("isEnamCommittee") !== "true"}
-              isError={!!errors?.titleBn}
-              errorMessage={errors?.titleBn?.message as string}
-            />
-          </div>
-          <div className="col-md-6 col-12">
-            <Input
-              label="শিরোনাম ইংরেজি"
-              placeholder="ইংরেজিতে শিরোনাম লিখুন"
-              // isRequired={!isNotEnamCommittee}
-              defaultValue={
-                !isObjectNull(updateData) ? updateData?.titleEn : ""
-              }
-              registerProperty={{
-                ...register("titleEn", {
-                  // required: !isNotEnamCommittee,
-                  onChange: (e) => duplicateTitleCheck(e.target.value, true),
-                  validate: enCheck,
-                }),
-              }}
-              isError={!!errors?.titleEn}
-              errorMessage={errors?.titleEn?.message as string}
-            />
-          </div> */}
           <div className="col-md-6 col-12">
             <WorkSpaceComponent
               {...formProps}
               isRequired="প্রতিষ্ঠান বাছাই করুন"
+              disabled
             />
           </div>
           <div className="col-md-6 col-12" id="orgDateBlock">
