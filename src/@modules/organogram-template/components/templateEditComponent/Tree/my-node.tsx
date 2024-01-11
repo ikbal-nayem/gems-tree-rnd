@@ -35,25 +35,6 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
               {longLineBreaker(nodeData.titleBn || "", 20)}
             </p>
           </div>
-          {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
-          {/* <Dropdown
-						btnContent={<Icon icon="more_vert" size={20} />}
-						btnIcon
-						btnColor="dark"
-					>
-						<DropdownItem onClick={() => treeDispatch("ADD", nodeData)}>
-							<Icon icon="person_add" />
-							&nbsp; জনবল যুক্ত করুন
-						</DropdownItem>
-						<DropdownItem onClick={() => treeDispatch("EDIT", nodeData)}>
-							<Icon icon="add_task" color="danger" />
-							&nbsp; তথ্য হালনাগাদ করুন
-						</DropdownItem>
-						<DropdownItem onClick={() => treeDispatch("REMOVE", nodeData)}>
-							<Icon icon="person_remove" color="danger" />
-							&nbsp; বিলুপ্ত করুন
-						</DropdownItem>
-					</Dropdown> */}
           {!nodeData?.isDeleted && (
             <div>
               <Icon
@@ -85,17 +66,17 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = numEnToBn(mp);
               const postExists =
-                isNotEmptyList(postList) && item?.organizationPost?.id;
+                isNotEmptyList(postList) && item?.postId;
 
               const post = postExists
-                ? postList?.find((d) => d?.id === item?.organizationPost?.id)
+                ? postList?.find((d) => d?.id === item?.postId)
                 : null;
 
               const postName = post?.nameBn || COMMON_LABELS.NOT_ASSIGN;
 
               return (
                 <div key={i}>
-                  {item?.numberOfEmployee || item?.postDto?.nameBn ? (
+                  {item?.numberOfEmployee || postName ? (
                     <div
                       className={`d-flex ${
                         item?.postType === "proposed"

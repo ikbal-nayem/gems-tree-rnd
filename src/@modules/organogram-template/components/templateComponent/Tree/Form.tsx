@@ -452,7 +452,7 @@ const NodeForm = ({
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
-                      isRequired=" "
+                      isRequired={true}
                       control={control}
                       options={postList || []}
                       getOptionLabel={(op) =>

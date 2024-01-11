@@ -1,6 +1,6 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { ConfirmationModal } from "@gems/components";
-import { generateUUID, isObjectNull } from "@gems/utils";
+import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
@@ -210,13 +210,23 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
   const updateNodeData = useRef(null);
 
   const [postList, setPostist] = useState([]);
+  const [gradeList, setGradeList] = useState([]);
+  const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
 
   useEffect(() => {
     CoreService.getPostList().then((resp) => setPostist(resp.body || []));
+    CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
+    CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
+      setServiceList(resp.body || [])
+    );
   }, []);
+
+  const cadreObj = serviceList?.find(
+    (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
+  );
 
   const treeDispatch = (actionType, data) => {
     switch (actionType) {
@@ -320,6 +330,9 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
         <NodeForm
           isOpen={formOpen}
           postList={postList}
+          gradeList={gradeList}
+          serviceList={serviceList}
+          cadreObj={cadreObj}
           updateData={updateNodeData.current}
           defaultDisplayOrder={displayOrder}
           onClose={onFormClose}
