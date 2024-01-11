@@ -18,6 +18,7 @@ const MyNode = ({
   firstNode,
   isNotEnamCommittee,
 }) => {
+  console.log("usu",postList?.find((d) => d?.id === nodeData?.manpowerList[0]?.postId));
   return (
     <div>
       <div
@@ -103,11 +104,10 @@ const MyNode = ({
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
-              const postExists =
-                isNotEmptyList(postList) && item?.postDTO?.id;
+              const postExists = isNotEmptyList(postList) && item?.postId;
 
               const post = postExists
-                ? postList?.find((d) => d?.id === item?.postDTO?.id)
+                ? postList?.find((d) => d?.id === item?.postId)
                 : null;
 
               const postName = isNotEnamCommittee
@@ -116,7 +116,7 @@ const MyNode = ({
 
               return (
                 <div key={i}>
-                  {item?.numberOfEmployee || item?.postDto?.nameBn ? (
+                  {item?.numberOfEmployee || postName ? (
                     <div
                       className={`d-flex ${
                         item?.postType === "proposed"

@@ -1,6 +1,6 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { Button, Icon, IconButton } from "@gems/components";
-import { OMSService } from "@services/api/OMS.service";
+import { CoreService } from "@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
 import MyNode from "./my-node";
 import NodeDetails from "./node-details";
@@ -20,7 +20,7 @@ const OrganizationTemplateTree = ({
   const selectedNode = useRef(null);
 
   useEffect(() => {
-    OMSService.getPostList().then((resp) => setPostist(resp.body || []));
+    CoreService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
   const onView = (data) => {

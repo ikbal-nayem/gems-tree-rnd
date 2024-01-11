@@ -1,7 +1,7 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { ConfirmationModal } from "@gems/components";
 import { generateUUID, isObjectNull } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
+import { CoreService } from "@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
@@ -215,7 +215,7 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
   const [displayOrder, setDisplayOrder] = useState(1);
 
   useEffect(() => {
-    OMSService.getPostList().then((resp) => setPostist(resp.body || []));
+    CoreService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
   const treeDispatch = (actionType, data) => {

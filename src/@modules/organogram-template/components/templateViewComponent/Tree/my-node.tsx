@@ -62,7 +62,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           nodeData?.manpowerList?.map((item, i) => {
             return (
               <div key={i}>
-                {item?.numberOfEmployee || item?.postDto?.nameBn ? (
+                {item?.numberOfEmployee || item?.postId ? (
                   <div
                     className={`d-flex ${
                       item?.postType === "proposed"
@@ -82,14 +82,12 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                     <p className="mb-0 ms-1 fs-8">x</p>
                     <p className="ms-1 mb-0 fs-8">
                       {(postList?.length > 0 &&
-                        item?.postDTO?.id &&
+                        item?.postId &&
                         (langEn
-                          ? postList?.find(
-                              (d) => d?.id === item?.postDTO?.id
-                            )?.nameEn
-                          : postList?.find(
-                              (d) => d?.id === item?.postDTO?.id
-                            )?.nameBn)) ||
+                          ? postList?.find((d) => d?.id === item?.postId)
+                              ?.nameEn
+                          : postList?.find((d) => d?.id === item?.postId)
+                              ?.nameBn)) ||
                         (langEn
                           ? COMMON_LABELS.EN.NOT_ASSIGN
                           : COMMON_LABELS.NOT_ASSIGN)}
