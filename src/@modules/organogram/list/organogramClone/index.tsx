@@ -30,10 +30,11 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [organization, setOrganization] = useState<IObject>();
 
   const onCustomSelection = (organization) => {
-    setOrganization({
+    setOrganization(organization ? {
       id: organization?.id,
       nameBn: organization?.nameBn,
-    });
+    } : null);
+    console.log("index Organization : " , organization);
   };
   const formProps = useForm<any>();
 
@@ -59,13 +60,13 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       notNullOrUndefined(template?.organizationId) &&
       notNullOrUndefined(template?.organizationNameBn)
     ) {
-      setOrganization({
-        id: template?.organizationId,
-        nameBn: template?.organizationNameBn,
-      });
+      // setOrganization({
+      //   id: template?.organizationId,
+      //   nameBn: template?.organizationNameBn,
+      // });
       clearErrors("organization");
       setValue("organization", template);
-      setValue("organizationId", template?.id);
+      setValue("organizationId", template?.organizationId);
     }
   }, [isOpen]);
 
@@ -116,7 +117,14 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
               <WorkSpaceComponent
                 {...formProps}
                 isRequired="প্রতিষ্ঠান বাছাই করুন"
-                organization={organization}
+                organization={
+                  organization
+                    ? organization
+                    : {
+                        id: template?.organizationId,
+                        nameBn: template?.organizationNameBn,
+                      }
+                }
                 onCustomSelection={onCustomSelection}
               />
             </div>

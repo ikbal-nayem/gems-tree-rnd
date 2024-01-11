@@ -32,6 +32,7 @@ type WorkSpaceComponentProps = {
   isRequired?: boolean | string;
   onInstitutionChange?: (data) => void;
   disabled?: boolean;
+  showEndIcon?: boolean;
   organization?: IObject;
   onCustomSelection?: (organization) => void;
 };
@@ -44,6 +45,7 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
   clearErrors,
   onInstitutionChange,
   disabled,
+  showEndIcon,
   organization,
   onCustomSelection,
 }) => {
@@ -117,8 +119,9 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
             onClick={() => setSearchOpen(true)}
             isRequired={isRequired as boolean}
             disabled={disabled}
+            readOnly
             endIcon={
-              field.value?.nameBn
+              showEndIcon && field.value?.nameBn
                 ? !disabled && (
                     <Icon
                       icon="close"
