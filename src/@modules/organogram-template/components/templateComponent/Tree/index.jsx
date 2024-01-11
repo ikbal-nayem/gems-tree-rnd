@@ -1,7 +1,6 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
 import { ConfirmationModal } from "@gems/components";
 import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
