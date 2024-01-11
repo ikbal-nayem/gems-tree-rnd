@@ -47,7 +47,6 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     reset,
     control,
     setValue,
-    clearErrors,
     formState: { errors },
   } = formProps;
   const navigate = useNavigate();
