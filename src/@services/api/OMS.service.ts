@@ -147,6 +147,20 @@ export const OMSService = {
   getOrganizationByType: async (type: string): Promise<any> =>
     await axiosIns.get(OMS_SERVICE + "organization/get-by-org-type/" + type),
 
+  getTreeByParentOrganization: async (payload: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE + "organization/get-tree-by-parent/" + payload
+    ),
+  getOrgByTypes: async (payload: string): Promise<any> =>
+    await axiosIns.get(
+      OMS_SERVICE + "organization/get-by-org-types/" + payload
+    ),
+  organizationCreate: async (payload): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "organization/create", payload),
+
+  organizationUpdate: async (payload): Promise<any> =>
+    await axiosIns.put(OMS_SERVICE + "organization/update", payload),
+
   FETCH: {
     organizationById: async (id): Promise<any> =>
       await axiosIns.get(OMS_SERVICE + "organization/get-by-id/" + id),

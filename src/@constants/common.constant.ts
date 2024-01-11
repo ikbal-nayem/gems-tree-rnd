@@ -93,6 +93,7 @@ export const LABELS = {
     NOTES: "Notes",
     REVIEW_APPROVE_NOTES: "Review & Approve Notes",
     CHANGES: "Changes",
+    MASTER_ORG: "Organization",
   },
 
   BN: {
@@ -119,6 +120,7 @@ export const LABELS = {
     NOTES: "মন্তব্য",
     REVIEW_APPROVE_NOTES:"পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",
     CHANGES: "পরিবর্তনসমূহ",
+    MASTER_ORG: "প্রতিষ্ঠান",
   },
 };
 

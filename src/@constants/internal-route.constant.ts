@@ -4,6 +4,7 @@ export const ROUTE_L1 = {
   OMS_ORGANOGRAM: "/organogram",
   OMS_ORG_EMPLOYEE_LIST: "/employee-list",
   OMS_POST_CONFIG: "/post-config",
+  OMS_MASTER_ORGANIZATION: "/organization",
 };
 export const ROUTE_L2 = {
   ORG_TEMPLATE_CREATE: ROUTE_L1.ORG_TEMPLATE + "/create",
