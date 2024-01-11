@@ -18,7 +18,6 @@ const MyNode = ({
   firstNode,
   isNotEnamCommittee,
 }) => {
-  console.log("usu",postList?.find((d) => d?.id === nodeData?.manpowerList[0]?.postId));
   return (
     <div>
       <div

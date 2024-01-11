@@ -478,7 +478,9 @@ const NodeForm = ({
                       placeholder="গ্রেড বাছাই করুন"
                       control={control}
                       options={gradeList || []}
-                      getOptionLabel={(op) => op?.nameBn}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                      }
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.gradeDTO`}
                       onChange={(t) =>
@@ -539,7 +541,7 @@ const NodeForm = ({
                       isRequired={true}
                       control={control}
                       options={serviceList || []}
-                      getOptionLabel={(op) => op?.titleBn}
+                      getOptionLabel={(op) => op?. isNotEnamCommittee ? op?.titleBn : op?.titleEn}
                       getOptionValue={(op) => op?.metaKey}
                       defaultValue={cadreObj}
                       name={`manpowerList.${index}.serviceTypeDto`}
