@@ -84,8 +84,6 @@ const NodeForm = ({
       manpowerList: [
         {
           isNewManpower: true,
-          serviceTypeDto: cadreObj,
-          serviceTypeKey: cadreObj?.metaKey,
         },
       ],
     },
@@ -182,7 +180,7 @@ const NodeForm = ({
         postFunctionalityList: [],
       });
     }
-  }, [isOpen, updateData, reset]);
+  }, [isOpen, updateData, reset, cadreObj]);
 
   const manpowerNumberCheck = (val) => {
     return numericCheck(val) === true
@@ -541,7 +539,9 @@ const NodeForm = ({
                       isRequired={true}
                       control={control}
                       options={serviceList || []}
-                      getOptionLabel={(op) => op?. isNotEnamCommittee ? op?.titleBn : op?.titleEn}
+                      getOptionLabel={(op) =>
+                        op?.isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                      }
                       getOptionValue={(op) => op?.metaKey}
                       defaultValue={cadreObj}
                       name={`manpowerList.${index}.serviceTypeDto`}
