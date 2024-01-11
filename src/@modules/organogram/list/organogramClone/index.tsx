@@ -30,11 +30,15 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [organization, setOrganization] = useState<IObject>();
 
   const onCustomSelection = (organization) => {
-    setOrganization(organization ? {
-      id: organization?.id,
-      nameBn: organization?.nameBn,
-    } : null);
-    console.log("index Organization : " , organization);
+    setOrganization(
+      organization
+        ? {
+            id: organization?.id,
+            nameBn: organization?.nameBn,
+          }
+        : null
+    );
+    console.log("index Organization : ", organization);
   };
   const formProps = useForm<any>();
 
@@ -60,11 +64,6 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       notNullOrUndefined(template?.organizationId) &&
       notNullOrUndefined(template?.organizationNameBn)
     ) {
-      // setOrganization({
-      //   id: template?.organizationId,
-      //   nameBn: template?.organizationNameBn,
-      // });
-      clearErrors("organization");
       setValue("organization", template);
       setValue("organizationId", template?.organizationId);
     }
