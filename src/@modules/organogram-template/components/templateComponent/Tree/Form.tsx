@@ -136,6 +136,7 @@ const NodeForm = ({
   }, []);
 
   useEffect(() => {
+    // alert(cadreObj?.metaKey);
     if (isOpen && !isObjectNull(updateData)) {
       // UPDATE MODE
       let resetData = updateData;
@@ -479,25 +480,6 @@ const NodeForm = ({
                   </div>
 
                   <div className="col-md-6 col-xl-2">
-                    <Select
-                      label={index < 1 ? "পদের ধরণ" : ""}
-                      options={postTypeList || []}
-                      noMargin
-                      placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
-                      isRequired
-                      textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
-                      defaultValue={"permanent"}
-                      valueKey="key"
-                      registerProperty={{
-                        ...register(`manpowerList.${index}.postType`, {
-                          required: " ",
-                        }),
-                      }}
-                      isError={!!errors?.manpowerList?.[index]?.postType}
-                    />
-                  </div>
-
-                  <div className="col-md-6 col-xl-2">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -518,6 +500,25 @@ const NodeForm = ({
                         errors?.manpowerList?.[index]?.numberOfEmployee
                           ?.message as string
                       }
+                    />
+                  </div>
+
+                  <div className="col-md-6 col-xl-2">
+                    <Select
+                      label={index < 1 ? "পদের ধরণ" : ""}
+                      options={postTypeList || []}
+                      noMargin
+                      placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
+                      isRequired
+                      textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
+                      defaultValue={"permanent"}
+                      valueKey="key"
+                      registerProperty={{
+                        ...register(`manpowerList.${index}.postType`, {
+                          required: true,
+                        }),
+                      }}
+                      isError={!!errors?.manpowerList?.[index]?.postType}
                     />
                   </div>
 
