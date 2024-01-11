@@ -13,8 +13,8 @@ import WorkSpaceComponent from "./WorkSpaceComponent";
 
 const Filter = ({ onFilterDone, options }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { control, handleSubmit, setValue, reset } = useForm<any>();
   const formProps = useForm();
+  const { handleSubmit, reset, control, setValue } = formProps;
   const onClose = () => {
     reset({});
     setOpen(false);
@@ -50,9 +50,7 @@ const Filter = ({ onFilterDone, options }) => {
                   onChange={(t) => setValue("organizationId", t?.id)}
                   control={control}
                 /> */}
-                <WorkSpaceComponent
-                {...formProps}
-              />
+                <WorkSpaceComponent {...formProps} />
               </div>
               <div className="col-12">
                 <Autocomplete
