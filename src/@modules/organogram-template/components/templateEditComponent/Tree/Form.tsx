@@ -80,8 +80,6 @@ const NodeForm = ({
       manpowerList: [
         {
           isNewManpower: true,
-          serviceTypeDto: cadreObj,
-          serviceTypeKey: cadreObj?.metaKey,
         },
       ],
     },
@@ -174,7 +172,7 @@ const NodeForm = ({
         ],
         postFunctionalityList: [],
       });
-  }, [isOpen, updateData, reset]);
+  }, [isOpen, updateData, reset, cadreObj]);
 
   const manpowerNumberCheck = (val) => {
     return numericCheck(val) === true
