@@ -104,10 +104,10 @@ const MyNode = ({
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
               const postExists =
-                isNotEmptyList(postList) && item?.organizationPost?.id;
+                isNotEmptyList(postList) && item?.postDTO?.id;
 
               const post = postExists
-                ? postList?.find((d) => d?.id === item?.organizationPost?.id)
+                ? postList?.find((d) => d?.id === item?.postDTO?.id)
                 : null;
 
               const postName = isNotEnamCommittee

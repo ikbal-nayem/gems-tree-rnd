@@ -15,6 +15,7 @@ import {
 import {
   COMMON_LABELS,
   IObject,
+  META_TYPE,
   isObjectNull,
   notNullOrUndefined,
   numBnToEn,
@@ -34,6 +35,9 @@ interface INodeForm {
   updateData?: IObject;
   defaultDisplayOrder?: number;
   postList: IObject[];
+  gradeList: IObject[];
+  serviceList: IObject[];
+  cadreObj: IObject;
   isNotEnamCommittee: boolean;
 }
 
@@ -58,6 +62,9 @@ const postTypeList = [
 const NodeForm = ({
   isOpen,
   postList,
+  gradeList,
+  serviceList,
+  cadreObj,
   onClose,
   onSubmit,
   updateData,
@@ -74,7 +81,13 @@ const NodeForm = ({
   } = useForm<any>({
     defaultValues: {
       postFunctionalityList: [],
-      manpowerList: [{ isNewManpower: true }],
+      manpowerList: [
+        {
+          isNewManpower: true,
+          serviceTypeDto: cadreObj,
+          serviceTypeKey: cadreObj?.metaKey,
+        },
+      ],
     },
   });
 
@@ -124,6 +137,7 @@ const NodeForm = ({
 
   useEffect(() => {
     if (isOpen && !isObjectNull(updateData)) {
+      // UPDATE MODE
       let resetData = updateData;
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
@@ -133,9 +147,9 @@ const NodeForm = ({
 
             return {
               ...item,
-              organizationPost:
+              postDTO:
                 (postList?.length > 0 &&
-                  postList?.find((d) => d?.id === item.organizationPost.id)) ||
+                  postList?.find((d) => d?.id === item?.postDTO?.id)) ||
                 null,
             };
           }),
@@ -144,11 +158,19 @@ const NodeForm = ({
       reset({
         ...resetData,
       });
-    } else
+    } else {
+      // CREATE MODE
       reset({
-        manpowerList: [{ isNewManpower: true }],
+        manpowerList: [
+          {
+            isNewManpower: true,
+            serviceTypeDto: cadreObj,
+            serviceTypeKey: cadreObj?.metaKey,
+          },
+        ],
         postFunctionalityList: [],
       });
+    }
   }, [isOpen, updateData, reset]);
 
   const manpowerNumberCheck = (val) => {
@@ -198,7 +220,7 @@ const NodeForm = ({
       isOpen={isOpen}
       handleClose={onFormClose}
       holdOn
-      size="lg"
+      size="xl"
     >
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
@@ -396,9 +418,13 @@ const NodeForm = ({
                   iconName="add"
                   color="success"
                   rounded={false}
-                  onClick={() => {
-                    manpowerListAppend({ isNewManpower: true });
-                  }}
+                  onClick={() =>
+                    manpowerListAppend({
+                      isNewManpower: true,
+                      serviceTypeDto: cadreObj,
+                      serviceTypeKey: cadreObj?.metaKey,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -411,7 +437,7 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-4">
+                  <div className="col-md-6 col-xl-2">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="পদবি বাছাই করুন"
@@ -422,22 +448,37 @@ const NodeForm = ({
                         isNotEnamCommittee ? op?.nameBn : op?.nameEn
                       }
                       getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.organizationPost`}
-                      // onChange={onDataChange}
-                      // isDisabled={!watch("type")}
-                      //   isRequired
-                      noMargin
-                      isError={
-                        !!errors?.manpowerList?.[index]?.organizationPost
+                      name={`manpowerList.${index}.postDTO`}
+                      onChange={(t) =>
+                        setValue(`manpowerList.${index}.postId`, t?.id)
                       }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.postDTO}
                       errorMessage={
-                        errors?.manpowerList?.[index]?.organizationPost
+                        errors?.manpowerList?.[index]?.postDTO
                           ?.message as string
                       }
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-3">
+                  <div className="col-md-6 col-xl-2">
+                    <Autocomplete
+                      label={index < 1 ? "গ্রেড" : ""}
+                      placeholder="গ্রেড বাছাই করুন"
+                      control={control}
+                      options={gradeList || []}
+                      getOptionLabel={(op) => op?.nameBn}
+                      getOptionValue={(op) => op?.id}
+                      name={`manpowerList.${index}.gradeDTO`}
+                      onChange={(t) =>
+                        setValue(`manpowerList.${index}.gradeId`, t?.id)
+                      }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                    />
+                  </div>
+
+                  <div className="col-md-6 col-xl-2">
                     <Select
                       label={index < 1 ? "পদের ধরণ" : ""}
                       options={postTypeList || []}
@@ -455,7 +496,8 @@ const NodeForm = ({
                       isError={!!errors?.manpowerList?.[index]?.postType}
                     />
                   </div>
-                  <div className="col-md-6 col-xl-3">
+
+                  <div className="col-md-6 col-xl-2">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -476,6 +518,28 @@ const NodeForm = ({
                         errors?.manpowerList?.[index]?.numberOfEmployee
                           ?.message as string
                       }
+                    />
+                  </div>
+
+                  <div className="col-md-6 col-xl-2">
+                    <Autocomplete
+                      label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                      placeholder="সার্ভিসের ধরণ বাছাই করুন"
+                      isRequired={true}
+                      control={control}
+                      options={serviceList || []}
+                      getOptionLabel={(op) => op?.titleBn}
+                      getOptionValue={(op) => op?.metaKey}
+                      defaultValue={cadreObj}
+                      name={`manpowerList.${index}.serviceTypeDto`}
+                      onChange={(t) =>
+                        setValue(
+                          `manpowerList.${index}.serviceTypeKey`,
+                          t?.metaKey
+                        )
+                      }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
                     />
                   </div>
 

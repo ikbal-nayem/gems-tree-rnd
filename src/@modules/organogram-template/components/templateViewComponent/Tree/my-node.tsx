@@ -82,13 +82,13 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                     <p className="mb-0 ms-1 fs-8">x</p>
                     <p className="ms-1 mb-0 fs-8">
                       {(postList?.length > 0 &&
-                        item?.organizationPost?.id &&
+                        item?.postDTO?.id &&
                         (langEn
                           ? postList?.find(
-                              (d) => d?.id === item?.organizationPost?.id
+                              (d) => d?.id === item?.postDTO?.id
                             )?.nameEn
                           : postList?.find(
-                              (d) => d?.id === item?.organizationPost?.id
+                              (d) => d?.id === item?.postDTO?.id
                             )?.nameBn)) ||
                         (langEn
                           ? COMMON_LABELS.EN.NOT_ASSIGN
