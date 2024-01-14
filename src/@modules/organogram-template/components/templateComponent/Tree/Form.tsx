@@ -15,7 +15,6 @@ import {
 import {
   COMMON_LABELS,
   IObject,
-  META_TYPE,
   isObjectNull,
   notNullOrUndefined,
   numBnToEn,
@@ -105,7 +104,6 @@ const NodeForm = ({
     fields: manpowerListFields,
     append: manpowerListAppend,
     remove: manpowerListRemove,
-    update: manpowerListUpdate,
   } = useFieldArray({
     control,
     name: "manpowerList",
@@ -446,10 +444,10 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-2">
+                  <div className="col-md-6 col-xl-4 px-1">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
-                      placeholder="পদবি বাছাই করুন"
+                      placeholder="বাছাই করুন"
                       isRequired={true}
                       control={control}
                       options={postList || []}
@@ -470,10 +468,10 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-2">
+                  <div className="col-md-6 col-xl-3 px-1">
                     <Autocomplete
                       label={index < 1 ? "গ্রেড" : ""}
-                      placeholder="গ্রেড বাছাই করুন"
+                      placeholder="বাছাই করুন"
                       control={control}
                       options={gradeList || []}
                       getOptionLabel={(op) =>
@@ -489,10 +487,10 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-2">
+                  <div className="col-md-6 col-xl-2 px-1">
                     <Autocomplete
                       label={index < 1 ? "সার্ভিসের ধরণ" : ""}
-                      placeholder="সার্ভিসের ধরণ বাছাই করুন"
+                      placeholder="বাছাই করুন"
                       isRequired={true}
                       control={control}
                       options={serviceList || []}
@@ -513,7 +511,7 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-2">
+                  <div className="col-md-6 col-xl-1 px-1">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -537,7 +535,7 @@ const NodeForm = ({
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-2">
+                  <div className="col-md-6 col-xl-1 px-1">
                     <Select
                       label={index < 1 ? "পদের ধরণ" : ""}
                       options={postTypeList || []}
@@ -558,7 +556,7 @@ const NodeForm = ({
 
                   <div
                     className={
-                      "col-md-6 col-xl-2 d-flex align-items-center " +
+                      "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
                       (index < 1 ? "mt-5" : "my-0")
                     }
                   >
