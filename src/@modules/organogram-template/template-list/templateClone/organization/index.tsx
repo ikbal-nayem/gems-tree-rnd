@@ -1,6 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { Autocomplete, Separator } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { deFocusById } from "utility/utils";
 import OrgFromOrgtype from "./OrgFromOrgtype";
@@ -38,7 +38,7 @@ const Organizations = ({
   const onOrgSelect = (selected: IObject, toggle: boolean = false) => {
     const currentOrg = getValues("templateOrganizationsDtoList") || [];
     const cIdx = currentOrg?.findIndex((co) => co?.id === selected?.id);
-    if (cIdx < 0) currentOrg.push(selected);
+    if (cIdx < 0 && !isObjectNull(selected)) currentOrg.push(selected);
     else if (toggle) currentOrg.splice(cIdx, 1);
     setValue("templateOrganizationsDtoList", [...currentOrg]);
     setNotOrganizationData(false);
