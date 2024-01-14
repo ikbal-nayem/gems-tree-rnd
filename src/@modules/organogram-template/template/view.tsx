@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-// import { OMSService } from "@services/api/OMS.service";
-import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { OMSService } from "../../../@services/api/OMS.service";
-import { useSearchParams } from "react-router-dom";
+import { ContentPreloader, NoData, toast } from "@gems/components";
 import TemplateViewComponent from "../components/templateViewComponent";
 
 const TemplateView = () => {
@@ -13,9 +12,9 @@ const TemplateView = () => {
   const [manpowerData, setManpowerData] = useState<IObject>();
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [searchParam] = useSearchParams();
-
+  const { state } = useLocation();
   const templateId = searchParam.get("id") || "";
-  const organizationId = searchParam.get("organizationId") || "";
+  const organizationId = state?.organizationId || "";
 
   useEffect(() => {
     getTemplateDetailsDetailsById();
@@ -33,6 +32,7 @@ const TemplateView = () => {
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
   };
+
   const getTemplateInventoryById = () => {
     setIsLoading(true);
     OMSService.getTemplateInventoryByTemplateId(templateId)
@@ -75,6 +75,7 @@ const TemplateView = () => {
           inventoryData={inventoryData}
           manpowerData={manpowerData}
           attachedOrganizationData={attachOrgData}
+          stateOrganizationData={state||{}}
         />
       )}
       {!isLoading && isObjectNull(data) && (

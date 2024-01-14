@@ -4,10 +4,9 @@ import {
   Autocomplete,
   ConfirmationModal,
   Input,
-  ListDownload,
+  DownloadMenu,
   Pagination,
   toast,
-  topProgress,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -16,6 +15,7 @@ import {
   exportXLSX,
   numEnToBn,
   searchParamsToObject,
+  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
@@ -121,9 +121,7 @@ const TemplateList = () => {
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
-          resp?.meta
-            ? { ...resp?.meta }
-            : { limit: respMeta?.limit, page: 0 }
+          resp?.meta ? { ...resp?.meta } : { limit: respMeta?.limit, page: 0 }
         );
       })
       .catch((err) => {
@@ -168,7 +166,7 @@ const TemplateList = () => {
       <div className="card p-4">
         {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
-        <div className="d-flex justify-content-between gap-2 mb-4">
+        <div className="d-flex justify-content-between gap-2 mb-2">
           <span className="w-25">
             <Autocomplete
               placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
@@ -187,7 +185,7 @@ const TemplateList = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <ListDownload
+          <DownloadMenu
             fnDownloadExcel={() =>
               getXLSXStoreList({
                 page: 0,
@@ -202,7 +200,7 @@ const TemplateList = () => {
         {!!dataList?.length && (
           <div className="d-flex justify-content-between gap-3">
             <div className="text-primary text-center">
-              <h5 className="my-3">
+              <h5 className="mt-3">
                 মোট টেমপ্লেট {numEnToBn(respMeta?.totalRecords)} টি
               </h5>
             </div>
@@ -211,7 +209,7 @@ const TemplateList = () => {
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
-        <div className="p-4">
+        <div className="px-4 pb-4">
           <TemplateTable
             dataList={dataList}
             // dataList={[

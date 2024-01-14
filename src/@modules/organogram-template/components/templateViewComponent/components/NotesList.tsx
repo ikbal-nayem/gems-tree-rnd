@@ -1,32 +1,31 @@
+import TextBlock from "@components/TextBlock";
 import { LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
+import { IObject, isObjectNull } from "@gems/utils";
+import { numOfNewLines } from "utility/utils";
 import "../style.scss";
-import TextBlock from "@components/TextBlock";
 
 interface INotesList {
-  data: any;
+  data: IObject;
   langEn: boolean;
 }
 const NotesList = ({ data, langEn }: INotesList) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
+
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABEL?.NOTES}</h4>
       </div>
       <Separator className="mt-1 mb-1" />
-      {data?.length > 0 && (
-        <ol className={langEn ? "" : "bn_ol"}>
-          {data?.map((item, i) => {
-            return (
-              <li key={i}>
-                <TextBlock value={item?.note} />
-                {/* &nbsp;&nbsp;
-                {langEn ? item?.note : item?.note} */}
-              </li>
-            );
-          })}
-        </ol>
+      {!isObjectNull(data) && (
+        <div className="mb-2">
+          {numOfNewLines(data?.note) < 1 ? (
+            data?.note
+          ) : (
+            <TextBlock value={data?.note} />
+          )}
+        </div>
       )}
     </div>
   );

@@ -10,9 +10,9 @@ import {
 import { COMMON_LABELS, IMetaKeyResponse, isObjectNull } from "@gems/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import WorkSpaceComponent from "./WorkSpaceComponent";
 
 type IOptions = {
-  orgList: IMetaKeyResponse[];
   postList: IMetaKeyResponse[];
   serviceList: IMetaKeyResponse[];
   cadreList: IMetaKeyResponse[];
@@ -65,18 +65,22 @@ const UpdateForm = ({
         <DrawerBody>
           <div className="row">
             <div className="col-12">
-              <Autocomplete
-                label="প্রতিষ্ঠান"
-                name="organization"
-                placeholder="প্রতিষ্ঠান বাছাই করুন"
+              {/* <Autocomplete
+label="প্রতিষ্ঠান"
+name="organization"
+placeholder="প্রতিষ্ঠান বাছাই করুন"
+isRequired="প্রতিষ্ঠান বাছাই করুন"
+options={options?.orgList || []}
+getOptionLabel={(t) => t.nameBn}
+getOptionValue={(op) => op?.id}
+onChange={(t) => setValue("organizationId", t?.id)}
+control={control}
+isError={!!errors?.organization}
+errorMessage={errors?.organization?.message as string}
+/> */}
+              <WorkSpaceComponent
+                {...formProps}
                 isRequired="প্রতিষ্ঠান বাছাই করুন"
-                options={options?.orgList || []}
-                getOptionLabel={(t) => t.nameBn}
-                getOptionValue={(op) => op?.id}
-                onChange={(t) => setValue("organizationId", t?.id)}
-                control={control}
-                isError={!!errors?.organization}
-                errorMessage={errors?.organization?.message as string}
               />
             </div>
             <div className="col-12">
@@ -91,18 +95,18 @@ const UpdateForm = ({
                 // onChange={(e) => setValue("chosenDate", e.value)}
               />
               {/* <Autocomplete
-                label="অর্গানোগ্রাম ভার্সন"
-                name="organogramVersionDto"
-                placeholder="অর্গানোগ্রাম ভার্সন বাছাই করুন"
-                isRequired="অর্গানোগ্রাম ভার্সন বাছাই করুন"
-                options={options?.organogramVersionList || []}
-                getOptionLabel={(t) => t.titleBn}
-                getOptionValue={(op) => op?.metaKey}
-                onChange={(t) => setValue("organogramVersionKey", t?.metaKey)}
-                control={control}
-                isError={!!errors?.organogramVersionDto}
-                errorMessage={errors?.organogramVersionDto?.message as string}
-              /> */}
+label="অর্গানোগ্রাম ভার্সন"
+name="organogramVersionDto"
+placeholder="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+isRequired="অর্গানোগ্রাম ভার্সন বাছাই করুন"
+options={options?.organogramVersionList || []}
+getOptionLabel={(t) => t.titleBn}
+getOptionValue={(op) => op?.metaKey}
+onChange={(t) => setValue("organogramVersionKey", t?.metaKey)}
+control={control}
+isError={!!errors?.organogramVersionDto}
+errorMessage={errors?.organogramVersionDto?.message as string}
+/> */}
             </div>
             <div className="col-12">
               <Autocomplete
@@ -136,22 +140,22 @@ const UpdateForm = ({
             </div>
 
             {/* {watch("serviceType")?.metaKey === "SERVICE_TYPE_CADRE" ? (
-              <div className="col-12">
-                <Autocomplete
-                  label="সার্ভিস/ক্যাডারের নাম"
-                  name="cadre"
-                  placeholder="সার্ভিস/ক্যাডারের নাম বাছাই করুন"
-                  isRequired="সার্ভিস/ক্যাডারের নাম বাছাই করুন"
-                  options={options?.cadreList || []}
-                  getOptionLabel={(t) => t.titleBn}
-                  getOptionValue={(op) => op?.metaKey}
-                  onChange={(t) => setValue("cadreKey", t?.metaKey)}
-                  control={control}
-                  isError={!!errors?.cadre}
-                  errorMessage={errors?.cadre?.message as string}
-                />
-              </div>
-            ) : null} */}
+<div className="col-12">
+<Autocomplete
+label="সার্ভিস/ক্যাডারের নাম"
+name="cadre"
+placeholder="সার্ভিস/ক্যাডারের নাম বাছাই করুন"
+isRequired="সার্ভিস/ক্যাডারের নাম বাছাই করুন"
+options={options?.cadreList || []}
+getOptionLabel={(t) => t.titleBn}
+getOptionValue={(op) => op?.metaKey}
+onChange={(t) => setValue("cadreKey", t?.metaKey)}
+control={control}
+isError={!!errors?.cadre}
+errorMessage={errors?.cadre?.message as string}
+/>
+</div>
+) : null} */}
 
             <div className="col-12">
               <Autocomplete

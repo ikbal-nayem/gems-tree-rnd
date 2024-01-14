@@ -1,10 +1,9 @@
-import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { toast } from "@gems/components";
-import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
+import { toast } from "@gems/components";
 import { useNavigate } from "react-router-dom";
+import { OMSService } from "@services/api/OMS.service";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import TemplateComponent from "../components/templateComponent";
-// import { makeFormData } from "@gems/utils";
 
 const TemplateCreate = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
@@ -31,6 +30,7 @@ const TemplateCreate = () => {
     let reqPayload = {
       ...data,
       attachmentDtoList: attachmentDto,
+      isTemplate: true,
       status: "NEW",
     };
 

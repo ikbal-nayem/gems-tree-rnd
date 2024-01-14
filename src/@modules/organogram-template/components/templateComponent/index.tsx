@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   Checkbox,
   DateInput,
@@ -17,15 +18,17 @@ import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
 import { OMSService } from "@services/api/OMS.service";
+import { deFocusById, focusById } from "utility/utils";
 import { enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
+import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import Organizations from "./components/organization";
-import AttachmentForm from "./components/AttachmentForm";
+import { CoreService } from "@services/api/Core.service";
+import { META_TYPE } from "@constants/common.constant";
 import NotesForm from "./components/NotesForm";
-import { deFocusById, focusById } from "utility/utils";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -43,7 +46,7 @@ const TemplateComponent = ({
       !isObjectNull(updateData?.organizationStructureDto)
       ? updateData?.organizationStructureDto
       : {
-          id: generateUUID(),
+          nodeId: generateUUID(),
           titleBn: "অর্গানোগ্রাম তৈরি শুরু করুন",
           titleEn: "Start the Organogram here",
           children: [],
@@ -56,6 +59,9 @@ const TemplateComponent = ({
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
   const [notOrganizationData, setNotOrganizationData] =
     useState<boolean>(false);
+  const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
+    IObject[]
+  >([]);
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -65,7 +71,6 @@ const TemplateComponent = ({
       attachmentDtoList: [],
       inventoryDtoList: [],
       miscellaneousPointDtoList: [],
-      organogramNoteDtoList: [],
     },
   });
   const {
@@ -80,6 +85,14 @@ const TemplateComponent = ({
     control,
     formState: { errors },
   } = formProps;
+
+  useEffect(() => {
+    CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
+      (resp) => {
+        setOrganogramChangeActionList(resp?.body);
+      }
+    );
+  }, []);
 
   useEffect(() => {
     if (!isObjectNull(updateData)) {
@@ -105,8 +118,10 @@ const TemplateComponent = ({
         attachmentDtoList: updateData?.attachmentDtoList,
         inventoryDtoList: updateData?.inventoryDtoList,
         templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
+        organogramChangeActionDtoList:
+          updateData?.organogramChangeActionDtoList,
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
-        organogramNoteDtoList: updateData?.organogramNoteDtoList,
+        organogramNoteDto: updateData?.organogramNoteDto,
       });
     }
   }, [updateData]);
@@ -177,6 +192,16 @@ const TemplateComponent = ({
         organizationNameBn: d?.nameBn || d?.organizationNameBn,
       })
     );
+    if (data.organogramChangeActionDtoList?.length > 0) {
+      data.organogramChangeActionDtoList =
+        !data?.isEnamCommittee &&
+        data?.organogramChangeActionDtoList?.length > 0
+          ? data?.organogramChangeActionDtoList?.map((d) => ({
+              titleEn: d?.titleEn,
+              titleBn: d?.titleBn,
+            }))
+          : null;
+    }
 
     if (
       data?.templateOrganizationsDtoList === undefined ||
@@ -192,16 +217,16 @@ const TemplateComponent = ({
 
     const reqPayload = {
       ...data,
-      titleBn: getValues(isNotEnamCommittee ? "titleBn" : "titleEn"),
+      titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
       organizationStructureDto: treeData,
+      organogramNoteDto: data?.organogramNoteDto?.note
+        ? {
+            ...data?.organogramNoteDto,
+            status: "ORGANOGRAM",
+          }
+        : null,
     };
-    // let test = makeFormData(reqPayload);
-
-    // for (const value of test.values()) {
-    //   console.log(value);
-    // }
-    // console.log("Req Payload: ", reqPayload);
 
     onSubmit(reqPayload);
   };
@@ -297,6 +322,25 @@ const TemplateComponent = ({
               isError={!!errors?.organogramDate}
             />
           </div>
+          {isNotEnamCommittee &&
+            updateData?.organogramChangeActionDtoList?.length > 0 && (
+              <div className="col-md-6 col-12">
+                <Autocomplete
+                  label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
+                  placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                  options={organogramChangeActionList || []}
+                  getOptionLabel={(op) =>
+                    isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                  }
+                  getOptionValue={(op) => op?.titleEn}
+                  isMulti
+                  closeMenuOnSelect={false}
+                  // isRequired="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+                  name="organogramChangeActionDtoList"
+                  control={control}
+                />
+              </div>
+            )}
         </div>
       </div>
 

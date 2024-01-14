@@ -1,23 +1,23 @@
 import { ChartContainer } from "@components/OrgChart/ChartContainer";
-import { generateUUID, isObjectNull } from "@gems/utils";
+import { ConfirmationModal } from "@gems/components";
+import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
-import { OMSService } from "@services/api/OMS.service";
-import { ConfirmationModal } from "@gems/components";
+import { CoreService } from "@services/api/Core.service";
 
 const addNode = (nd, parent, templateData) => {
-  if (nd.id === parent?.id) {
+  if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
     nd.children = [
       ...parent.children,
       {
         ...templateData,
-        id: generateUUID(),
+        nodeId: generateUUID(),
         // displayOrder: nd.children.length + 1 || 1,
         children: [],
       },
     ];
-    return nd;
+    return childSerializer(nd);
   }
   nd.children.forEach((cnd) => {
     cnd = addNode(cnd, parent, templateData);
@@ -26,24 +26,77 @@ const addNode = (nd, parent, templateData) => {
 };
 
 const editNode = (nd, node, updateData) => {
-  if (nd.id === node?.id) {
+  if ((nd?.id || nd?.nodeId) === (node?.id || node?.nodeId)) {
     return { ...node, ...updateData };
   }
   for (var i = 0; i < nd.children.length; i++) {
     nd.children[i] = editNode(nd.children[i], node, updateData);
     if (
-      nd.children[i].id === node.id &&
+      nd.children[i]?.nodeId === node?.nodeId &&
       node.displayOrder !== updateData.displayOrder
     ) {
-      nd = reOrder(nd, updateData, "update");
-      nd = childSerializerOnUpdate(nd);
+      nd = reOrder(
+        nd,
+        updateData,
+        "update",
+        node.displayOrder < updateData.displayOrder
+          ? "pushForward"
+          : "pullBackward"
+      );
+      nd = childSerializer(nd);
     }
   }
   return { ...nd };
 };
 
+// const deleteNode = (nd, deleteItem) => {
+//   if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
+//     return nd?.children && nd?.children?.length > 0
+//       ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
+//           nd?.children
+//             ?.filter((s) => !s?.nodeId)
+//             ?.map((d) => {
+//               return {
+//                 ...d,
+//                 children: d?.children?.length > 0 ? deleteNode(d, d) : [],
+//                 isDeleted: true,
+//               };
+//             })
+//       : null;
+//   }
+
+//   if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
+//     return null;
+//   }
+
+//   for (var i = 0; i < nd.children.length; i++) {
+//     const nodeState = deleteNode(nd.children[i], deleteItem);
+//     if (nodeState && nodeState?.length > 0) {
+//       nd.children[i] = {
+//         ...nd.children[i],
+//         children: nodeState,
+//         isDeleted: true,
+//       };
+//     }
+//     if (!nodeState) {
+//       if (nd?.children[i]?.id)
+//         nd.children[i] = {
+//           ...nd.children[i],
+//           children: [],
+//           isDeleted: true,
+//         };
+//       else {
+//         nd.children.splice(i, 1);
+//         break;
+//       }
+//     }
+//   }
+//   nd = childSerializer(nd);
+//   return { ...nd };
+// };
+
 const deleteNode = (nd, nodeId) => {
-  if (nd.id === nodeId) {
+  if (nd.id === nodeId || nd.nodeId === nodeId) {
     return null;
   }
   for (var i = 0; i < nd.children.length; i++) {
@@ -54,10 +107,11 @@ const deleteNode = (nd, nodeId) => {
       break;
     }
   }
+  nd = childSerializer(nd);
   return { ...nd };
 };
 
-const childSerializerOnUpdate = (parent) => {
+const childSerializer = (parent) => {
   let tempChildList = [];
   parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   parent?.children?.forEach((cnd, i) => {
@@ -72,8 +126,9 @@ const childSerializerOnUpdate = (parent) => {
   };
 };
 
-const reOrder = (parent, formData, mode) => {
+const reOrder = (parent, formData, mode, direction) => {
   let tempChildList = [],
+    // tempOrderList = [],
     duplicateOrderFound = false;
   parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   parent?.children?.forEach((cnd) => {
@@ -88,15 +143,44 @@ const reOrder = (parent, formData, mode) => {
       } else {
         // UPDATE MODE
         if (cnd?.id === formData?.id) {
-          tempChildList.push({
-            ...cnd,
-            displayOrder: +cnd?.displayOrder,
-          });
+          if (direction === "pushForward") {
+            // PUSH_FORWARD >>>>>>>>>>>>>>>>>>>>>
+            tempChildList.push({
+              ...cnd,
+              displayOrder: +formData?.displayOrder + 1,
+            });
+            // tempOrderList.push(+formData?.displayOrder + 1);
+          } else {
+            // <<<<<<<<<<<<<<<<<<<<< PULL_BACKWARD
+            tempChildList.push({
+              ...cnd,
+              displayOrder: +cnd?.displayOrder,
+            });
+            // tempOrderList.push(+formData?.displayOrder);
+          }
         } else {
-          tempChildList.push({
-            ...cnd,
-            displayOrder: +cnd?.displayOrder + 1,
-          });
+          // Children Otherthan the matched node
+          if (direction === "pushForward") {
+            if (+cnd?.displayOrder > +formData?.displayOrder) {
+              tempChildList.push({
+                ...cnd,
+                displayOrder: +cnd?.displayOrder + 1,
+              });
+              // tempOrderList.push(+cnd?.displayOrder + 1);
+            } else {
+              tempChildList.push({
+                ...cnd,
+                displayOrder: +cnd?.displayOrder,
+              });
+              // tempOrderList.push(+cnd?.displayOrder);
+            }
+          } else {
+            tempChildList.push({
+              ...cnd,
+              displayOrder: +cnd?.displayOrder + 1,
+            });
+            // tempOrderList.push(+cnd?.displayOrder + 1);
+          }
         }
       }
     } else {
@@ -104,8 +188,13 @@ const reOrder = (parent, formData, mode) => {
         ...cnd,
         displayOrder: +cnd?.displayOrder,
       });
+      // tempOrderList.push(+cnd?.displayOrder);
     }
   });
+  // tempOrderList.sort((a, b) => (a > b ? 1 : -1));
+  // alert(tempOrderList.join(" "));
+  // alert(duplicateOrderFound);
+  tempChildList.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
   return duplicateOrderFound
     ? {
         ...parent,
@@ -125,13 +214,23 @@ const OrganizationTemplateTree = ({
   const updateNodeData = useRef(null);
 
   const [postList, setPostist] = useState([]);
+  const [gradeList, setGradeList] = useState([]);
+  const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
 
   useEffect(() => {
-    OMSService.getPostList().then((resp) => setPostist(resp.body || []));
+    CoreService.getPostList().then((resp) => setPostist(resp.body || []));
+    CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
+    CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
+      setServiceList(resp.body || [])
+    );
   }, []);
+
+  const cadreObj = serviceList?.find(
+    (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
+  );
 
   const treeDispatch = (actionType, data) => {
     switch (actionType) {
@@ -157,7 +256,7 @@ const OrganizationTemplateTree = ({
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData.id));
+    setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
     setIsDeleteModal(false);
   };
 
@@ -171,7 +270,7 @@ const OrganizationTemplateTree = ({
   const onSubmit = (formData) => {
     let ad;
     if (isObjectNull(updateNodeData.current)) {
-      selectedNode.current = reOrder(selectedNode.current, formData, "add");
+      selectedNode.current = reOrder(selectedNode.current, formData, "add", "");
       ad = addNode(treeData, selectedNode.current, formData);
     } else {
       ad = editNode(treeData, updateNodeData.current, formData);
@@ -223,7 +322,10 @@ const OrganizationTemplateTree = ({
               nodeData={nodeData}
               treeDispatch={treeDispatch}
               postList={postList}
-              firstNode={treeData?.id === nodeData?.id}
+              firstNode={
+                (treeData?.id || treeData?.nodeId) ===
+                (nodeData?.id || nodeData?.nodeId)
+              }
               isNotEnamCommittee={isNotEnamCommittee}
             />
           )}
@@ -233,6 +335,9 @@ const OrganizationTemplateTree = ({
         <NodeForm
           isOpen={formOpen}
           postList={postList}
+          gradeList={gradeList}
+          serviceList={serviceList}
+          cadreObj={cadreObj}
           updateData={updateNodeData.current}
           defaultDisplayOrder={displayOrder}
           onClose={onFormClose}

@@ -1,20 +1,58 @@
 import clsx from "clsx";
+import NewProposalModal from "./NewProposalModal";
+import { useState } from "react";
+import { OMSService } from "@services/api/OMS.service";
+import { toast } from "@gems/components";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
-export const NewProposalMenu = () => {
+interface IMenu {
+  organogramId: string;
+  organizationId: string;
+}
+export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
+  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onClose = () => setIsOpen(false);
+  const navigate = useNavigate();
+  // alert(
+  //   "Organization Id:- " + organizationId +
+  //   "\n\nOrganogram Id:- " + organogramId
+  // );
+  const onSubmit = (data) => {
+    const reqPayload = {
+      organizationId: organizationId,
+      previousOrganogramId: organogramId,
+      subjects: data?.subjects?.length > 0 ? data?.subjects : null,
+      proposedDate: new Date(),
+      status: "NEW",
+    };
+
+    setIsSubmitLoading(true);
+
+    OMSService.SAVE.organogramProposal(reqPayload)
+      .then((res) => toast.success(res?.message))
+      .catch((error) => toast.error(error?.message))
+      .finally(() => {
+        setIsSubmitLoading(false);
+        onClose();
+        navigate(ROUTE_L2.OMS_PROPOSAL_LIST);
+      });
+  };
+
   return (
     <div className={clsx("app-navbar-item")}>
       <div
         className="cursor-pointer"
         data-kt-menu-trigger="{default: 'click'}"
-        data-kt-menu-attach="parent"
-        data-kt-menu-placement="bottom-start"
+        onClick={() => setIsOpen(true)}
       >
         <span
           className={`nav-link text-active-primary cursor-pointer me-8 mt-2 fw-bold text-gray-700 fs-5`}
         >
           নতুন প্রস্তাব
         </span>
-        <div
+        {/* <div
           className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-700 menu-state-bg menu-state-primary fw-bold py-2 fs-6 w-200px"
           data-kt-menu="true"
         >
@@ -44,8 +82,14 @@ export const NewProposalMenu = () => {
           <div className="menu-item px-2">
             <div className="menu-link">১০% সংরক্ষিত শূন্যপদ পূরণ</div>
           </div>
-        </div>
+        </div> */}
       </div>
+      <NewProposalModal
+        isOpen={isOpen}
+        onSubmit={onSubmit}
+        onClose={onClose}
+        isSubmitLoading={isSubmitLoading}
+      />
     </div>
   );
 };

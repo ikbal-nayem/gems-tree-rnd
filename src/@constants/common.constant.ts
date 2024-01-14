@@ -1,6 +1,7 @@
 export const META_TYPE = {
   ORG_TYPE: "ORG_TYPE",
   CHECKLIST: "CHECKLIST",
+  ORGANOGRAM_CHANGE_ACTION: "ORGANOGRAM_CHANGE_ACTION",
 };
 
 export const COMMON_LABELS = {
@@ -85,8 +86,14 @@ export const LABELS = {
     MISCELLANEOUS: "Miscellaneous Points",
     ATTACHMENT: "Attachment",
     SUM_OF_MANPOWER: "Summary of Manpower",
+    PREV_MANPOWER: "Previous Manpower",
+    CURRENT_MANPOWER: "Current Manpower",
+    CHANGE_IN_MANPOWER: "Comparison of Manpower",
     ORGANIZATION: "Organization",
     NOTES: "Notes",
+    REVIEW_APPROVE_NOTES: "Review & Approve Notes",
+    CHANGES: "Changes",
+    MASTER_ORG: "Organization",
   },
 
   BN: {
@@ -106,8 +113,14 @@ export const LABELS = {
     MISCELLANEOUS: "বিবিধ",
     ATTACHMENT: "সংযুক্তি",
     SUM_OF_MANPOWER: "জনবল",
+    PREV_MANPOWER: "পূর্ববর্তী জনবল",
+    CURRENT_MANPOWER: "বর্তমান জনবল",
+    CHANGE_IN_MANPOWER: "জনবলের তুলনামূলক তালিকা",
     ORGANIZATION: "প্রতিষ্ঠান",
     NOTES: "মন্তব্য",
+    REVIEW_APPROVE_NOTES:"পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",
+    CHANGES: "পরিবর্তনসমূহ",
+    MASTER_ORG: "প্রতিষ্ঠান",
   },
 };
 
@@ -119,4 +132,8 @@ export const ERR_MSG = {
   BN: {
     MIN_NUM_1: "সর্বনিম্ন ১ হবে",
   },
+};
+
+export const TIME_PATTERN = {
+  HM12: "%hour% : %minute% %ampm%",
 };

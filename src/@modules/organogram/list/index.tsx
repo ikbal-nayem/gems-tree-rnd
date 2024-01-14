@@ -1,11 +1,12 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { Input, Pagination, toast, topProgress } from "@gems/components";
+import { Input, Pagination, toast } from "@gems/components";
 import {
   IMeta,
   IObject,
   numEnToBn,
   searchParamsToObject,
+  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
@@ -148,10 +149,7 @@ const TemplateList = () => {
         <div className="p-4">
           <TemplateTable
             dataList={dataList}
-            // dataList={[
-            //   { version: "name A" },
-            //   { version: "name B" },
-            // ]}
+            getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
           >

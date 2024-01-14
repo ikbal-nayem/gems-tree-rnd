@@ -20,24 +20,32 @@ const MyNode = ({
 }) => {
   return (
     <div>
-      <div className="position rounded">
+      <div
+        className={`position rounded ${
+          nodeData?.isDeleted ? "text-line-through-color-red" : ""
+        }`}
+      >
         <div className="d-flex justify-content-between">
           {/* <IconButton iconName="more_vert" color="warning" iconSize={16}/> */}
-          <Icon
-            icon="edit_square"
-            size={20}
-            color="warning"
-            onClick={() => treeDispatch("EDIT", nodeData)}
-            hoverTitle={
-              isNotEnamCommittee ? "এই নোড আপডেট করুন" : "Update this node"
-            }
-          />
+          {!nodeData?.isDeleted && (
+            <Icon
+              icon="edit_square"
+              size={20}
+              color="warning"
+              onClick={() => treeDispatch("EDIT", nodeData)}
+              hoverTitle={
+                isNotEnamCommittee ? "এই নোড আপডেট করুন" : "Update this node"
+              }
+            />
+          )}
           <div>
             <p className="p-1 mb-0 fs-7">
-              {/* {(isNotEnamCommittee ? nodeData.titleBn : nodeData.titleEn) + " | " + nodeData?.displayOrder} */}
               {isNotEnamCommittee
-                ? longLineBreaker(nodeData.titleBn, 20)
-                : longLineBreaker(nodeData.titleEn, 17)}
+                ? longLineBreaker(nodeData.titleBn || "", 20)
+                : longLineBreaker(nodeData.titleEn || "", 17)}
+              {/* + " (" +
+                nodeData.displayOrder +
+                ")"} */}
             </p>
           </div>
           {/* <span className="me-1 p-2">{nodeData.nameBn}</span> */}
@@ -59,30 +67,32 @@ const MyNode = ({
 							&nbsp; বিলুপ্ত করুন
 						</DropdownItem>
 					</Dropdown> */}
-          <div>
-            <Icon
-              icon="add_circle"
-              size={20}
-              color="success"
-              onClick={() => treeDispatch("ADD", nodeData)}
-              hoverTitle={
-                isNotEnamCommittee
-                  ? "পরবর্তী স্তরে নতুন নোড যোগ করুন"
-                  : "Add new node into next layer"
-              }
-            />
-            {!firstNode && (
+          {!nodeData?.isDeleted && (
+            <div>
               <Icon
-                icon="remove_circle"
+                icon="add_circle"
                 size={20}
-                color="danger"
-                onClick={() => treeDispatch("REMOVE", nodeData)}
+                color="success"
+                onClick={() => treeDispatch("ADD", nodeData)}
                 hoverTitle={
-                  isNotEnamCommittee ? "এই নোড মুছুন" : "Delete this node"
+                  isNotEnamCommittee
+                    ? "পরবর্তী স্তরে নতুন নোড যোগ করুন"
+                    : "Add new node into next layer"
                 }
               />
-            )}
-          </div>
+              {!firstNode && (
+                <Icon
+                  icon="remove_circle"
+                  size={20}
+                  color="danger"
+                  onClick={() => treeDispatch("REMOVE", nodeData)}
+                  hoverTitle={
+                    isNotEnamCommittee ? "এই নোড মুছুন" : "Delete this node"
+                  }
+                />
+              )}
+            </div>
+          )}
         </div>
         <div
           className={`bg-light text-start ${
@@ -93,11 +103,10 @@ const MyNode = ({
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
-              const postExists =
-                isNotEmptyList(postList) && item?.organizationPost?.id;
+              const postExists = isNotEmptyList(postList) && item?.postId;
 
               const post = postExists
-                ? postList?.find((d) => d?.id === item?.organizationPost?.id)
+                ? postList?.find((d) => d?.id === item?.postId)
                 : null;
 
               const postName = isNotEnamCommittee
@@ -106,8 +115,20 @@ const MyNode = ({
 
               return (
                 <div key={i}>
-                  {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                    <div className="d-flex">
+                  {item?.numberOfEmployee || postName ? (
+                    <div
+                      className={`d-flex ${
+                        item?.postType === "proposed"
+                          ? "text-primary"
+                          : item?.postType === "nonPermanent"
+                          ? "text-success"
+                          : item?.postType === "permanent"
+                          ? "text-gray-900"
+                          : ""
+                      } ${
+                        item?.isDeleted ? "text-line-through-color-red" : ""
+                      }`}
+                    >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">{postName}</p>

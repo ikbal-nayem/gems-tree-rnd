@@ -37,7 +37,7 @@ export const errorMessage = (code: number): string => {
 	return errorList[code] || "Unknown Error";
 };
 
-export const errorMessageWithToast = (code: number): void => {
+export const errorMessageWithToast = (code: number) => {
 	return toast.error(errorMessage(code) || "Unknown Error");
 };
 

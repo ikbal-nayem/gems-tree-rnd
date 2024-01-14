@@ -20,43 +20,60 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
   }
 
   return (
-    <div className="position rounded border border-gray-400 border-1">
-      <div className="d-flex justify-content-between">
-        <Icon
-          icon="fact_check"
-          variants="outlined"
-          hoverTitle={LABEL.ACTIVITIES}
-          size={20}
-          className="text-hover-warning"
-          color={
-            nodeData?.postFunctionalityList &&
-            nodeData?.postFunctionalityList?.length > 0
-              ? "primary"
-              : "light"
-          }
-          onClick={() => onView(nodeData)}
-        />
+    <div
+      className={`position rounded border border-gray-400 border-1 ${
+        nodeData?.isDeleted ? "text-line-through-color-red" : ""
+      }`}
+    >
+      <div className="bg-light rounded-top d-flex justify-content-between">
+        {!nodeData?.isDeleted && (
+          <div>
+            <Icon
+              icon="fact_check"
+              variants="outlined"
+              hoverTitle={LABEL.ACTIVITIES}
+              size={20}
+              className="text-hover-warning"
+              color={
+                nodeData?.postFunctionalityList &&
+                nodeData?.postFunctionalityList?.length > 0
+                  ? "primary"
+                  : "light"
+              }
+              onClick={() => onView(nodeData)}
+            />
+          </div>
+        )}
+
         <p className="mb-0 fs-8  text-start">
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn
-            ? longLineBreaker(nodeData.titleEn, 17)
-            : longLineBreaker(nodeData.titleBn, 20)}
+            ? longLineBreaker(nodeData.titleEn || "", 17)
+            : longLineBreaker(nodeData.titleBn || "", 20)}
         </p>
         <p className="mb-0 fs-8">{manPower}</p>
       </div>
 
       <div
-        className={`bg-light text-start ${
-          nodeData?.manpowerList?.length ? "p-1" : ""
-        }`}
+        className={`text-start ${nodeData?.manpowerList?.length ? "p-1" : ""}`}
       >
         {nodeData?.manpowerList?.length > 0 &&
           nodeData?.manpowerList?.map((item, i) => {
             return (
               <div key={i}>
-                {item?.numberOfEmployee || item?.postDto?.nameBn ? (
-                  <div className="d-flex">
+                {item?.numberOfEmployee || item?.postId ? (
+                  <div
+                    className={`d-flex ${
+                      item?.postType === "proposed"
+                        ? "text-primary"
+                        : item?.postType === "nonPermanent"
+                        ? "text-success"
+                        : item?.postType === "permanent"
+                        ? "text-gray-900"
+                        : ""
+                    } ${item?.isDeleted ? "text-line-through-color-red" : ""}`}
+                  >
                     <p className="mb-0 fs-8">
                       {langEn
                         ? item?.numberOfEmployee || 0
@@ -65,14 +82,12 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                     <p className="mb-0 ms-1 fs-8">x</p>
                     <p className="ms-1 mb-0 fs-8">
                       {(postList?.length > 0 &&
-                        item?.organizationPost?.id &&
+                        item?.postId &&
                         (langEn
-                          ? postList?.find(
-                              (d) => d?.id === item?.organizationPost?.id
-                            )?.nameEn
-                          : postList?.find(
-                              (d) => d?.id === item?.organizationPost?.id
-                            )?.nameBn)) ||
+                          ? postList?.find((d) => d?.id === item?.postId)
+                              ?.nameEn
+                          : postList?.find((d) => d?.id === item?.postId)
+                              ?.nameBn)) ||
                         (langEn
                           ? COMMON_LABELS.EN.NOT_ASSIGN
                           : COMMON_LABELS.NOT_ASSIGN)}
@@ -84,7 +99,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           })}
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
-        <div className="pt-3 ps-2 bg-light text-start ">
+        <div className="pt-3 ps-2 text-start ">
           {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
           <TextBlock value={nodeData?.commentNode} />
           {/* {nodeData?.commentNode} */}

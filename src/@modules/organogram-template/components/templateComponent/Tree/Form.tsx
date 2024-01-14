@@ -9,6 +9,7 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
+  Select,
   Textarea,
 } from "@gems/components";
 import {
@@ -33,12 +34,36 @@ interface INodeForm {
   updateData?: IObject;
   defaultDisplayOrder?: number;
   postList: IObject[];
+  gradeList: IObject[];
+  serviceList: IObject[];
+  cadreObj: IObject;
   isNotEnamCommittee: boolean;
 }
+
+const postTypeList = [
+  {
+    titleEn: "Proposed",
+    key: "proposed",
+    titleBn: "প্রস্তাবিত",
+  },
+  {
+    titleEn: "Permanent",
+    key: "permanent",
+    titleBn: "স্থায়ী",
+  },
+  {
+    titleEn: "Non Permanent",
+    key: "nonPermanent",
+    titleBn: "অস্থায়ী",
+  },
+];
 
 const NodeForm = ({
   isOpen,
   postList,
+  gradeList,
+  serviceList,
+  cadreObj,
   onClose,
   onSubmit,
   updateData,
@@ -54,8 +79,12 @@ const NodeForm = ({
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
-      postFunctionalityList: [{}],
-      manpowerList: [{}],
+      postFunctionalityList: [],
+      manpowerList: [
+        {
+          isNewManpower: true,
+        },
+      ],
     },
   });
 
@@ -103,7 +132,9 @@ const NodeForm = ({
   }, []);
 
   useEffect(() => {
+    // alert(cadreObj?.metaKey);
     if (isOpen && !isObjectNull(updateData)) {
+      // UPDATE MODE
       let resetData = updateData;
       if (!isObjectNull(updateData?.manpowerList)) {
         resetData = {
@@ -113,9 +144,19 @@ const NodeForm = ({
 
             return {
               ...item,
-              organizationPost:
+              postDTO:
                 (postList?.length > 0 &&
-                  postList?.find((d) => d?.id === item.organizationPost.id)) ||
+                  postList?.find((d) => d?.id === item?.postId)) ||
+                null,
+              gradeDTO:
+                (gradeList?.length > 0 &&
+                  gradeList?.find((d) => d?.id === item?.gradeId)) ||
+                null,
+              serviceTypeDto:
+                (serviceList?.length > 0 &&
+                  serviceList?.find(
+                    (d) => d?.metaKey === item?.serviceTypeKey
+                  )) ||
                 null,
             };
           }),
@@ -124,8 +165,20 @@ const NodeForm = ({
       reset({
         ...resetData,
       });
-    } else reset({});
-  }, [isOpen, updateData, reset]);
+    } else {
+      // CREATE MODE
+      reset({
+        manpowerList: [
+          {
+            isNewManpower: true,
+            serviceTypeDto: cadreObj,
+            serviceTypeKey: cadreObj?.metaKey,
+          },
+        ],
+        postFunctionalityList: [],
+      });
+    }
+  }, [isOpen, updateData, reset, cadreObj]);
 
   const manpowerNumberCheck = (val) => {
     return numericCheck(val) === true
@@ -148,13 +201,18 @@ const NodeForm = ({
 
     return {
       ...data,
-      titleBn: data?.titleEn,
       postFunctionalityList: postFunctionalityListNew,
+      manpowerList: isNotEmptyList(data?.manpowerList)
+        ? data?.manpowerList?.map((item) => {
+            return { ...item };
+          })
+        : null,
     };
   };
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
+
     onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
@@ -169,7 +227,7 @@ const NodeForm = ({
       isOpen={isOpen}
       handleClose={onFormClose}
       holdOn
-      size="lg"
+      size="xl"
     >
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
@@ -207,9 +265,9 @@ const NodeForm = ({
                       required: " ",
                     }),
                   }}
-                  autoSuggestionKey="titleBn"
-                  suggestionTextKey="titleBn"
                   suggestionOptions={titleList || []}
+                  autoSuggestionKey="nodeTitleBn"
+                  suggestionTextKey="titleBn"
                   isError={!!errors?.titleBn}
                   errorMessage={errors?.titleBn?.message as string}
                 />
@@ -224,13 +282,16 @@ const NodeForm = ({
                 registerProperty={{
                   ...register("titleEn", {
                     required: !isNotEnamCommittee,
-                    onChange: (e) => onTitleChange(e.target.value, "en"),
+                    onChange: (e) => {
+                      if (isNotEnamCommittee)
+                        onTitleChange(e.target.value, "en");
+                    },
                     validate: enCheck,
                   }),
                 }}
-                autoSuggestionKey="titleEn"
-                suggestionTextKey="titleEn"
                 suggestionOptions={titleList || []}
+                autoSuggestionKey="nodeTitleEn"
+                suggestionTextKey="titleEn"
                 isError={!!errors?.titleEn}
                 errorMessage={errors?.titleEn?.message as string}
               />
@@ -364,48 +425,93 @@ const NodeForm = ({
                   iconName="add"
                   color="success"
                   rounded={false}
-                  onClick={() => {
-                    manpowerListAppend({});
-                  }}
+                  onClick={() =>
+                    manpowerListAppend({
+                      isNewManpower: true,
+                      serviceTypeDto: cadreObj,
+                      serviceTypeKey: cadreObj?.metaKey,
+                    })
+                  }
                 />
               </div>
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
+                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100`}
                 key={field?.id}
               >
                 <div className={index < 1 ? "mt-10" : "mt-3"}>
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-5">
+                  <div className="col-md-6 col-xl-4 px-1">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
-                      placeholder="পদবি বাছাই করুন"
-                      isRequired=" "
+                      placeholder="বাছাই করুন"
+                      isRequired={true}
                       control={control}
                       options={postList || []}
                       getOptionLabel={(op) =>
                         isNotEnamCommittee ? op?.nameBn : op?.nameEn
                       }
                       getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.organizationPost`}
-                      // onChange={onDataChange}
-                      // isDisabled={!watch("type")}
-                      //   isRequired
-                      noMargin
-                      isError={
-                        !!errors?.manpowerList?.[index]?.organizationPost
+                      name={`manpowerList.${index}.postDTO`}
+                      onChange={(t) =>
+                        setValue(`manpowerList.${index}.postId`, t?.id)
                       }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.postDTO}
                       errorMessage={
-                        errors?.manpowerList?.[index]?.organizationPost
+                        errors?.manpowerList?.[index]?.postDTO
                           ?.message as string
                       }
                     />
                   </div>
 
-                  <div className="col-md-6 col-xl-5">
+                  <div className="col-md-6 col-xl-3 px-1">
+                    <Autocomplete
+                      label={index < 1 ? "গ্রেড" : ""}
+                      placeholder="বাছাই করুন"
+                      control={control}
+                      options={gradeList || []}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                      }
+                      getOptionValue={(op) => op?.id}
+                      name={`manpowerList.${index}.gradeDTO`}
+                      onChange={(t) =>
+                        setValue(`manpowerList.${index}.gradeId`, t?.id)
+                      }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                    />
+                  </div>
+
+                  <div className="col-md-6 col-xl-2 px-1">
+                    <Autocomplete
+                      label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                      placeholder="বাছাই করুন"
+                      isRequired={true}
+                      control={control}
+                      options={serviceList || []}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                      }
+                      getOptionValue={(op) => op?.metaKey}
+                      defaultValue={cadreObj}
+                      name={`manpowerList.${index}.serviceTypeDto`}
+                      onChange={(t) =>
+                        setValue(
+                          `manpowerList.${index}.serviceTypeKey`,
+                          t?.metaKey
+                        )
+                      }
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
+                    />
+                  </div>
+
+                  <div className="col-md-6 col-xl-1 px-1">
                     <Input
                       label={index < 1 ? "জনবল সংখ্যা" : ""}
                       placeholder="জনবল সংখ্যা লিখুন"
@@ -429,10 +535,29 @@ const NodeForm = ({
                     />
                   </div>
 
+                  <div className="col-md-6 col-xl-1 px-1">
+                    <Select
+                      label={index < 1 ? "পদের ধরণ" : ""}
+                      options={postTypeList || []}
+                      noMargin
+                      placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
+                      isRequired
+                      textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
+                      defaultValue={"permanent"}
+                      valueKey="key"
+                      registerProperty={{
+                        ...register(`manpowerList.${index}.postType`, {
+                          required: true,
+                        }),
+                      }}
+                      isError={!!errors?.manpowerList?.[index]?.postType}
+                    />
+                  </div>
+
                   <div
                     className={
-                      "col-md-6 col-xl-2 d-flex align-items-center  " +
-                      (index < 1 ? "mt-8" : "my-1")
+                      "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
+                      (index < 1 ? "mt-5" : "my-0")
                     }
                   >
                     {isHeadIndex === null || isHeadIndex === index ? (
@@ -454,12 +579,15 @@ const NodeForm = ({
                     ) : null}
                   </div>
                 </div>
+
                 <div className={index < 1 ? "mt-6" : ""}>
                   <IconButton
                     iconName="delete"
                     color="danger"
                     rounded={false}
-                    onClick={() => manpowerListRemove(index)}
+                    onClick={() => {
+                      manpowerListRemove(index);
+                    }}
                   />
                 </div>
               </div>

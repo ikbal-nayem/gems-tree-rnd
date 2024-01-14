@@ -1,3 +1,10 @@
+import Switch from "@components/Switch";
+import {
+  COMMON_LABELS as COMN_LABELS,
+  LABELS,
+} from "@constants/common.constant";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import {
   ACLWrapper,
   Button,
@@ -16,31 +23,23 @@ import {
   generateUUID,
   isObjectNull,
 } from "@gems/utils";
-import OrganizationTemplateTree from "./Tree";
-// import { orgData } from "./Tree/data2";
-import {
-  COMMON_LABELS as COMN_LABELS,
-  LABELS,
-} from "@constants/common.constant";
-import { useState } from "react";
-import AbbreviationList from "./components/AbbreviationList";
-import ActivitiesList from "./components/ActivitesList";
-import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
-import EquipmentsList from "./components/EquipmentsList";
-import ManPowerList from "./components/ManPowerList";
-import OrgList from "./components/Organization";
-
-import { ConfirmationModal } from "@components/ConfirmationModal/ConfirmationModal";
-import Switch from "@components/Switch";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import OrganizationTemplateTree from "./Tree";
+import AbbreviationList from "./components/AbbreviationList";
+import ActivitiesList from "./components/ActivitesList";
+import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
 import AttachedOrgList from "./components/AttachedOrgList";
 import AttachmentList from "./components/AttachmentList";
+import EquipmentsList from "./components/EquipmentsList";
+import ManPowerList from "./components/ManPowerList";
+import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModal";
 import NotesList from "./components/NotesList";
+import NotesReviewApproverList from "./components/NotesReviewApproverList";
+import OrgList from "./components/Organization";
 import { BUTTON_LABEL, MSG } from "./message";
 
 interface ITemplateViewComponent {
@@ -51,6 +50,9 @@ interface ITemplateViewComponent {
   parentOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
+  organogramId?: string;
+  isBeginningVersion?: boolean;
+  stateOrganizationData?: IObject;
 }
 
 const TemplateViewComponent = ({
@@ -60,6 +62,9 @@ const TemplateViewComponent = ({
   attachedOrganizationData,
   parentOrganizationData,
   organogramView = false,
+  organogramId,
+  isBeginningVersion = false,
+  stateOrganizationData,
 }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
@@ -71,11 +76,10 @@ const TemplateViewComponent = ({
           children: [],
         };
 
-  const [langEn, setLangEn] = useState<boolean>(true);
+  const [langEn, setLangEn] = useState<boolean>(updateData?.isEnamCommittee);
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [modalButtonLabel, setModalButtonLabel] = useState<any>();
@@ -83,13 +87,9 @@ const TemplateViewComponent = ({
   const [modalAction, setModalAction] = useState<any>();
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
-
   const navigate = useNavigate();
 
-  const { state } = useLocation();
-  const orgData = state || {};
-
-  let organogramOrganizationView = orgData?.organizationId
+  let organogramOrganizationView = stateOrganizationData?.organizationId
     ? true
     : organogramView;
 
@@ -131,11 +131,13 @@ const TemplateViewComponent = ({
     }
   };
 
-  const onModalActionConfirm = () => {
-    if (modalAction === "SEND_TO_REVIEW" || modalAction === "BACK_TO_REVIEW") {
+  const onModalActionConfirm = (note = null) => {
+    if (modalAction === "SEND_TO_REVIEW") {
       onStatusChange("IN_REVIEW");
+    } else if (modalAction === "BACK_TO_REVIEW") {
+      onStatusChange("IN_REVIEW", note);
     } else if (modalAction === "BACK_TO_NEW") {
-      onStatusChange("NEW");
+      onStatusChange("NEW", note);
     } else if (modalAction === "SEND_TO_APPROVE") {
       onStatusChange("IN_APPROVE");
     } else if (modalAction === "APPROVE") {
@@ -151,13 +153,18 @@ const TemplateViewComponent = ({
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
 
-  const onStatusChange = (status: string) => {
-    OMSService.updateTemplateStatusById(updateData?.id, status)
+  const onStatusChange = (status: string, note = null) => {
+    setIsSubmitting(true);
+    OMSService.updateTemplateStatusById(updateData?.id, status, {
+      note: note,
+      status: updateData?.status,
+    })
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
       })
-      .catch((error) => toast.error(error?.message));
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitting(false));
   };
 
   const onTemplateApprove = () => {
@@ -205,42 +212,6 @@ const TemplateViewComponent = ({
         },
       });
 
-      // if (i === 1) {
-      // pdf.addPage(
-      // [
-      // elementsToCapture[1]?.clientWidth,
-      // elementsToCapture[1]?.clientHeight + 100,
-      // ],
-      // "l"
-      // );
-      // }
-      //
-      // if (i === 2) {
-      // pdf.addPage(
-      // [
-      // canvas.width > elementsToCapture[1]?.clientWidth
-      // ? canvas.width
-      // : elementsToCapture[1]?.clientWidth,
-      // canvas.height > elementsToCapture[1]?.clientHeight
-      // ? canvas.height
-      // : elementsToCapture[1]?.clientHeight,
-      // ],
-      // "l"
-      // );
-      // }
-      // if (i > 0) {
-      //   pdf.addPage(
-      //     [
-      //       canvas.width > elementsToCapture[0]?.clientWidth
-      //         ? canvas.width
-      //         : elementsToCapture[0]?.clientWidth,
-      //       canvas.height > elementsToCapture[0]?.clientHeight
-      //         ? canvas.height
-      //         : elementsToCapture[0]?.clientHeight,
-      //     ],
-      //     "l"
-      //   );
-      // }
       if (i > 0) pdf.addPage();
       // Convert the canvas to an image and add it to the PDF
       const imageData = canvas.toDataURL("image/png");
@@ -274,12 +245,12 @@ const TemplateViewComponent = ({
   };
 
   let orgName = langEn
-    ? orgData?.organizationNameEn
-    : orgData?.organizationNameBn;
+    ? stateOrganizationData?.organizationNameEn
+    : stateOrganizationData?.organizationNameBn;
 
   let orgParentName = langEn
-    ? orgData?.parentNameEN || parentOrganizationData?.nameEn
-    : orgData?.parentNameBN || parentOrganizationData?.nameBn;
+    ? stateOrganizationData?.parentNameEN || parentOrganizationData?.nameEn
+    : stateOrganizationData?.parentNameBN || parentOrganizationData?.nameBn;
 
   let titleName =
     (organogramView
@@ -291,7 +262,7 @@ const TemplateViewComponent = ({
       : updateData?.titleBn) || "";
 
   let versionName = updateData?.isEnamCommittee
-    ? "Enam Committe Report (26/12/1982)"
+    ? "Enam Committee Report (26/12/1982)"
     : langEn
     ? updateData?.organogramDate
       ? generateDateFormat(
@@ -329,7 +300,6 @@ const TemplateViewComponent = ({
               </Label>
             </div>
           </div>
-
           {!updateData?.isEnamCommittee && (
             <div className="d-flex ms-auto">
               <Switch
@@ -372,10 +342,6 @@ const TemplateViewComponent = ({
             orgName: orgName || null,
             orgParentName: orgParentName || null,
           }}
-          // templateName={titleName}
-          // versionName={versionName}
-          // orgName={orgName}
-          // orgParentName={orgParentName}
         />
         <div
           className="position-absolute"
@@ -412,8 +378,8 @@ const TemplateViewComponent = ({
           </ModalBody>
         </Modal>
       </div>
-      {/* For pdf generating start */}
 
+      {/* For pdf generating start */}
       <div
         className="pdfGenarator dataBlock"
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
@@ -438,6 +404,12 @@ const TemplateViewComponent = ({
               inventoryData={inventoryData || []}
               langEn={langEn}
             />
+            {!isObjectNull(updateData?.organogramNoteDto) && (
+              <NotesList
+                data={updateData?.organogramNoteDto || {}}
+                langEn={langEn}
+              />
+            )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
             {(orgName || orgParentName || organogramView) && (
@@ -460,6 +432,7 @@ const TemplateViewComponent = ({
           </div>
         </div>
       </div>
+
       {/* Pdf generating end */}
       <div className="row">
         <div className="col-md-6">
@@ -490,10 +463,18 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          {!organogramView && !orgData?.organizationId && (
+          {!isObjectNull(updateData?.organogramNoteDto) && (
             <div className="mt-3">
               <NotesList
-                data={updateData?.organogramNoteDtoList || []}
+                data={updateData?.organogramNoteDto || {}}
+                langEn={langEn}
+              />
+            </div>
+          )}
+          {!organogramView && !stateOrganizationData?.organizationId && (
+            <div className="mt-3">
+              <NotesReviewApproverList
+                data={updateData?.organogramNoteGroupDtoList || []}
                 langEn={langEn}
               />
             </div>
@@ -519,6 +500,9 @@ const TemplateViewComponent = ({
               isLoading={false}
               data={manpowerData}
               langEn={langEn}
+              isBeginningVersion={isBeginningVersion}
+              organogramId={organogramId}
+              insideModal={false}
             />
           </div>
           {langEn && (
@@ -531,7 +515,6 @@ const TemplateViewComponent = ({
           )}
         </div>
       </div>
-      {/* )} attachmentOrganization */}
 
       {!organogramView && (
         <>
@@ -595,16 +578,17 @@ const TemplateViewComponent = ({
               </Button>
             </ACLWrapper>
           </div>
-          <ConfirmationModal
+          <NoteWithConfirmationModal
             isOpen={isModalOpen}
             onClose={onModalClose}
             onConfirm={onModalActionConfirm}
             isSubmitting={isSubmitting}
             onConfirmLabel={modalButtonLabel}
+            modalAction={modalAction}
             isEng={langEn}
           >
             {modalMsg}
-          </ConfirmationModal>
+          </NoteWithConfirmationModal>
         </>
       )}
     </div>

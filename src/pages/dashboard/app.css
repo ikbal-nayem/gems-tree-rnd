@@ -1,0 +1,9 @@
+.arrow_box {
+  padding: 5px;
+  color: #000000;
+  position: relative;
+  background: #D3D3D3;
+  /* border: 1px solid #000000; */
+  border-radius: 5px;
+  font-size: 10px;
+}

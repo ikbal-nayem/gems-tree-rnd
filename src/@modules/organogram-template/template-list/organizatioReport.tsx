@@ -21,12 +21,9 @@ const OrganizationReport = ({
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const onOrgSelect = (org) => {
-    navigate(
-      ROUTE_L2.ORG_TEMPLATE_VIEW +
-        "?id=" +
-        templateId +
-        `&${objectToQueryString(org)}`
-    );
+    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + templateId, {
+      state: org,
+    });
   };
   return (
     <Modal
