@@ -82,11 +82,7 @@ const NodeForm = ({
   } = useForm<any>({
     defaultValues: {
       postFunctionalityList: [],
-      manpowerList: [
-        {
-          isNewManpower: true,
-        },
-      ],
+      manpowerList: [{}],
     },
   });
 
@@ -138,7 +134,9 @@ const NodeForm = ({
     if (isOpen && !isObjectNull(updateData)) {
       // UPDATE MODE
       let resetData = updateData;
-      if (!isObjectNull(updateData?.manpowerList)) {
+      console.log(isNotEmptyList(updateData?.manpowerList));
+
+      if (isNotEmptyList(updateData?.manpowerList)) {
         resetData = {
           ...updateData,
           manpowerList: updateData?.manpowerList?.map((item, index) => {
@@ -162,6 +160,17 @@ const NodeForm = ({
                 null,
             };
           }),
+        };
+      } else {
+        resetData = {
+          ...updateData,
+          manpowerList: [
+            {
+              isNewManpower: true,
+              serviceTypeDto: cadreObj,
+              serviceTypeKey: cadreObj?.metaKey,
+            },
+          ],
         };
       }
       reset({
@@ -231,7 +240,6 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    // console.log(data);
     onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
@@ -518,7 +526,6 @@ const NodeForm = ({
                         isNotEnamCommittee ? op?.titleBn : op?.titleEn
                       }
                       getOptionValue={(op) => op?.metaKey}
-                      defaultValue={cadreObj}
                       name={`manpowerList.${index}.serviceTypeDto`}
                       onChange={(t) =>
                         setValue(
