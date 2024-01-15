@@ -11,6 +11,7 @@ import {
   ModalFooter,
   Select,
   Textarea,
+  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -75,6 +76,7 @@ const NodeForm = ({
     handleSubmit,
     reset,
     setValue,
+    getValues,
     control,
     formState: { errors },
   } = useForm<any>({
@@ -210,9 +212,26 @@ const NodeForm = ({
     };
   };
 
+  const onPostChange = (index, opt) => {
+    // Post Uniquness Check
+    let noDuplicate = true;
+    const mpList = getValues("manpowerList") || [];
+    if (mpList.length > 1) {
+      for (let i = 0; i < mpList.length; i++) {
+        if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
+          noDuplicate = false;
+          toast.error("'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়");
+          setValue(`manpowerList.${index}.postDTO`, null);
+          break;
+        }
+      }
+    }
+    if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
+  };
+
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-
+    // console.log(data);
     onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
@@ -244,7 +263,7 @@ const NodeForm = ({
                 type="number"
                 registerProperty={{
                   ...register("displayOrder", {
-                    required: " ",
+                    required: true,
                   }),
                 }}
                 isError={!!errors?.displayOrder}
@@ -262,7 +281,7 @@ const NodeForm = ({
                   registerProperty={{
                     ...register("titleBn", {
                       onChange: (e) => onTitleChange(e.target.value, "bn"),
-                      required: " ",
+                      required: true,
                     }),
                   }}
                   suggestionOptions={titleList || []}
@@ -457,7 +476,8 @@ const NodeForm = ({
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.postDTO`}
                       onChange={(t) =>
-                        setValue(`manpowerList.${index}.postId`, t?.id)
+                        // setValue(`manpowerList.${index}.postId`, t?.id)
+                        onPostChange(index, t)
                       }
                       noMargin
                       isError={!!errors?.manpowerList?.[index]?.postDTO}
