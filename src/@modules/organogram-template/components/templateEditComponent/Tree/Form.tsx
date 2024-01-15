@@ -11,6 +11,7 @@ import {
   ModalFooter,
   Select,
   Textarea,
+  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -72,16 +73,13 @@ const NodeForm = ({
     handleSubmit,
     reset,
     setValue,
+    getValues,
     control,
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
       postFunctionalityList: [],
-      manpowerList: [
-        {
-          isNewManpower: true,
-        },
-      ],
+      manpowerList: [{}],
     },
   });
 
@@ -157,6 +155,17 @@ const NodeForm = ({
             };
           }),
         };
+      } else {
+        resetData = {
+          ...updateData,
+          manpowerList: [
+            {
+              isNewManpower: true,
+              serviceTypeDto: cadreObj,
+              serviceTypeKey: cadreObj?.metaKey,
+            },
+          ],
+        };
       }
       reset({
         ...resetData,
@@ -217,6 +226,23 @@ const NodeForm = ({
   //       : null,
   //   };
   // };
+
+  const onPostChange = (index, opt) => {
+    // Post Uniquness Check
+    let noDuplicate = true;
+    const mpList = getValues("manpowerList") || [];
+    if (mpList.length > 1) {
+      for (let i = 0; i < mpList.length; i++) {
+        if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
+          noDuplicate = false;
+          toast.error("'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়");
+          setValue(`manpowerList.${index}.postDTO`, null);
+          break;
+        }
+      }
+    }
+    if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
+  };
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
@@ -448,7 +474,7 @@ const NodeForm = ({
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.postDTO`}
                       onChange={(t) =>
-                        setValue(`manpowerList.${index}.postId`, t?.id)
+                        onPostChange(index, t)
                       }
                       noMargin
                       isError={!!errors?.manpowerList?.[index]?.postDTO}

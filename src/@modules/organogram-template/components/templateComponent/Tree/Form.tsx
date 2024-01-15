@@ -481,10 +481,7 @@ const NodeForm = ({
                       }
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.postDTO`}
-                      onChange={(t) =>
-                        // setValue(`manpowerList.${index}.postId`, t?.id)
-                        onPostChange(index, t)
-                      }
+                      onChange={(t) => onPostChange(index, t)}
                       noMargin
                       isError={!!errors?.manpowerList?.[index]?.postDTO}
                       errorMessage={
