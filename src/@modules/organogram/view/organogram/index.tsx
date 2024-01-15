@@ -8,14 +8,20 @@ import {
 import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 interface ITab {
   templateData: IObject;
   setIsLatestVersion: (d) => void;
+  organogramId: string;
+  setOrganogramId: (id: string) => void;
 }
 
-const OrganogramTab = ({ templateData, setIsLatestVersion }: ITab) => {
+const OrganogramTab = ({
+  organogramId,
+  setOrganogramId,
+  templateData,
+  setIsLatestVersion,
+}: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
@@ -25,11 +31,7 @@ const OrganogramTab = ({ templateData, setIsLatestVersion }: ITab) => {
     {}
   );
   const [verisonList, setVersionList] = useState<IObject[]>([]);
-  const [searchParam] = useSearchParams();
 
-  const [organogramId, setOrganogramId] = useState<string>(
-    searchParam.get("id") || ""
-  );
   useEffect(() => {
     getTemplateInventoryById();
     getManpowerSummaryById();
