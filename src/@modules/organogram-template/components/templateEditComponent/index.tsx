@@ -103,6 +103,7 @@ const TemplateEditComponent = ({
           updateData?.organogramChangeActionDtoList,
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
         organogramNoteDto: updateData?.organogramNoteDto,
+        templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
       });
     }
   }, [updateData]);

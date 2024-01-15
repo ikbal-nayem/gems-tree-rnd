@@ -44,7 +44,7 @@ const OrganogramView = () => {
       })
       .catch((e) => toast.error(e?.message));
   };
-  
+
   return (
     <div className="p-5">
       <div className="d-flex bg-white rounded ps-4">
@@ -61,6 +61,8 @@ const OrganogramView = () => {
           <OrganogramTab
             templateData={templateData}
             setIsLatestVersion={setIsLatestVersion}
+            organogramId={organogramId}
+            setOrganogramId={setOrganogramId}
           />
         </TabBlock>
       </div>
