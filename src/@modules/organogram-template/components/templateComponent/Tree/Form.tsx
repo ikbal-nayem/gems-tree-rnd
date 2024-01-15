@@ -130,11 +130,9 @@ const NodeForm = ({
   }, []);
 
   useEffect(() => {
-    // alert(cadreObj?.metaKey);
     if (isOpen && !isObjectNull(updateData)) {
       // UPDATE MODE
       let resetData = updateData;
-      console.log(isNotEmptyList(updateData?.manpowerList));
 
       if (isNotEmptyList(updateData?.manpowerList)) {
         resetData = {
