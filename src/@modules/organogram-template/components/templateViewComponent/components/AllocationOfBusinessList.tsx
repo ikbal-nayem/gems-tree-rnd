@@ -1,4 +1,4 @@
-import { LABELS } from "@constants/common.constant";
+import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import "../style.scss";
 import { numOfNewLines } from "utility/utils";
@@ -27,12 +27,12 @@ const AllocationOfBusinessForm = ({
               <li key={i}>
                 {langEn ? (
                   numOfNewLines(item?.businessOfAllocationEn) < 1 ? (
-                    item?.businessOfAllocationEn
+                    item?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN
                   ) : (
                     <TextBlock value={item?.businessOfAllocationEn} />
                   )
                 ) : numOfNewLines(item?.businessOfAllocationBn) < 1 ? (
-                  item?.businessOfAllocationBn
+                  item?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN
                 ) : (
                   <TextBlock value={item?.businessOfAllocationBn} />
                 )}

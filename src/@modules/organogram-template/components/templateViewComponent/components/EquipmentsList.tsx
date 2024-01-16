@@ -1,4 +1,4 @@
-import { LABELS } from "@constants/common.constant";
+import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import { IObject, numEnToBn } from "@gems/utils";
 import { isNotEmptyList } from "utility/utils";
@@ -55,7 +55,13 @@ const EquipmentsForm = ({ data, inventoryData, langEn }: IEquipmentsForm) => {
         <ol type="a" className={langEn ? "mb-0" : "bn_ol mb-0"}>
           {data?.length > 0 &&
             data?.map((item, i) => {
-              return <li key={i}>{langEn ? item?.titleEn : item?.titleBn}</li>;
+              return (
+                <li key={i}>
+                  {langEn
+                    ? item?.titleEn || COMMON_LABELS.NOT_ASSIGN
+                    : item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                </li>
+              );
             })}
         </ol>
       </div>

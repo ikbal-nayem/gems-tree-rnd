@@ -102,7 +102,12 @@ export const getPermittedRouteList = (routeList) => {
 
 export const isNotEmptyList = (list) => list && list?.length > 0;
 
-export const numOfNewLines = (val) => (val.match(/\n/g) || []).length;
+export const numOfNewLines = (val) => {
+  if (val?.length) {
+    return (val.match(/\n/g) || []).length;
+  }
+  return 0;
+};
 
 export const numOfTabs = (val) => {
   if (notNullOrUndefined(val))
@@ -160,28 +165,28 @@ export const deFocusById = (id: string) => {
 
 export const chartRespValidate = (resp: any) => {
   return resp?.body?.series?.length > 0 && resp?.body?.categories?.length > 0;
-}
+};
 
 export const donutChartRespValidate = (resp: any) => {
   return resp?.body?.series?.length > 0 && resp?.body?.labels?.length > 0;
-}
+};
 
 export const arryEnToBn = (enArray, step: number = 1): any[] => {
-	let arry = [];
-	for (let i = 0; i < enArray.length; i++) {
-		if (step === 1) {
-			// no Intervals
-			arry.push(numEnToBn(enArray[i]));
-		} else {
-			// Intervals inserted
-			if (i % step === 0) {
-				arry.push(numEnToBn(enArray[i]));
-			} else {
-				arry.push("");
-			}
-		}
-	}
-	return arry;
+  let arry = [];
+  for (let i = 0; i < enArray.length; i++) {
+    if (step === 1) {
+      // no Intervals
+      arry.push(numEnToBn(enArray[i]));
+    } else {
+      // Intervals inserted
+      if (i % step === 0) {
+        arry.push(numEnToBn(enArray[i]));
+      } else {
+        arry.push("");
+      }
+    }
+  }
+  return arry;
 };
 
 export const checkTabPermission = (key: string) => {

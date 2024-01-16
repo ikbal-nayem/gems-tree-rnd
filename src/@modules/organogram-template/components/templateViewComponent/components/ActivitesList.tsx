@@ -1,4 +1,4 @@
-import { LABELS } from "@constants/common.constant";
+import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import "../style.scss";
 
@@ -20,7 +20,9 @@ const ActivitiesForm = ({ data, langEn }: IActivitiesForm) => {
             return (
               <li key={i}>
                 &nbsp;&nbsp;
-                {langEn ? item?.mainActivityEn : item?.mainActivityBn}
+                {langEn
+                  ? item?.mainActivityEn || COMMON_LABELS.NOT_ASSIGN
+                  : item?.mainActivityBn || COMMON_LABELS.NOT_ASSIGN}
               </li>
             );
           })}
