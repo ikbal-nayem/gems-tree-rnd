@@ -15,7 +15,6 @@ import {
   IMeta,
   IObject,
   exportXLSX,
-  initPayloadMeta,
   useDebounce,
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
@@ -28,6 +27,17 @@ import OrgFilter from "./OrgFilter";
 import OrgTable from "./Table";
 import { LABELS } from "./labels";
 
+let initPayloadMeta = {
+  page: 0,
+  limit: 10,
+  sort: [
+    {
+      field: "serialNo",
+      order: "asc",
+    },
+  ],
+};
+
 const List = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,7 +48,7 @@ const List = () => {
   const [options, setOptions] = useState<IObject>();
 
   const [listData, setListData] = useState<any>([]);
-  const [respMeta, setRespMeta] = useState<IMeta>(initPayloadMeta);
+  const [respMeta, setRespMeta] = useState<any>(initPayloadMeta);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [search, setSearch] = useState<string>(
