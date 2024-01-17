@@ -104,6 +104,7 @@ const MyNode = ({
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
               const postExists = isNotEmptyList(postList) && item?.postId;
+              // console.log(item);
 
               const post = postExists
                 ? postList?.find((d) => d?.id === item?.postId)

@@ -223,7 +223,7 @@ const OrganizationTemplateTree = ({
     meta: {
       page: 0,
       limit: 10000000,
-      sort: [{ order: "asc", field: "nameBn" }],
+      sort: [{ order: "asc", field: isNotEnamCommittee ? "nameBn" : "nameEn" }],
     },
     body: {},
   };
