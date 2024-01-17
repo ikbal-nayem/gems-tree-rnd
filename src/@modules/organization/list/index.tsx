@@ -45,7 +45,11 @@ const List = () => {
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
-  const [options, setOptions] = useState<IObject>();
+  const [institutionTypeList, setInstitutionTypeList] = useState<IObject[]>([]);
+  const [organizationTypeList, setOrganizationTypeList] = useState<IObject[]>(
+    []
+  );
+  const [ministryList, setMinistryList] = useState<IObject[]>([]);
 
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<any>(initPayloadMeta);
@@ -72,19 +76,32 @@ const List = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    const insTypes = CoreService.getByMetaTypeList("INSTITUTION_TYPE/asc");
-    const orgTypes = CoreService.getByMetaTypeList("ORG_TYPE/asc");
-    const ministrys = OMSService.getOrgByTypes(
-      "ORG_TYPE_MINISTRY,ORG_TYPE_DIVISION"
-    );
-    Promise.all([insTypes, orgTypes, ministrys]).then(([resp1, resp2, resp3]) =>
-      setOptions({
-        institutionTypes: resp1.body,
-        organizationTypes: resp2.body,
-        ministryList: resp3.body,
-      })
-    );
+    getInstitutionTypesList();
+    getOrganizationTypesList();
+    getMinistryList();
   }, []);
+
+  const getInstitutionTypesList = () => {
+    CoreService.getByMetaTypeList("INSTITUTION_TYPE/asc")
+      .then((res) => {
+        setInstitutionTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
+  const getOrganizationTypesList = () => {
+    CoreService.getByMetaTypeList("ORG_TYPE/asc")
+      .then((res) => {
+        setOrganizationTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
+  const getMinistryList = () => {
+    OMSService.getOrgByTypes("ORG_TYPE_MINISTRY,ORG_TYPE_DIVISION")
+      .then((res) => {
+        setMinistryList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
 
   const getDataList = (reqMeta = null) => {
     const payload = {
@@ -221,7 +238,14 @@ const List = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <OrgFilter options={options} onFilterDone={onFilterDone} />
+          <OrgFilter
+            options={{
+              institutionTypes: institutionTypeList,
+              organizationTypes: organizationTypeList,
+              ministryList: ministryList,
+            }}
+            onFilterDone={onFilterDone}
+          />
           <DownloadMenu fnDownloadExcel={getXLSXStoreList} />
         </div>
 
@@ -252,7 +276,11 @@ const List = () => {
         <OrgForm
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
-          options={options}
+          options={{
+            institutionTypes: institutionTypeList,
+            organizationTypes: organizationTypeList,
+            ministryList: ministryList,
+          }}
           updateData={updateData.current}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
