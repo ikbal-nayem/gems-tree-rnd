@@ -12,6 +12,13 @@ import "./my-node.css";
 // };
 
 const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
+  isNotEmptyList(nodeData?.manpowerList) &&
+    nodeData?.manpowerList.sort((a, b) => {
+      if (!notNullOrUndefined(a.gradeOrder)) return 1;
+      if (!notNullOrUndefined(b.gradeOrder)) return -1;
+      if (a.gradeOrder === b.gradeOrder) return 0;
+      return a.gradeOrder > b.gradeOrder ? 1 : -1;
+    });
   return (
     <div>
       <div

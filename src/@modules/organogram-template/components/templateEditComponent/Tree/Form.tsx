@@ -473,9 +473,7 @@ const NodeForm = ({
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.postDTO`}
-                      onChange={(t) =>
-                        onPostChange(index, t)
-                      }
+                      onChange={(t) => onPostChange(index, t)}
                       noMargin
                       isError={!!errors?.manpowerList?.[index]?.postDTO}
                       errorMessage={
@@ -494,9 +492,13 @@ const NodeForm = ({
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.gradeDTO`}
-                      onChange={(t) =>
-                        setValue(`manpowerList.${index}.gradeId`, t?.id)
-                      }
+                      onChange={(t) => {
+                        setValue(`manpowerList.${index}.gradeId`, t?.id);
+                        setValue(
+                          `manpowerList.${index}.gradeOrder`,
+                          t?.displayOrder
+                        );
+                      }}
                       noMargin
                       isError={!!errors?.manpowerList?.[index]?.gradeDTO}
                     />
