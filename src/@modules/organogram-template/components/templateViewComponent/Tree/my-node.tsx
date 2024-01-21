@@ -22,8 +22,8 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
   return (
     <div
       className={`position rounded border border-gray-400 border-1 ${
-        nodeData?.isDeleted ? "text-line-through-color-red" : ""
-      }`}
+        nodeData?.isDeleted ? "text-line-through-color-red " : " "
+      }${nodeData?.isAddition ? "text-decoration-underline" : ""}`}
     >
       <div className="bg-light rounded-top d-flex justify-content-between">
         {!nodeData?.isDeleted && (
@@ -52,7 +52,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             ? longLineBreaker(nodeData.titleEn || "", 17)
             : longLineBreaker(nodeData.titleBn || "", 20)}
         </p>
-        <p className="mb-0 fs-8">{manPower}</p>
+        <div>
+          <p className="mb-0 fs-8 text-decoration-nonw">{manPower}</p>
+        </div>
       </div>
 
       <div
@@ -72,7 +74,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                         : item?.postType === "permanent"
                         ? "text-gray-900"
                         : ""
-                    } ${item?.isDeleted ? "text-line-through-color-red" : ""}`}
+                    } ${
+                      item?.isDeleted ? "text-line-through-color-red " : " "
+                    }${item?.isAddition ? "text-decoration-underline" : ""}`}
                   >
                     <p className="mb-0 fs-8">
                       {langEn

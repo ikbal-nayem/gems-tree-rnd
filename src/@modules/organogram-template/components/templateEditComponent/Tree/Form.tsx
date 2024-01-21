@@ -161,6 +161,7 @@ const NodeForm = ({
           manpowerList: [
             {
               isNewManpower: true,
+              isAddition: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
             },
@@ -175,6 +176,7 @@ const NodeForm = ({
         manpowerList: [
           {
             isNewManpower: true,
+            isAddition: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
           },
@@ -205,28 +207,6 @@ const NodeForm = ({
     }
   };
 
-  // const setEnIntoBnFields = (data) => {
-  //   let postFunctionalityListNew = [];
-  //   if (isNotEmptyList(data?.postFunctionalityList)) {
-  //     data?.postFunctionalityList.forEach((pf) => {
-  //       postFunctionalityListNew.push({
-  //         functionalityBn: pf?.functionalityEn,
-  //         functionalityEn: pf?.functionalityEn,
-  //       });
-  //     });
-  //   }
-
-  //   return {
-  //     ...data,
-  //     postFunctionalityList: postFunctionalityListNew,
-  //     manpowerList: isNotEmptyList(data?.manpowerList)
-  //       ? data?.manpowerList?.map((item) => {
-  //           return { ...item };
-  //         })
-  //       : null,
-  //   };
-  // };
-
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
     let noDuplicate = true;
@@ -246,6 +226,12 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
+    if (isObjectNull(updateData)) {
+      data = {
+        ...data,
+        isAddition: true,
+      };
+    }
 
     onSubmit(data);
   };
@@ -443,6 +429,7 @@ const NodeForm = ({
                   onClick={() => {
                     manpowerListAppend({
                       isNewManpower: true,
+                      isAddition: true,
                       serviceTypeDto: cadreObj,
                       serviceTypeKey: cadreObj?.metaKey,
                     });

@@ -23,19 +23,21 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
     <div>
       <div
         className={`position rounded ${
-          nodeData?.isDeleted ? "text-line-through-color-red" : ""
-        }`}
+          nodeData?.isDeleted ? "text-line-through-color-red " : " "
+        }${nodeData?.isAddition ? "text-decoration-underline" : ""}`}
       >
         <div className="d-flex justify-content-between">
           {/* <IconButton iconName="more_vert" color="warning" iconSize={16}/> */}
           {!nodeData?.isDeleted && (
-            <Icon
-              icon="edit_square"
-              size={20}
-              color="warning"
-              onClick={() => treeDispatch("EDIT", nodeData)}
-              hoverTitle={"এই নোড আপডেট করুন"}
-            />
+            <div>
+              <Icon
+                icon="edit_square"
+                size={20}
+                color="warning"
+                onClick={() => treeDispatch("EDIT", nodeData)}
+                hoverTitle={"এই নোড আপডেট করুন"}
+              />
+            </div>
           )}
           <div>
             <p className="p-1 mb-0 fs-7">
@@ -72,8 +74,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = numEnToBn(mp);
-              const postExists =
-                isNotEmptyList(postList) && item?.postId;
+              const postExists = isNotEmptyList(postList) && item?.postId;
 
               const post = postExists
                 ? postList?.find((d) => d?.id === item?.postId)
@@ -94,7 +95,9 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                           ? "text-gray-900"
                           : ""
                       } ${
-                        item?.isDeleted ? "text-line-through-color-red" : ""
+                        item?.isDeleted ? "text-line-through-color-red " : " "
+                      }${
+                        item?.isAddition ? "text-decoration-underline" : ""
                       }`}
                     >
                       <p className="mb-0 fs-7">{mp} </p>
