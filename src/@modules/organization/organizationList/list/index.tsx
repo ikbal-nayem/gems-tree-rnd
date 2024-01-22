@@ -26,6 +26,7 @@ import OrgForm from "./Form";
 import OrgFilter from "./OrgFilter";
 import OrgTable from "./Table";
 import { LABELS } from "./labels";
+import { MENU } from "@constants/menu-titles.constant";
 
 let initPayloadMeta = {
   page: 0,
@@ -219,7 +220,7 @@ const List = () => {
 
   return (
     <>
-      <PageTitle>{MENU_LABEL.BN.MASTER_ORG}</PageTitle>
+      <PageTitle>{MENU.BN.ORANIZATION}</PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন

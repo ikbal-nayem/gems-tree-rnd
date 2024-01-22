@@ -218,4 +218,15 @@ export const OMSService = {
       );
     },
   },
+
+  getOrganizationTypeList: async (payload): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "organization-type/get-list", payload),
+  organizationTypeCreate: async (payload): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "organization-type/create", payload),
+
+  organizationTypeUpdate: async (payload): Promise<any> =>
+    await axiosIns.put(OMS_SERVICE + "organization-type/update", payload),
+
+  organizationTypeDelete: async (payload): Promise<any> =>
+    await axiosIns.put(OMS_SERVICE + "organization-type/delete-all", payload),
 };

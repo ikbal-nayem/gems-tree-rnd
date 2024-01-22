@@ -12,12 +12,12 @@ const Organization = () => {
     {
       label: "তালিকা",
       key: "ORGANIZATION_LIST",
-      isHide: checkTabPermission(ROUTE_KEY.OMS_MASTER_ORGANIZATION_LIST),
+      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_LIST_LIST),
     },
     {
       label: "ট্রি",
       key: "ORGANIZATION_TREE",
-      isHide: checkTabPermission(ROUTE_KEY.OMS_MASTER_ORGANIZATION_TREE),
+      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_LIST_TREE),
     },
   ];
   const [searchParam, setSearchParam] = useSearchParams();

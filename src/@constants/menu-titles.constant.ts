@@ -8,6 +8,9 @@ export const MENU = {
     ORGANOGRAM: "অর্গানোগ্রাম",
     ORGANOGRAM_LIST: "সংরক্ষিত অর্গানোগ্রাম সমূহ",
     POST_CONFIG: "পদবি কনফিগারেশন",
+    ORANIZATION: "প্রতিষ্ঠান",
+    ORANIZATION_LIST: "প্রতিষ্ঠানের তালিকা",
+    ORANIZATION_TYPE: "প্রতিষ্ঠানের ধরণ",
   },
 
   EN: {
@@ -19,5 +22,8 @@ export const MENU = {
     ORGANOGRAM: "Organogram",
     ORGANOGRAM_LIST: "Saved Organograms",
     POST_CONFIG: "Post Configuration",
+    ORANIZATION: "Organization",
+    ORANIZATION_LIST: "Organization List",
+    ORANIZATION_TYPE: "Organization Type",
   },
 };

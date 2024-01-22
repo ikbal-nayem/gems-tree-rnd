@@ -4,7 +4,7 @@ export const ROUTE_L1 = {
   OMS_ORGANOGRAM: "/organogram",
   OMS_ORG_EMPLOYEE_LIST: "/employee-list",
   OMS_POST_CONFIG: "/post-config",
-  OMS_MASTER_ORGANIZATION: "/organization",
+  OMS_ORGANIZATION: "/organization",
 };
 export const ROUTE_L2 = {
   ORG_TEMPLATE_CREATE: ROUTE_L1.ORG_TEMPLATE + "/create",
@@ -14,4 +14,6 @@ export const ROUTE_L2 = {
   OMS_PROPOSAL_LIST: ROUTE_L1.ORG_TEMPLATE + "/proposal-list",
   OMS_ORGANOGRAM_LIST: ROUTE_L1.OMS_ORGANOGRAM + "/list",
   OMS_ORGANOGRAM_VIEW: ROUTE_L1.OMS_ORGANOGRAM + "/view",
+  OMS_ORGANIZATION_LIST: ROUTE_L1.OMS_ORGANIZATION + "/list",
+  OMS_ORGANIZATION_TYPE: ROUTE_L1.OMS_ORGANIZATION + "/type",
 };

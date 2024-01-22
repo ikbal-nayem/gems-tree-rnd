@@ -72,10 +72,24 @@ const menuData = [
     icon: "manage_accounts",
   },
   {
-    routeKey: ROUTE_KEY.OMS_MASTER_ORGANIZATION,
-    link: ROUTE_L1.OMS_MASTER_ORGANIZATION,
-    title: LABELS.BN.MASTER_ORG,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION,
+    link: ROUTE_L1.OMS_ORGANIZATION,
+    title: MENU.BN.ORANIZATION,
     icon: "corporate_fare",
+    childrens: [
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANIZATION_LIST,
+        link: ROUTE_L2.OMS_ORGANIZATION_LIST,
+        title: MENU.BN.ORANIZATION_LIST,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
+        link: ROUTE_L2.OMS_ORGANIZATION_TYPE,
+        title: MENU.BN.ORANIZATION_TYPE,
+        hasBullet: true,
+      },
+    ],
   },
 ];
 
