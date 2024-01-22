@@ -1,15 +1,9 @@
-import { Icon } from "@gems/components";
-// import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
+import { Icon } from "@gems/components";
 import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
-// import { Dropdown, DropdownItem } from "../Dropdown";
-// import { Button, Modal } from "react-bootstrap";
-// const propTypes = {
-//   nodeData: PropTypes.object.isRequired
-// };
 
 const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
   isNotEmptyList(nodeData?.manpowerList) &&
@@ -96,9 +90,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                           : ""
                       } ${
                         item?.isDeleted ? "text-line-through-color-red " : " "
-                      }${
-                        item?.isAddition ? "text-decoration-underline" : ""
-                      }`}
+                      }${item?.isAddition ? "text-decoration-underline" : ""}`}
                     >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>

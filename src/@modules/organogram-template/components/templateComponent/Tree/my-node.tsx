@@ -1,15 +1,9 @@
 import { Icon } from "@gems/components";
-// import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
 import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
-// import { Dropdown, DropdownItem } from "../Dropdown";
-// import { Button, Modal } from "react-bootstrap";
-// const propTypes = {
-//   nodeData: PropTypes.object.isRequired
-// };
 
 const MyNode = ({
   nodeData,

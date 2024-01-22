@@ -46,8 +46,6 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
         )}
 
         <p className="mb-0 fs-8  text-start">
-          {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
-          {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn
             ? longLineBreaker(nodeData.titleEn || "", 17)
             : longLineBreaker(nodeData.titleBn || "", 20)}
@@ -104,9 +102,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
         <div className="pt-3 ps-2 text-start ">
-          {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
           <TextBlock value={nodeData?.commentNode} />
-          {/* {nodeData?.commentNode} */}
         </div>
       )}
     </div>
