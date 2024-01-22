@@ -12,11 +12,11 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import TemplateTable from "./Table";
+import OrganogramTable from "./Table";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 10,
+  limit: 20,
   sort: [
     {
       order: "desc",
@@ -25,7 +25,7 @@ const initMeta: IMeta = {
   ],
 };
 
-const TemplateList = () => {
+const OrganogramList = ({ status }) => {
   const [dataList, setDataList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -35,6 +35,25 @@ const TemplateList = () => {
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
+
+  let service, title;
+  switch (status) {
+    case "draft":
+      service = OMSService.FETCH.draftOrganogramList;
+      title = MENU.BN.ORGANOGRAM_LIST_ALL;
+      break;
+    case "inreview":
+      service = OMSService.FETCH.inReviewOrganogramList;
+      title = MENU.BN.ORGANOGRAM_LIST_INREVIEW;
+      break;
+    case "inapprove":
+      service = OMSService.FETCH.inApproveOrganogramList;
+      title = MENU.BN.ORGANOGRAM_LIST_INAPPROVE;
+      break;
+    default:
+      service = OMSService.FETCH.organogramList;
+      title = MENU.BN.APPROVED_ORGANOGRAM_LIST;
+  }
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -48,9 +67,6 @@ const TemplateList = () => {
   }, [searchParams]);
 
   const getDataList = (reqMeta = null) => {
-    topProgress.show();
-    setLoading(true);
-
     const payload = {
       meta: searchKey
         ? reqMeta
@@ -59,13 +75,16 @@ const TemplateList = () => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        isTemplate: false,
+        isTemplate: status !== "approved",
       },
     };
 
     const reqData = { ...payload, body: payload?.body };
 
-    OMSService.getTemplateList(reqData)
+    // if (status === "approved") {
+    topProgress.show();
+    setLoading(true);
+    service(reqData)
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
@@ -79,6 +98,7 @@ const TemplateList = () => {
         topProgress.hide();
         setLoading(false);
       });
+    // }
   };
 
   const onPageChanged = (metaParams: IMeta) => {
@@ -110,7 +130,7 @@ const TemplateList = () => {
 
   return (
     <>
-      <PageTitle> {MENU.BN.ORGANOGRAM_LIST} </PageTitle>
+      <PageTitle> {title} </PageTitle>
       <div className="card p-4">
         {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
@@ -147,18 +167,19 @@ const TemplateList = () => {
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="p-4">
-          <TemplateTable
+          <OrganogramTable
             dataList={dataList}
             getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
+            status={status}
           >
             <Pagination
               meta={respMeta}
               pageNeighbours={2}
               onPageChanged={onPageChanged}
             />
-          </TemplateTable>
+          </OrganogramTable>
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
@@ -167,4 +188,4 @@ const TemplateList = () => {
   );
 };
 
-export default TemplateList;
+export default OrganogramList;
