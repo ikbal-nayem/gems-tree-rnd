@@ -1,4 +1,4 @@
-import { LABELS as MENU_LABEL } from "@constants/common.constant";
+import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
   Button,
@@ -26,7 +26,6 @@ import OrgForm from "./Form";
 import OrgFilter from "./OrgFilter";
 import OrgTable from "./Table";
 import { LABELS } from "./labels";
-import { MENU } from "@constants/menu-titles.constant";
 
 let initPayloadMeta = {
   page: 0,

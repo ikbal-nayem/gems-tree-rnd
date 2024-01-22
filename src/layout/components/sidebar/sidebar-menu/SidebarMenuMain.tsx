@@ -1,10 +1,9 @@
+import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
+import { MENU } from "@constants/menu-titles.constant";
+import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { useAuth } from "@context/Auth";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
-import { ROUTE_KEY } from "@constants/route-keys.constant";
-import { MENU } from "@constants/menu-titles.constant";
-import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
-import { LABELS } from "@constants/common.constant";
 
 const menuData = [
   // {
