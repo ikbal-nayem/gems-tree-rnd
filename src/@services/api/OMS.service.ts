@@ -190,6 +190,30 @@ export const OMSService = {
         OMS_SERVICE + "organogram-proposal/get-list",
         payload
       ),
+
+    draftOrganogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-template/custom/draft/get-list",
+        payload
+      ),
+
+    inReviewOrganogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-template/custom/review/get-list",
+        payload
+      ),
+
+    inApproveOrganogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-template/custom/approve/get-list",
+        payload
+      ),
+
+    organogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-organogram/custom/get-list",
+        payload
+      ),
   },
 
   SAVE: {

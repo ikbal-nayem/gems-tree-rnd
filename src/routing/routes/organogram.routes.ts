@@ -6,9 +6,24 @@ import { getPermittedRouteList } from "utility/utils";
 
 let routeList = [
   {
-    link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
-    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
-    element: lazy(() => import("@modules/organogram/list")),
+    link: ROUTE_L2.OMS_ORGANOGRAM_APPROVED_LIST,
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_APPROVED_LIST,
+    element: lazy(() => import("@modules/organogram/approved-list")),
+  },
+  {
+    link: ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST,
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_DRAFT_LIST,
+    element: lazy(() => import("@modules/organogram/draft-list")),
+  },
+  {
+    link: ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST,
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INREVIEW_LIST,
+    element: lazy(() => import("@modules/organogram/inreview-list")),
+  },
+  {
+    link: ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST,
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INAPPROVE_LIST,
+    element: lazy(() => import("@modules/organogram/inapprove-list")),
   },
 ];
 

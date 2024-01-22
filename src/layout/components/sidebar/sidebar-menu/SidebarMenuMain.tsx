@@ -46,9 +46,27 @@ const menuData = [
         hasBullet: true,
       },
       {
-        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
-        link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
-        title: MENU.BN.ORGANOGRAM_LIST,
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_DRAFT_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST,
+        title: MENU.BN.ORGANOGRAM_LIST_ALL,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INREVIEW_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST,
+        title: MENU.BN.ORGANOGRAM_LIST_INREVIEW,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INAPPROVE_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST,
+        title: MENU.BN.ORGANOGRAM_LIST_INAPPROVE,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_APPROVED_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_APPROVED_LIST,
+        title: MENU.BN.APPROVED_ORGANOGRAM_LIST,
         hasBullet: true,
       },
       // {
