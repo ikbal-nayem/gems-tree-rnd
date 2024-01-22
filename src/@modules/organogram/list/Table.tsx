@@ -13,12 +13,15 @@ import {
 import {
   COMMON_LABELS,
   DATE_PATTERN,
+  IColors,
   IMeta,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { statusColorMapping } from "utility/colorMap";
+import { statusMapper } from "utility/textMapping";
 import { LABELS } from "./labels";
 import OrganogramClone from "./organogramClone";
 
@@ -28,6 +31,7 @@ type TableProps = {
   isLoading: boolean;
   respMeta?: IMeta;
   getDataList: () => void;
+  status: "draft" | "inreview" | "inapprove" | "approved";
 };
 
 const OrganogramTable: FC<TableProps> = ({
@@ -36,13 +40,23 @@ const OrganogramTable: FC<TableProps> = ({
   isLoading,
   respMeta,
   getDataList,
+  status,
 }) => {
-  const columns: ITableHeadColumn[] = [
-    { title: COMMON_LABELS.SL_NO, width: 50 },
-    { title: LABELS.ORGANIZATION_NAME, width: 250 },
-    { title: LABELS.ORGANOGRAM_DATE, width: 100 },
-    { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
-  ];
+  let columns: ITableHeadColumn[] =
+    status === "draft"
+      ? [
+          { title: COMMON_LABELS.SL_NO, width: 50 },
+          { title: LABELS.ORGANIZATION_NAME, width: 250 },
+          { title: LABELS.ORGANOGRAM_DATE, width: 100 },
+          { title: LABELS.STATUS, width: 100, align: "center" },
+          { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
+        ]
+      : [
+          { title: COMMON_LABELS.SL_NO, width: 50 },
+          { title: LABELS.ORGANIZATION_NAME, width: 250 },
+          { title: LABELS.ORGANOGRAM_DATE, width: 100 },
+          { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
+        ];
 
   const navigate = useNavigate();
   //   const navigateToDetails = (id: string) => {
@@ -51,7 +65,6 @@ const OrganogramTable: FC<TableProps> = ({
   const navigateToView = (id: string) => {
     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
   };
-
 
   const [template, setTemplate] = useState<any>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -84,6 +97,21 @@ const OrganogramTable: FC<TableProps> = ({
                     : COMMON_LABELS.NOT_ASSIGN
                 }
               />
+
+              {status === "draft" && (
+                <TableCell
+                  tagText={
+                    statusMapper(item?.status) || COMMON_LABELS.NOT_ASSIGN
+                  }
+                  textAlign="center"
+                  tagColor={
+                    statusColorMapping(
+                      item?.status || "IN_REVIEW",
+                      "class"
+                    ) as IColors
+                  }
+                />
+              )}
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
                   btnIcon={true}
@@ -111,7 +139,6 @@ const OrganogramTable: FC<TableProps> = ({
             </TableRow>
           ))}
         </Table>
-        
       ) : isLoading ? (
         <ContentPreloader />
       ) : (
