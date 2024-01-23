@@ -223,6 +223,11 @@ export const OMSService = {
         OMS_SERVICE + "organization-type/get-all-org-group-by-org-type",
         payload
       ),
+
+    organizationsByGroupId: async (id): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-all-org-by-org-group-id/" + id
+      ),
   },
 
   SAVE: {

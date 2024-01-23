@@ -185,15 +185,15 @@ const TemplateComponent = ({
       if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
     }
 
-    data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
-      (d) => ({
-        organizationId: !isObjectNull(updateData)
-          ? d?.organizationId || d?.id
-          : d?.id,
-        organizationNameEn: d?.nameEn || d?.organizationNameEn,
-        organizationNameBn: d?.nameBn || d?.organizationNameBn,
-      })
-    );
+    // data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
+    //   (d) => ({
+    //     organizationId: !isObjectNull(updateData)
+    //       ? d?.organizationId || d?.id
+    //       : d?.id,
+    //     organizationNameEn: d?.nameEn || d?.organizationNameEn,
+    //     organizationNameBn: d?.nameBn || d?.organizationNameBn,
+    //   })
+    // );
     if (data.organogramChangeActionDtoList?.length > 0) {
       data.organogramChangeActionDtoList =
         !data?.isEnamCommittee &&
@@ -206,8 +206,9 @@ const TemplateComponent = ({
     }
 
     if (
-      data?.templateOrganizationsDtoList === undefined ||
-      data?.templateOrganizationsDtoList?.length <= 0
+      // data?.templateOrganizationsDtoList === undefined ||
+      // data?.templateOrganizationsDtoList?.length <= 0
+      !notNullOrUndefined(data?.organizationGroup)
     ) {
       setNotOrganizationData(true);
       focusById("organizationBlock", true);
@@ -223,6 +224,7 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationHeader: getValues("organizationHeader"),
       organizationHeaderMsc: getValues("organizationHeaderMsc"),
+      organizationGroup: data?.organizationGroup?.orgGroupBn,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
@@ -231,8 +233,9 @@ const TemplateComponent = ({
           }
         : null,
     };
+    console.log(reqPayload);
 
-    onSubmit(reqPayload);
+    // onSubmit(reqPayload);
   };
 
   const onIsEnamCommitteeChange = (checked: boolean) => {
@@ -340,7 +343,9 @@ const TemplateComponent = ({
               placeholder="organizationHeaderMsc লিখুন"
               // isRequired={true}
               defaultValue={
-                !isObjectNull(updateData) ? updateData?.organizationHeaderMsc : ""
+                !isObjectNull(updateData)
+                  ? updateData?.organizationHeaderMsc
+                  : ""
               }
               registerProperty={{
                 ...register("organizationHeaderMsc", {
@@ -385,7 +390,13 @@ const TemplateComponent = ({
             )}
         </div>
       </div>
-
+      <div className="mb-4">
+        <Organizations
+          formProps={formProps}
+          notOrganizationData={notOrganizationData}
+          setNotOrganizationData={setNotOrganizationData}
+        />
+      </div>
       <div className="border border-secondary mb-3">
         <OrganizationTemplateTree
           treeData={treeData}
@@ -413,21 +424,14 @@ const TemplateComponent = ({
               isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
-          <div className="col-md-6 mt-3">
-            <Organizations
-              formProps={formProps}
-              notOrganizationData={notOrganizationData}
-              setNotOrganizationData={setNotOrganizationData}
-            />
-          </div>
-          <div className="col-md-6 mt-3">
-            <AbbreviationForm formProps={formProps} />
-          </div>
           <div className="col-12 mt-3">
             <AttachmentForm
               formProps={formProps}
               isNotEnamCommittee={isNotEnamCommittee}
             />
+          </div>
+          <div className="col-md-6 mt-3">
+            <AbbreviationForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-3">
             <NotesForm formProps={formProps} />
