@@ -1,8 +1,8 @@
-import ACLWrapper from "@acl/ACLWrapper";
-import { ROLES } from "@gems/utils";
-import Dammy from "./components/Dammy";
-import GenderBasedManpower from "./genderBasedManpower";
-import RankBasedManpower from "./rankBasedManpower";
+// import ACLWrapper from "@acl/ACLWrapper";
+// import { ROLES } from "@gems/utils";
+// import Dammy from "./components/Dammy";
+// import GenderBasedManpower from "./genderBasedManpower";
+// import RankBasedManpower from "./rankBasedManpower";
 import "./app.css";
 import ProposalStatistics from "./proposalStatistics";
 
