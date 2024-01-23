@@ -111,6 +111,8 @@ const TemplateComponent = ({
         isEnamCommittee: updateData?.isEnamCommittee,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        organizationHeader: updateData?.organizationHeader,
+        organizationHeaderMsc: updateData?.organizationHeaderMsc,
         organogramDate: updateData?.organogramDate,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
@@ -219,6 +221,8 @@ const TemplateComponent = ({
       ...data,
       titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
+      organizationHeader: getValues("organizationHeader"),
+      organizationHeaderMsc: getValues("organizationHeaderMsc"),
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
@@ -309,6 +313,44 @@ const TemplateComponent = ({
               }}
               isError={!!errors?.titleEn}
               errorMessage={errors?.titleEn?.message as string}
+            />
+          </div>
+          <div className="col-md-6 col-12">
+            <Input
+              label="organizationHeader"
+              placeholder="organizationHeader লিখুন"
+              // isRequired={true}
+              defaultValue={
+                !isObjectNull(updateData) ? updateData?.organizationHeader : ""
+              }
+              registerProperty={{
+                ...register("organizationHeader", {
+                  // required: true,
+                  // onChange: (e) => duplicateTitleCheck(e.target.value, true),
+                  // validate: enCheck,
+                }),
+              }}
+              // isError={!!errors?.organizationHeader}
+              // errorMessage={errors?.organizationHeader?.message as string}
+            />
+          </div>
+          <div className="col-md-6 col-12">
+            <Input
+              label="organizationHeaderMsc"
+              placeholder="organizationHeaderMsc লিখুন"
+              // isRequired={true}
+              defaultValue={
+                !isObjectNull(updateData) ? updateData?.organizationHeaderMsc : ""
+              }
+              registerProperty={{
+                ...register("organizationHeaderMsc", {
+                  // required: true,
+                  // onChange: (e) => duplicateTitleCheck(e.target.value, true),
+                  // validate: enCheck,
+                }),
+              }}
+              // isError={!!errors?.organizationHeaderMsc}
+              // errorMessage={errors?.organizationHeaderMsc?.message as string}
             />
           </div>
           <div className="col-md-6 col-12" id="orgDateBlock">

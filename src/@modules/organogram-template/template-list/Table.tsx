@@ -11,12 +11,10 @@ import {
   Table,
   TableCell,
   TableRow,
-  Tag,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
-  IColors,
   IMeta,
   IObject,
   generateDateFormat,
@@ -26,7 +24,6 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { statusColorMapping } from "utility/colorMap";
 import { LABELS } from "./labels";
 // import OrganizationReport from "./organizatioReport";
 import TemplateClone from "./templateClone";
@@ -68,7 +65,7 @@ const TemplateTable: FC<TableProps> = ({
     { title: LABELS.NAME, width: 250 },
     { title: LABELS.ORGANOGRAM_DATE, width: 50 },
     { title: LABELS.IS_ENAM_COMMITTEE, width: 50, align: "center" },
-    { title: LABELS.STATUS, width: 100, align: "center" },
+    // { title: LABELS.STATUS, width: 100, align: "center" },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
@@ -142,7 +139,7 @@ const TemplateTable: FC<TableProps> = ({
                 }
               />
               <TableCell textAlign="center" isActive={item?.isEnamCommittee} />
-              <TableCell>
+              {/* <TableCell>
                 <div className="d-flex justify-content-center">
                   <Tag
                     title={item?.status || COMMON_LABELS.NOT_ASSIGN}
@@ -154,7 +151,7 @@ const TemplateTable: FC<TableProps> = ({
                     }
                   />
                 </div>
-              </TableCell>
+              </TableCell> */}
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
                   btnIcon={true}
