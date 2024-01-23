@@ -165,7 +165,7 @@ const OrganizationTypeList = () => {
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organizationTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Employee list")
+          : exportXLSX(exportData(res?.body || []), "Organization Type list")
       )
       .catch((err) => toast.error(err?.message))
       .finally(() => topProgress.hide());
@@ -179,7 +179,6 @@ const OrganizationTypeList = () => {
       "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
       "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
       লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
-      কোড: d?.orgCode || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
     }));
 

@@ -17,7 +17,6 @@ const columns: ITableHeadColumn[] = [
   { title: "গ্রুপ (বাংলা)", minWidth: 100 },
   { title: "গ্রুপ (ইংরেজি)", minWidth: 100 },
   { title: "লেভেল", minWidth: 75 },
-  { title: "কোড" },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
   { title: COMMON_LABELS.ACTION },
 ];
@@ -49,7 +48,6 @@ const GradeTable: FC<GradeTableProps> = ({
               <TableCell text={data?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.orgLevel || COMMON_LABELS.NOT_ASSIGN} />
 
-              <TableCell text={data?.orgCode || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell>
                 {data?.isActive ? (
                   <Icon icon="done" color="success" size={16} />
