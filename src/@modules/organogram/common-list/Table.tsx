@@ -10,6 +10,7 @@ import {
   Table,
   TableCell,
   TableRow,
+  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -19,6 +20,7 @@ import {
   IObject,
   generateDateFormat,
   generateRowNumBn,
+  notNullOrUndefined,
 } from "@gems/utils";
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -48,6 +50,13 @@ const OrganogramTable: FC<TableProps> = ({
   onDelete,
   status,
 }) => {
+  const [templateId, setTemplateId] = useState<string>("");
+  const [isReportOpen, setReportOpen] = useState<boolean>(false);
+  const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
+  const onReportClose = () => {
+    setAttachedOrgList(null);
+    setReportOpen(false);
+  };
   let columns: ITableHeadColumn[] =
     status === "draft"
       ? [
@@ -82,8 +91,30 @@ const OrganogramTable: FC<TableProps> = ({
         })
       );
   };
-  const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
+  // const navigateToView = (id: string) => {
+  //   navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
+  // };
+  const onReportView = (item: IObject) => {
+    setTemplateId(item?.id);
+    if (item?.id) {
+      OMSService.getAttachedOrganizationByTemplateId(item?.id)
+        .then((resp) => {
+          if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
+            toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
+            return;
+          }
+          setAttachedOrgList(resp?.body || []);
+
+          if (resp?.body?.length === 1) {
+            navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
+              state: resp?.body?.[0],
+            });
+          } else {
+            setReportOpen(true);
+          }
+        })
+        .catch((e) => console.log(e?.message));
+    }
   };
 
   // const [template, setTemplate] = useState<any>();
@@ -138,7 +169,7 @@ const OrganogramTable: FC<TableProps> = ({
                   btnContent={<Icon icon="more_vert" size={20} />}
                   id={item?.id}
                 >
-                  <DropdownItem onClick={() => navigateToView(item?.id)}>
+                  <DropdownItem onClick={() => onReportView(item)}>
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>

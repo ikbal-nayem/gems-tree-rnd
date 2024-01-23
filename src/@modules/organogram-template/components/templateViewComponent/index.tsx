@@ -133,13 +133,13 @@ const TemplateViewComponent = ({
 
   const onModalActionConfirm = (note = null) => {
     if (modalAction === "SEND_TO_REVIEW") {
-      onStatusChange("IN_REVIEW");
+      onStatusChange("IN_REVIEW", ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
     } else if (modalAction === "BACK_TO_REVIEW") {
-      onStatusChange("IN_REVIEW", note);
+      onStatusChange("IN_REVIEW", ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST, note);
     } else if (modalAction === "BACK_TO_NEW") {
-      onStatusChange("NEW", note);
+      onStatusChange("NEW", ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST, note);
     } else if (modalAction === "SEND_TO_APPROVE") {
-      onStatusChange("IN_APPROVE");
+      onStatusChange("IN_APPROVE", ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST);
     } else if (modalAction === "APPROVE") {
       onTemplateApprove();
     }
@@ -153,7 +153,7 @@ const TemplateViewComponent = ({
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
 
-  const onStatusChange = (status: string, note = null) => {
+  const onStatusChange = (status: string, destination, note = null) => {
     setIsSubmitting(true);
     OMSService.updateTemplateStatusById(updateData?.id, status, {
       note: note,
@@ -161,7 +161,7 @@ const TemplateViewComponent = ({
     })
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        navigate(destination);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitting(false));
@@ -172,7 +172,7 @@ const TemplateViewComponent = ({
     OMSService.approveTemplateById(updateData?.id)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setApproveLoading(false));
