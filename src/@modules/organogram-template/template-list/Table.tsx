@@ -12,7 +12,6 @@ import {
   TableCell,
   TableRow,
   Tag,
-  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -22,7 +21,6 @@ import {
   IObject,
   generateDateFormat,
   generateRowNumBn,
-  notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
@@ -30,7 +28,7 @@ import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { statusColorMapping } from "utility/colorMap";
 import { LABELS } from "./labels";
-import OrganizationReport from "./organizatioReport";
+// import OrganizationReport from "./organizatioReport";
 import TemplateClone from "./templateClone";
 
 type TableProps = {
@@ -51,15 +49,15 @@ const TemplateTable: FC<TableProps> = ({
   onDelete,
 }) => {
   const [template, setTemplate] = useState<any>();
-  const [templateId, setTemplateId] = useState<string>("");
+  // const [templateId, setTemplateId] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isReportOpen, setReportOpen] = useState<boolean>(false);
-  const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
+  // const [isReportOpen, setReportOpen] = useState<boolean>(false);
+  // const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
   const onClose = () => setIsOpen(false);
-  const onReportClose = () => {
-    setAttachedOrgList(null);
-    setReportOpen(false);
-  };
+  // const onReportClose = () => {
+  //   setAttachedOrgList(null);
+  //   setReportOpen(false);
+  // };
   const onClone = (template) => {
     setTemplate(template);
     setIsOpen(true);
@@ -96,28 +94,28 @@ const TemplateTable: FC<TableProps> = ({
     navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
   };
 
-  const onReportView = (item) => {
-    setTemplateId(item?.id);
-    if (item?.id) {
-      OMSService.getAttachedOrganizationByTemplateId(item?.id)
-        .then((resp) => {
-          if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
-            toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
-            return;
-          }
-          setAttachedOrgList(resp?.body || []);
+  // const onReportView = (item) => {
+  //   setTemplateId(item?.id);
+  //   if (item?.id) {
+  //     OMSService.getAttachedOrganizationByTemplateId(item?.id)
+  //       .then((resp) => {
+  //         if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
+  //           toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
+  //           return;
+  //         }
+  //         setAttachedOrgList(resp?.body || []);
 
-          if (resp?.body?.length === 1) {
-            navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
-              state: resp?.body?.[0],
-            });
-          } else {
-            setReportOpen(true);
-          }
-        })
-        .catch((e) => console.log(e?.message));
-    }
-  };
+  //         if (resp?.body?.length === 1) {
+  //           navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
+  //             state: resp?.body?.[0],
+  //           });
+  //         } else {
+  //           setReportOpen(true);
+  //         }
+  //       })
+  //       .catch((e) => console.log(e?.message));
+  //   }
+  // };
 
   return (
     <>
@@ -165,7 +163,7 @@ const TemplateTable: FC<TableProps> = ({
                 >
                   <DropdownItem onClick={() => navigateToView(item?.id)}>
                     <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-3">বিস্তারিত দেখুন</h6>
+                    <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
                   </DropdownItem>
                   <ACLWrapper
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
@@ -173,24 +171,24 @@ const TemplateTable: FC<TableProps> = ({
                   >
                     <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="edit" />
-                      <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                      <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
                     </DropdownItem>
                   </ACLWrapper>
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">ক্লোন করুন</h6>
+                    <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => onReportView(item)}>
+                  {/* <DropdownItem onClick={() => onReportView(item)}>
                     <Icon size={19} icon="summarize" />
-                    <h6 className="mb-0 ms-3">অর্গানোগ্রাম দেখুন</h6>
-                  </DropdownItem>
+                    <h6 className="mb-0 ms-2">অর্গানোগ্রাম দেখুন</h6>
+                  </DropdownItem> */}
                   <ACLWrapper
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
                   >
                     <DropdownItem onClick={() => onDelete(item)}>
                       <Icon size={19} icon="delete" color="danger" />
-                      <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
+                      <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
                     </DropdownItem>
                   </ACLWrapper>
                 </Dropdown>
@@ -218,12 +216,12 @@ const TemplateTable: FC<TableProps> = ({
         template={template}
         getDataList={getDataList}
       />
-      <OrganizationReport
+      {/* <OrganizationReport
         isOpen={isReportOpen}
         onClose={onReportClose}
         templateId={templateId}
         orgList={attachedOrgList}
-      />
+      /> */}
     </>
   );
 };

@@ -212,10 +212,6 @@ const TemplateList = () => {
         <div className="px-4 pb-4">
           <TemplateTable
             dataList={dataList}
-            // dataList={[
-            //   { version: "name A" },
-            //   { version: "name B" },
-            // ]}
             getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}

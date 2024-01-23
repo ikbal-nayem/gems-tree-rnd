@@ -30,6 +30,7 @@ import { LABELS } from "./labels";
 // import OrganogramClone from "./organogramClone";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
+import OrganizationReport from "./organizatioReport";
 
 type TableProps = {
   children: ReactNode;
@@ -56,6 +57,29 @@ const OrganogramTable: FC<TableProps> = ({
   const onReportClose = () => {
     setAttachedOrgList(null);
     setReportOpen(false);
+  };
+
+  const onOrganogramView = (item: IObject) => {
+    setTemplateId(item?.id);
+    if (item?.id) {
+      OMSService.getAttachedOrganizationByTemplateId(item?.id)
+        .then((resp) => {
+          if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
+            toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
+            return;
+          }
+          setAttachedOrgList(resp?.body || []);
+
+          if (resp?.body?.length === 1) {
+            navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
+              state: resp?.body?.[0],
+            });
+          } else {
+            setReportOpen(true);
+          }
+        })
+        .catch((e) => console.log(e?.message));
+    }
   };
   let columns: ITableHeadColumn[] =
     status === "draft"
@@ -91,30 +115,8 @@ const OrganogramTable: FC<TableProps> = ({
         })
       );
   };
-  // const navigateToView = (id: string) => {
-  //   navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
-  // };
-  const onReportView = (item: IObject) => {
-    setTemplateId(item?.id);
-    if (item?.id) {
-      OMSService.getAttachedOrganizationByTemplateId(item?.id)
-        .then((resp) => {
-          if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
-            toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
-            return;
-          }
-          setAttachedOrgList(resp?.body || []);
-
-          if (resp?.body?.length === 1) {
-            navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
-              state: resp?.body?.[0],
-            });
-          } else {
-            setReportOpen(true);
-          }
-        })
-        .catch((e) => console.log(e?.message));
-    }
+  const onTemplateView = (id: string) => {
+    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
   };
 
   // const [template, setTemplate] = useState<any>();
@@ -169,9 +171,15 @@ const OrganogramTable: FC<TableProps> = ({
                   btnContent={<Icon icon="more_vert" size={20} />}
                   id={item?.id}
                 >
-                  <DropdownItem onClick={() => onReportView(item)}>
+                  {status === "draft" && (
+                    <DropdownItem onClick={() => onTemplateView(item?.id)}>
+                      <Icon size={19} icon="summarize" />
+                      <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
+                    </DropdownItem>
+                  )}
+                  <DropdownItem onClick={() => onOrganogramView(item)}>
                     <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-3">দেখুন</h6>
+                    <h6 className="mb-0 ms-2">অর্গানোগ্রাম দেখুন</h6>
                   </DropdownItem>
                   {/* <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
@@ -183,11 +191,11 @@ const OrganogramTable: FC<TableProps> = ({
                   >
                     <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="edit" />
-                      <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                      <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
                     </DropdownItem>
                     <DropdownItem onClick={() => onDelete(item)}>
                       <Icon size={19} icon="delete" color="danger" />
-                      <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
+                      <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
                     </DropdownItem>
                   </ACLWrapper>
                   {/* <DropdownItem onClick={() => null}>
@@ -212,6 +220,12 @@ const OrganogramTable: FC<TableProps> = ({
         template={template}
         getDataList={getDataList}
       /> */}
+      <OrganizationReport
+        isOpen={isReportOpen}
+        onClose={onReportClose}
+        templateId={templateId}
+        orgList={attachedOrgList}
+      />
     </>
   );
 };

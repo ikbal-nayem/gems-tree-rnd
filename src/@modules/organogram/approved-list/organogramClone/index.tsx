@@ -92,7 +92,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
           setIsSubmitLoading(false);
           // onClose();
           // getDataList();
-          navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+          navigate(ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
         });
     }
   };
