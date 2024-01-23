@@ -1,4 +1,4 @@
-import OrganogramList from "../list";
+import OrganogramList from "../common-list";
 
 const InapproveList = () => {
   return <OrganogramList status={"inapprove"} />;
