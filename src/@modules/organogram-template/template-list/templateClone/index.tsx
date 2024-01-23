@@ -156,7 +156,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
 
   const MODAL_TITLE =
     (template?.titleBn ? "'" + template?.titleBn + "' এর " : "") +
-    "ডুপ্লিকেট টেমপ্লেটের তথ্য প্রদান করুন";
+    "ক্লোন-টেমপ্লেটের তথ্য প্রদান করুন";
   return (
     <Modal
       title={MODAL_TITLE}

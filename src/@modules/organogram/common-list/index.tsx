@@ -1,6 +1,6 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { Input, Pagination, toast } from "@gems/components";
+import { ConfirmationModal, Input, Pagination, toast } from "@gems/components";
 import {
   IMeta,
   IObject,
@@ -30,6 +30,9 @@ const OrganogramList = ({ status }) => {
   const [dataList, setDataList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
   const [search, setSearch] = useState<string>(
@@ -66,6 +69,32 @@ const OrganogramList = ({ status }) => {
   useEffect(() => {
     getDataList();
   }, [searchParams]);
+
+
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+
+  const onDelete = (data) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
+
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    OMSService.DELETE.organogramByID(deleteData?.id)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
 
   const getDataList = (reqMeta = null) => {
     const payload = {
@@ -168,9 +197,10 @@ const OrganogramList = ({ status }) => {
         <div className="p-4">
           <OrganogramTable
             dataList={dataList}
-            getDataList={getDataList}
+            // getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
+            onDelete={onDelete}
             status={status}
           >
             <Pagination
@@ -182,6 +212,16 @@ const OrganogramList = ({ status }) => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
+      <ConfirmationModal
+          isOpen={isDeleteModal}
+          onClose={onCancelDelete}
+          onConfirm={onConfirmDelete}
+          isSubmitting={isDeleteLoading}
+          onConfirmLabel={"মুছে ফেলুন"}
+        >
+          আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন
+          ?
+        </ConfirmationModal>
       </div>
     </>
   );

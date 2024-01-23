@@ -99,7 +99,7 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
 
   return (
     <Modal
-      title="অর্গানোগ্রামটির ডুপ্লিকেটের তথ্য প্রদান করুন :-"
+      title="অর্গানোগ্রামটির ক্লোনের তথ্য প্রদান করুন :-"
       isOpen={isOpen}
       handleClose={onClose}
       holdOn

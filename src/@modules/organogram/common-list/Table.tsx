@@ -1,5 +1,6 @@
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
+  ACLWrapper,
   ContentPreloader,
   Dropdown,
   DropdownItem,
@@ -15,6 +16,7 @@ import {
   DATE_PATTERN,
   IColors,
   IMeta,
+  IObject,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
@@ -23,14 +25,17 @@ import { useNavigate } from "react-router-dom";
 import { statusColorMapping } from "utility/colorMap";
 import { statusMapper } from "utility/textMapping";
 import { LABELS } from "./labels";
-import OrganogramClone from "./organogramClone";
+// import OrganogramClone from "./organogramClone";
+import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
+import { OMSService } from "@services/api/OMS.service";
 
 type TableProps = {
   children: ReactNode;
   dataList: any[];
   isLoading: boolean;
   respMeta?: IMeta;
-  getDataList: () => void;
+  // getDataList: () => void;
+  onDelete: (data) => void;
   status: "draft" | "inreview" | "inapprove" | "approved";
 };
 
@@ -39,7 +44,8 @@ const OrganogramTable: FC<TableProps> = ({
   dataList,
   isLoading,
   respMeta,
-  getDataList,
+  // getDataList,
+  onDelete,
   status,
 }) => {
   let columns: ITableHeadColumn[] =
@@ -59,20 +65,34 @@ const OrganogramTable: FC<TableProps> = ({
         ];
 
   const navigate = useNavigate();
-  //   const navigateToDetails = (id: string) => {
-  //     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
-  //   };
+  const navigateToDetails = (item: IObject) => {
+    OMSService.getCheckUserOrgPermissionByTemplateId(item?.id)
+      .then((resp) => {
+        if (resp?.body) {
+          navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+            state: { organizationId: item?.organizationId || null },
+          });
+        } else {
+          alert("This is not your organogram");
+        }
+      })
+      .catch(() =>
+        navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+          state: { organizationId: item?.organizationId || null },
+        })
+      );
+  };
   const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
+    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
   };
 
-  const [template, setTemplate] = useState<any>();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const onClose = () => setIsOpen(false);
-  const onClone = (template) => {
-    setTemplate(template);
-    setIsOpen(true);
-  };
+  // const [template, setTemplate] = useState<any>();
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const onClose = () => setIsOpen(false);
+  // const onClone = (template) => {
+  //   setTemplate(template);
+  //   setIsOpen(true);
+  // };
 
   return (
     <>
@@ -122,14 +142,23 @@ const OrganogramTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => onClone(item)}>
+                  {/* <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
-                  </DropdownItem>
-                  {/* <DropdownItem onClick={() => null}>
-                    <Icon size={19} icon="edit" />
-                    <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem> */}
+                  <ACLWrapper
+                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
+                  >
+                    <DropdownItem onClick={() => navigateToDetails(item)}>
+                      <Icon size={19} icon="edit" />
+                      <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onDelete(item)}>
+                      <Icon size={19} icon="delete" color="danger" />
+                      <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
+                    </DropdownItem>
+                  </ACLWrapper>
                   {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
@@ -146,12 +175,12 @@ const OrganogramTable: FC<TableProps> = ({
       )}
       {children}
 
-      <OrganogramClone
+      {/* <OrganogramClone
         isOpen={isOpen}
         onClose={onClose}
         template={template}
         getDataList={getDataList}
-      />
+      /> */}
     </>
   );
 };
