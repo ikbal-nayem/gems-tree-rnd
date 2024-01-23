@@ -1,6 +1,6 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { Input, Pagination, toast } from "@gems/components";
+import { ConfirmationModal, Input, Pagination, toast } from "@gems/components";
 import {
   IMeta,
   IObject,
@@ -11,8 +11,9 @@ import {
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import OrganogramTable from "./Table";
+import { ROUTE_L1 } from "@constants/internal-route.constant";
 
 const initMeta: IMeta = {
   page: 0,
@@ -29,18 +30,22 @@ const OrganogramList = ({ status }) => {
   const [dataList, setDataList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
+  const navigate = useNavigate();
 
   let service, title;
   switch (status) {
     case "draft":
       service = OMSService.FETCH.draftOrganogramList;
-      title = MENU.BN.ORGANOGRAM_LIST_ALL;
+      title = MENU.BN.ORGANOGRAM_LIST_DRAFT;
       break;
     case "inreview":
       service = OMSService.FETCH.inReviewOrganogramList;
@@ -51,8 +56,7 @@ const OrganogramList = ({ status }) => {
       title = MENU.BN.ORGANOGRAM_LIST_INAPPROVE;
       break;
     default:
-      service = OMSService.FETCH.organogramList;
-      title = MENU.BN.APPROVED_ORGANOGRAM_LIST;
+      navigate(ROUTE_L1.DASHBOARD);
   }
 
   useEffect(() => {
@@ -66,6 +70,32 @@ const OrganogramList = ({ status }) => {
     getDataList();
   }, [searchParams]);
 
+
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+
+  const onDelete = (data) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
+
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    OMSService.DELETE.organogramByID(deleteData?.id)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
+
   const getDataList = (reqMeta = null) => {
     const payload = {
       meta: searchKey
@@ -75,13 +105,12 @@ const OrganogramList = ({ status }) => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        isTemplate: status !== "approved",
+        isTemplate: 1,
       },
     };
 
     const reqData = { ...payload, body: payload?.body };
 
-    // if (status === "approved") {
     topProgress.show();
     setLoading(true);
     service(reqData)
@@ -98,7 +127,6 @@ const OrganogramList = ({ status }) => {
         topProgress.hide();
         setLoading(false);
       });
-    // }
   };
 
   const onPageChanged = (metaParams: IMeta) => {
@@ -169,9 +197,10 @@ const OrganogramList = ({ status }) => {
         <div className="p-4">
           <OrganogramTable
             dataList={dataList}
-            getDataList={getDataList}
+            // getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
+            onDelete={onDelete}
             status={status}
           >
             <Pagination
@@ -183,6 +212,16 @@ const OrganogramList = ({ status }) => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
+      <ConfirmationModal
+          isOpen={isDeleteModal}
+          onClose={onCancelDelete}
+          onConfirm={onConfirmDelete}
+          isSubmitting={isDeleteLoading}
+          onConfirmLabel={"মুছে ফেলুন"}
+        >
+          আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন
+          ?
+        </ConfirmationModal>
       </div>
     </>
   );

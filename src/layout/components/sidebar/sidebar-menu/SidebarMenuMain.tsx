@@ -47,7 +47,7 @@ const menuData = [
       {
         routeKey: ROUTE_KEY.OMS_ORGANOGRAM_DRAFT_LIST,
         link: ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST,
-        title: MENU.BN.ORGANOGRAM_LIST_ALL,
+        title: MENU.BN.ORGANOGRAM_LIST_DRAFT,
         hasBullet: true,
       },
       {

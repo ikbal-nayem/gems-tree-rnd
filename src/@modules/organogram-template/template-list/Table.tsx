@@ -165,7 +165,7 @@ const TemplateTable: FC<TableProps> = ({
                 >
                   <DropdownItem onClick={() => navigateToView(item?.id)}>
                     <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-3">দেখুন</h6>
+                    <h6 className="mb-0 ms-3">বিস্তারিত দেখুন</h6>
                   </DropdownItem>
                   <ACLWrapper
                     visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
@@ -178,7 +178,7 @@ const TemplateTable: FC<TableProps> = ({
                   </ACLWrapper>
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
+                    <h6 className="mb-0 ms-3">ক্লোন করুন</h6>
                   </DropdownItem>
                   <DropdownItem onClick={() => onReportView(item)}>
                     <Icon size={19} icon="summarize" />
