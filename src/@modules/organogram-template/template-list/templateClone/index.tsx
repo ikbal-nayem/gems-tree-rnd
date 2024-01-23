@@ -1,6 +1,4 @@
-import { META_TYPE } from "@constants/common.constant";
 import {
-  Autocomplete,
   Button,
   Checkbox,
   DateInput,
@@ -11,14 +9,15 @@ import {
   Separator,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, IObject, notNullOrUndefined } from "@gems/utils";
-import { CoreService } from "@services/api/Core.service";
+import { COMMON_LABELS, notNullOrUndefined } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { bnCheck, enCheck } from "utility/checkValidation";
 import { deFocusById, focusById } from "utility/utils";
 import { OMSService } from "../../../../@services/api/OMS.service";
 import Organizations from "./organization";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { useNavigate } from "react-router-dom";
 
 interface IForm {
   template: any;
@@ -37,7 +36,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   const [notOrganizationData, setNotOrganizationData] =
     useState<boolean>(false);
   // const [organogramChangeActionList, setOrganogramChangeActionList] = useState<IObject[]>([]);
-
+  const navigate = useNavigate();
   const formProps = useForm<any>();
 
   const {
@@ -114,8 +113,9 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       .catch((error) => toast.error(error?.message))
       .finally(() => {
         setIsSubmitLoading(false);
-        setIsNotEnamCommittee(true);
-        onClose();
+        // setIsNotEnamCommittee(true);
+        // onClose();
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
       });
   };
 
