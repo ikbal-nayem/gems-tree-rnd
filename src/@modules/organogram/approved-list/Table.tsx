@@ -94,10 +94,10 @@ const OrganogramTable: FC<TableProps> = ({
                 >
                   <DropdownItem onClick={() => navigateToView(item?.id)}>
                     <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-3">দেখুন</h6>
+                    <h6 className="mb-0 ms-3">বিস্তারিত দেখুন</h6>
                   </DropdownItem>
                   <DropdownItem onClick={() => onClone(item)}>
-                    <Icon size={19} icon="edit" />
+                    <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-3">হালনাগাদ করুন</h6>
                   </DropdownItem>
                   {/* <DropdownItem onClick={() => null}>
