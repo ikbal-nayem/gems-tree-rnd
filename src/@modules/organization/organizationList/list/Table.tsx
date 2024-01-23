@@ -7,20 +7,21 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
-import { FC, ReactNode } from "react";
 import {
   COMMON_LABELS,
   IMeta,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
+import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, width: 50 },
   { title: "নাম", minWidth: 150 },
-  { title: "ধরণ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
+  { title: "সংস্থার ধরণ", minWidth: 100 },
+  { title: "সংস্থার গ্রুপ", minWidth: 100 },
   { title: "অভিভাবক", minWidth: 150 },
-  { title: "মন্ত্রণালয়/বিভাগ" },
   { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
   { title: COMMON_LABELS.ACTION },
@@ -72,11 +73,20 @@ const OrgTable: FC<OrgTableProps> = ({
                 subText={data?.orgTypeDTO?.titleBn}
               />
               <TableCell
-                text={data?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={data?.parent?.nameEn}
+                text={
+                  data?.organizationTypeDTO?.orgTypeBn ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
               />
               <TableCell
-                text={data?.rootParent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={
+                  data?.organizationGroupDTO?.orgGroupBn ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
+              />
+              <TableCell
+                text={data?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.parent?.nameEn}
               />
               <TableCell
                 text={

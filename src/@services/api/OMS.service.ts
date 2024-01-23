@@ -214,6 +214,15 @@ export const OMSService = {
         OMS_SERVICE + "organization-organogram/custom/get-list",
         payload
       ),
+
+    organizationTypeList: async (): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "organization-type/get-all-org-type"),
+
+    organizationGroupbyOrgType: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-type/get-all-org-group-by-org-type",
+        payload
+      ),
   },
 
   SAVE: {

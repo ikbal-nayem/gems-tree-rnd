@@ -1,18 +1,25 @@
 import {
-  Checkbox,
+  Autocomplete,
   Button,
+  Checkbox,
+  DateInput,
   Drawer,
   DrawerBody,
   DrawerFooter,
   Input,
-  Autocomplete,
-  DateInput,
+  toast,
 } from "@gems/components";
-import React, { useEffect } from "react";
+import {
+  COMMON_LABELS,
+  IObject,
+  isObjectNull,
+  makeFormData,
+} from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
-import WorkSpaceComponent from "./WorkSpaceComponent";
 import LocationWorkSpaceComponent from "./LocationWorkSpaceComponent";
+import WorkSpaceComponent from "./WorkSpaceComponent";
 
 interface IOrgForm {
   isOpen?: boolean;
@@ -37,13 +44,19 @@ const OrgForm = ({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
     control,
     setValue,
   } = formProps;
 
+  const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
+
   useEffect(() => {
     if (!isObjectNull(updateData)) {
+      if (!isObjectNull(updateData?.organizationTypeDTO)) {
+        onOrganizationTypeChange(updateData?.organizationTypeDTO);
+      }
       reset({
         ...updateData,
         isTrainingOffice: updateData?.trainingOfficeTag === "TRAINING",
@@ -55,6 +68,16 @@ const OrgForm = ({
       });
     }
   }, [updateData]);
+
+  const onOrganizationTypeChange = (typeItem: IObject) => {
+    if (!isObjectNull(typeItem)) {
+      OMSService.FETCH.organizationGroupbyOrgType(makeFormData(typeItem))
+        .then((res) => {
+          setOrgGroupList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
+    }
+  };
 
   return (
     <Drawer
@@ -117,20 +140,34 @@ const OrgForm = ({
                 placeholder="সংস্থার ধরণ বাছাই করুন"
                 isRequired="সংস্থার ধরণ বাছাই করুন"
                 options={options?.organizationTypes || []}
-                name="orgTypeDTO"
-                getOptionLabel={(op) => op.titleBn}
-                getOptionValue={(op) => op.metaKey}
-                onChange={(op) => setValue("orgType", op?.metaKey)}
+                name="organizationTypeDTO"
+                getOptionLabel={(op) => op.orgTypeBn}
+                getOptionValue={(op) => op.orgTypeEn}
+                onChange={(op) => onOrganizationTypeChange(op)}
                 control={control}
-                isError={!!errors?.orgTypeDTO}
-                errorMessage={errors?.orgTypeDTO?.message as string}
+                isError={!!errors?.organizationTypeDTO}
+                errorMessage={errors?.organizationTypeDTO?.message as string}
               />
             </div>
+            {!isObjectNull(watch("organizationTypeDTO")) && (
+              <div className="col-12">
+                <Autocomplete
+                  label="সংস্থার গ্রুপ"
+                  placeholder="সংস্থার গ্রুপ বাছাই করুন"
+                  isRequired="সংস্থার গ্রুপ বাছাই করুন"
+                  options={orgGroupList || []}
+                  name="organizationGroupDTO"
+                  getOptionLabel={(op) => op.orgGroupBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("organizationGroupId", op?.id)}
+                  control={control}
+                  isError={!!errors?.organizationGroupDTO}
+                  errorMessage={errors?.organizationGroupDTO?.message as string}
+                />
+              </div>
+            )}
             <div className="col-12">
-              <WorkSpaceComponent
-                isRequired="অভিভাবক প্রতিষ্ঠানের নাম বাছাই করুন"
-                {...formProps}
-              />
+              <WorkSpaceComponent {...formProps} />
             </div>
             <div className="col-12">
               <Autocomplete
