@@ -24,6 +24,7 @@ import { useSearchParams } from "react-router-dom";
 import TemplateTable from "./Table";
 import { CoreService } from "@services/api/Core.service";
 import { useForm } from "react-hook-form";
+import { useAuth } from "@context/Auth";
 
 const initMeta: IMeta = {
   page: 0,
@@ -55,11 +56,12 @@ const TemplateList = () => {
   const [deleteData, setDeleteData] = useState<any>();
   const formProps = useForm();
   const { control } = formProps;
-
+  const { currentUser } = useAuth();
   useEffect(() => {
     CoreService.getByMetaTypeList("ORG_TYPE/asc").then((resp) =>
       setOrganizationTypesList(resp?.body)
     );
+    // console.log(currentUser);
   }, []);
 
   useEffect(() => {
