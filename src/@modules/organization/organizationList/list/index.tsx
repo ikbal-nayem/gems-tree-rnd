@@ -46,9 +46,7 @@ const List = () => {
   const [deleteData, setDeleteData] = useState<any>();
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [institutionTypeList, setInstitutionTypeList] = useState<IObject[]>([]);
-  const [organizationTypeList, setOrganizationTypeList] = useState<IObject[]>(
-    []
-  );
+  const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
   const [ministryList, setMinistryList] = useState<IObject[]>([]);
 
   const [listData, setListData] = useState<any>([]);
@@ -89,12 +87,13 @@ const List = () => {
       .catch((err) => toast.error(err?.message));
   };
   const getOrganizationTypesList = () => {
-    CoreService.getByMetaTypeList("ORG_TYPE/asc")
+    OMSService.FETCH.organizationTypeList()
       .then((res) => {
-        setOrganizationTypeList(res?.body || []);
+        setOrgTypeList(res?.body || []);
       })
       .catch((err) => toast.error(err?.message));
   };
+
   const getMinistryList = () => {
     OMSService.getOrgByTypes("ORG_TYPE_MINISTRY,ORG_TYPE_DIVISION")
       .then((res) => {
@@ -241,7 +240,7 @@ const List = () => {
           <OrgFilter
             options={{
               institutionTypes: institutionTypeList,
-              organizationTypes: organizationTypeList,
+              organizationTypes: orgTypeList,
               ministryList: ministryList,
             }}
             onFilterDone={onFilterDone}
@@ -278,7 +277,7 @@ const List = () => {
           onClose={onDrawerClose}
           options={{
             institutionTypes: institutionTypeList,
-            organizationTypes: organizationTypeList,
+            organizationTypes: orgTypeList,
             ministryList: ministryList,
           }}
           updateData={updateData.current}
