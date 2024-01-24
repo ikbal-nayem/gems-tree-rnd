@@ -182,7 +182,6 @@ const TemplateClone = ({
               <Checkbox
                 label="এনাম কমিটি অনুমোদিত অর্গানোগ্রাম"
                 labelClass="fw-bold"
-                checked
                 registerProperty={{
                   ...register("isEnamCommittee", {
                     onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
