@@ -81,7 +81,7 @@ const Organizations = ({
         <div className="col-md-6">
           <Autocomplete
             label="প্রতিষ্ঠানের গ্ৰুপ"
-            placeholder="প্রতিষ্ঠানের গ্ৰুপ"
+            placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
             name="organizationGroupDto"
             options={organizationGroupList}
             noMargin
@@ -99,7 +99,7 @@ const Organizations = ({
           <div className="col-md-6">
             <Autocomplete
               label="প্রতিষ্ঠান"
-              placeholder="প্রতিষ্ঠান"
+              placeholder="প্রতিষ্ঠান বাছাই করুন"
               name="organization"
               options={organizationList}
               noMargin

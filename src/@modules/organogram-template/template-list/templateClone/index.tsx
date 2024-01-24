@@ -2,18 +2,14 @@ import {
   Button,
   Checkbox,
   DateInput,
-  Input,
   Modal,
   ModalBody,
   ModalFooter,
-  Separator,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, notNullOrUndefined } from "@gems/utils";
+import { COMMON_LABELS, IObject } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { bnCheck, enCheck } from "utility/checkValidation";
-import { deFocusById, focusById } from "utility/utils";
 import { OMSService } from "../../../../@services/api/OMS.service";
 import Organizations from "./organization";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
@@ -24,17 +20,24 @@ interface IForm {
   isOpen: boolean;
   onClose: () => void;
   getDataList: () => void;
+  organizationGroupList?: IObject[];
 }
 
-const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
+const TemplateClone = ({
+  template,
+  isOpen,
+  onClose,
+  getDataList,
+  organizationGroupList,
+}: IForm) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
-    useState<boolean>(false);
-  const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
-    useState<boolean>(false);
-  const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
-  const [notOrganizationData, setNotOrganizationData] =
-    useState<boolean>(false);
+  // const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
+  //   useState<boolean>(false);
+  // const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
+  //   useState<boolean>(false);
+  // const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
+  // const [notOrganizationData, setNotOrganizationData] =
+  //   useState<boolean>(false);
   // const [organogramChangeActionList, setOrganogramChangeActionList] = useState<IObject[]>([]);
   const navigate = useNavigate();
   const formProps = useForm<any>();
@@ -43,11 +46,11 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
     register,
     handleSubmit,
     reset,
-    setError,
-    clearErrors,
+    // setError,
+    // clearErrors,
     control,
     setValue,
-    getValues,
+    // getValues,
     formState: { errors },
   } = formProps;
 
@@ -66,17 +69,21 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
 
   const onSubmit = (cloneData) => {
     // if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
-
+    const templateOrganizationsDto = {
+      organizationId: cloneData?.organization?.id,
+      OrganizationNameBn: cloneData?.organization?.nameBn,
+      OrganizationNameEn: cloneData?.organization?.nameEn,
+    };
     const reqPayload = {
-      cloneIsEnamCommittee: true,
-      // cloneTitleBn: cloneData.isEnamCommittee
+      cloneIsEnamCommittee: cloneData.isEnamCommittee,
       //   ? "" // cloneData.titleEn
       //   : cloneData.titleBn,
       // cloneTitleEn: cloneData.titleEn,
-      // cloneOrganogramDate: cloneData.organogramDate,
-      cloneOrganogramDate: new Date("1982-12-26"),
-      refTemplateId: template?.id,
-      // organogramChangeActionDtoList:
+      cloneOrganogramDate: cloneData.organogramDate,
+      cloneOrganizationGroupId: cloneData?.organizationGroupDto?.id,
+      cloneRefTemplateId: template?.id,
+      cloneTemplateOrganizationsDtoList: [templateOrganizationsDto],
+      // cloneOrganogramChangeActionDtoList:
       //   !cloneData.isEnamCommittee &&
       //   cloneData?.organogramChangeActionDtoList?.length > 0
       //     ? cloneData?.organogramChangeActionDtoList?.map((d) => ({
@@ -84,28 +91,28 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       //         titleBn: d?.titleBn,
       //       }))
       //     : null,
-      templateOrganizationsDtoList:
-        cloneData?.templateOrganizationsDtoList?.length > 0
-          ? cloneData?.templateOrganizationsDtoList?.map((d) => ({
-              organizationId: d?.id,
-              organizationNameEn: d?.nameEn || d?.organizationNameEn,
-              organizationNameBn: d?.nameBn || d?.organizationNameBn,
-            }))
-          : null,
+
+      // cloneData?.templateOrganizationsDtoList?.length > 0
+      //   ? cloneData?.templateOrganizationsDtoList?.map((d) => ({
+      //       organizationId: d?.id,
+      //       organizationNameEn: d?.nameEn || d?.organizationNameEn,
+      //       organizationNameBn: d?.nameBn || d?.organizationNameBn,
+      //     }))
+      //   : null,
     };
 
     // Organization Empty Check
-    if (
-      cloneData?.templateOrganizationsDtoList === undefined ||
-      cloneData?.templateOrganizationsDtoList?.length <= 0
-    ) {
-      setNotOrganizationData(true);
-      focusById("organizationBlock", true);
-      return;
-    } else {
-      setNotOrganizationData(false);
-      deFocusById("organizationBlock");
-    }
+    // if (
+    //   cloneData?.templateOrganizationsDtoList === undefined ||
+    //   cloneData?.templateOrganizationsDtoList?.length <= 0
+    // ) {
+    //   setNotOrganizationData(true);
+    //   focusById("organizationBlock", true);
+    //   return;
+    // } else {
+    //   setNotOrganizationData(false);
+    //   deFocusById("organizationBlock");
+    // }
 
     setIsSubmitLoading(true);
 
@@ -170,20 +177,19 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
           <div className="row">
-            {/* <div className="col-6">
+            <div className="col-6">
               <Checkbox
-                label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
+                label="এনাম কমিটি অনুমোদিত অর্গানোগ্রাম"
                 labelClass="fw-bold"
-                defaultChecked={!isNotEnamCommittee}
-                noMargin
+                checked
                 registerProperty={{
                   ...register("isEnamCommittee", {
-                    onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
+                    // onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
                   }),
                 }}
               />
             </div>
-            <div className="col-6"></div>
+            {/* <div className="col-6"></div>
             <Separator />
             {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
@@ -250,12 +256,11 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 />
               </div>
             )} */}
-            <Organizations
-              formProps={formProps}
-              notOrganizationData={notOrganizationData}
-              setNotOrganizationData={setNotOrganizationData}
-            />
           </div>
+          <Organizations
+            formProps={formProps}
+            organizationGroupList={organizationGroupList}
+          />
         </ModalBody>
 
         <ModalFooter>

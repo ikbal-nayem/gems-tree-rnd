@@ -39,9 +39,9 @@ const initMeta: IMeta = {
 
 const TemplateList = () => {
   const [dataList, setDataList] = useState<IObject[]>();
-  const [organizationTypesList, setOrganizationTypesList] =
+  const [organizationGroupList, setOrganizationGroupList] =
     useState<IObject[]>();
-  const [orgType, setOrgType] = useState<string>();
+  const [orgGroupId, setOrgGroupId] = useState<string>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -58,10 +58,11 @@ const TemplateList = () => {
   const { control } = formProps;
   const { currentUser } = useAuth();
   useEffect(() => {
-    CoreService.getByMetaTypeList("ORG_TYPE/asc").then((resp) =>
-      setOrganizationTypesList(resp?.body)
-    );
+    // CoreService.getByMetaTypeList("ORG_TYPE/asc").then((resp) =>
+    //   setOrganizationTypesList(resp?.body)
+    // );
     // console.log(currentUser);
+    getOrgGroupList();
   }, []);
 
   useEffect(() => {
@@ -73,8 +74,21 @@ const TemplateList = () => {
 
   useEffect(() => {
     getDataList();
-  }, [searchParams, orgType]);
+  }, [searchParams, orgGroupId]);
 
+  const getOrgGroupList = () => {
+    const payload = {
+      meta: {
+        page: 0,
+        limit: 500,
+        sort: [{ order: "asc", field: "orgCode" }],
+      },
+      body: { searchKey: "" },
+    };
+    OMSService.getOrganizationTypeList(payload).then((resp) =>
+      setOrganizationGroupList(resp?.body)
+    );
+  };
   const onCancelDelete = () => {
     setIsDeleteModal(false);
     setDeleteData(null);
@@ -113,7 +127,7 @@ const TemplateList = () => {
       body: {
         isTemplate: true,
         searchKey: searchKey || null,
-        orgTypeKey: orgType || null,
+        orgGroupId: orgGroupId || null,
       },
     };
 
@@ -171,13 +185,13 @@ const TemplateList = () => {
         <div className="d-flex justify-content-between gap-2 mb-2">
           <span className="w-25">
             <Autocomplete
-              placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
-              options={organizationTypesList || []}
-              getOptionLabel={(op) => op.titleBn}
-              getOptionValue={(op) => op.metaKey}
+              placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+              options={organizationGroupList || []}
+              getOptionLabel={(op) => op.orgGroupBn}
+              getOptionValue={(op) => op.id}
               name="orgType"
               control={control}
-              onChange={(op) => setOrgType(op?.metaKey)}
+              onChange={(op) => setOrgGroupId(op?.id)}
             />
           </span>
           <Input
@@ -218,6 +232,7 @@ const TemplateList = () => {
             respMeta={respMeta}
             isLoading={isLoading}
             onDelete={onDelete}
+            organizationGroupList={organizationGroupList}
           >
             <Pagination
               meta={respMeta}
