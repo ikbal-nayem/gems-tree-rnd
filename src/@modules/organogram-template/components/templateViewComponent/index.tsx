@@ -322,6 +322,16 @@ const TemplateViewComponent = ({
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
         <div className="mb-6 text-center">
+          {updateData?.organizationHeader && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeader || null}
+            </p>
+          )}
+          {updateData?.organizationHeaderMsc && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeaderMsc || null}
+            </p>
+          )}
           <p className="fs-2 mb-0">{orgName || titleName || null}</p>
           {(orgParentName || orgStateParentName) && (
             <p className="fs-2 mb-0">
@@ -348,6 +358,8 @@ const TemplateViewComponent = ({
             versionName: versionName || null,
             orgName: orgName || null,
             orgParentName: orgParentName || orgStateParentName || null,
+            organizationHeader: updateData?.organizationHeader || null,
+            organizationHeaderMsc: updateData?.organizationHeaderMsc || null,
           }}
         />
         <div
@@ -382,6 +394,9 @@ const TemplateViewComponent = ({
                 versionName: versionName || null,
                 orgName: orgName || null,
                 orgParentName: orgParentName || orgStateParentName || null,
+                organizationHeader: updateData?.organizationHeader || null,
+                organizationHeaderMsc:
+                  updateData?.organizationHeaderMsc || null,
               }}
             />
           </ModalBody>
@@ -394,6 +409,16 @@ const TemplateViewComponent = ({
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
         <div className="mb-6 text-center">
+          {updateData?.organizationHeader && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeader || null}
+            </p>
+          )}
+          {updateData?.organizationHeaderMsc && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeaderMsc || null}
+            </p>
+          )}
           {(orgParentName || orgStateParentName) && (
             <p className="fs-2 mb-0">
               {orgParentName || orgStateParentName || null}
