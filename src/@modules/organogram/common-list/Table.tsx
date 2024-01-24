@@ -22,7 +22,7 @@ import {
   generateRowNumBn,
   notNullOrUndefined,
 } from "@gems/utils";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { statusColorMapping } from "utility/colorMap";
 import { statusMapper } from "utility/textMapping";
@@ -30,7 +30,6 @@ import { LABELS } from "./labels";
 // import OrganogramClone from "./organogramClone";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import { OMSService } from "@services/api/OMS.service";
-import OrganizationReport from "./organizatioReport";
 
 type TableProps = {
   children: ReactNode;
@@ -51,16 +50,7 @@ const OrganogramTable: FC<TableProps> = ({
   onDelete,
   status,
 }) => {
-  const [templateId, setTemplateId] = useState<string>("");
-  const [isReportOpen, setReportOpen] = useState<boolean>(false);
-  const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
-  const onReportClose = () => {
-    setAttachedOrgList(null);
-    setReportOpen(false);
-  };
-
   const onOrganogramView = (item: IObject) => {
-    setTemplateId(item?.id);
     if (item?.id) {
       OMSService.getAttachedOrganizationByTemplateId(item?.id)
         .then((resp) => {
@@ -68,14 +58,11 @@ const OrganogramTable: FC<TableProps> = ({
             toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
             return;
           }
-          setAttachedOrgList(resp?.body || []);
 
           if (resp?.body?.length === 1) {
             navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
               state: resp?.body?.[0],
             });
-          } else {
-            setReportOpen(true);
           }
         })
         .catch((e) => console.log(e?.message));
@@ -115,9 +102,9 @@ const OrganogramTable: FC<TableProps> = ({
         })
       );
   };
-  const onTemplateView = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
-  };
+  // const onTemplateView = (id: string) => {
+  //   navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
+  // };
 
   // const [template, setTemplate] = useState<any>();
   // const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -171,20 +158,18 @@ const OrganogramTable: FC<TableProps> = ({
                   btnContent={<Icon icon="more_vert" size={20} />}
                   id={item?.id}
                 >
-                  {status === "draft" && (
-                    <DropdownItem onClick={() => onTemplateView(item?.id)}>
-                      <Icon size={19} icon="summarize" />
-                      <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
-                    </DropdownItem>
-                  )}
                   <DropdownItem onClick={() => onOrganogramView(item)}>
+                    <Icon size={19} icon="summarize" />
+                    <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
+                  </DropdownItem>
+                  {/* <DropdownItem onClick={() => onOrganogramView(item)}>
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-2">
                       {status === "draft"
                         ? "অর্গানোগ্রাম দেখুন"
                         : "বিস্তারিত দেখুন"}
                     </h6>
-                  </DropdownItem>
+                  </DropdownItem> */}
                   {/* <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
@@ -202,10 +187,6 @@ const OrganogramTable: FC<TableProps> = ({
                       <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
                     </DropdownItem>
                   </ACLWrapper>
-                  {/* <DropdownItem onClick={() => null}>
-                    <Icon size={19} icon="delete" color="danger" />
-                    <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-                  </DropdownItem> */}
                 </Dropdown>
               </TableCell>
             </TableRow>
@@ -217,19 +198,6 @@ const OrganogramTable: FC<TableProps> = ({
         <NoData details="কোনো অর্গানোগ্রামের তথ্য পাওয়া যায়নি!" />
       )}
       {children}
-
-      {/* <OrganogramClone
-        isOpen={isOpen}
-        onClose={onClose}
-        template={template}
-        getDataList={getDataList}
-      /> */}
-      <OrganizationReport
-        isOpen={isReportOpen}
-        onClose={onReportClose}
-        templateId={templateId}
-        orgList={attachedOrgList}
-      />
     </>
   );
 };

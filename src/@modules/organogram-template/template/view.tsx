@@ -66,6 +66,9 @@ const TemplateView = () => {
       .finally(() => setIsLoading(false));
   };
 
+  console.log(state);
+  
+
   return (
     <>
       {isLoading && <ContentPreloader />}
