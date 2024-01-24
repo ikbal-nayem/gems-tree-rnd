@@ -9,6 +9,7 @@ interface IOrganizations {
   notOrganizationData: boolean;
   isTemplate: boolean;
   setNotOrganizationData: (validateCheck: boolean) => void;
+  setOrgGroupTriggered?: (flag: boolean) => void;
 }
 
 const Organizations = ({
@@ -16,6 +17,7 @@ const Organizations = ({
   notOrganizationData,
   isTemplate,
   setNotOrganizationData,
+  setOrgGroupTriggered,
 }: IOrganizations) => {
   const {
     watch,
@@ -63,10 +65,12 @@ const Organizations = ({
   }, [watch("organizationGroupDto")]);
 
   const onOrgGroupChange = (OrgGroup) => {
-    if (!isTemplate)
+    if (!isTemplate) {
+      setOrgGroupTriggered(true);
       OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
         setOrganizationList(resp?.body)
       );
+    }
   };
 
   if (watch("organizationGroupDto")) {

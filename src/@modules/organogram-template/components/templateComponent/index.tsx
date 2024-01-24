@@ -58,6 +58,7 @@ const TemplateComponent = ({
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
+  const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
   const [isTemplate, setIsTemplate] = useState<boolean>(true);
   const [notOrganizationData, setNotOrganizationData] =
     useState<boolean>(false);
@@ -201,6 +202,14 @@ const TemplateComponent = ({
     return isUnique;
   };
 
+  const templateOrganizationsDtoSimplifier = (organization) => {
+    return {
+      organizationId: organization?.id,
+      OrganizationNameBn: organization?.nameBn,
+      OrganizationNameEn: organization?.nameEn,
+    };
+  };
+
   const onFinalSubmit = (data) => {
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
     if (isObjectNull(updateData) && isTemplate) {
@@ -242,11 +251,7 @@ const TemplateComponent = ({
     }
     const templateOrganizationsDto = isTemplate
       ? null
-      : {
-          organizationId: data?.organization?.id,
-          OrganizationNameBn: data?.organization?.nameBn,
-          OrganizationNameEn: data?.organization?.nameEn,
-        };
+      : templateOrganizationsDtoSimplifier(data?.organization);
 
     const reqPayload = {
       ...data,
@@ -254,9 +259,16 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationHeader: getValues("organizationHeader"),
       organizationHeaderMsc: getValues("organizationHeaderMsc"),
-      templateOrganizationsDtoList: isTemplate
-        ? []
-        : [templateOrganizationsDto],
+      templateOrganizationsDtoList:
+        !isObjectNull(updateData) && orgGroupTriggered
+          ? [
+              templateOrganizationsDtoSimplifier(
+                updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO
+              ),
+            ]
+          : isTemplate
+          ? []
+          : [templateOrganizationsDto],
       organizationGroupId: data?.organizationGroupDto?.id,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
@@ -327,7 +339,7 @@ const TemplateComponent = ({
         )}
         <Separator className="mt-1 mb-4" />
         <div className="row">
-          {!draftListRecord && isNotEnamCommittee && (
+          {!draftListRecord && isTemplate && isNotEnamCommittee && (
             <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম বাংলা"
@@ -349,7 +361,7 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {!draftListRecord && (
+          {!draftListRecord && isTemplate && (
             <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম ইংরেজি"
@@ -454,6 +466,7 @@ const TemplateComponent = ({
           formProps={formProps}
           notOrganizationData={notOrganizationData}
           setNotOrganizationData={setNotOrganizationData}
+          setOrgGroupTriggered={setOrgGroupTriggered}
           isTemplate={draftListRecord ? !draftListRecord : isTemplate}
         />
       </div>
