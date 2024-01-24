@@ -65,15 +65,16 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
   }, [isOpen]);
 
   const onSubmit = (cloneData) => {
-    if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
+    // if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
 
     const reqPayload = {
-      cloneIsEnamCommittee: cloneData.isEnamCommittee,
-      cloneTitleBn: cloneData.isEnamCommittee
-        ? "" // cloneData.titleEn
-        : cloneData.titleBn,
-      cloneTitleEn: cloneData.titleEn,
-      cloneOrganogramDate: cloneData.organogramDate,
+      cloneIsEnamCommittee: true,
+      // cloneTitleBn: cloneData.isEnamCommittee
+      //   ? "" // cloneData.titleEn
+      //   : cloneData.titleBn,
+      // cloneTitleEn: cloneData.titleEn,
+      // cloneOrganogramDate: cloneData.organogramDate,
+      cloneOrganogramDate: new Date("1982-12-26"),
       refTemplateId: template?.id,
       // organogramChangeActionDtoList:
       //   !cloneData.isEnamCommittee &&
@@ -119,48 +120,48 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       });
   };
 
-  const duplicateTitleCheck = (title, isEn: boolean) => {
-    const field = isEn ? "titleEn" : "titleBn";
-    OMSService.duplicateTemplateTitleCheck(title, isEn)
-      .then((res) => {
-        if (res?.body) {
-          const msg = (isEn ? "ইংরেজি" : "বাংলা") + " শিরোনামটি অনন্য নয় !";
+  // const duplicateTitleCheck = (title, isEn: boolean) => {
+  //   const field = isEn ? "titleEn" : "titleBn";
+  //   OMSService.duplicateTemplateTitleCheck(title, isEn)
+  //     .then((res) => {
+  //       if (res?.body) {
+  //         const msg = (isEn ? "ইংরেজি" : "বাংলা") + " শিরোনামটি অনন্য নয় !";
 
-          setError(field, {
-            type: "manaul",
-            message: msg,
-          });
+  //         setError(field, {
+  //           type: "manaul",
+  //           message: msg,
+  //         });
 
-          isEn
-            ? setDuplicateTitleEnDitected(true)
-            : setDuplicateTitleBnDitected(true);
-        } else {
-          clearErrors(field);
-          isEn
-            ? setDuplicateTitleEnDitected(false)
-            : setDuplicateTitleBnDitected(false);
-        }
-      })
-      .catch((e) => console.log(e.message));
-  };
+  //         isEn
+  //           ? setDuplicateTitleEnDitected(true)
+  //           : setDuplicateTitleBnDitected(true);
+  //       } else {
+  //         clearErrors(field);
+  //         isEn
+  //           ? setDuplicateTitleEnDitected(false)
+  //           : setDuplicateTitleBnDitected(false);
+  //       }
+  //     })
+  //     .catch((e) => console.log(e.message));
+  // };
 
-  const onIsEnamCommitteeChange = (checked: boolean) => {
-    setIsNotEnamCommittee(!checked);
-    const enamApprovalDate = new Date("1982-12-26");
-    if (checked) setValue("organogramDate", enamApprovalDate);
-    else if (notNullOrUndefined(getValues("chosenDate"))) {
-      const chosenDate = getValues("chosenDate");
-      setValue("organogramDate", new Date(chosenDate));
-    }
-  };
+  // const onIsEnamCommitteeChange = (checked: boolean) => {
+  //   setIsNotEnamCommittee(!checked);
+  //   const enamApprovalDate = new Date("1982-12-26");
+  //   if (checked) setValue("organogramDate", enamApprovalDate);
+  //   else if (notNullOrUndefined(getValues("chosenDate"))) {
+  //     const chosenDate = getValues("chosenDate");
+  //     setValue("organogramDate", new Date(chosenDate));
+  //   }
+  // };
 
   const MODAL_TITLE =
     (template?.titleBn ? "'" + template?.titleBn + "' এর " : "") +
-    "ক্লোন-টেমপ্লেটের তথ্য প্রদান করুন";
+    "ক্লোন-অর্গানোগ্রামের তথ্য প্রদান করুন";
   return (
     <Modal
       title={MODAL_TITLE}
-      // title="ডুপ্লিকেট টেমপ্লেটের তথ্য প্রদান করুন"
+      // title="অর্গানোগ্রামের তথ্য প্রদান করুন"
       isOpen={isOpen}
       handleClose={onClose}
       holdOn
@@ -169,7 +170,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
           <div className="row">
-            <div className="col-6">
+            {/* <div className="col-6">
               <Checkbox
                 label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
                 labelClass="fw-bold"
@@ -218,7 +219,7 @@ const TemplateClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
                 isError={!!errors?.titleEn}
                 errorMessage={errors?.titleEn?.message as string}
               />
-            </div>
+            </div> */}
             <div className="col-md-6 col-12">
               <DateInput
                 label="অর্গানোগ্রাম তারিখ"
