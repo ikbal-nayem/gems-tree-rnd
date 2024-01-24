@@ -35,6 +35,7 @@ type TableProps = {
   respMeta?: IMeta;
   getDataList: () => void;
   onDelete: (data) => void;
+  organizationGroupList?: IObject[];
 };
 
 const TemplateTable: FC<TableProps> = ({
@@ -44,6 +45,7 @@ const TemplateTable: FC<TableProps> = ({
   respMeta,
   getDataList,
   onDelete,
+  organizationGroupList,
 }) => {
   const [template, setTemplate] = useState<any>();
   // const [templateId, setTemplateId] = useState<string>("");
@@ -212,6 +214,7 @@ const TemplateTable: FC<TableProps> = ({
         onClose={onClose}
         template={template}
         getDataList={getDataList}
+        organizationGroupList={organizationGroupList}
       />
       {/* <OrganizationReport
         isOpen={isReportOpen}
