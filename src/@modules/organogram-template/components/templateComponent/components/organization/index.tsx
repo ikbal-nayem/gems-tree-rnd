@@ -7,15 +7,21 @@ import { deFocusById } from "utility/utils";
 interface IOrganizations {
   formProps: any;
   notOrganizationData: boolean;
+  isTemplate: boolean;
   setNotOrganizationData: (validateCheck: boolean) => void;
 }
 
 const Organizations = ({
   formProps,
   notOrganizationData,
+  isTemplate,
   setNotOrganizationData,
 }: IOrganizations) => {
-  const { watch, control } = formProps;
+  const {
+    watch,
+    control,
+    formState: { errors },
+  } = formProps;
   const [organizationList, setOrganizationList] = useState<IObject[]>([]);
   const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
     []
@@ -53,12 +59,13 @@ const Organizations = ({
   }, []);
 
   const onOrgGroupChange = (OrgGroup) => {
-    OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
-      setOrganizationList(resp?.body)
-    );
+    if (!isTemplate)
+      OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
+        setOrganizationList(resp?.body)
+      );
   };
 
-  if (watch("organizationGroup")) {
+  if (watch("organizationGroupDto")) {
     deFocusById("organizationBlock");
     setNotOrganizationData(false);
     // alert(watch("organizationGroup")?.orgTypeBn);
@@ -73,27 +80,39 @@ const Organizations = ({
       <div className="row">
         <div className="col-md-6">
           <Autocomplete
-            placeholder="প্রতিষ্ঠানের ধরণ"
+            label="প্রতিষ্ঠানের গ্ৰুপ"
+            placeholder="প্রতিষ্ঠানের গ্ৰুপ"
+            name="organizationGroupDto"
             options={organizationGroupList}
-            name="organizationGroup"
             noMargin
+            isRequired="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
             control={control}
+            // autoFocus
             getOptionLabel={(op) => op?.orgGroupBn}
-            getOptionValue={(op) => op?.orgGroupBn}
-            onChange={(org) => onOrgGroupChange(org)}
-          />
-        </div>
-        <div className="col-md-6">
-          <Autocomplete
-            placeholder="প্রতিষ্ঠান"
-            name="organization"
-            options={organizationList}
-            noMargin
-            control={control}
-            getOptionLabel={(op) => op.nameBn}
             getOptionValue={(op) => op?.id}
+            onChange={(org) => onOrgGroupChange(org)}
+            isError={!!errors?.organizationGroupDto}
+            errorMessage={errors?.organizationGroupDto?.message as string}
           />
         </div>
+        {!isTemplate && (
+          <div className="col-md-6">
+            <Autocomplete
+              label="প্রতিষ্ঠান"
+              placeholder="প্রতিষ্ঠান"
+              name="organization"
+              options={organizationList}
+              noMargin
+              isRequired="প্রতিষ্ঠান বাছাই করুন"
+              control={control}
+              // autoFocus
+              getOptionLabel={(op) => op.nameBn}
+              getOptionValue={(op) => op?.id}
+              isError={!!errors?.organization}
+              errorMessage={errors?.organization?.message as string}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
