@@ -44,7 +44,9 @@ const TemplateCreate = () => {
     OMSService.templateCreate(fd)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + res?.body?.id);
+        navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + res?.body?.id, {
+          state: { templateView: true },
+        });
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));

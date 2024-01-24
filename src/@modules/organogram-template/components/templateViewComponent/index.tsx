@@ -288,17 +288,24 @@ const TemplateViewComponent = ({
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
-            <div className="fs-2 text-center fw-bolder mb-0">
-              {stateOrganizationData?.templateView
-                ? titleName
-                : orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
-            </div>
+            {stateOrganizationData?.templateView ? (
+              <div className="fs-2 text-center fw-bolder mb-0">
+                <span className="me-1">{LABEL.TEMPLATE_NAME}: </span>
+                {titleName || COMMON_LABELS.NOT_ASSIGN}
+              </div>
+            ) : (
+              <div className="fs-2 text-center fw-bolder mb-0">
+                {orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
+              </div>
+            )}
+
             {stateOrganizationData?.templateView &&
               !isObjectNull(updateData?.organizationGroupDto) && (
                 <div className="fs-2 text-center fw-bolder mb-0">
+                  <span className="me-1">{LABEL.TEMPLATE_TYPE}: </span>
                   {updateData?.isEnamCommittee
                     ? updateData?.organizationGroupDto?.orgGroupEn
-                    : updateData?.organizationGroupDto?.orgGroupEn}
+                    : updateData?.organizationGroupDto?.orgGroupBn}
                 </div>
               )}
             {orgParentName && (
@@ -530,11 +537,11 @@ const TemplateViewComponent = ({
               />
             </div>
           )}
-          {(orgName ||
+          {/* {(orgName ||
             orgParentName ||
             orgStateParentName ||
-            organogramView) && (
-            // {organogramView && (
+            organogramView) && ( */}
+          {organogramView && (
             <div className="mt-3">
               <AttachedOrgList
                 data={attachedOrganizationData?.attachedOrganization || []}
