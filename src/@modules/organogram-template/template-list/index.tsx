@@ -22,7 +22,6 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import TemplateTable from "./Table";
-import { CoreService } from "@services/api/Core.service";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@context/Auth";
 

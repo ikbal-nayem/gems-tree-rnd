@@ -13,15 +13,12 @@ import {
 import {
   COMMON_LABELS,
   DATE_PATTERN,
-  IColors,
   IMeta,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { statusColorMapping } from "utility/colorMap";
-import { statusMapper } from "utility/textMapping";
 import { LABELS } from "./labels";
 import OrganogramClone from "./organogramClone";
 

@@ -1,6 +1,5 @@
-// import { ReportService } from "@services/api/Report.service";
-import { promotableEmployeePDFcontent } from "./pdf";
-import { generatePDF, topProgress } from "@gems/utils";
+
+import { topProgress } from "@gems/utils";
 
 export const downloadAsPDF = (reqPayload, totalRecords) => {
   topProgress.show();

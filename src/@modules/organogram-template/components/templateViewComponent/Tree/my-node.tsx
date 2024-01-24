@@ -6,7 +6,7 @@ import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
-  let COMMON_LABEL,
+  let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
 
