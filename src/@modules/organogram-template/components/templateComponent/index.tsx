@@ -29,6 +29,7 @@ import Organizations from "./components/organization";
 import { CoreService } from "@services/api/Core.service";
 import { META_TYPE } from "@constants/common.constant";
 import NotesForm from "./components/NotesForm";
+import { useLocation } from "react-router-dom";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -63,6 +64,10 @@ const TemplateComponent = ({
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
+  const { state } = useLocation();
+  const  draftListRecord  = state?.draftListRecord;
+  // console.log(state);
+  
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -109,6 +114,7 @@ const TemplateComponent = ({
           }
         );
       } else abbreviationist = updateData?.abbreviationDtoList;
+      // const org = ;
       reset({
         isEnamCommittee: updateData?.isEnamCommittee,
         isTemplate: updateData?.isTemplate,
@@ -118,7 +124,7 @@ const TemplateComponent = ({
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
         organogramDate: updateData?.organogramDate,
         organizationGroupDto: updateData?.organizationGroupDto,
-        organization: updateData?.templateOrganizationsDtoList?.[0],
+        organization: updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO,
         // templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
@@ -288,7 +294,7 @@ const TemplateComponent = ({
   return (
     <div>
       <div className="card col-md-12 border p-3 mb-4">
-        {isObjectNull(updateData) ? (
+        {isObjectNull(updateData) && (
           <div className="d-flex justify-content-start gap-6">
             <Checkbox
               label="টেমপ্লেট ?"
@@ -317,16 +323,10 @@ const TemplateComponent = ({
               }}
             />
           </div>
-        ) : (
-          <div className="d-flex justify-content-start gap-6">
-            <h2 className="m-0">
-              {updateData?.isTemplate ? "টেমপ্লেট" : "অর্গানোগ্রাম"}
-            </h2>
-          </div>
         )}
         <Separator className="mt-1 mb-4" />
         <div className="row">
-          {isTemplate && isNotEnamCommittee && (
+          {!draftListRecord && isNotEnamCommittee && (
             <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম বাংলা"
@@ -348,7 +348,7 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {isTemplate && (
+          {!draftListRecord && (
             <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম ইংরেজি"
@@ -453,7 +453,7 @@ const TemplateComponent = ({
           formProps={formProps}
           notOrganizationData={notOrganizationData}
           setNotOrganizationData={setNotOrganizationData}
-          isTemplate={isTemplate}
+          isTemplate={draftListRecord ? !draftListRecord : isTemplate}
         />
       </div>
       <div className="border border-secondary mb-3">

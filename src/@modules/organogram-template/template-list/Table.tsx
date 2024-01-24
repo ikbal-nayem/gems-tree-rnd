@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
 // import OrganizationReport from "./organizatioReport";
 import TemplateClone from "./templateClone";
+import { useAuth } from "@context/Auth";
 
 type TableProps = {
   children: ReactNode;
@@ -48,11 +49,12 @@ const TemplateTable: FC<TableProps> = ({
   organizationGroupList,
 }) => {
   const [template, setTemplate] = useState<any>();
-  // const [templateId, setTemplateId] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onClose = () => setIsOpen(false);
+  const { currentUser } = useAuth();
+  // const [templateId, setTemplateId] = useState<string>("");
   // const [isReportOpen, setReportOpen] = useState<boolean>(false);
   // const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
-  const onClose = () => setIsOpen(false);
   // const onReportClose = () => {
   //   setAttachedOrgList(null);
   //   setReportOpen(false);
@@ -166,15 +168,20 @@ const TemplateTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
                   </DropdownItem>
+
                   <ACLWrapper
-                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
-                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
+                    visibleToRoles={[ROLES.OMS_ADMIN, ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={
+                      item?.status === TEMPLATE_STATUS.NEW &&
+                      item?.createdBy === currentUser?.id
+                    }
                   >
                     <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="edit" />
                       <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
                     </DropdownItem>
                   </ACLWrapper>
+
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
@@ -184,8 +191,11 @@ const TemplateTable: FC<TableProps> = ({
                     <h6 className="mb-0 ms-2">অর্গানোগ্রাম দেখুন</h6>
                   </DropdownItem> */}
                   <ACLWrapper
-                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
-                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
+                    visibleToRoles={[ROLES.OMS_ADMIN, ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={
+                      item?.status === TEMPLATE_STATUS.NEW &&
+                      item?.createdBy === currentUser?.id
+                    }
                   >
                     <DropdownItem onClick={() => onDelete(item)}>
                       <Icon size={19} icon="delete" color="danger" />
@@ -194,6 +204,10 @@ const TemplateTable: FC<TableProps> = ({
                   </ACLWrapper>
                 </Dropdown>
               </TableCell>
+              {/* <TableCell
+                text={item?.createdBy || COMMON_LABELS.NOT_ASSIGN}
+                subText={currentUser?.id || COMMON_LABELS.NOT_ASSIGN}
+              /> */}
             </TableRow>
           ))}
         </Table>

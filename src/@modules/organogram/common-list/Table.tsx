@@ -90,7 +90,10 @@ const OrganogramTable: FC<TableProps> = ({
       .then((resp) => {
         if (resp?.body) {
           navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
-            state: { organizationId: item?.organizationId || null },
+            state: {
+              organizationId: item?.organizationId || null,
+              draftListRecord: true,
+            },
           });
         } else {
           alert("This is not your organogram");
@@ -98,7 +101,10 @@ const OrganogramTable: FC<TableProps> = ({
       })
       .catch(() =>
         navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
-          state: { organizationId: item?.organizationId || null },
+          state: {
+            organizationId: item?.organizationId || null,
+            draftListRecord: true,
+          },
         })
       );
   };

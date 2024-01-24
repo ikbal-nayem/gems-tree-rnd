@@ -58,6 +58,10 @@ const Organizations = ({
     getOrgGroupList();
   }, []);
 
+  useEffect(() => {
+    onOrgGroupChange(watch("organizationGroupDto"));
+  }, [watch("organizationGroupDto")]);
+
   const onOrgGroupChange = (OrgGroup) => {
     if (!isTemplate)
       OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
