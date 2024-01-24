@@ -65,9 +65,9 @@ const TemplateComponent = ({
     IObject[]
   >([]);
   const { state } = useLocation();
-  const  draftListRecord  = state?.draftListRecord;
+  const draftListRecord = state?.draftListRecord;
   // console.log(state);
-  
+
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -124,7 +124,8 @@ const TemplateComponent = ({
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
         organogramDate: updateData?.organogramDate,
         organizationGroupDto: updateData?.organizationGroupDto,
-        organization: updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO,
+        organization:
+          updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO,
         // templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
@@ -374,13 +375,13 @@ const TemplateComponent = ({
             <>
               <div className="col-md-6 col-12">
                 <Input
-                  label="organizationHeader"
-                  placeholder="organizationHeader লিখুন"
+                  label="অর্গানাইজেশন"
+                  placeholder="অর্গানাইজেশন লিখুন"
                   // isRequired={true}
                   defaultValue={
-                    !isObjectNull(updateData)
-                      ? updateData?.organizationHeader
-                      : ""
+                    isObjectNull(updateData)
+                      ? "Organization"
+                      : updateData?.organizationHeader
                   }
                   registerProperty={{
                     ...register("organizationHeader", {
@@ -395,8 +396,8 @@ const TemplateComponent = ({
               </div>
               <div className="col-md-6 col-12">
                 <Input
-                  label="organizationHeaderMsc"
-                  placeholder="organizationHeaderMsc লিখুন"
+                  label="অর্গানাইজেশন মিসেলিনিয়াস"
+                  placeholder="অর্গানাইজেশন মিসেলিনিয়াস লিখুন"
                   // isRequired={true}
                   defaultValue={
                     !isObjectNull(updateData)

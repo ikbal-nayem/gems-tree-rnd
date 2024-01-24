@@ -7,7 +7,7 @@ import {
   ModalFooter,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, IObject } from "@gems/utils";
+import { COMMON_LABELS, IObject, notNullOrUndefined } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { OMSService } from "../../../../@services/api/OMS.service";
@@ -50,7 +50,7 @@ const TemplateClone = ({
     // clearErrors,
     control,
     setValue,
-    // getValues,
+    getValues,
     formState: { errors },
   } = formProps;
 
@@ -64,7 +64,8 @@ const TemplateClone = ({
 
   useEffect(() => {
     reset({});
-    getDataList();
+    onIsEnamCommitteeChange(true);
+    // getDataList();
   }, [isOpen]);
 
   const onSubmit = (data) => {
@@ -152,15 +153,15 @@ const TemplateClone = ({
   //     .catch((e) => console.log(e.message));
   // };
 
-  // const onIsEnamCommitteeChange = (checked: boolean) => {
-  //   setIsNotEnamCommittee(!checked);
-  //   const enamApprovalDate = new Date("1982-12-26");
-  //   if (checked) setValue("organogramDate", enamApprovalDate);
-  //   else if (notNullOrUndefined(getValues("chosenDate"))) {
-  //     const chosenDate = getValues("chosenDate");
-  //     setValue("organogramDate", new Date(chosenDate));
-  //   }
-  // };
+  const onIsEnamCommitteeChange = (checked: boolean) => {
+    // setIsNotEnamCommittee(!checked);
+    const enamApprovalDate = new Date("1982-12-26");
+    if (checked) setValue("organogramDate", enamApprovalDate);
+    else if (notNullOrUndefined(getValues("chosenDate"))) {
+      const chosenDate = getValues("chosenDate");
+      setValue("organogramDate", new Date(chosenDate));
+    }
+  };
 
   const MODAL_TITLE =
     (template?.titleBn ? "'" + template?.titleBn + "' এর " : "") +
@@ -184,7 +185,7 @@ const TemplateClone = ({
                 checked
                 registerProperty={{
                   ...register("isEnamCommittee", {
-                    // onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
+                    onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
                   }),
                 }}
               />
