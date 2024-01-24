@@ -288,14 +288,24 @@ const TemplateViewComponent = ({
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
+            <div className="fs-2 text-center fw-bolder mb-0">
+              {stateOrganizationData?.templateView
+                ? titleName
+                : orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
+            </div>
+            {stateOrganizationData?.templateView &&
+              !isObjectNull(updateData?.organizationGroupDto) && (
+                <div className="fs-2 text-center fw-bolder mb-0">
+                  {updateData?.isEnamCommittee
+                    ? updateData?.organizationGroupDto?.orgGroupEn
+                    : updateData?.organizationGroupDto?.orgGroupEn}
+                </div>
+              )}
             {orgParentName && (
               <div className="fs-2 text-center fw-bolder mb-0">
                 {orgParentName || COMMON_LABELS.NOT_ASSIGN}
               </div>
             )}
-            <div className="fs-2 text-center fw-bolder mb-0">
-              {orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
-            </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
                 <span className="mb-0 fw-bold me-1">
@@ -561,7 +571,7 @@ const TemplateViewComponent = ({
         </div>
       </div>
 
-      {!organogramView && (
+      {!organogramView && !stateOrganizationData?.templateView && (
         <>
           <div className="d-flex justify-content-center gap-14 mt-12">
             <ACLWrapper

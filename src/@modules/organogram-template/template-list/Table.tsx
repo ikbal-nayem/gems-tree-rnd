@@ -88,7 +88,9 @@ const TemplateTable: FC<TableProps> = ({
       );
   };
   const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
+    navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id, {
+      state: { templateView: true },
+    });
   };
 
   // const onReportView = (item) => {
