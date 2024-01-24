@@ -67,33 +67,33 @@ const TemplateClone = ({
     getDataList();
   }, [isOpen]);
 
-  const onSubmit = (cloneData) => {
+  const onSubmit = (data) => {
     // if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
     const templateOrganizationsDto = {
-      organizationId: cloneData?.organization?.id,
-      OrganizationNameBn: cloneData?.organization?.nameBn,
-      OrganizationNameEn: cloneData?.organization?.nameEn,
+      organizationId: data?.organization?.id,
+      OrganizationNameBn: data?.organization?.nameBn,
+      OrganizationNameEn: data?.organization?.nameEn,
     };
     const reqPayload = {
-      cloneIsEnamCommittee: cloneData.isEnamCommittee,
-      //   ? "" // cloneData.titleEn
-      //   : cloneData.titleBn,
-      // cloneTitleEn: cloneData.titleEn,
-      cloneOrganogramDate: cloneData.organogramDate,
-      cloneOrganizationGroupId: cloneData?.organizationGroupDto?.id,
+      cloneIsEnamCommittee: data.isEnamCommittee,
+      //   ? "" // data.titleEn
+      //   : data.titleBn,
+      // cloneTitleEn: data.titleEn,
+      cloneOrganogramDate: data.organogramDate,
+      cloneOrganizationGroupId: data?.organizationGroupDto?.id,
       cloneRefTemplateId: template?.id,
       cloneTemplateOrganizationsDtoList: [templateOrganizationsDto],
       // cloneOrganogramChangeActionDtoList:
-      //   !cloneData.isEnamCommittee &&
-      //   cloneData?.organogramChangeActionDtoList?.length > 0
-      //     ? cloneData?.organogramChangeActionDtoList?.map((d) => ({
+      //   !data.isEnamCommittee &&
+      //   data?.organogramChangeActionDtoList?.length > 0
+      //     ? data?.organogramChangeActionDtoList?.map((d) => ({
       //         titleEn: d?.titleEn,
       //         titleBn: d?.titleBn,
       //       }))
       //     : null,
-
-      // cloneData?.templateOrganizationsDtoList?.length > 0
-      //   ? cloneData?.templateOrganizationsDtoList?.map((d) => ({
+      // cloneTemplateOrganizationsDtoList: 
+      // data?.templateOrganizationsDtoList?.length > 0
+      //   ? data?.templateOrganizationsDtoList?.map((d) => ({
       //       organizationId: d?.id,
       //       organizationNameEn: d?.nameEn || d?.organizationNameEn,
       //       organizationNameBn: d?.nameBn || d?.organizationNameBn,
@@ -103,8 +103,8 @@ const TemplateClone = ({
 
     // Organization Empty Check
     // if (
-    //   cloneData?.templateOrganizationsDtoList === undefined ||
-    //   cloneData?.templateOrganizationsDtoList?.length <= 0
+    //   data?.templateOrganizationsDtoList === undefined ||
+    //   data?.templateOrganizationsDtoList?.length <= 0
     // ) {
     //   setNotOrganizationData(true);
     //   focusById("organizationBlock", true);
