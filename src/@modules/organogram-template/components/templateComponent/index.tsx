@@ -59,9 +59,9 @@ const TemplateComponent = ({
     useState<boolean>(false);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
+  const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
   const [isTemplate, setIsTemplate] = useState<boolean>(true);
-  const [notOrganizationData, setNotOrganizationData] =
-    useState<boolean>(false);
+
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
@@ -140,7 +140,7 @@ const TemplateComponent = ({
       });
 
       setIsNotEnamCommittee(!updateData?.isEnamCommittee);
-      setIsTemplate(updateData?.isTemplate);
+      // setIsTemplate(updateData?.isTemplate);
     } else {
       // reset({
       //   isTemplate: true,
@@ -237,21 +237,32 @@ const TemplateComponent = ({
     }
 
     if (
-      // data?.templateOrganizationsDtoList === undefined ||onIsEnamCommitteeChange
-      // data?.templateOrganizationsDtoList?.length <= 0
       !notNullOrUndefined(data?.organizationGroupDto) ||
       (!isTemplate && !notNullOrUndefined(data?.templateOrganizationsDto))
     ) {
-      setNotOrganizationData(true);
       focusById("organizationBlock", true);
       return;
     } else {
-      setNotOrganizationData(false);
       deFocusById("organizationBlock");
     }
-    data.templateOrganizationsDto = isTemplate
-      ? null
-      : templateOrganizationsDtoSimplifier(data?.templateOrganizationsDto);
+
+    data.templateOrganizationsDtoList = isObjectNull(updateData)
+      ? isTemplate
+        ? []
+        : !isObjectNull(data?.templateOrganizationsDto)
+        ? [templateOrganizationsDtoSimplifier(data?.templateOrganizationsDto)]
+        : []
+      : orgGroupTriggered && !orgTriggered
+      ? isNotEmptyList(updateData?.templateOrganizationsDtoList)
+        ? [
+            templateOrganizationsDtoSimplifier(
+              updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO
+            ),
+          ]
+        : []
+      : !isObjectNull(data?.templateOrganizationsDto)
+      ? [templateOrganizationsDtoSimplifier(data?.templateOrganizationsDto)]
+      : [];
 
     const reqPayload = {
       ...data,
@@ -259,16 +270,6 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationHeader: getValues("organizationHeader"),
       organizationHeaderMsc: getValues("organizationHeaderMsc"),
-      templateOrganizationsDtoList:
-        !isObjectNull(updateData) && orgGroupTriggered
-          ? [
-              templateOrganizationsDtoSimplifier(
-                updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO
-              ),
-            ]
-          : isTemplate
-          ? []
-          : [data.templateOrganizationsDto],
       organizationGroupId: data?.organizationGroupDto?.id,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
@@ -464,9 +465,8 @@ const TemplateComponent = ({
       <div className="mb-4">
         <Organizations
           formProps={formProps}
-          notOrganizationData={notOrganizationData}
-          setNotOrganizationData={setNotOrganizationData}
           setOrgGroupTriggered={setOrgGroupTriggered}
+          setOrgTriggered={setOrgTriggered}
           isTemplate={draftListRecord ? !draftListRecord : isTemplate}
         />
       </div>

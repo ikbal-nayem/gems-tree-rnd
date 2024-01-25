@@ -6,17 +6,15 @@ import { useEffect, useState } from "react";
 import { deFocusById } from "utility/utils";
 interface IOrganizations {
   formProps: any;
-  notOrganizationData: boolean;
   isTemplate: boolean;
-  setNotOrganizationData: (validateCheck: boolean) => void;
   setOrgGroupTriggered?: (flag: boolean) => void;
+  setOrgTriggered?: (flag: boolean) => void;
 }
 
 const Organizations = ({
   formProps,
-  notOrganizationData,
   isTemplate,
-  setNotOrganizationData,
+  setOrgTriggered,
   setOrgGroupTriggered,
 }: IOrganizations) => {
   const {
@@ -75,7 +73,7 @@ const Organizations = ({
 
   if (watch("organizationGroupDto")) {
     deFocusById("organizationBlock");
-    setNotOrganizationData(false);
+    // setNotOrganizationData(false);
     // alert(watch("organizationGroup")?.orgTypeBn);
   }
 
@@ -116,6 +114,7 @@ const Organizations = ({
               // autoFocus
               getOptionLabel={(op) => op.nameBn}
               getOptionValue={(op) => op?.id}
+              onChange={() => setOrgTriggered(true)}
               isError={!!errors?.templateOrganizationsDto}
               errorMessage={errors?.templateOrganizationsDto?.message as string}
             />
