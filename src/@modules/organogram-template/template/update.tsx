@@ -6,6 +6,7 @@ import TemplateComponent from "../components/templateComponent";
 import { OMSService } from "../../../@services/api/OMS.service";
 import { ContentPreloader, NoData, toast } from "@gems/components";
 import TemplateEditComponent from "../components/templateEditComponent";
+import { isNotEmptyList } from "utility/utils";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -70,7 +71,11 @@ const TemplateUpdate = () => {
     OMSService.templateUpdate(fd)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + templateId);
+        navigate(
+          isNotEmptyList(templateData?.templateOrganizationsDtoList)
+            ? ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST
+            : ROUTE_L2.ORG_TEMPLATE_LIST
+        );
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));

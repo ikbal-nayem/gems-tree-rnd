@@ -39,7 +39,6 @@ import ManPowerList from "./components/ManPowerList";
 import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModal";
 import NotesList from "./components/NotesList";
 import NotesReviewApproverList from "./components/NotesReviewApproverList";
-import OrgList from "./components/Organization";
 import { BUTTON_LABEL, MSG } from "./message";
 
 interface ITemplateViewComponent {
@@ -133,13 +132,13 @@ const TemplateViewComponent = ({
 
   const onModalActionConfirm = (note = null) => {
     if (modalAction === "SEND_TO_REVIEW") {
-      onStatusChange("IN_REVIEW");
+      onStatusChange("IN_REVIEW", ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
     } else if (modalAction === "BACK_TO_REVIEW") {
-      onStatusChange("IN_REVIEW", note);
+      onStatusChange("IN_REVIEW", ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST, note);
     } else if (modalAction === "BACK_TO_NEW") {
-      onStatusChange("NEW", note);
+      onStatusChange("NEW", ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST, note);
     } else if (modalAction === "SEND_TO_APPROVE") {
-      onStatusChange("IN_APPROVE");
+      onStatusChange("IN_APPROVE", ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST);
     } else if (modalAction === "APPROVE") {
       onTemplateApprove();
     }
@@ -153,7 +152,7 @@ const TemplateViewComponent = ({
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const BTN_LABELS = langEn ? COMN_LABELS.EN : COMN_LABELS;
 
-  const onStatusChange = (status: string, note = null) => {
+  const onStatusChange = (status: string, destination, note = null) => {
     setIsSubmitting(true);
     OMSService.updateTemplateStatusById(updateData?.id, status, {
       note: note,
@@ -161,7 +160,7 @@ const TemplateViewComponent = ({
     })
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        navigate(destination);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitting(false));
@@ -172,7 +171,7 @@ const TemplateViewComponent = ({
     OMSService.approveTemplateById(updateData?.id)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setApproveLoading(false));
@@ -248,9 +247,15 @@ const TemplateViewComponent = ({
     ? stateOrganizationData?.organizationNameEn
     : stateOrganizationData?.organizationNameBn;
 
+  // let orgParentName = langEn
+  //   ? stateOrganizationData?.parentNameEN || parentOrganizationData?.nameEn
+  //   : stateOrganizationData?.parentNameBN || parentOrganizationData?.nameBn;
+  let orgStateParentName = langEn
+    ? stateOrganizationData?.parentNameEN
+    : stateOrganizationData?.parentNameBN;
   let orgParentName = langEn
-    ? stateOrganizationData?.parentNameEN || parentOrganizationData?.nameEn
-    : stateOrganizationData?.parentNameBN || parentOrganizationData?.nameBn;
+    ? parentOrganizationData?.nameEn
+    : parentOrganizationData?.nameBn;
 
   let titleName =
     (organogramView
@@ -283,14 +288,31 @@ const TemplateViewComponent = ({
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
+            {stateOrganizationData?.templateView ? (
+              <div className="fs-2 text-center fw-bolder mb-0">
+                <span className="me-1">{LABEL.TEMPLATE_NAME}: </span>
+                {titleName || COMMON_LABELS.NOT_ASSIGN}
+              </div>
+            ) : (
+              <div className="fs-2 text-center fw-bolder mb-0">
+                {orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
+              </div>
+            )}
+
+            {stateOrganizationData?.templateView &&
+              !isObjectNull(updateData?.organizationGroupDto) && (
+                <div className="fs-2 text-center fw-bolder mb-0">
+                  <span className="me-1">{LABEL.TEMPLATE_TYPE}: </span>
+                  {updateData?.isEnamCommittee
+                    ? updateData?.organizationGroupDto?.orgGroupEn
+                    : updateData?.organizationGroupDto?.orgGroupBn}
+                </div>
+              )}
             {orgParentName && (
               <div className="fs-2 text-center fw-bolder mb-0">
                 {orgParentName || COMMON_LABELS.NOT_ASSIGN}
               </div>
             )}
-            <div className="fs-2 text-center fw-bolder mb-0">
-              {orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
-            </div>
             <div className="text-center fw-bolder mb-0">
               <Label className="mb-0 text-info">
                 <span className="mb-0 fw-bold me-1">
@@ -317,10 +339,22 @@ const TemplateViewComponent = ({
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
         <div className="mb-6 text-center">
-          {orgParentName && (
-            <p className="fs-2 mb-0">{orgParentName || null}</p>
+          {updateData?.organizationHeader && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeader || null}
+            </p>
+          )}
+          {updateData?.organizationHeaderMsc && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeaderMsc || null}
+            </p>
           )}
           <p className="fs-2 mb-0">{orgName || titleName || null}</p>
+          {(orgParentName || orgStateParentName) && (
+            <p className="fs-2 mb-0">
+              {orgParentName || orgStateParentName || null}
+            </p>
+          )}
           <p className="fs-3 mb-0">{versionName}</p>
         </div>
         <AllocationOfBusinessList
@@ -340,7 +374,9 @@ const TemplateViewComponent = ({
             titleName: titleName || null,
             versionName: versionName || null,
             orgName: orgName || null,
-            orgParentName: orgParentName || null,
+            orgParentName: orgParentName || orgStateParentName || null,
+            organizationHeader: updateData?.organizationHeader || null,
+            organizationHeaderMsc: updateData?.organizationHeaderMsc || null,
           }}
         />
         <div
@@ -358,7 +394,9 @@ const TemplateViewComponent = ({
           isOpen={formOpen}
           handleClose={onFormClose}
           fullscreen
-          title={`${titleName} ${versionName ? "( " + versionName + " )" : ""}`}
+          title={`${orgName || titleName} ${
+            versionName ? "( " + versionName + " )" : ""
+          }`}
         >
           <ModalBody className="p-0">
             <OrganizationTemplateTree
@@ -372,7 +410,10 @@ const TemplateViewComponent = ({
                 titleName: titleName || null,
                 versionName: versionName || null,
                 orgName: orgName || null,
-                orgParentName: orgParentName || null,
+                orgParentName: orgParentName || orgStateParentName || null,
+                organizationHeader: updateData?.organizationHeader || null,
+                organizationHeaderMsc:
+                  updateData?.organizationHeaderMsc || null,
               }}
             />
           </ModalBody>
@@ -385,8 +426,20 @@ const TemplateViewComponent = ({
         style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
       >
         <div className="mb-6 text-center">
-          {orgParentName && (
-            <p className="fs-2 mb-0">{orgParentName || null}</p>
+          {updateData?.organizationHeader && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeader || null}
+            </p>
+          )}
+          {updateData?.organizationHeaderMsc && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeaderMsc || null}
+            </p>
+          )}
+          {(orgParentName || orgStateParentName) && (
+            <p className="fs-2 mb-0">
+              {orgParentName || orgStateParentName || null}
+            </p>
           )}
           <p className="fs-2 mb-0">{orgName || titleName || null}</p>
           <p className="fs-3 mb-0">{versionName}</p>
@@ -412,7 +465,10 @@ const TemplateViewComponent = ({
             )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
-            {(orgName || orgParentName || organogramView) && (
+            {(orgName ||
+              orgParentName ||
+              orgStateParentName ||
+              organogramView) && (
               <AttachedOrgList
                 data={attachedOrganizationData?.attachedOrganization || []}
                 langEn={langEn}
@@ -448,15 +504,16 @@ const TemplateViewComponent = ({
               langEn={langEn}
             />
           </div>
-          {(!orgName || !orgParentName) && !organogramView && (
+          {/* {(!orgName || !orgParentName) && !organogramView && ( */}
+          {/* {!organogramView && (
             <div className="mt-3">
               <OrgList
                 data={updateData?.templateOrganizationsDtoList || []}
                 langEn={langEn}
               />
-              {/* <CheckListList data={updateData?.attachmentDtoList || []} /> */}
+              <CheckListList data={updateData?.attachmentDtoList || []} />
             </div>
-          )}
+          )} */}
           <div className="mt-3">
             <AttachmentList
               data={updateData?.attachmentDtoList || []}
@@ -471,7 +528,8 @@ const TemplateViewComponent = ({
               />
             </div>
           )}
-          {!organogramView && !stateOrganizationData?.organizationId && (
+          {/* {!organogramView && !stateOrganizationData?.organizationId && ( */}
+          {!organogramView && (
             <div className="mt-3">
               <NotesReviewApproverList
                 data={updateData?.organogramNoteGroupDtoList || []}
@@ -479,7 +537,11 @@ const TemplateViewComponent = ({
               />
             </div>
           )}
-          {(orgName || orgParentName || organogramView) && (
+          {/* {(orgName ||
+            orgParentName ||
+            orgStateParentName ||
+            organogramView) && ( */}
+          {organogramView && (
             <div className="mt-3">
               <AttachedOrgList
                 data={attachedOrganizationData?.attachedOrganization || []}
@@ -516,7 +578,7 @@ const TemplateViewComponent = ({
         </div>
       </div>
 
-      {!organogramView && (
+      {!organogramView && !stateOrganizationData?.templateView && (
         <>
           <div className="d-flex justify-content-center gap-14 mt-12">
             <ACLWrapper

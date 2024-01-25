@@ -92,14 +92,14 @@ const OrganogramClone = ({ template, isOpen, onClose, getDataList }: IForm) => {
           setIsSubmitLoading(false);
           // onClose();
           // getDataList();
-          navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+          navigate(ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
         });
     }
   };
 
   return (
     <Modal
-      title="অর্গানোগ্রামটির ডুপ্লিকেটের তথ্য প্রদান করুন :-"
+      title="অর্গানোগ্রামটির ক্লোনের তথ্য প্রদান করুন :-"
       isOpen={isOpen}
       handleClose={onClose}
       holdOn

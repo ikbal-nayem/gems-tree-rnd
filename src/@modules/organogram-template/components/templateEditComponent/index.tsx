@@ -1,4 +1,4 @@
-import { Autocomplete, Button, DateInput } from "@gems/components";
+import { Autocomplete, Button, DateInput, Input } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -46,6 +46,7 @@ const TemplateEditComponent = ({
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
+  const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -58,6 +59,7 @@ const TemplateEditComponent = ({
     },
   });
   const {
+    register,
     handleSubmit,
     reset,
     setError,
@@ -88,6 +90,7 @@ const TemplateEditComponent = ({
           }
         );
       } else abbreviationist = updateData?.abbreviationDtoList;
+      setIsNotEnamCommittee(!updateData?.isEnamCommittee);
       reset({
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
@@ -156,6 +159,8 @@ const TemplateEditComponent = ({
       ...data,
       titleBn: getValues("titleBn") || null,
       titleEn: getValues("titleEn") || null,
+      organizationHeader:  getValues("organizationHeader") || "",
+      organizationHeaderMsc: getValues("organizationHeaderMsc") || "",
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
@@ -180,6 +185,38 @@ const TemplateEditComponent = ({
               disabled
             />
           </div>
+          {!isNotEnamCommittee && (
+            <>
+              <div className="col-md-6 col-12">
+                <Input
+                  label="অর্গানাইজেশন"
+                  placeholder="অর্গানাইজেশন লিখুন"
+                  defaultValue={
+                    isObjectNull(updateData)
+                      ? "Organization"
+                      : updateData?.organizationHeader
+                  }
+                  registerProperty={{
+                    ...register("organizationHeader"),
+                  }}
+                />
+              </div>
+              <div className="col-md-6 col-12">
+                <Input
+                  label="অর্গানাইজেশন মিসেলিনিয়াস"
+                  placeholder="অর্গানাইজেশন মিসেলিনিয়াস লিখুন"
+                  defaultValue={
+                    !isObjectNull(updateData)
+                      ? updateData?.organizationHeaderMsc
+                      : ""
+                  }
+                  registerProperty={{
+                    ...register("organizationHeaderMsc"),
+                  }}
+                />
+              </div>
+            </>
+          )}
           <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
@@ -193,8 +230,8 @@ const TemplateEditComponent = ({
           </div>
           <div className="col-md-6 col-12">
             <Autocomplete
-              label="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ"
-              placeholder="অর্গানোগ্রাম পরিবর্তনের কারণ সমূহ দিন"
+              label="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ"
+              placeholder="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ দিন"
               options={organogramChangeActionList || []}
               getOptionLabel={(op) => op?.titleBn}
               getOptionValue={(op) => op?.titleEn}

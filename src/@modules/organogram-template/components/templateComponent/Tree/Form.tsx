@@ -502,9 +502,13 @@ const NodeForm = ({
                       }
                       getOptionValue={(op) => op?.id}
                       name={`manpowerList.${index}.gradeDTO`}
-                      onChange={(t) =>
-                        setValue(`manpowerList.${index}.gradeId`, t?.id)
-                      }
+                      onChange={(t) => {
+                        setValue(`manpowerList.${index}.gradeId`, t?.id);
+                        setValue(
+                          `manpowerList.${index}.gradeOrder`,
+                          t?.displayOrder
+                        );
+                      }}
                       noMargin
                       isError={!!errors?.manpowerList?.[index]?.gradeDTO}
                     />

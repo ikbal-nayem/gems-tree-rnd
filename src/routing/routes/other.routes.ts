@@ -1,4 +1,4 @@
-import { ROUTE_L1 } from "@constants/internal-route.constant";
+import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { lazy } from "react";
 import { getPermittedRouteList } from "utility/utils";
@@ -15,10 +15,10 @@ let routeList = [
     element: lazy(() => import("@modules/post-config")),
   },
   {
-    link: ROUTE_L1.OMS_MASTER_ORGANIZATION,
-    routeKey: ROUTE_KEY.OMS_MASTER_ORGANIZATION,
-    element: lazy(() => import("@modules/organization")),
+    link: ROUTE_L2.OMS_ORGANIZATION_TYPE,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
+    element: lazy(() => import("@modules/organization/organizationTypeList")),
   },
 ];
 
-export const  OtherRoutes = getPermittedRouteList(routeList);
+export const OtherRoutes = getPermittedRouteList(routeList);

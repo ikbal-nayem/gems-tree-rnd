@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
+import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { OMSService } from "../../../@services/api/OMS.service";
-import { ContentPreloader, NoData, toast } from "@gems/components";
 import TemplateViewComponent from "../components/templateViewComponent";
 
 const TemplateView = () => {
@@ -75,7 +75,7 @@ const TemplateView = () => {
           inventoryData={inventoryData}
           manpowerData={manpowerData}
           attachedOrganizationData={attachOrgData}
-          stateOrganizationData={state||{}}
+          stateOrganizationData={state || {}}
         />
       )}
       {!isLoading && isObjectNull(data) && (

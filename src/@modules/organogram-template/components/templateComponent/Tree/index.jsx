@@ -213,20 +213,35 @@ const OrganizationTemplateTree = ({
   const selectedNode = useRef(null);
   const updateNodeData = useRef(null);
 
-  const [postList, setPostist] = useState([]);
+  const [postList, setPostList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
-
+  const postPayload = {
+    meta: {
+      page: 0,
+      limit: 10000000,
+      sort: [{ order: "asc", field: isNotEnamCommittee ? "nameBn" : "nameEn" }],
+    },
+    body: {},
+  };
   useEffect(() => {
-    CoreService.getPostList().then((resp) => setPostist(resp.body || []));
+    CoreService.getPostList(postPayload).then((resp) =>
+      setPostList(resp.body || [])
+    );
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
     );
   }, []);
+
+  useEffect(() => {
+    isNotEnamCommittee
+      ? postList.sort((a, b) => (a.nameBn > b.nameBn ? 1 : -1))
+      : postList.sort((a, b) => (a.nameEn > b.nameEn ? 1 : -1));
+  }, [isNotEnamCommittee]);
 
   const cadreObj = serviceList?.find(
     (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE

@@ -1,70 +1,81 @@
 import { LABELS } from "@constants/common.constant";
 import { Separator, Autocomplete } from "@gems/components";
-import { IObject, isObjectNull } from "@gems/utils";
+import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import OrgFromOrgtype from "./OrgFromOrgtype";
-import OrgList from "./SelectedOrgView";
+import { useEffect, useState } from "react";
 import { deFocusById } from "utility/utils";
-
-const initPayload = {
-  meta: {
-    page: 0,
-    limit: 25,
-    sort: [{ order: "asc", field: "serialNo" }],
-  },
-  body: { searchKey: "" },
-};
-
 interface IOrganizations {
   formProps: any;
-  notOrganizationData: boolean;
-  setNotOrganizationData: (validateCheck: boolean) => void;
+  isTemplate: boolean;
+  setOrgGroupTriggered?: (flag: boolean) => void;
+  setOrgTriggered?: (flag: boolean) => void;
 }
 
 const Organizations = ({
   formProps,
-  notOrganizationData,
-  setNotOrganizationData,
+  isTemplate,
+  setOrgTriggered,
+  setOrgGroupTriggered,
 }: IOrganizations) => {
-  const { setValue, getValues, watch } = formProps;
-
-  const getOrgList = (searchKey, callback) => {
-    initPayload.body = { searchKey };
-    OMSService.getOrganizationList(initPayload).then((resp) =>
-      callback(resp?.body)
+  const {
+    watch,
+    control,
+    formState: { errors },
+  } = formProps;
+  const [organizationList, setOrganizationList] = useState<IObject[]>([]);
+  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
+    []
+  );
+  const getOrgList = () => {
+    const payload = {
+      meta: {
+        page: 0,
+        limit: 1000,
+        sort: [{ order: "asc", field: "serialNo" }],
+      },
+      body: { searchKey: "" },
+    };
+    OMSService.getOrganizationList(payload).then((resp) =>
+      setOrganizationList(resp?.body)
     );
   };
 
-  const onOrgSelect = (selected: IObject, toggle: boolean = false) => {
-    const currentOrg = getValues("templateOrganizationsDtoList") || [];
-    const cIdx = currentOrg?.findIndex((co) => co?.id === selected?.id);
-    if (cIdx < 0 && !isObjectNull(selected)) currentOrg.push(selected);
-    else if (toggle) currentOrg.splice(cIdx, 1);
-    setValue("templateOrganizationsDtoList", [...currentOrg]);
-    setNotOrganizationData(false);
+  const getOrgGroupList = () => {
+    const payload = {
+      meta: {
+        page: 0,
+        limit: 500,
+        sort: [{ order: "asc", field: "createdOn" }],
+      },
+      body: { searchKey: "" },
+    };
+    OMSService.getOrganizationTypeList(payload).then((resp) =>
+      setOrganizationGroupList(resp?.body)
+    );
+  };
+  useEffect(() => {
+    getOrgList();
+    getOrgGroupList();
+  }, []);
+
+  useEffect(() => {
+    onOrgGroupChange(watch("organizationGroupDto"));
+  }, [watch("organizationGroupDto")]);
+
+  const onOrgGroupChange = (OrgGroup) => {
+    if (!isTemplate) {
+      setOrgGroupTriggered(true);
+      OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
+        setOrganizationList(resp?.body)
+      );
+    }
   };
 
-  const onMultiOrgSelect = (selected: IObject[], isAdd: boolean) => {
-    const currentOrg = getValues("templateOrganizationsDtoList") || [];
-    selected?.forEach((s) => {
-      const cIdx = currentOrg?.findIndex((co) => co?.id === s?.id);
-      if (cIdx < 0 && isAdd) currentOrg.push(s);
-      else if (cIdx >= 0 && !isAdd) currentOrg.splice(cIdx, 1);
-    });
-    setValue("templateOrganizationsDtoList", [...currentOrg]);
-    setNotOrganizationData(false);
-  };
-
-  const onOrgCancle = (idx) => {
-    const currentOrg = getValues("templateOrganizationsDtoList") || [];
-    currentOrg?.splice(idx, 1);
-    setValue("templateOrganizationsDtoList", [...currentOrg]);
-  };
-
-  const selectedOrgList = watch("templateOrganizationsDtoList");
-
-  if (selectedOrgList?.length > 0) deFocusById("organizationBlock");
-  // else focusById("organizationBlock", true);
+  if (watch("organizationGroupDto")) {
+    deFocusById("organizationBlock");
+    // setNotOrganizationData(false);
+    // alert(watch("organizationGroup")?.orgTypeBn);
+  }
 
   return (
     <div className="card border p-3" id="organizationBlock">
@@ -74,31 +85,42 @@ const Organizations = ({
       <Separator className="mt-1" />
       <div className="row">
         <div className="col-md-6">
-          <OrgFromOrgtype
-            selectedOrgList={selectedOrgList}
-            onOrgSelect={onOrgSelect}
-            onMultiOrgSelect={onMultiOrgSelect}
-          />
-        </div>
-        <div className="col-md-6">
           <Autocomplete
-            placeholder="প্রতিষ্ঠান"
-            isRequired
-            isAsync
+            label="প্রতিষ্ঠানের গ্ৰুপ"
+            placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+            name="organizationGroupDto"
+            options={organizationGroupList}
             noMargin
-            closeMenuOnSelect={false}
-            getOptionLabel={(op) => op.nameBn}
+            isRequired={isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false}
+            control={control}
+            // autoFocus
+            getOptionLabel={(op) => op?.orgGroupBn}
             getOptionValue={(op) => op?.id}
-            loadOptions={getOrgList}
-            onChange={(org) => onOrgSelect(org, false)}
+            onChange={(org) => onOrgGroupChange(org)}
+            isError={!!errors?.organizationGroupDto}
+            errorMessage={errors?.organizationGroupDto?.message as string}
           />
         </div>
+        {!isTemplate && (
+          <div className="col-md-6">
+            <Autocomplete
+              label="প্রতিষ্ঠান"
+              placeholder="প্রতিষ্ঠান বাছাই করুন"
+              name="templateOrganizationsDto"
+              options={organizationList}
+              noMargin
+              isRequired="প্রতিষ্ঠান বাছাই করুন"
+              control={control}
+              // autoFocus
+              getOptionLabel={(op) => op.nameBn}
+              getOptionValue={(op) => op?.id}
+              onChange={() => setOrgTriggered(true)}
+              isError={!!errors?.templateOrganizationsDto}
+              errorMessage={errors?.templateOrganizationsDto?.message as string}
+            />
+          </div>
+        )}
       </div>
-
-      <OrgList selectedOrgList={selectedOrgList} onOrgCancle={onOrgCancle} />
-      {notOrganizationData && (
-        <p className="text-danger fs-6 mb-0">প্রতিষ্ঠান যুক্ত করুন</p>
-      )}
     </div>
   );
 };

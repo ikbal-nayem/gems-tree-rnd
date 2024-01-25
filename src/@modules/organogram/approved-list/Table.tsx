@@ -37,12 +37,12 @@ const OrganogramTable: FC<TableProps> = ({
   respMeta,
   getDataList,
 }) => {
-  const columns: ITableHeadColumn[] = [
-    { title: COMMON_LABELS.SL_NO, width: 50 },
-    { title: LABELS.ORGANIZATION_NAME, width: 250 },
-    { title: LABELS.ORGANOGRAM_DATE, width: 100 },
-    { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
-  ];
+  let columns: ITableHeadColumn[] = [
+          { title: COMMON_LABELS.SL_NO, width: 50 },
+          { title: LABELS.ORGANIZATION_NAME, width: 250 },
+          { title: LABELS.ORGANOGRAM_DATE, width: 100 },
+          { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
+        ];
 
   const navigate = useNavigate();
   //   const navigateToDetails = (id: string) => {
@@ -51,7 +51,6 @@ const OrganogramTable: FC<TableProps> = ({
   const navigateToView = (id: string) => {
     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
   };
-
 
   const [template, setTemplate] = useState<any>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -74,9 +73,9 @@ const OrganogramTable: FC<TableProps> = ({
               />
               <TableCell
                 text={
-                  item?.isEnamCommittee
-                    ? "Enam Committe Report (26/12/1982)"
-                    : item?.organogramDate
+                  // item?.isEnamCommittee
+                  //   ? "Enam Committe Report (26/12/1982)" : 
+                   item?.organogramDate
                     ? generateDateFormat(
                         item?.organogramDate,
                         DATE_PATTERN.GOVT_STANDARD
@@ -92,11 +91,11 @@ const OrganogramTable: FC<TableProps> = ({
                 >
                   <DropdownItem onClick={() => navigateToView(item?.id)}>
                     <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-3">দেখুন</h6>
+                    <h6 className="mb-0 ms-3">বিস্তারিত দেখুন</h6>
                   </DropdownItem>
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
+                    <h6 className="mb-0 ms-3">হালনাগাদ করুন</h6>
                   </DropdownItem>
                   {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
@@ -111,7 +110,6 @@ const OrganogramTable: FC<TableProps> = ({
             </TableRow>
           ))}
         </Table>
-        
       ) : isLoading ? (
         <ContentPreloader />
       ) : (

@@ -6,8 +6,10 @@ import {
   DrawerHeader,
   FilterFooter,
   IconButton,
+  toast,
 } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, isObjectNull, makeFormData } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import LocationWorkSpaceComponent from "./LocationWorkSpaceComponent";
@@ -16,12 +18,24 @@ import WorkSpaceComponent from "./WorkSpaceComponent";
 const OrgFilter = ({ onFilterDone, options }) => {
   const formProps = useForm();
   const [open, setOpen] = useState<boolean>(false);
-  const { control, handleSubmit, setValue, register } = formProps;
+  const { control, handleSubmit, watch, reset, setValue, register } = formProps;
+  const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
+
+  const onOrganizationTypeChange = (typeItem: IObject) => {
+    if (!isObjectNull(typeItem)) {
+      OMSService.FETCH.organizationGroupbyOrgType(makeFormData(typeItem))
+        .then((res) => {
+          setOrgGroupList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
+    }
+  };
 
   const onClose = () => setOpen(false);
 
   const onFilter = (data: IObject) => {
     onFilterDone(data);
+    reset();
     onClose();
   };
 
@@ -52,12 +66,24 @@ const OrgFilter = ({ onFilterDone, options }) => {
               label="সংস্থার ধরণ"
               placeholder="সংস্থার ধরণ বাছাই করুন"
               options={options?.organizationTypes || []}
-              name="org"
-              getOptionLabel={(op) => op.titleBn}
-              getOptionValue={(op) => op.metaKey}
-              onChange={(op) => setValue("orgType", op?.metaKey)}
+              name="organizationTypeDTO"
+              getOptionLabel={(op) => op.orgTypeBn}
+              getOptionValue={(op) => op.orgTypeEn}
+              onChange={(op) => onOrganizationTypeChange(op)}
               control={control}
             />
+            {!isObjectNull(watch("organizationTypeDTO")) && (
+              <Autocomplete
+                label="সংস্থার গ্রুপ"
+                placeholder="সংস্থার গ্রুপ বাছাই করুন"
+                options={orgGroupList || []}
+                name="organizationGroupDTO"
+                getOptionLabel={(op) => op.orgGroupBn}
+                getOptionValue={(op) => op.id}
+                onChange={(op) => setValue("organizationGroupId", op?.id)}
+                control={control}
+              />
+            )}
             <div className="col-12">
               <WorkSpaceComponent {...formProps} />
             </div>

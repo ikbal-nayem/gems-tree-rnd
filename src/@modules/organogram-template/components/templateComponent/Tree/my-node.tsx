@@ -18,6 +18,14 @@ const MyNode = ({
   firstNode,
   isNotEnamCommittee,
 }) => {
+  isNotEmptyList(nodeData?.manpowerList) &&
+    nodeData?.manpowerList.sort((a, b) => {
+      if (!notNullOrUndefined(a.gradeOrder)) return 1;
+      if (!notNullOrUndefined(b.gradeOrder)) return -1;
+      if (a.gradeOrder === b.gradeOrder) return 0;
+      return a.gradeOrder > b.gradeOrder ? 1 : -1;
+    });
+
   return (
     <div>
       <div
@@ -99,7 +107,7 @@ const MyNode = ({
             nodeData?.manpowerList?.length ? "p-1" : ""
           }`}
         >
-          {nodeData?.manpowerList?.length > 0 &&
+          {isNotEmptyList(nodeData?.manpowerList) &&
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;

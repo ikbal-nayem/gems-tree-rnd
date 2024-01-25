@@ -1,0 +1,254 @@
+import { PageTitle, PageToolbarRight } from "@context/PageData";
+import { IMeta, generatePDF, topProgress, useDebounce } from "@gems/utils";
+import { MENU } from "@constants/menu-titles.constant";
+import {
+  Button,
+  ConfirmationModal,
+  ContentPreloader,
+  DownloadMenu,
+  Input,
+  NoData,
+  Pagination,
+  toast,
+} from "@gems/components";
+import { COMMON_LABELS, exportXLSX } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { searchParamsToObject } from "utility/makeObject";
+import GradeForm from "./Form";
+import GradeTable from "./Table";
+import { organizationTypePDFContent } from "./pdf";
+
+const initMeta: IMeta = {
+  page: 0,
+  limit: 20,
+  sort: [
+    {
+      field: "createdOn",
+      order: "desc",
+    },
+  ],
+};
+
+const OrganizationTypeList = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [listData, setListData] = useState<any>([]);
+  const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
+  const [search, setSearch] = useState<string>(
+    searchParams.get("searchKey") || ""
+  );
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [updateData, setUpdateData] = useState<any>({});
+  const params: any = searchParamsToObject(searchParams);
+  const searchKey = useDebounce(search, 500);
+
+  useEffect(() => {
+    if (searchKey) params.searchKey = searchKey;
+    else delete params.searchKey;
+    setSearchParams({ ...params });
+    // eslint-disable-next-line
+  }, [searchKey, setSearchParams]);
+
+  useEffect(() => {
+    getDataList();
+    // eslint-disable-next-line
+  }, [searchParams]);
+
+  const getDataList = (reqMeta = null) => {
+    const payload = {
+      meta: searchKey
+        ? reqMeta
+          ? { ...reqMeta, sort: null }
+          : { ...respMeta, page: 0, sort: null }
+        : reqMeta || respMeta,
+      body: {
+        searchKey: searchKey || null,
+      },
+    };
+
+    OMSService.getOrganizationTypeList(payload)
+      .then((res) => {
+        setListData(res?.body || []);
+        setRespMeta(
+          res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+        );
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const onPageChanged = (metaParams: IMeta) => {
+    getDataList({ ...metaParams });
+  };
+
+  const onDrawerClose = () => {
+    setIsDrawerOpen(false);
+    setIsUpdate(false);
+    setUpdateData({});
+  };
+
+  const handleUpdate = (data: any) => {
+    setIsUpdate(true);
+    setUpdateData(data);
+    setIsDrawerOpen(true);
+  };
+
+  const handleDelete = (data: any) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    let payload = {
+      body: {
+        ids: [deleteData?.id || ""],
+      },
+    };
+    OMSService.organizationTypeDelete(payload)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
+
+  const onSubmit = (data) => {
+    setIsSubmitLoading(true);
+
+    const service = isUpdate
+      ? OMSService.organizationTypeUpdate
+      : OMSService.organizationTypeCreate;
+    service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsDrawerOpen(false);
+        setIsUpdate(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
+  };
+
+  const downloadFile = (downloadtype: "excel" | "pdf") => {
+    topProgress.show();
+    const payload = {
+      meta: {
+        page: 0,
+        limit: respMeta.totalRecords,
+        sort: [{ field: "createdOn", order: "desc" }],
+      },
+      body: {
+        searchKey: searchKey || null,
+      },
+    };
+
+    OMSService.getOrganizationTypeList(payload)
+      .then((res) =>
+        downloadtype === "pdf"
+          ? generatePDF(organizationTypePDFContent(res?.body))
+          : exportXLSX(exportData(res?.body || []), "Organization Type list")
+      )
+      .catch((err) => toast.error(err?.message))
+      .finally(() => topProgress.hide());
+  };
+
+  const exportData = (data: any[]) =>
+    data.map((d, i) => ({
+      "ক্রমিক নং": i + 1,
+      "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
+      "ধরণ (ইংরেজি)": d?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN,
+      "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
+      "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
+      লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
+      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
+    }));
+
+  return (
+    <>
+      <PageTitle>{MENU.BN.ORANIZATION_TYPE}</PageTitle>
+      <PageToolbarRight>
+        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
+          যুক্ত করুন
+        </Button>
+      </PageToolbarRight>
+      <div className="card p-5">
+        <div className="d-flex gap-3">
+          <Input
+            type="search"
+            noMargin
+            placeholder="অনুসন্ধান করুন ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {respMeta.totalRecords && (
+            <DownloadMenu
+              fnDownloadExcel={() => downloadFile("excel")}
+              fnDownloadPDF={() => downloadFile("pdf")}
+            />
+          )}
+        </div>
+
+        {/* ============================================================ TABLE STARTS ============================================================ */}
+
+        <div className="mt-3">
+          <GradeTable
+            data={listData}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+          >
+            <Pagination
+              meta={respMeta}
+              pageNeighbours={2}
+              onPageChanged={onPageChanged}
+            />
+          </GradeTable>
+          {isLoading && <ContentPreloader />}
+          {!isLoading && !listData?.length && (
+            <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
+          )}
+        </div>
+
+        {/* ============================================================ TABLE ENDS ============================================================ */}
+
+        {/* =========================================================== Form STARTS ============================================================ */}
+        <GradeForm
+          isOpen={isDrawerOpen}
+          onClose={onDrawerClose}
+          updateData={updateData}
+          onSubmit={onSubmit}
+          submitLoading={isSubmitLoading}
+        />
+        {/* =========================================================== FORM ENDS============================================================ */}
+      </div>
+      <ConfirmationModal
+        isOpen={isDeleteModal}
+        onClose={onCancelDelete}
+        onConfirm={onConfirmDelete}
+        isSubmitting={isDeleteLoading}
+        onConfirmLabel={"মুছে ফেলুন"}
+      >
+        আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+      </ConfirmationModal>
+    </>
+  );
+};
+export default OrganizationTypeList;

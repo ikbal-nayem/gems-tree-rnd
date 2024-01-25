@@ -1,13 +1,13 @@
-import { ContentPreloader, NoData } from "@gems/components";
+import { ContentPreloader } from "@gems/components";
 import { ENV } from "config/ENV.config";
 import { useEffect, useState } from "react";
-import { COMMON_LABELS } from "@gems/utils";
-import { chartRespValidate } from "utility/utils";
+// import { COMMON_LABELS } from "@gems/utils";
+// import { chartRespValidate } from "utility/utils";
 import Graph from "./Graph";
 
 const ProposalStatistics = ({ reqBody }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [dataFound, setDataFound] = useState<boolean>(false);
+  // const [dataFound, setDataFound] = useState<boolean>(false);
   const [chartData, setChartData] = useState<any>({
     series: [
       {

@@ -76,6 +76,8 @@ export const LABELS = {
     TEMPLATE_TITLE_BN: "Title (Bn)",
     TEMPLATE_TITLE_EN: "Title (En)",
     ORGANOGRAM_DATE: "Organogram Date",
+    TEMPLATE_NAME: "Template Name",
+    TEMPLATE_TYPE: "Template Type",
 
     MAIN_ACTIVITIES: "Main Activities",
     EQUIPMENTS: "AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
@@ -93,7 +95,6 @@ export const LABELS = {
     NOTES: "Notes",
     REVIEW_APPROVE_NOTES: "Review & Approve Notes",
     CHANGES: "Changes",
-    MASTER_ORG: "Organization",
   },
 
   BN: {
@@ -103,6 +104,8 @@ export const LABELS = {
     TEMPLATE_TITLE_BN: "শিরোনাম (বাংলা)",
     TEMPLATE_TITLE_EN: "শিরোনাম (ইংরেজি)",
     ORGANOGRAM_DATE: "অর্গানোগ্রাম তারিখ",
+    TEMPLATE_NAME: "টেমপ্লেটের নাম",
+    TEMPLATE_TYPE: "টেমপ্লেটের ধরণ",
 
     MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
     EQUIPMENTS: "পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদন",
@@ -118,9 +121,8 @@ export const LABELS = {
     CHANGE_IN_MANPOWER: "জনবলের তুলনামূলক তালিকা",
     ORGANIZATION: "প্রতিষ্ঠান",
     NOTES: "মন্তব্য",
-    REVIEW_APPROVE_NOTES:"পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",
+    REVIEW_APPROVE_NOTES: "পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",
     CHANGES: "পরিবর্তনসমূহ",
-    MASTER_ORG: "প্রতিষ্ঠান",
   },
 };
 

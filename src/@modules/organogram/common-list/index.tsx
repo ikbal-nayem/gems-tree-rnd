@@ -1,18 +1,9 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
+import { ConfirmationModal, Input, Pagination, toast } from "@gems/components";
 import {
-  Autocomplete,
-  ConfirmationModal,
-  Input,
-  DownloadMenu,
-  Pagination,
-  toast,
-} from "@gems/components";
-import {
-  COMMON_LABELS,
   IMeta,
   IObject,
-  exportXLSX,
   numEnToBn,
   searchParamsToObject,
   topProgress,
@@ -20,13 +11,13 @@ import {
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import TemplateTable from "./Table";
-import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import OrganogramTable from "./Table";
+import { ROUTE_L1 } from "@constants/internal-route.constant";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 10,
+  limit: 20,
   sort: [
     {
       order: "desc",
@@ -35,32 +26,38 @@ const initMeta: IMeta = {
   ],
 };
 
-const TemplateList = () => {
+const OrganogramList = ({ status }) => {
   const [dataList, setDataList] = useState<IObject[]>();
-  const [organizationGroupList, setOrganizationGroupList] =
-    useState<IObject[]>();
-  const [orgGroupId, setOrgGroupId] = useState<string>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
+  const navigate = useNavigate();
 
-  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<any>();
-  const formProps = useForm();
-  const { control } = formProps;
-  useEffect(() => {
-    // CoreService.getByMetaTypeList("ORG_TYPE/asc").then((resp) =>
-    //   setOrganizationTypesList(resp?.body)
-    // );
-    // console.log(currentUser);
-    getOrgGroupList();
-  }, []);
+  let service, title;
+  switch (status) {
+    case "draft":
+      service = OMSService.FETCH.draftOrganogramList;
+      title = MENU.BN.ORGANOGRAM_LIST_DRAFT;
+      break;
+    case "inreview":
+      service = OMSService.FETCH.inReviewOrganogramList;
+      title = MENU.BN.ORGANOGRAM_LIST_INREVIEW;
+      break;
+    case "inapprove":
+      service = OMSService.FETCH.inApproveOrganogramList;
+      title = MENU.BN.ORGANOGRAM_LIST_INAPPROVE;
+      break;
+    default:
+      navigate(ROUTE_L1.DASHBOARD);
+  }
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -71,21 +68,9 @@ const TemplateList = () => {
 
   useEffect(() => {
     getDataList();
-  }, [searchParams, orgGroupId]);
+  }, [searchParams]);
 
-  const getOrgGroupList = () => {
-    const payload = {
-      meta: {
-        page: 0,
-        limit: 500,
-        sort: [{ order: "asc", field: "orgCode" }],
-      },
-      body: { searchKey: "" },
-    };
-    OMSService.getOrganizationTypeList(payload).then((resp) =>
-      setOrganizationGroupList(resp?.body)
-    );
-  };
+
   const onCancelDelete = () => {
     setIsDeleteModal(false);
     setDeleteData(null);
@@ -112,9 +97,6 @@ const TemplateList = () => {
   };
 
   const getDataList = (reqMeta = null) => {
-    topProgress.show();
-    setLoading(true);
-
     const payload = {
       meta: searchKey
         ? reqMeta
@@ -122,15 +104,16 @@ const TemplateList = () => {
           : { ...respMeta, page: 0, sort: null }
         : reqMeta || respMeta,
       body: {
-        isTemplate: true,
         searchKey: searchKey || null,
-        orgGroupId: orgGroupId || null,
+        isTemplate: 1,
       },
     };
 
     const reqData = { ...payload, body: payload?.body };
 
-    OMSService.getTemplateList(reqData)
+    topProgress.show();
+    setLoading(true);
+    service(reqData)
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
@@ -150,71 +133,60 @@ const TemplateList = () => {
     getDataList({ ...metaParams });
   };
 
-  const getXLSXStoreList = (reqMeta = null) => {
-    const payload = {
-      meta: reqMeta ? { ...reqMeta } : { ...respMeta, page: 0, sort: null },
-      body: {
-        searchKey: searchKey || null,
-        isTemplate: true,
-      },
-    };
+  // const getXLSXStoreList = (reqMeta = null) => {
+  //   const payload = {
+  //     meta: reqMeta ? { ...reqMeta } : { ...respMeta, page: 0, sort: null },
+  //     body: {
+  //       searchKey: searchKey || null,
+  //     },
+  //   };
 
-    OMSService.getTemplateList(payload)
-      .then((res) => {
-        exportXLSX(exportData(res?.body || []), "Template list");
-      })
-      .catch((err) => toast.error(err?.message));
-  };
+  //   OMSService.getOrganizationOrganogramList(payload)
+  //     .then((res) => {
+  //       exportXLSX(exportData(res?.body || []), "Template list");
+  //     })
+  //     .catch((err) => toast.error(err?.message));
+  // };
 
-  const exportData = (data: any[]) =>
-    data.map((d, i) => ({
-      [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
-      "টেমপ্লেটের নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-      "টেমপ্লেটের নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
-    }));
+  // const exportData = (data: any[]) =>
+  //   data.map((d, i) => ({
+  //     [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
+  //     [LABELS.NAME]: d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+  //     [LABELS.ORGANIZATION_NAME]: d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
+  //     [LABELS.VERSION]: d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+  //   }));
 
   return (
     <>
-      <PageTitle> {MENU.BN.TEMPLATE_LIST} </PageTitle>
+      <PageTitle> {title} </PageTitle>
       <div className="card p-4">
         {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
-        <div className="d-flex justify-content-between gap-2 mb-2">
-          <span className="w-25">
-            <Autocomplete
-              placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
-              options={organizationGroupList || []}
-              getOptionLabel={(op) => op.orgGroupBn}
-              getOptionValue={(op) => op.id}
-              name="orgType"
-              control={control}
-              onChange={(op) => setOrgGroupId(op?.id)}
-            />
-          </span>
+        <div className="d-flex gap-3 mb-4">
           <Input
             type="search"
             noMargin
-            placeholder="টেমপ্লেটের নাম অনুসন্ধান করুন ..."
+            placeholder="অর্গানোগ্রামের নাম অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <DownloadMenu
+          {/* <ListDownload
             fnDownloadExcel={() =>
               getXLSXStoreList({
                 page: 0,
                 limit: respMeta?.totalRecords || 0,
               })
             }
-            // fnDownloadPDF={() =>
-            //   downloadAsPDF(reqPayload.current, respMeta?.totalRecords)
-            // }
-          />
+            fnDownloadPDF={() =>
+              downloadAsPDF(reqPayload.current, respMeta?.totalRecords)
+            }
+          /> */}
         </div>
         {!!dataList?.length && (
           <div className="d-flex justify-content-between gap-3">
             <div className="text-primary text-center">
-              <h5 className="mt-3">
-                মোট টেমপ্লেট {numEnToBn(respMeta?.totalRecords)} টি
+              <h5 className="my-3">
+                মোট অর্গানোগ্রাম {numEnToBn(respMeta?.totalRecords)} টি
               </h5>
             </div>
           </div>
@@ -222,25 +194,25 @@ const TemplateList = () => {
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
-        <div className="px-4 pb-4">
-          <TemplateTable
+        <div className="p-4">
+          <OrganogramTable
             dataList={dataList}
-            getDataList={getDataList}
+            // getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
             onDelete={onDelete}
-            organizationGroupList={organizationGroupList}
+            status={status}
           >
             <Pagination
               meta={respMeta}
               pageNeighbours={2}
               onPageChanged={onPageChanged}
             />
-          </TemplateTable>
+          </OrganogramTable>
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
-        <ConfirmationModal
+      <ConfirmationModal
           isOpen={isDeleteModal}
           onClose={onCancelDelete}
           onConfirm={onConfirmDelete}
@@ -255,4 +227,4 @@ const TemplateList = () => {
   );
 };
 
-export default TemplateList;
+export default OrganogramList;
