@@ -125,7 +125,7 @@ const TemplateComponent = ({
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
         organogramDate: updateData?.organogramDate,
         organizationGroupDto: updateData?.organizationGroupDto,
-        organization:
+        templateOrganizationsDto:
           updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO,
         // templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
         abbreviationDtoList: abbreviationist,
@@ -240,7 +240,7 @@ const TemplateComponent = ({
       // data?.templateOrganizationsDtoList === undefined ||onIsEnamCommitteeChange
       // data?.templateOrganizationsDtoList?.length <= 0
       !notNullOrUndefined(data?.organizationGroupDto) ||
-      (!isTemplate && !notNullOrUndefined(data?.organization))
+      (!isTemplate && !notNullOrUndefined(data?.templateOrganizationsDto))
     ) {
       setNotOrganizationData(true);
       focusById("organizationBlock", true);
@@ -249,9 +249,9 @@ const TemplateComponent = ({
       setNotOrganizationData(false);
       deFocusById("organizationBlock");
     }
-    const templateOrganizationsDto = isTemplate
+    data.templateOrganizationsDto = isTemplate
       ? null
-      : templateOrganizationsDtoSimplifier(data?.organization);
+      : templateOrganizationsDtoSimplifier(data?.templateOrganizationsDto);
 
     const reqPayload = {
       ...data,
@@ -268,7 +268,7 @@ const TemplateComponent = ({
             ]
           : isTemplate
           ? []
-          : [templateOrganizationsDto],
+          : [data.templateOrganizationsDto],
       organizationGroupId: data?.organizationGroupDto?.id,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note

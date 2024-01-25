@@ -108,7 +108,7 @@ const Organizations = ({
             <Autocomplete
               label="প্রতিষ্ঠান"
               placeholder="প্রতিষ্ঠান বাছাই করুন"
-              name="organization"
+              name="templateOrganizationsDto"
               options={organizationList}
               noMargin
               isRequired="প্রতিষ্ঠান বাছাই করুন"
@@ -116,8 +116,8 @@ const Organizations = ({
               // autoFocus
               getOptionLabel={(op) => op.nameBn}
               getOptionValue={(op) => op?.id}
-              isError={!!errors?.organization}
-              errorMessage={errors?.organization?.message as string}
+              isError={!!errors?.templateOrganizationsDto}
+              errorMessage={errors?.templateOrganizationsDto?.message as string}
             />
           </div>
         )}

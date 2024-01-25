@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { toast } from "@gems/components";
-import { useNavigate } from "react-router-dom";
-import { OMSService } from "@services/api/OMS.service";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { toast } from "@gems/components";
+import { OMSService } from "@services/api/OMS.service";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TemplateComponent from "../components/templateComponent";
 
 const TemplateCreate = () => {
@@ -44,9 +44,11 @@ const TemplateCreate = () => {
     OMSService.templateCreate(fd)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + res?.body?.id, {
-          state: { templateView: true },
-        });
+        navigate(
+          data?.isTemplate
+            ? ROUTE_L2.ORG_TEMPLATE_LIST
+            : ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST
+        );
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));
