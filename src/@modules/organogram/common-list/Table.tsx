@@ -187,9 +187,10 @@ const OrganogramTable: FC<TableProps> = ({
                     visibleToRoles={[ROLES.OMS_ADMIN, ROLES.OMS_TEMPLATE_ENTRY]}
                     visibleCustom={
                       item?.status === TEMPLATE_STATUS.NEW ||
-                      currentUser?.roles?.some(
-                        (d) => d?.roleCode === ROLES.OMS_ADMIN
-                      )
+                      (item?.status === TEMPLATE_STATUS.NEW &&
+                        currentUser?.roles?.some(
+                          (d) => d?.roleCode === ROLES.OMS_ADMIN
+                        ))
                     }
                   >
                     <DropdownItem onClick={() => navigateToDetails(item)}>
