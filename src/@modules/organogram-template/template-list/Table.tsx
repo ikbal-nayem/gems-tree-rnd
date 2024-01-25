@@ -124,28 +124,36 @@ const TemplateTable: FC<TableProps> = ({
     <>
       {dataList?.length ? (
         <Table columns={columns}>
-          {dataList?.map((item, idx) => (
-            <TableRow key={idx}>
-              <TableCell
-                text={generateRowNumBn(idx, respMeta)}
-                verticalAlign="top"
-              />
-              <TableCell
-                text={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
-                subText={numEnToBn(item?.titleBn) || null}
-              />
-              <TableCell
-                text={
-                  item?.organogramDate
-                    ? generateDateFormat(
-                        item?.organogramDate,
-                        DATE_PATTERN.GOVT_STANDARD
-                      )
-                    : COMMON_LABELS.NOT_ASSIGN
-                }
-              />
-              <TableCell textAlign="center" isActive={item?.isEnamCommittee} />
-              {/* <TableCell>
+          {dataList?.map((item, idx) => {
+            let visibleCustomPermission =
+              (item?.status === TEMPLATE_STATUS.NEW &&
+                item?.createdBy === currentUser?.id) ||
+              currentUser?.roles?.some((d) => d?.roleCode === ROLES.OMS_ADMIN);
+            return (
+              <TableRow key={idx}>
+                <TableCell
+                  text={generateRowNumBn(idx, respMeta)}
+                  verticalAlign="top"
+                />
+                <TableCell
+                  text={item?.titleEn || COMMON_LABELS.NOT_ASSIGN}
+                  subText={numEnToBn(item?.titleBn) || null}
+                />
+                <TableCell
+                  text={
+                    item?.organogramDate
+                      ? generateDateFormat(
+                          item?.organogramDate,
+                          DATE_PATTERN.GOVT_STANDARD
+                        )
+                      : COMMON_LABELS.NOT_ASSIGN
+                  }
+                />
+                <TableCell
+                  textAlign="center"
+                  isActive={item?.isEnamCommittee}
+                />
+                {/* <TableCell>
                 <div className="d-flex justify-content-center">
                   <Tag
                     title={item?.status || COMMON_LABELS.NOT_ASSIGN}
@@ -158,58 +166,59 @@ const TemplateTable: FC<TableProps> = ({
                   />
                 </div>
               </TableCell> */}
-              <TableCell textAlign="end" verticalAlign="top">
-                <Dropdown
-                  btnIcon={true}
-                  btnContent={<Icon icon="more_vert" size={20} />}
-                  id={item?.id}
-                >
-                  <DropdownItem onClick={() => navigateToView(item?.id)}>
-                    <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
-                  </DropdownItem>
-
-                  <ACLWrapper
-                    visibleToRoles={[ROLES.OMS_ADMIN, ROLES.OMS_TEMPLATE_ENTRY]}
-                    visibleCustom={
-                      item?.status === TEMPLATE_STATUS.NEW &&
-                      item?.createdBy === currentUser?.id
-                    }
+                <TableCell textAlign="end" verticalAlign="top">
+                  <Dropdown
+                    btnIcon={true}
+                    btnContent={<Icon icon="more_vert" size={20} />}
+                    id={item?.id}
                   >
-                    <DropdownItem onClick={() => navigateToDetails(item)}>
-                      <Icon size={19} icon="edit" />
-                      <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
+                    <DropdownItem onClick={() => navigateToView(item?.id)}>
+                      <Icon size={19} icon="visibility" />
+                      <h6 className="mb-0 ms-2">বিস্তারিত দেখুন</h6>
                     </DropdownItem>
-                  </ACLWrapper>
 
-                  <DropdownItem onClick={() => onClone(item)}>
-                    <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
-                  </DropdownItem>
-                  {/* <DropdownItem onClick={() => onReportView(item)}>
+                    <ACLWrapper
+                      visibleToRoles={[
+                        ROLES.OMS_ADMIN,
+                        ROLES.OMS_TEMPLATE_ENTRY,
+                      ]}
+                      visibleCustom={visibleCustomPermission}
+                    >
+                      <DropdownItem onClick={() => navigateToDetails(item)}>
+                        <Icon size={19} icon="edit" />
+                        <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
+                      </DropdownItem>
+                    </ACLWrapper>
+
+                    <DropdownItem onClick={() => onClone(item)}>
+                      <Icon size={19} icon="file_copy" />
+                      <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
+                    </DropdownItem>
+                    {/* <DropdownItem onClick={() => onReportView(item)}>
                     <Icon size={19} icon="summarize" />
                     <h6 className="mb-0 ms-2">অর্গানোগ্রাম দেখুন</h6>
                   </DropdownItem> */}
-                  <ACLWrapper
-                    visibleToRoles={[ROLES.OMS_ADMIN, ROLES.OMS_TEMPLATE_ENTRY]}
-                    visibleCustom={
-                      item?.status === TEMPLATE_STATUS.NEW &&
-                      item?.createdBy === currentUser?.id
-                    }
-                  >
-                    <DropdownItem onClick={() => onDelete(item)}>
-                      <Icon size={19} icon="delete" color="danger" />
-                      <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
-                    </DropdownItem>
-                  </ACLWrapper>
-                </Dropdown>
-              </TableCell>
-              {/* <TableCell
+                    <ACLWrapper
+                      visibleToRoles={[
+                        ROLES.OMS_ADMIN,
+                        ROLES.OMS_TEMPLATE_ENTRY,
+                      ]}
+                      visibleCustom={visibleCustomPermission}
+                    >
+                      <DropdownItem onClick={() => onDelete(item)}>
+                        <Icon size={19} icon="delete" color="danger" />
+                        <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
+                      </DropdownItem>
+                    </ACLWrapper>
+                  </Dropdown>
+                </TableCell>
+                {/* <TableCell
                 text={item?.createdBy || COMMON_LABELS.NOT_ASSIGN}
                 subText={currentUser?.id || COMMON_LABELS.NOT_ASSIGN}
               /> */}
-            </TableRow>
-          ))}
+              </TableRow>
+            );
+          })}
         </Table>
       ) : isLoading ? (
         <ContentPreloader />

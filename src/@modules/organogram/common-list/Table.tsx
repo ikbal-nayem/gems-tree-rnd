@@ -29,6 +29,7 @@ import { statusMapper } from "utility/textMapping";
 import { LABELS } from "./labels";
 // import OrganogramClone from "./organogramClone";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
+import { useAuth } from "@context/Auth";
 import { OMSService } from "@services/api/OMS.service";
 
 type TableProps = {
@@ -50,6 +51,8 @@ const OrganogramTable: FC<TableProps> = ({
   onDelete,
   status,
 }) => {
+  const { currentUser } = useAuth();
+
   const onOrganogramView = (item: IObject) => {
     if (item?.id) {
       OMSService.getAttachedOrganizationByTemplateId(item?.id)
@@ -181,8 +184,13 @@ const OrganogramTable: FC<TableProps> = ({
                     <h6 className="mb-0 ms-3">ডুপ্লিকেট করুন</h6>
                   </DropdownItem> */}
                   <ACLWrapper
-                    visibleToRoles={[ROLES.OMS_TEMPLATE_ENTRY]}
-                    visibleCustom={item?.status === TEMPLATE_STATUS.NEW}
+                    visibleToRoles={[ROLES.OMS_ADMIN, ROLES.OMS_TEMPLATE_ENTRY]}
+                    visibleCustom={
+                      item?.status === TEMPLATE_STATUS.NEW ||
+                      currentUser?.roles?.some(
+                        (d) => d?.roleCode === ROLES.OMS_ADMIN
+                      )
+                    }
                   >
                     <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="edit" />
