@@ -90,7 +90,7 @@ const TemplateEditComponent = ({
           }
         );
       } else abbreviationist = updateData?.abbreviationDtoList;
-      setIsNotEnamCommittee(updateData?.isEnamCommittee);
+      setIsNotEnamCommittee(!updateData?.isEnamCommittee);
       reset({
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
@@ -159,6 +159,8 @@ const TemplateEditComponent = ({
       ...data,
       titleBn: getValues("titleBn") || null,
       titleEn: getValues("titleEn") || null,
+      organizationHeader:  getValues("organizationHeader") || "",
+      organizationHeaderMsc: getValues("organizationHeaderMsc") || "",
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
