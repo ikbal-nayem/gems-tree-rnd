@@ -91,7 +91,7 @@ const Organizations = ({
             name="organizationGroupDto"
             options={organizationGroupList}
             noMargin
-            isRequired="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+            isRequired={isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false}
             control={control}
             // autoFocus
             getOptionLabel={(op) => op?.orgGroupBn}

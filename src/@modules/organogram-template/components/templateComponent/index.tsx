@@ -236,16 +236,6 @@ const TemplateComponent = ({
           : null;
     }
 
-    if (
-      !notNullOrUndefined(data?.organizationGroupDto) ||
-      (!isTemplate && !notNullOrUndefined(data?.templateOrganizationsDto))
-    ) {
-      focusById("organizationBlock", true);
-      return;
-    } else {
-      deFocusById("organizationBlock");
-    }
-
     data.templateOrganizationsDtoList = isObjectNull(updateData)
       ? isTemplate
         ? []

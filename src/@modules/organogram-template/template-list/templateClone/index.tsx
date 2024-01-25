@@ -63,7 +63,7 @@ const TemplateClone = ({
   // }, []);
 
   useEffect(() => {
-    reset({});
+    reset({ isEnamCommittee: true });
     onIsEnamCommitteeChange(true);
     // getDataList();
   }, [isOpen]);
@@ -92,7 +92,7 @@ const TemplateClone = ({
       //         titleBn: d?.titleBn,
       //       }))
       //     : null,
-      // cloneTemplateOrganizationsDtoList: 
+      // cloneTemplateOrganizationsDtoList:
       // data?.templateOrganizationsDtoList?.length > 0
       //   ? data?.templateOrganizationsDtoList?.map((d) => ({
       //       organizationId: d?.id,
