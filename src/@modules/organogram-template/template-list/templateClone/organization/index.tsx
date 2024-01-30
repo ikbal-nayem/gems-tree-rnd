@@ -16,6 +16,7 @@ const Organizations = ({
     formState: { errors },
   } = formProps;
   const [organizationList, setOrganizationList] = useState<IObject[]>([]);
+  const [allOrganizationsCache, setAllOrganizationsCache] = useState<IObject[]>([]);
   const getOrgList = () => {
     const payload = {
       meta: {
@@ -25,9 +26,10 @@ const Organizations = ({
       },
       body: { searchKey: "" },
     };
-    OMSService.getOrganizationList(payload).then((resp) =>
-      setOrganizationList(resp?.body)
-    );
+    OMSService.getOrganizationList(payload).then((resp) => {
+      setOrganizationList(resp?.body);
+      setAllOrganizationsCache(resp?.body);  // Caching all_Orgs
+    });
   };
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const Organizations = ({
       OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
         setOrganizationList(resp?.body)
       );
-    } else getOrgList();
+    } else setOrganizationList(allOrganizationsCache);
   };
 
   return (
