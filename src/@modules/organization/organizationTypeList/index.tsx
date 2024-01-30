@@ -1,7 +1,15 @@
 import { PageTitle, PageToolbarRight } from "@context/PageData";
-import { IMeta, generatePDF, topProgress, useDebounce } from "@gems/utils";
+import {
+  IMeta,
+  IObject,
+  generatePDF,
+  isObjectNull,
+  topProgress,
+  useDebounce,
+} from "@gems/utils";
 import { MENU } from "@constants/menu-titles.constant";
 import {
+  Autocomplete,
   Button,
   ConfirmationModal,
   ContentPreloader,
@@ -19,6 +27,7 @@ import { searchParamsToObject } from "utility/makeObject";
 import GradeForm from "./Form";
 import GradeTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
+import { useForm } from "react-hook-form";
 
 const initMeta: IMeta = {
   page: 0,
@@ -44,10 +53,14 @@ const OrganizationTypeList = () => {
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
+  const [orgTypeEn, setOrgTypeEn] = useState<string>("Ministry/Division");
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
+  const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
+  const formProps = useForm();
+  const { control, setValue, getValues, reset } = formProps;
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -57,9 +70,33 @@ const OrganizationTypeList = () => {
   }, [searchKey, setSearchParams]);
 
   useEffect(() => {
+    getOrganizationTypesList();
+  }, []);
+
+  useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, [searchParams]);
+  }, [searchParams, orgTypeEn]);
+
+  useEffect(() => {
+    if (
+      orgTypeList.length &&
+      orgTypeList.length > 0 &&
+      isObjectNull(getValues("organizationTypeDTO"))
+    )
+      setValue(
+        "organizationTypeDTO",
+        orgTypeList?.find((org) => org?.orgLevel === 1)
+      );
+  }, [orgTypeList]);
+
+  const getOrganizationTypesList = () => {
+    OMSService.FETCH.organizationTypeList()
+      .then((res) => {
+        setOrgTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
 
   const getDataList = (reqMeta = null) => {
     const payload = {
@@ -70,6 +107,7 @@ const OrganizationTypeList = () => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
+        orgTypeEn: orgTypeEn || null,
       },
     };
 
@@ -191,21 +229,33 @@ const OrganizationTypeList = () => {
         </Button>
       </PageToolbarRight>
       <div className="card p-5">
-        <div className="d-flex gap-3">
-          <Input
-            type="search"
-            noMargin
-            placeholder="অনুসন্ধান করুন ..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          {respMeta.totalRecords && (
+        {respMeta.totalRecords && (
+          <div className="d-flex gap-3">
+            <span className="w-25">
+              <Autocomplete
+                placeholder="সংস্থার ধরণ বাছাই করুন"
+                options={orgTypeList || []}
+                name="organizationTypeDTO"
+                getOptionLabel={(op) => op.orgTypeBn}
+                getOptionValue={(op) => op.orgTypeEn}
+                onChange={(op) => setOrgTypeEn(op?.orgTypeEn)}
+                control={control}
+              />
+            </span>
+
+            <Input
+              type="search"
+              noMargin
+              placeholder="অনুসন্ধান করুন ..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
