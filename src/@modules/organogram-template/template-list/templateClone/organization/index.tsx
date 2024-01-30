@@ -1,5 +1,5 @@
 import { Autocomplete } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, notNullOrUndefined } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 interface IOrganizations {
@@ -35,9 +35,11 @@ const Organizations = ({
   }, []);
 
   const onOrgGroupChange = (OrgGroup) => {
-    OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
-      setOrganizationList(resp?.body)
-    );
+    if (notNullOrUndefined(OrgGroup)) {
+      OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
+        setOrganizationList(resp?.body)
+      );
+    } else getOrgList();
   };
 
   return (

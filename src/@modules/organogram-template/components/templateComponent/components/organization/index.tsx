@@ -1,6 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { Separator, Autocomplete } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, notNullOrUndefined } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { deFocusById } from "utility/utils";
@@ -64,10 +64,12 @@ const Organizations = ({
 
   const onOrgGroupChange = (OrgGroup) => {
     if (!isTemplate) {
-      setOrgGroupTriggered(true);
-      OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
-        setOrganizationList(resp?.body)
-      );
+      if (notNullOrUndefined(OrgGroup)) {
+        setOrgGroupTriggered(true);
+        OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
+          setOrganizationList(resp?.body)
+        );
+      } else getOrgList();
     }
   };
 
