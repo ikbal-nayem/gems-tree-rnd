@@ -16,7 +16,9 @@ const Organizations = ({
     formState: { errors },
   } = formProps;
   const [organizationList, setOrganizationList] = useState<IObject[]>([]);
-  const [allOrganizationsCache, setAllOrganizationsCache] = useState<IObject[]>([]);
+  const [allOrganizationsCache, setAllOrganizationsCache] = useState<IObject[]>(
+    []
+  );
   const getOrgList = () => {
     const payload = {
       meta: {
@@ -28,7 +30,7 @@ const Organizations = ({
     };
     OMSService.getOrganizationList(payload).then((resp) => {
       setOrganizationList(resp?.body);
-      setAllOrganizationsCache(resp?.body);  // Caching all_Orgs
+      setAllOrganizationsCache(resp?.body); // Caching all_Orgs
     });
   };
 

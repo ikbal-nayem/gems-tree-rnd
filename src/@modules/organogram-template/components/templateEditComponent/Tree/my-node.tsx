@@ -39,7 +39,9 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
           )}
           <div>
             <p className="p-1 mb-0 fs-7">
-              {longLineBreaker(nodeData.titleBn || "", 20)}
+              {nodeData.titleBn
+                ? longLineBreaker(nodeData.titleBn || "", 20)
+                : COMMON_LABELS.NOT_ASSIGN}
             </p>
           </div>
           {!nodeData?.isDeleted && (
@@ -72,8 +74,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = numEnToBn(mp);
-              const postExists =
-                isNotEmptyList(postList) && item?.postId;
+              const postExists = isNotEmptyList(postList) && item?.postId;
 
               const post = postExists
                 ? postList?.find((d) => d?.id === item?.postId)

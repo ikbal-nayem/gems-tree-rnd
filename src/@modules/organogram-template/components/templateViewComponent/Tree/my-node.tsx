@@ -49,7 +49,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn
-            ? longLineBreaker(nodeData.titleEn || "", 17)
+            ? nodeData.titleEn
+              ? longLineBreaker(nodeData.titleEn || "", 17)
+              : COMMON_LABELS.NOT_ASSIGN
             : longLineBreaker(nodeData.titleBn || "", 20)}
         </p>
         <p className="mb-0 fs-8">{manPower}</p>
