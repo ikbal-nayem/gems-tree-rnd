@@ -12,8 +12,8 @@ import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  { title: "ধরণ (বাংলা)", minWidth: 100 },
-  { title: "ধরণ (ইংরেজি)", minWidth: 100 },
+  // { title: "ধরণ (বাংলা)", minWidth: 100 },
+  // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
   { title: "গ্রুপ (বাংলা)", minWidth: 100 },
   { title: "গ্রুপ (ইংরেজি)", minWidth: 100 },
   { title: "লেভেল", minWidth: 75 },
@@ -42,8 +42,8 @@ const GradeTable: FC<GradeTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
+              {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
+              {/* <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} /> */}
               <TableCell text={data?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.orgLevel || COMMON_LABELS.NOT_ASSIGN} />

@@ -257,7 +257,7 @@ export const OMSService = {
     },
   },
 
-  getOrganizationTypeList: async (payload): Promise<any> =>
+  getOrganizationTypeList: async (payload): Promise<any> =>             // returns organizationGroups actually
     await axiosIns.post(OMS_SERVICE + "organization-type/get-list", payload),
   organizationTypeCreate: async (payload): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organization-type/create", payload),
