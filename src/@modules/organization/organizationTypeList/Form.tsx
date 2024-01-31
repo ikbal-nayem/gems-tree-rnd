@@ -113,6 +113,7 @@ const GradeForm = ({
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
                   onChange={(op) => setValue("parentId", op?.id)}
+                  isDisabled={updateData?.parentDTO}
                   control={control}
                   isError={!!errors?.parentDTO}
                   errorMessage={errors?.parentDTO?.message as string}
