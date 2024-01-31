@@ -198,8 +198,10 @@ const NodeForm = ({
   };
 
   const handleManpowerDelete = (field, index) => {
+    console.log();
+
     if (index >= 0) {
-      if (!isObjectNull(field) && field?.isNewManpower) {
+      if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
         manpowerListRemove(index);
       } else {
         manpowerListUpdate(index, { ...field, isDeleted: true });

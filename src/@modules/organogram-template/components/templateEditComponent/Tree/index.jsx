@@ -50,9 +50,18 @@ const editNode = (nd, node, updateData) => {
 };
 
 const deleteNode = (nd, deleteItem) => {
+  if (
+    nd?.id &&
+    deleteItem?.id &&
+    nd?.id === deleteItem?.id &&
+    deleteItem?.isAddition
+  ) {
+    return null;
+  }
+
   if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
     return nd?.children && nd?.children?.length > 0
-      ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
+      ? nd?.children?.filter((s) => !s?.nodeId && !s?.isAddition)?.length > 0 &&
           nd?.children
             ?.filter((s) => !s?.nodeId)
             ?.map((d) => {
@@ -79,7 +88,9 @@ const deleteNode = (nd, deleteItem) => {
       };
     }
     if (!nodeState) {
-      if (nd?.children[i]?.id)
+      if (nd?.children[i]?.isAddition) {
+        nd.children.splice(i, 1);
+      } else if (nd?.children[i]?.id)
         nd.children[i] = {
           ...nd.children[i],
           children: [],
