@@ -1,10 +1,9 @@
+import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
+import { MENU } from "@constants/menu-titles.constant";
+import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { useAuth } from "@context/Auth";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
-import { ROUTE_KEY } from "@constants/route-keys.constant";
-import { MENU } from "@constants/menu-titles.constant";
-import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
-import { LABELS } from "@constants/common.constant";
 
 const menuData = [
   // {
@@ -46,9 +45,27 @@ const menuData = [
         hasBullet: true,
       },
       {
-        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_LIST,
-        link: ROUTE_L2.OMS_ORGANOGRAM_LIST,
-        title: MENU.BN.ORGANOGRAM_LIST,
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_DRAFT_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST,
+        title: MENU.BN.ORGANOGRAM_LIST_DRAFT,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INREVIEW_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST,
+        title: MENU.BN.ORGANOGRAM_LIST_INREVIEW,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INAPPROVE_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST,
+        title: MENU.BN.ORGANOGRAM_LIST_INAPPROVE,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_APPROVED_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_APPROVED_LIST,
+        title: MENU.BN.APPROVED_ORGANOGRAM_LIST,
         hasBullet: true,
       },
       // {
@@ -72,10 +89,24 @@ const menuData = [
     icon: "manage_accounts",
   },
   {
-    routeKey: ROUTE_KEY.OMS_MASTER_ORGANIZATION,
-    link: ROUTE_L1.OMS_MASTER_ORGANIZATION,
-    title: LABELS.BN.MASTER_ORG,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION,
+    link: ROUTE_L1.OMS_ORGANIZATION,
+    title: MENU.BN.ORANIZATION,
     icon: "corporate_fare",
+    childrens: [
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANIZATION_LIST,
+        link: ROUTE_L2.OMS_ORGANIZATION_LIST,
+        title: MENU.BN.ORANIZATION_LIST,
+        hasBullet: true,
+      },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
+        link: ROUTE_L2.OMS_ORGANIZATION_TYPE,
+        title: MENU.BN.ORANIZATION_TYPE,
+        hasBullet: true,
+      },
+    ],
   },
 ];
 

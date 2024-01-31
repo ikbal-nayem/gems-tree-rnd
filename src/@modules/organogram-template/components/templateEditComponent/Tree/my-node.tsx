@@ -35,7 +35,9 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
           )}
           <div>
             <p className="p-1 mb-0 fs-7">
-              {longLineBreaker(nodeData.titleBn || "", 20)}
+              {nodeData.titleBn
+                ? longLineBreaker(nodeData.titleBn || "", 20)
+                : COMMON_LABELS.NOT_ASSIGN}
             </p>
           </div>
           {!nodeData?.isDeleted && (

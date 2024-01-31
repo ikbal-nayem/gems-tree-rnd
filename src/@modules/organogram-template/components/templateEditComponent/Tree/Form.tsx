@@ -209,19 +209,23 @@ const NodeForm = ({
 
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
-    let noDuplicate = true;
-    const mpList = getValues("manpowerList") || [];
-    if (mpList.length > 1) {
-      for (let i = 0; i < mpList.length; i++) {
-        if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
-          noDuplicate = false;
-          toast.error("'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়");
-          setValue(`manpowerList.${index}.postDTO`, null);
-          break;
+    if (notNullOrUndefined(opt)) {
+      let noDuplicate = true;
+      const mpList = getValues("manpowerList") || [];
+      if (mpList.length > 1) {
+        for (let i = 0; i < mpList.length; i++) {
+          if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
+            noDuplicate = false;
+            toast.error(
+              "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
+            );
+            setValue(`manpowerList.${index}.postDTO`, null);
+            break;
+          }
         }
       }
+      if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
     }
-    if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
   };
 
   const onFormSubmit = (data) => {

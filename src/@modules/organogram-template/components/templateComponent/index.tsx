@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
 import { OMSService } from "@services/api/OMS.service";
-import { deFocusById, focusById } from "utility/utils";
+import { deFocusById, focusById, isNotEmptyList } from "utility/utils";
 import { enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
@@ -29,6 +29,7 @@ import Organizations from "./components/organization";
 import { CoreService } from "@services/api/Core.service";
 import { META_TYPE } from "@constants/common.constant";
 import NotesForm from "./components/NotesForm";
+import { useLocation } from "react-router-dom";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -56,12 +57,18 @@ const TemplateComponent = ({
     useState<boolean>(false);
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
     useState<boolean>(false);
-  const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(true);
-  const [notOrganizationData, setNotOrganizationData] =
-    useState<boolean>(false);
+  const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
+  const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
+  const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
+  const [isTemplate, setIsTemplate] = useState<boolean>(true);
+
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
   >([]);
+  const { state } = useLocation();
+  const draftListRecord = state?.draftListRecord;
+  // console.log(state);
+
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -92,6 +99,7 @@ const TemplateComponent = ({
         setOrganogramChangeActionList(resp?.body);
       }
     );
+    onIsEnamCommitteeChange(true);
   }, []);
 
   useEffect(() => {
@@ -107,26 +115,42 @@ const TemplateComponent = ({
           }
         );
       } else abbreviationist = updateData?.abbreviationDtoList;
+      // const org = ;
       reset({
         isEnamCommittee: updateData?.isEnamCommittee,
+        isTemplate: updateData?.isTemplate,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        organizationHeader: updateData?.organizationHeader,
+        organizationHeaderMsc: updateData?.organizationHeaderMsc,
         organogramDate: updateData?.organogramDate,
+        organizationGroupDto: updateData?.organizationGroupDto,
+        templateOrganizationsDto:
+          updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO,
+        // templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
         inventoryDtoList: updateData?.inventoryDtoList,
-        templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
         organogramNoteDto: updateData?.organogramNoteDto,
       });
+
+      setIsNotEnamCommittee(!updateData?.isEnamCommittee);
+      // setIsTemplate(updateData?.isTemplate);
+    } else {
+      // reset({
+      //   isTemplate: true,
+      //   isEnamCommittee: true,
+      // });
     }
   }, [updateData]);
 
   const duplicateTitleCheck = (title, isEn: boolean) => {
+    if (!isTemplate) return;
     const field = isEn ? "titleEn" : "titleBn";
     OMSService.duplicateTemplateTitleCheck(title, isEn)
       .then((res) => {
@@ -156,6 +180,7 @@ const TemplateComponent = ({
   };
 
   const uniqueCheck = (list, listName: string) => {
+    if (!isNotEmptyList(list)) return true;
     let isUnique = true;
     switch (listName) {
       case "inventoryDtoList":
@@ -177,21 +202,29 @@ const TemplateComponent = ({
     return isUnique;
   };
 
+  const templateOrganizationsDtoSimplifier = (organization) => {
+    return {
+      organizationId: organization?.id,
+      OrganizationNameBn: organization?.nameBn,
+      OrganizationNameEn: organization?.nameEn,
+    };
+  };
+
   const onFinalSubmit = (data) => {
     if (!uniqueCheck(data.inventoryDtoList, "inventoryDtoList")) return;
-    if (isObjectNull(updateData)) {
+    if (isObjectNull(updateData) && isTemplate) {
       if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
     }
 
-    data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
-      (d) => ({
-        organizationId: !isObjectNull(updateData)
-          ? d?.organizationId || d?.id
-          : d?.id,
-        organizationNameEn: d?.nameEn || d?.organizationNameEn,
-        organizationNameBn: d?.nameBn || d?.organizationNameBn,
-      })
-    );
+    // data.templateOrganizationsDtoList = data?.templateOrganizationsDtoList?.map(
+    //   (d) => ({
+    //     organizationId: !isObjectNull(updateData)
+    //       ? d?.organizationId || d?.id
+    //       : d?.id,
+    //     organizationNameEn: d?.nameEn || d?.organizationNameEn,
+    //     organizationNameBn: d?.nameBn || d?.organizationNameBn,
+    //   })
+    // );
     if (data.organogramChangeActionDtoList?.length > 0) {
       data.organogramChangeActionDtoList =
         !data?.isEnamCommittee &&
@@ -203,22 +236,31 @@ const TemplateComponent = ({
           : null;
     }
 
-    if (
-      data?.templateOrganizationsDtoList === undefined ||
-      data?.templateOrganizationsDtoList?.length <= 0
-    ) {
-      setNotOrganizationData(true);
-      focusById("organizationBlock", true);
-      return;
-    } else {
-      setNotOrganizationData(false);
-      deFocusById("organizationBlock");
-    }
+    data.templateOrganizationsDtoList = isObjectNull(updateData)
+      ? isTemplate
+        ? []
+        : !isObjectNull(data?.templateOrganizationsDto)
+        ? [templateOrganizationsDtoSimplifier(data?.templateOrganizationsDto)]
+        : []
+      : orgGroupTriggered && !orgTriggered
+      ? isNotEmptyList(updateData?.templateOrganizationsDtoList)
+        ? [
+            templateOrganizationsDtoSimplifier(
+              updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO
+            ),
+          ]
+        : []
+      : !isObjectNull(data?.templateOrganizationsDto)
+      ? [templateOrganizationsDtoSimplifier(data?.templateOrganizationsDto)]
+      : [];
 
     const reqPayload = {
       ...data,
       titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
+      organizationHeader: getValues("organizationHeader"),
+      organizationHeaderMsc: getValues("organizationHeaderMsc"),
+      organizationGroupId: data?.organizationGroupDto?.id,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
@@ -227,8 +269,13 @@ const TemplateComponent = ({
           }
         : null,
     };
+    // console.log(reqPayload);
 
     onSubmit(reqPayload);
+  };
+
+  const onIsTemplateChange = (checked: boolean) => {
+    setIsTemplate(checked);
   };
 
   const onIsEnamCommitteeChange = (checked: boolean) => {
@@ -251,25 +298,39 @@ const TemplateComponent = ({
   return (
     <div>
       <div className="card col-md-12 border p-3 mb-4">
-        <div className="d-flex justify-content-start gap-6">
-          <h2 className="m-0">টেমপ্লেট</h2>
-          <span className="text-primary">|</span>
-          <Checkbox
-            label="এনাম কমিটি অনুমোদিত অর্গানোগ্রামের টেমপ্লেট"
-            labelClass="fw-bold"
-            noMargin
-            registerProperty={{
-              ...register("isEnamCommittee", {
-                onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
-              }),
-            }}
-          />
-        </div>
-
+        {isObjectNull(updateData) && (
+          <div className="d-flex justify-content-start gap-6">
+            <Checkbox
+              label="টেমপ্লেট ?"
+              labelClass="fw-bold fs-2"
+              noMargin
+              checked={isTemplate}
+              registerProperty={{
+                ...register("isTemplate", {
+                  onChange: (e) => onIsTemplateChange(e.target.checked),
+                }),
+              }}
+            />
+            <span className="text-primary fs-2 mx-3">|</span>
+            <Checkbox
+              label={
+                "এনাম কমিটি অনুমোদিত " +
+                (isTemplate ? " অর্গানোগ্রামের টেমপ্লেট" : " অর্গানোগ্রাম")
+              }
+              labelClass="fw-bold fs-4"
+              noMargin
+              checked={!isNotEnamCommittee}
+              registerProperty={{
+                ...register("isEnamCommittee", {
+                  onChange: (e) => onIsEnamCommitteeChange(e.target.checked),
+                }),
+              }}
+            />
+          </div>
+        )}
         <Separator className="mt-1 mb-4" />
-
         <div className="row">
-          {isNotEnamCommittee && (
+          {!draftListRecord && isTemplate && isNotEnamCommittee && (
             <div className="col-md-6 col-12">
               <Input
                 label="শিরোনাম বাংলা"
@@ -280,7 +341,7 @@ const TemplateComponent = ({
                 }
                 registerProperty={{
                   ...register("titleBn", {
-                    required: " ",
+                    required: true,
                     onChange: (e) => duplicateTitleCheck(e.target.value, false),
                   }),
                 }}
@@ -291,26 +352,74 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {/* <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}> */}
-          <div className="col-md-6 col-12">
-            <Input
-              label="শিরোনাম ইংরেজি"
-              placeholder="ইংরেজিতে শিরোনাম লিখুন"
-              isRequired={!isNotEnamCommittee}
-              defaultValue={
-                !isObjectNull(updateData) ? updateData?.titleEn : ""
-              }
-              registerProperty={{
-                ...register("titleEn", {
-                  required: !isNotEnamCommittee,
-                  onChange: (e) => duplicateTitleCheck(e.target.value, true),
-                  validate: enCheck,
-                }),
-              }}
-              isError={!!errors?.titleEn}
-              errorMessage={errors?.titleEn?.message as string}
-            />
-          </div>
+          {!draftListRecord && isTemplate && (
+            <div className="col-md-6 col-12">
+              <Input
+                label="শিরোনাম ইংরেজি"
+                placeholder="ইংরেজিতে শিরোনাম লিখুন"
+                isRequired={!isNotEnamCommittee}
+                defaultValue={
+                  !isObjectNull(updateData) ? updateData?.titleEn : ""
+                }
+                registerProperty={{
+                  ...register("titleEn", {
+                    required: !isNotEnamCommittee,
+                    onChange: (e) => duplicateTitleCheck(e.target.value, true),
+                    validate: enCheck,
+                  }),
+                }}
+                isError={!!errors?.titleEn}
+                errorMessage={errors?.titleEn?.message as string}
+              />
+            </div>
+          )}
+
+          {!isNotEnamCommittee && (
+            <>
+              <div className="col-md-6 col-12">
+                <Input
+                  label="অর্গানাইজেশন"
+                  placeholder="অর্গানাইজেশন লিখুন"
+                  // isRequired={true}
+                  defaultValue={
+                    isObjectNull(updateData)
+                      ? "Organization"
+                      : updateData?.organizationHeader
+                  }
+                  registerProperty={{
+                    ...register("organizationHeader", {
+                      // required: true,
+                      // onChange: (e) => duplicateTitleCheck(e.target.value, true),
+                      // validate: enCheck,
+                    }),
+                  }}
+                  // isError={!!errors?.organizationHeader}
+                  // errorMessage={errors?.organizationHeader?.message as string}
+                />
+              </div>
+              <div className="col-md-6 col-12">
+                <Input
+                  label="অর্গানাইজেশন মিসেলিনিয়াস"
+                  placeholder="অর্গানাইজেশন মিসেলিনিয়াস লিখুন"
+                  // isRequired={true}
+                  defaultValue={
+                    !isObjectNull(updateData)
+                      ? updateData?.organizationHeaderMsc
+                      : ""
+                  }
+                  registerProperty={{
+                    ...register("organizationHeaderMsc", {
+                      // required: true,
+                      // onChange: (e) => duplicateTitleCheck(e.target.value, true),
+                      // validate: enCheck,
+                    }),
+                  }}
+                  // isError={!!errors?.organizationHeaderMsc}
+                  // errorMessage={errors?.organizationHeaderMsc?.message as string}
+                />
+              </div>
+            </>
+          )}
           <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
@@ -343,7 +452,14 @@ const TemplateComponent = ({
             )}
         </div>
       </div>
-
+      <div className="mb-4">
+        <Organizations
+          formProps={formProps}
+          setOrgGroupTriggered={setOrgGroupTriggered}
+          setOrgTriggered={setOrgTriggered}
+          isTemplate={draftListRecord ? !draftListRecord : isTemplate}
+        />
+      </div>
       <div className="border border-secondary mb-3">
         <OrganizationTemplateTree
           treeData={treeData}
@@ -371,21 +487,14 @@ const TemplateComponent = ({
               isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
-          <div className="col-md-6 mt-3">
-            <Organizations
-              formProps={formProps}
-              notOrganizationData={notOrganizationData}
-              setNotOrganizationData={setNotOrganizationData}
-            />
-          </div>
-          <div className="col-md-6 mt-3">
-            <AbbreviationForm formProps={formProps} />
-          </div>
           <div className="col-12 mt-3">
             <AttachmentForm
               formProps={formProps}
               isNotEnamCommittee={isNotEnamCommittee}
             />
+          </div>
+          <div className="col-md-6 mt-3">
+            <AbbreviationForm formProps={formProps} />
           </div>
           <div className="col-md-6 mt-3">
             <NotesForm formProps={formProps} />

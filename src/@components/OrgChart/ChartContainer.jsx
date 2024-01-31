@@ -316,12 +316,22 @@ const ChartContainer = forwardRef(
               className="mb-6 treeTitle text-center"
               style={{ height: 0, overflow: "hidden" }}
             >
-              {headerData?.orgParentName && (
-                <p className="fs-2 mb-0">{headerData?.orgParentName || null}</p>
+              {headerData?.organizationHeader && (
+                <p className="fs-2 mb-0">
+                  {headerData?.organizationHeader || null}
+                </p>
+              )}
+              {headerData?.organizationHeaderMsc && (
+                <p className="fs-2 mb-0">
+                  {headerData?.organizationHeaderMsc || null}
+                </p>
               )}
               <p className="fs-2 mb-0">
                 {headerData?.orgName || headerData?.titleName || null}
               </p>
+              {headerData?.orgParentName && (
+                <p className="fs-2 mb-0">{headerData?.orgParentName || null}</p>
+              )}
               <p className="fs-3 mb-0">{headerData?.versionName}</p>
             </div>
             <ul className="justify-content-center">

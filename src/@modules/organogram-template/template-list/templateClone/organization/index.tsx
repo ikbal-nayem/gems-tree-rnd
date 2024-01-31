@@ -1,106 +1,85 @@
-import { LABELS } from "@constants/common.constant";
-import { Autocomplete, Separator } from "@gems/components";
-import { IObject, isObjectNull } from "@gems/utils";
+import { Autocomplete } from "@gems/components";
+import { IObject, notNullOrUndefined } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { deFocusById } from "utility/utils";
-import OrgFromOrgtype from "./OrgFromOrgtype";
-import OrgList from "./SelectedOrgView";
-
-const initPayload = {
-  meta: {
-    page: 0,
-    limit: 25,
-    sort: [{ order: "asc", field: "serialNo" }],
-  },
-  body: { searchKey: "" },
-};
-
+import { useEffect, useState } from "react";
 interface IOrganizations {
   formProps: any;
-  notOrganizationData: boolean;
-  setNotOrganizationData: (validateCheck: boolean) => void;
+  organizationGroupList?: IObject[];
 }
 
 const Organizations = ({
   formProps,
-  notOrganizationData,
-  setNotOrganizationData,
+  organizationGroupList,
 }: IOrganizations) => {
-  const { setValue, getValues, watch } = formProps;
-
-  const getOrgList = (searchKey, callback) => {
-    initPayload.body = { searchKey };
-    OMSService.getOrganizationList(initPayload).then((resp) =>
-      callback(resp?.body)
-    );
-  };
-
-  const onOrgSelect = (selected: IObject, toggle: boolean = false) => {
-    const currentOrg = getValues("templateOrganizationsDtoList") || [];
-    const cIdx = currentOrg?.findIndex((co) => co?.id === selected?.id);
-    if (cIdx < 0 && !isObjectNull(selected)) currentOrg.push(selected);
-    else if (toggle) currentOrg.splice(cIdx, 1);
-    setValue("templateOrganizationsDtoList", [...currentOrg]);
-    setNotOrganizationData(false);
-  };
-
-  const onMultiOrgSelect = (selected: IObject[], isAdd: boolean) => {
-    const currentOrg = getValues("templateOrganizationsDtoList") || [];
-    selected?.forEach((s) => {
-      const cIdx = currentOrg?.findIndex((co) => co?.id === s?.id);
-      if (cIdx < 0 && isAdd) currentOrg.push(s);
-      else if (cIdx >= 0 && !isAdd) currentOrg.splice(cIdx, 1);
+  const {
+    control,
+    formState: { errors },
+  } = formProps;
+  const [organizationList, setOrganizationList] = useState<IObject[]>([]);
+  const [allOrganizationsCache, setAllOrganizationsCache] = useState<IObject[]>(
+    []
+  );
+  const getOrgList = () => {
+    const payload = {
+      meta: {
+        page: 0,
+        limit: 1000,
+        sort: [{ order: "asc", field: "serialNo" }],
+      },
+      body: { searchKey: "" },
+    };
+    OMSService.getOrganizationList(payload).then((resp) => {
+      setOrganizationList(resp?.body);
+      setAllOrganizationsCache(resp?.body); // Caching all_Orgs
     });
-    setValue("templateOrganizationsDtoList", [...currentOrg]);
-    setNotOrganizationData(false);
   };
 
-  const onOrgCancle = (idx) => {
-    const currentOrg = getValues("templateOrganizationsDtoList") || [];
-    currentOrg?.splice(idx, 1);
-    setValue("templateOrganizationsDtoList", [...currentOrg]);
+  useEffect(() => {
+    getOrgList();
+  }, []);
+
+  const onOrgGroupChange = (OrgGroup) => {
+    if (notNullOrUndefined(OrgGroup)) {
+      OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
+        setOrganizationList(resp?.body)
+      );
+    } else setOrganizationList(allOrganizationsCache);
   };
-
-  const selectedOrgList = watch("templateOrganizationsDtoList");
-
-  if (selectedOrgList?.length > 0) deFocusById("organizationBlock");
-  // else focusById("organizationBlock", true);
 
   return (
-    <div className="card border p-3" id="organizationBlock">
-      <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">
-          {LABELS.BN.ORGANIZATION} <span className="text-danger"> *</span>
-        </h4>
+    <div className="row">
+      <div className="col-md-6 col-12 mb-4">
+        <Autocomplete
+          label="প্রতিষ্ঠানের গ্ৰুপ"
+          placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+          name="organizationGroupDto"
+          options={organizationGroupList}
+          noMargin
+          control={control}
+          // autoFocus
+          getOptionLabel={(op) => op?.orgGroupBn}
+          getOptionValue={(op) => op?.id}
+          onChange={(org) => onOrgGroupChange(org)}
+          isError={!!errors?.organizationGroupDto}
+          errorMessage={errors?.organizationGroupDto?.message as string}
+        />
       </div>
-      <Separator className="mt-1" />
-      <div className="row">
-        <div className="col-md-6">
-          <OrgFromOrgtype
-            selectedOrgList={selectedOrgList}
-            onOrgSelect={onOrgSelect}
-            onMultiOrgSelect={onMultiOrgSelect}
-          />
-        </div>
-        <div className="col-md-6">
-          <Autocomplete
-            placeholder="প্রতিষ্ঠান"
-            isRequired
-            isAsync
-            noMargin
-            closeMenuOnSelect={false}
-            getOptionLabel={(op) => op.nameBn}
-            getOptionValue={(op) => op?.id}
-            loadOptions={getOrgList}
-            onChange={(org) => onOrgSelect(org, false)}
-          />
-        </div>
+      <div className="col-md-6 col-12">
+        <Autocomplete
+          label="প্রতিষ্ঠান"
+          placeholder="প্রতিষ্ঠান বাছাই করুন"
+          name="organization"
+          options={organizationList}
+          noMargin
+          isRequired="প্রতিষ্ঠান বাছাই করুন"
+          control={control}
+          // autoFocus
+          getOptionLabel={(op) => op.nameBn}
+          getOptionValue={(op) => op?.id}
+          isError={!!errors?.organization}
+          errorMessage={errors?.organization?.message as string}
+        />
       </div>
-
-      <OrgList selectedOrgList={selectedOrgList} onOrgCancle={onOrgCancle} />
-      {notOrganizationData && (
-        <p className="text-danger fs-6 mb-0">প্রতিষ্ঠান যুক্ত করুন</p>
-      )}
     </div>
   );
 };

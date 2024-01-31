@@ -190,6 +190,44 @@ export const OMSService = {
         OMS_SERVICE + "organogram-proposal/get-list",
         payload
       ),
+
+    draftOrganogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-template/custom/draft/get-list",
+        payload
+      ),
+
+    inReviewOrganogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-template/custom/review/get-list",
+        payload
+      ),
+
+    inApproveOrganogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-template/custom/approve/get-list",
+        payload
+      ),
+
+    organogramList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-organogram/custom/get-list",
+        payload
+      ),
+
+    organizationTypeList: async (): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "organization-type/get-all-org-type"),
+
+    organizationGroupbyOrgType: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-type/get-all-org-group-by-org-type",
+        payload
+      ),
+
+    organizationsByGroupId: async (id): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-all-org-by-org-group-id/" + id
+      ),
   },
 
   SAVE: {
@@ -218,4 +256,15 @@ export const OMSService = {
       );
     },
   },
+
+  getOrganizationTypeList: async (payload): Promise<any> =>             // returns organizationGroups actually
+    await axiosIns.post(OMS_SERVICE + "organization-type/get-list", payload),
+  organizationTypeCreate: async (payload): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "organization-type/create", payload),
+
+  organizationTypeUpdate: async (payload): Promise<any> =>
+    await axiosIns.put(OMS_SERVICE + "organization-type/update", payload),
+
+  organizationTypeDelete: async (payload): Promise<any> =>
+    await axiosIns.put(OMS_SERVICE + "organization-type/delete-all", payload),
 };

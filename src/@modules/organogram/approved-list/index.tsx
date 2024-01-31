@@ -12,11 +12,11 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import TemplateTable from "./Table";
+import OrganogramTable from "./Table";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 10,
+  limit: 20,
   sort: [
     {
       order: "desc",
@@ -25,7 +25,7 @@ const initMeta: IMeta = {
   ],
 };
 
-const TemplateList = () => {
+const OrganogramList = () => {
   const [dataList, setDataList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -36,6 +36,7 @@ const TemplateList = () => {
   );
   const searchKey = useDebounce(search, 500);
 
+  
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
@@ -48,9 +49,6 @@ const TemplateList = () => {
   }, [searchParams]);
 
   const getDataList = (reqMeta = null) => {
-    topProgress.show();
-    setLoading(true);
-
     const payload = {
       meta: searchKey
         ? reqMeta
@@ -59,13 +57,16 @@ const TemplateList = () => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        isTemplate: false,
+        isTemplate: 0,
       },
     };
 
     const reqData = { ...payload, body: payload?.body };
 
-    OMSService.getTemplateList(reqData)
+   
+    topProgress.show();
+    setLoading(true);
+    OMSService.FETCH.organogramList(reqData)
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
@@ -110,7 +111,7 @@ const TemplateList = () => {
 
   return (
     <>
-      <PageTitle> {MENU.BN.ORGANOGRAM_LIST} </PageTitle>
+      <PageTitle> {MENU.BN.APPROVED_ORGANOGRAM_LIST} </PageTitle>
       <div className="card p-4">
         {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
@@ -147,7 +148,7 @@ const TemplateList = () => {
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="p-4">
-          <TemplateTable
+          <OrganogramTable
             dataList={dataList}
             getDataList={getDataList}
             respMeta={respMeta}
@@ -158,7 +159,7 @@ const TemplateList = () => {
               pageNeighbours={2}
               onPageChanged={onPageChanged}
             />
-          </TemplateTable>
+          </OrganogramTable>
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
@@ -167,4 +168,4 @@ const TemplateList = () => {
   );
 };
 
-export default TemplateList;
+export default OrganogramList;

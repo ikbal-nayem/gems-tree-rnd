@@ -6,7 +6,7 @@ import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
-  let COMMON_LABEL,
+  let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
 
@@ -48,7 +48,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
         <p className="mb-0 fs-8  text-start">
           {langEn
             ? longLineBreaker(nodeData.titleEn || "", 17)
-            : longLineBreaker(nodeData.titleBn || "", 20)}
+            : nodeData.titleBn
+            ? longLineBreaker(nodeData.titleBn || "", 20)
+            : COMMON_LABELS.NOT_ASSIGN}
         </p>
         <div>
           <p className="mb-0 fs-8 text-decoration-nonw">{manPower}</p>

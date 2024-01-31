@@ -43,7 +43,9 @@ const MyNode = ({
           <div>
             <p className="p-1 mb-0 fs-7">
               {isNotEnamCommittee
-                ? longLineBreaker(nodeData.titleBn || "", 20)
+                ? nodeData.titleBn
+                  ? longLineBreaker(nodeData.titleBn || "", 20)
+                  : COMMON_LABELS.NOT_ASSIGN
                 : longLineBreaker(nodeData.titleEn || "", 17)}
               {/* + " (" +
                 nodeData.displayOrder +
