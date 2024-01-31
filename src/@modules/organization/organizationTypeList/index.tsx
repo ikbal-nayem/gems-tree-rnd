@@ -1,13 +1,5 @@
-import { PageTitle, PageToolbarRight } from "@context/PageData";
-import {
-  IMeta,
-  IObject,
-  generatePDF,
-  isObjectNull,
-  topProgress,
-  useDebounce,
-} from "@gems/utils";
 import { MENU } from "@constants/menu-titles.constant";
+import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
   Autocomplete,
   Button,
@@ -19,23 +11,35 @@ import {
   Pagination,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, exportXLSX } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  IMeta,
+  IObject,
+  exportXLSX,
+  generatePDF,
+  topProgress,
+  useDebounce,
+} from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import GradeForm from "./Form";
 import GradeTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
-import { useForm } from "react-hook-form";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 20,
+  limit: 100,
   sort: [
     {
-      field: "createdOn",
-      order: "desc",
+      field: "code",
+      order: "asc",
+    },
+    {
+      field: "serialNo",
+      order: "asc",
     },
   ],
 };
@@ -53,14 +57,14 @@ const OrganizationTypeList = () => {
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
-  const [orgTypeEn, setOrgTypeEn] = useState<string>("Ministry/Division");
+  const [orgType, setOrgType] = useState<string>("");
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
   const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
   const formProps = useForm();
-  const { control, setValue, getValues, reset } = formProps;
+  const { control } = formProps;
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -76,19 +80,7 @@ const OrganizationTypeList = () => {
   useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, [searchParams, orgTypeEn]);
-
-  useEffect(() => {
-    if (
-      orgTypeList.length &&
-      orgTypeList.length > 0 &&
-      isObjectNull(getValues("organizationTypeDTO"))
-    )
-      setValue(
-        "organizationTypeDTO",
-        orgTypeList?.find((org) => org?.orgLevel === 1)
-      );
-  }, [orgTypeList]);
+  }, [searchParams, orgType]);
 
   const getOrganizationTypesList = () => {
     OMSService.FETCH.organizationTypeList()
@@ -107,7 +99,7 @@ const OrganizationTypeList = () => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        orgTypeEn: orgTypeEn || null,
+        parentId: orgType || null,
       },
     };
 
@@ -213,7 +205,7 @@ const OrganizationTypeList = () => {
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
       "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
-      "ধরণ (ইংরেজি)": d?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN,
+      "ধরণ (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
       "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
       "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
       লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
@@ -236,9 +228,9 @@ const OrganizationTypeList = () => {
                 placeholder="সংস্থার ধরণ বাছাই করুন"
                 options={orgTypeList || []}
                 name="organizationTypeDTO"
-                getOptionLabel={(op) => op.orgTypeBn}
-                getOptionValue={(op) => op.orgTypeEn}
-                onChange={(op) => setOrgTypeEn(op?.orgTypeEn)}
+                getOptionLabel={(op) => op.nameBn}
+                getOptionValue={(op) => op.id}
+                onChange={(op) => setOrgType(op?.id)}
                 control={control}
               />
             </span>

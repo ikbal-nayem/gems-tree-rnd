@@ -1,12 +1,17 @@
 import {
+  Autocomplete,
   Button,
   Checkbox,
   Drawer,
   DrawerBody,
   DrawerFooter,
   Input,
+  Select,
+  toast,
 } from "@gems/components";
-import { useEffect } from "react";
+import { COMMON_INSTRUCTION, IObject, numBnToEn } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface IGradeForm {
@@ -16,6 +21,19 @@ interface IGradeForm {
   updateData?: any;
   submitLoading?: boolean;
 }
+
+const organizationTypeStaticList = [
+  {
+    titleEn: "Type",
+    key: "ORG_CATEGORY_TYPE",
+    titleBn: "ধরণ",
+  },
+  {
+    titleEn: "Group",
+    key: "ORG_CATEGORY_GROUP",
+    titleBn: "গ্রুপ",
+  },
+];
 
 const GradeForm = ({
   isOpen,
@@ -28,8 +46,21 @@ const GradeForm = ({
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
+    control,
     formState: { errors },
   } = useForm();
+
+  const [orgParentTypeList, setOrgParentTypeList] = useState<IObject[]>([]);
+
+  useEffect(() => {
+    OMSService.FETCH.organizationTypeList()
+      .then((res) => {
+        setOrgParentTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  }, []);
 
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
@@ -38,7 +69,7 @@ const GradeForm = ({
         type: updateData?.metaTypeEn,
       });
     } else {
-      reset({ isActive: true });
+      reset({ isActive: true, orgCategoryType: "ORG_CATEGORY_GROUP" });
     }
   }, [updateData, reset]);
 
@@ -54,35 +85,69 @@ const GradeForm = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
+            <Select
+              label={"প্রতিষ্ঠানের ধরণ"}
+              options={organizationTypeStaticList || []}
+              placeholder={"বাছাই করুন"}
+              isRequired
+              textKey={"titleBn"}
+              // defaultValue={"ORG_CATEGORY_GROUP"}
+              valueKey="key"
+              registerProperty={{
+                ...register(`orgCategoryType`, {
+                  required: true,
+                }),
+              }}
+              isDisabled={updateData?.orgCategoryType}
+              isError={!!errors?.orgCategoryType}
+              errorMessage={errors?.orgCategoryType?.message as string}
+            />
+            {watch("orgCategoryType") === "ORG_CATEGORY_GROUP" && (
+              <div className="col-12">
+                <Autocomplete
+                  label="প্রতিষ্ঠানের অভিভাবকের ধরণ"
+                  placeholder="বাছাই করুন"
+                  isRequired="প্রতিষ্ঠানের অভিভাবকের ধরণ বাছাই করুন"
+                  options={orgParentTypeList || []}
+                  name="parentDTO"
+                  getOptionLabel={(op) => op.nameBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("parentId", op?.id)}
+                  control={control}
+                  isError={!!errors?.parentDTO}
+                  errorMessage={errors?.parentDTO?.message as string}
+                />
+              </div>
+            )}
             <div className="col-12">
               <Input
-                label="প্রতিষ্ঠানের ধরণ (ইংরেজি)"
-                placeholder="প্রতিষ্ঠানের ধরণ (ইংরেজি) লিখুন"
+                label="নাম (ইংরেজি)"
+                placeholder="নাম (ইংরেজি) লিখুন"
                 registerProperty={{
-                  ...register("orgTypeEn", {
-                    required: "প্রতিষ্ঠানের ধরণ (ইংরেজি) লিখুন",
+                  ...register("nameEn", {
+                    required: "নাম (ইংরেজি) লিখুন",
                   }),
                 }}
                 isRequired
-                isError={!!errors?.orgTypeEn}
-                errorMessage={errors?.orgTypeEn?.message as string}
+                isError={!!errors?.nameEn}
+                errorMessage={errors?.nameEn?.message as string}
               />
             </div>
             <div className="col-12">
               <Input
-                label="প্রতিষ্ঠানের ধরণ (বাংলা)"
-                placeholder="প্রতিষ্ঠানের ধরণ (বাংলা) লিখুন"
+                label="নাম (বাংলা)"
+                placeholder="নাম (বাংলা) লিখুন"
                 registerProperty={{
-                  ...register("orgTypeBn", {
-                    required: "প্রতিষ্ঠানের ধরণ (বাংলা) লিখুন",
+                  ...register("nameBn", {
+                    required: "নাম (বাংলা) লিখুন",
                   }),
                 }}
                 isRequired
-                isError={!!errors?.orgTypeBn}
-                errorMessage={errors?.orgTypeBn?.message as string}
+                isError={!!errors?.nameBn}
+                errorMessage={errors?.nameBn?.message as string}
               />
             </div>
-            <div className="col-12">
+            {/* <div className="col-12">
               <Input
                 label="প্রতিষ্ঠানের গ্রুপ (ইংরেজি)"
                 placeholder="প্রতিষ্ঠানের গ্রুপ (ইংরেজি) লিখুন"
@@ -109,24 +174,43 @@ const GradeForm = ({
                 isError={!!errors?.orgGroupBn}
                 errorMessage={errors?.orgGroupBn?.message as string}
               />
-            </div>
+            </div> */}
+
+            {watch("orgCategoryType") === "ORG_CATEGORY_TYPE" && (
+              <div className="col-12">
+                <Input
+                  label="প্রতিষ্ঠানের লেভেল"
+                  type="number"
+                  placeholder="প্রতিষ্ঠানের লেভেল লিখুন"
+                  min={1}
+                  registerProperty={{
+                    ...register("orgTypeLevel", {
+                      required: "প্রতিষ্ঠানের লেভেল লিখুন",
+                      setValueAs: (v) => numBnToEn(v),
+                      maxLength: {
+                        value: 1,
+                        message: COMMON_INSTRUCTION.MAX_CHAR(1),
+                      },
+                    }),
+                  }}
+                  isRequired
+                  isError={!!errors?.orgTypeLevel}
+                  errorMessage={errors?.orgTypeLevel?.message as string}
+                />
+              </div>
+            )}
             <div className="col-12">
               <Input
-                label="প্রতিষ্ঠানের লেভেল"
+                label="প্রদর্শন ক্রম"
                 type="number"
-                placeholder="প্রতিষ্ঠানের লেভেল লিখুন"
+                placeholder="প্রদর্শন ক্রম লিখুন"
                 min={1}
                 registerProperty={{
-                  ...register("orgLevel", {
-                    required: "প্রতিষ্ঠানের লেভেল লিখুন",
-                  }),
+                  ...register("serialNo"),
                 }}
-                isRequired
-                isError={!!errors?.orgLevel}
-                errorMessage={errors?.orgLevel?.message as string}
               />
             </div>
-            <div className="col-12">
+            {/* <div className="col-12">
               <Input
                 label="কোড"
                 placeholder="কোড লিখুন"
@@ -134,7 +218,7 @@ const GradeForm = ({
                   ...register("orgCode"),
                 }}
               />
-            </div>
+            </div> */}
             <div className="col-12">
               <Checkbox
                 label="সক্রিয়"

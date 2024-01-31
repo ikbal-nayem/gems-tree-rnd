@@ -14,9 +14,10 @@ const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
   // { title: "ধরণ (বাংলা)", minWidth: 100 },
   // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
-  { title: "গ্রুপ (বাংলা)", minWidth: 100 },
-  { title: "গ্রুপ (ইংরেজি)", minWidth: 100 },
-  { title: "লেভেল", minWidth: 75 },
+  { title: "নাম (বাংলা)", minWidth: 100 },
+  { title: "নাম (ইংরেজি)", minWidth: 100 },
+  { title: "অভিভাবকের ধরণ", minWidth: 100 },
+  { title: "কোড", minWidth: 75 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
   { title: COMMON_LABELS.ACTION },
 ];
@@ -44,9 +45,12 @@ const GradeTable: FC<GradeTableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
               {/* <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} /> */}
-              <TableCell text={data?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.orgLevel || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell
+                text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+              />
+              <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} />
 
               <TableCell>
                 {data?.isActive ? (
