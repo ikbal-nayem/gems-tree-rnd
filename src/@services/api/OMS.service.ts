@@ -216,11 +216,13 @@ export const OMSService = {
       ),
 
     organizationTypeList: async (): Promise<any> =>
-      await axiosIns.get(OMS_SERVICE + "organization-type/get-all-org-type"),
+      await axiosIns.get(
+        OMS_SERVICE + "organization-category/get-all-org-type"
+      ),
 
     organizationGroupbyOrgType: async (payload): Promise<any> =>
       await axiosIns.post(
-        OMS_SERVICE + "organization-type/get-all-org-group-by-org-type",
+        OMS_SERVICE + "organization-category/get-all-org-group-by-org-type",
         payload
       ),
 
@@ -257,14 +259,26 @@ export const OMSService = {
     },
   },
 
-  getOrganizationTypeList: async (payload): Promise<any> =>             // returns organizationGroups actually
-    await axiosIns.post(OMS_SERVICE + "organization-type/get-list", payload),
+  getOrganizationTypeList: async (
+    payload
+  ): Promise<any> => // returns organizationGroups actually
+    await axiosIns.post(
+      OMS_SERVICE + "organization-category/get-list",
+      payload
+    ),
+
+  getOrganizationGroupList: async (): Promise<any> =>
+    await axiosIns.get(OMS_SERVICE + "organization-category/get-all-org-group"),
+
   organizationTypeCreate: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organization-type/create", payload),
+    await axiosIns.post(OMS_SERVICE + "organization-category/create", payload),
 
   organizationTypeUpdate: async (payload): Promise<any> =>
-    await axiosIns.put(OMS_SERVICE + "organization-type/update", payload),
+    await axiosIns.put(OMS_SERVICE + "organization-category/update", payload),
 
   organizationTypeDelete: async (payload): Promise<any> =>
-    await axiosIns.put(OMS_SERVICE + "organization-type/delete-all", payload),
+    await axiosIns.put(
+      OMS_SERVICE + "organization-category/delete-all",
+      payload
+    ),
 };

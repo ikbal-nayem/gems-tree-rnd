@@ -45,15 +45,7 @@ const Organizations = ({
   };
 
   const getOrgGroupList = () => {
-    const payload = {
-      meta: {
-        page: 0,
-        limit: 500,
-        sort: [{ order: "asc", field: "createdOn" }],
-      },
-      body: { searchKey: "" },
-    };
-    OMSService.getOrganizationTypeList(payload).then((resp) =>
+    OMSService.getOrganizationGroupList().then((resp) =>
       setOrganizationGroupList(resp?.body)
     );
   };

@@ -74,15 +74,7 @@ const TemplateList = () => {
   }, [searchParams, orgGroupId]);
 
   const getOrgGroupList = () => {
-    const payload = {
-      meta: {
-        page: 0,
-        limit: 500,
-        sort: [{ order: "asc", field: "createdOn" }],
-      },
-      body: { searchKey: "" },
-    };
-    OMSService.getOrganizationTypeList(payload).then((resp) =>
+    OMSService.getOrganizationGroupList().then((resp) =>
       setOrganizationGroupList(resp?.body)
     );
   };
@@ -184,7 +176,7 @@ const TemplateList = () => {
             <Autocomplete
               placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
               options={organizationGroupList || []}
-              getOptionLabel={(op) => op.orgGroupBn}
+              getOptionLabel={(op) => op.nameBn}
               getOptionValue={(op) => op.id}
               name="orgType"
               control={control}
