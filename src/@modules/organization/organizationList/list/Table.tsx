@@ -74,13 +74,13 @@ const OrgTable: FC<OrgTableProps> = ({
               />
               <TableCell
                 text={
-                  data?.organizationTypeDTO?.orgTypeBn ||
+                  data?.organizationGroupDTO?.parentDTO?.nameBn ||
                   COMMON_LABELS.NOT_ASSIGN
                 }
               />
               <TableCell
                 text={
-                  data?.organizationGroupDTO?.orgGroupBn ||
+                  data?.organizationGroupDTO?.nameBn ||
                   COMMON_LABELS.NOT_ASSIGN
                 }
               />
