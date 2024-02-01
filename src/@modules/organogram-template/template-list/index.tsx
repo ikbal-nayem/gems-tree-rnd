@@ -78,7 +78,7 @@ const TemplateList = () => {
       meta: {
         page: 0,
         limit: 500,
-        sort: [{ order: "asc", field: "orgCode" }],
+        sort: [{ order: "asc", field: "createdOn" }],
       },
       body: { searchKey: "" },
     };

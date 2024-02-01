@@ -100,7 +100,7 @@ const Organizations = ({
             isRequired={isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false}
             control={control}
             // autoFocus
-            getOptionLabel={(op) => op?.orgGroupBn}
+            getOptionLabel={(op) => op?.nameBn}
             getOptionValue={(op) => op?.id}
             onChange={(org) => onOrgGroupChange(org)}
             isError={!!errors?.organizationGroupDto}
