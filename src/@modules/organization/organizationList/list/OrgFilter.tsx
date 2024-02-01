@@ -8,7 +8,7 @@ import {
   IconButton,
   toast,
 } from "@gems/components";
-import { IObject, isObjectNull, makeFormData } from "@gems/utils";
+import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ const OrgFilter = ({ onFilterDone, options }) => {
 
   const onOrganizationTypeChange = (typeItem: IObject) => {
     if (!isObjectNull(typeItem)) {
-      OMSService.FETCH.organizationGroupbyOrgType(makeFormData(typeItem))
+      OMSService.FETCH.organizationGroupbyOrgType(typeItem?.id)
         .then((res) => {
           setOrgGroupList(res?.body || []);
         })
@@ -67,8 +67,8 @@ const OrgFilter = ({ onFilterDone, options }) => {
               placeholder="সংস্থার ধরণ বাছাই করুন"
               options={options?.organizationTypes || []}
               name="organizationTypeDTO"
-              getOptionLabel={(op) => op.orgTypeBn}
-              getOptionValue={(op) => op.orgTypeEn}
+              getOptionLabel={(op) => op.nameBn}
+              getOptionValue={(op) => op.id}
               onChange={(op) => onOrganizationTypeChange(op)}
               control={control}
             />
@@ -78,7 +78,7 @@ const OrgFilter = ({ onFilterDone, options }) => {
                 placeholder="সংস্থার গ্রুপ বাছাই করুন"
                 options={orgGroupList || []}
                 name="organizationGroupDTO"
-                getOptionLabel={(op) => op.orgGroupBn}
+                getOptionLabel={(op) => op.nameBn}
                 getOptionValue={(op) => op.id}
                 onChange={(op) => setValue("organizationGroupId", op?.id)}
                 control={control}

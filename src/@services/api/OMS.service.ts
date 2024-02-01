@@ -220,10 +220,11 @@ export const OMSService = {
         OMS_SERVICE + "organization-category/get-all-org-type"
       ),
 
-    organizationGroupbyOrgType: async (payload): Promise<any> =>
-      await axiosIns.post(
-        OMS_SERVICE + "organization-category/get-all-org-group-by-org-type",
-        payload
+    organizationGroupbyOrgType: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-category/get-all-org-group-by-org-type-id/" +
+          id
       ),
 
     organizationsByGroupId: async (id): Promise<any> =>
