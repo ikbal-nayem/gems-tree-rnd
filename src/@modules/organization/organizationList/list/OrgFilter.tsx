@@ -8,24 +8,30 @@ import {
   IconButton,
   toast,
 } from "@gems/components";
-import { IObject, isObjectNull } from "@gems/utils";
+import { IObject, isObjectNull, makeFormData } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import LocationWorkSpaceComponent from "./LocationWorkSpaceComponent";
-import WorkSpaceComponent from "./WorkSpaceComponent";
 
 const OrgFilter = ({ onFilterDone, options }) => {
   const formProps = useForm();
   const [open, setOpen] = useState<boolean>(false);
   const { control, handleSubmit, watch, reset, setValue, register } = formProps;
   const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
+  const [orgParentList, setOrgParentList] = useState<IObject[]>([]);
 
   const onOrganizationTypeChange = (typeItem: IObject) => {
     if (!isObjectNull(typeItem)) {
       OMSService.FETCH.organizationGroupbyOrgType(typeItem?.id)
         .then((res) => {
           setOrgGroupList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
+
+      OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
+        .then((res) => {
+          setOrgParentList(res?.body || []);
         })
         .catch((err) => toast.error(err?.message));
     }
@@ -73,20 +79,32 @@ const OrgFilter = ({ onFilterDone, options }) => {
               control={control}
             />
             {!isObjectNull(watch("organizationTypeDTO")) && (
-              <Autocomplete
-                label="সংস্থার গ্রুপ"
-                placeholder="সংস্থার গ্রুপ বাছাই করুন"
-                options={orgGroupList || []}
-                name="organizationGroupDTO"
-                getOptionLabel={(op) => op.nameBn}
-                getOptionValue={(op) => op.id}
-                onChange={(op) => setValue("organizationGroupId", op?.id)}
-                control={control}
-              />
+              <>
+                <Autocomplete
+                  label="সংস্থার গ্রুপ"
+                  placeholder="সংস্থার গ্রুপ বাছাই করুন"
+                  options={orgGroupList || []}
+                  name="organizationGroupDTO"
+                  getOptionLabel={(op) => op.nameBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("organizationGroupId", op?.id)}
+                  control={control}
+                />
+                <Autocomplete
+                  label="অভিভাবক প্রতিষ্ঠানের নাম"
+                  placeholder="অভিভাবক প্রতিষ্ঠানের নাম বাছাই করুন"
+                  options={orgParentList || []}
+                  name="parent"
+                  getOptionLabel={(op) => op.nameBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("parentId", op?.id)}
+                  control={control}
+                />
+              </>
             )}
-            <div className="col-12">
+            {/* <div className="col-12">
               <WorkSpaceComponent {...formProps} />
-            </div>
+            </div> */}
             <div className="col-12">
               <Autocomplete
                 label="মন্ত্রণালয়"
