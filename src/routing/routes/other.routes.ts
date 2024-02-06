@@ -19,6 +19,21 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
     element: lazy(() => import("@modules/organization/organizationTypeList")),
   },
+  {
+    link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
+    element: lazy(() => import("@modules/organization/main-activity")),
+  },
+  {
+    link: ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
+    element: lazy(() => import("@modules/organization/business-of-allocation")),
+  },
+  {
+    link: ROUTE_L2.OMS_ORGANIZATION_NODE_LIST,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION_NODE_LIST,
+    element: lazy(() => import("@modules/organization/node-list")),
+  },
 ];
 
 export const OtherRoutes = getPermittedRouteList(routeList);
