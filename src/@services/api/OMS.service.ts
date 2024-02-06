@@ -231,6 +231,12 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organization/get-all-org-by-org-group-id/" + id
       ),
+
+    organizationParentListByOrgType: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization/get-parent-list-by-org-group-level/",
+        payload
+      ),
   },
 
   SAVE: {
