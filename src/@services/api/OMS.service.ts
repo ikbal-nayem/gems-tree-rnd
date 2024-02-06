@@ -237,6 +237,10 @@ export const OMSService = {
         OMS_SERVICE + "organization/get-parent-list-by-org-group-level/",
         payload
       ),
+    organizationParentListByOrgGroup: async (payload: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-list-by-org-group/" + payload
+      ),
   },
 
   SAVE: {

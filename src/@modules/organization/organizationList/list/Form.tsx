@@ -57,6 +57,9 @@ const OrgForm = ({
       if (!isObjectNull(updateData?.organizationTypeDTO)) {
         onOrganizationTypeChange(updateData?.organizationTypeDTO);
       }
+      if (!isObjectNull(updateData?.organizationGroupDTO)) {
+        onOrganizationGroupChange(updateData?.organizationGroupDTO);
+      }
       reset({
         ...updateData,
         isTrainingOffice: updateData?.trainingOfficeTag === "TRAINING",
@@ -82,6 +85,18 @@ const OrgForm = ({
           setOrgParentList(res?.body || []);
         })
         .catch((err) => toast.error(err?.message));
+    }
+  };
+
+  const onOrganizationGroupChange = (groupItem: IObject) => {
+    if (!isObjectNull(groupItem)) {
+      setValue("organizationCategoryId", groupItem?.id);
+      if (groupItem?.nameEn === "Ministry" || groupItem?.nameEn === "Division")
+        OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
+          .then((res) => {
+            setOrgParentList(res?.body || []);
+          })
+          .catch((err) => toast.error(err?.message));
     }
   };
 
@@ -138,7 +153,7 @@ const OrgForm = ({
                     name="organizationGroupDTO"
                     getOptionLabel={(op) => op.nameBn}
                     getOptionValue={(op) => op.id}
-                    onChange={(op) => setValue("organizationGroupId", op?.id)}
+                    onChange={(op) => onOrganizationGroupChange(op)}
                     control={control}
                     isError={!!errors?.organizationGroupDTO}
                     errorMessage={

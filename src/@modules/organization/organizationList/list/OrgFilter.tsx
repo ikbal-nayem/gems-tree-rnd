@@ -17,7 +17,15 @@ import LocationWorkSpaceComponent from "./LocationWorkSpaceComponent";
 const OrgFilter = ({ onFilterDone, options }) => {
   const formProps = useForm();
   const [open, setOpen] = useState<boolean>(false);
-  const { control, handleSubmit, watch, reset, setValue, register } = formProps;
+  const {
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    register,
+    formState: { errors },
+  } = formProps;
   const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
   const [orgParentList, setOrgParentList] = useState<IObject[]>([]);
 
@@ -34,6 +42,18 @@ const OrgFilter = ({ onFilterDone, options }) => {
           setOrgParentList(res?.body || []);
         })
         .catch((err) => toast.error(err?.message));
+    }
+  };
+
+  const onOrganizationGroupChange = (groupItem: IObject) => {
+    if (!isObjectNull(groupItem)) {
+      setValue("organizationCategoryId", groupItem?.id);
+      if (groupItem?.nameEn === "Ministry" || groupItem?.nameEn === "Division")
+        OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
+          .then((res) => {
+            setOrgParentList(res?.body || []);
+          })
+          .catch((err) => toast.error(err?.message));
     }
   };
 
@@ -83,12 +103,15 @@ const OrgFilter = ({ onFilterDone, options }) => {
                 <Autocomplete
                   label="সংস্থার গ্রুপ"
                   placeholder="সংস্থার গ্রুপ বাছাই করুন"
+                  isRequired="সংস্থার ধরণ বাছাই করুন"
                   options={orgGroupList || []}
                   name="organizationGroupDTO"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
-                  onChange={(op) => setValue("organizationGroupId", op?.id)}
+                  onChange={(op) => onOrganizationGroupChange(op)}
                   control={control}
+                  isError={!!errors?.organizationGroupDTO}
+                  errorMessage={errors?.organizationGroupDTO?.message as string}
                 />
                 <Autocomplete
                   label="অভিভাবক প্রতিষ্ঠানের নাম"
