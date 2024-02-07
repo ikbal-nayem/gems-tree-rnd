@@ -14,7 +14,7 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-interface IGradeForm {
+interface IForm {
   isOpen?: boolean;
   onSubmit: (data) => void;
   onClose: () => void;
@@ -35,13 +35,13 @@ const organizationTypeStaticList = [
   },
 ];
 
-const GradeForm = ({
+const Form = ({
   isOpen,
   onClose,
   onSubmit,
   updateData,
   submitLoading,
-}: IGradeForm) => {
+}: IForm) => {
   const {
     register,
     handleSubmit,
@@ -249,4 +249,4 @@ const GradeForm = ({
     </Drawer>
   );
 };
-export default GradeForm;
+export default Form;

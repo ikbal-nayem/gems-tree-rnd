@@ -25,13 +25,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
-import GradeForm from "./Form";
-import GradeTable from "./Table";
+import Form from "./Form";
+import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 100,
+  limit: 20,
   sort: [
     {
       field: "code",
@@ -238,7 +238,7 @@ const NodeList = () => {
               />
             </span> */}
 
-            <Input
+            {/* <Input
               type="search"
               noMargin
               placeholder="অনুসন্ধান করুন ..."
@@ -248,14 +248,14 @@ const NodeList = () => {
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
-            />
+            /> */}
           </div>
         )}
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="mt-3">
-          <GradeTable
+          <DataTable
             data={listData}
             // handleUpdate={handleUpdate}
             // handleDelete={handleDelete}
@@ -265,7 +265,7 @@ const NodeList = () => {
               pageNeighbours={2}
               onPageChanged={onPageChanged}
             />
-          </GradeTable>
+          </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
             <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
@@ -275,7 +275,7 @@ const NodeList = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        {/* <GradeForm
+        {/* <Form
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
