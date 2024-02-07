@@ -199,7 +199,7 @@ const OrganogramTable: FC<TableProps> = ({
                     </DropdownItem>
                     <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="visibility" />
-                      <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা দেখুন</h6>
+                      <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা</h6>
                     </DropdownItem>
                     <DropdownItem onClick={() => navigateToDetails(item)}>
                       <Icon size={19} icon="edit" />
