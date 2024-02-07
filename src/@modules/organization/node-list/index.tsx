@@ -17,6 +17,8 @@ import {
   IObject,
   exportXLSX,
   generatePDF,
+  notNullOrUndefined,
+  numEnToBn,
   topProgress,
   useDebounce,
 } from "@gems/utils";
@@ -81,7 +83,7 @@ const NodeList = () => {
     getDataList();
     // eslint-disable-next-line
   }, [
-    searchParams, 
+    searchParams,
     // orgType
   ]);
 
@@ -217,7 +219,12 @@ const NodeList = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.NODE_LIST}</PageTitle>
+      <PageTitle>
+        {MENU.BN.NODE_LIST +
+          (notNullOrUndefined(respMeta?.totalRecords)
+            ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
+            : "")}
+      </PageTitle>
       {/* <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
