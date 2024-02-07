@@ -51,6 +51,9 @@ const OrgForm = ({
 
   const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
   const [orgParentList, setOrgParentList] = useState<IObject[]>([]);
+  const orgTypeGovtObject = options?.institutionTypes?.find(
+    (d) => d?.metaKey === "INSTITUTION_TYPE_GOVERNMENT"
+  );
 
   useEffect(() => {
     if (!isObjectNull(updateData)) {
@@ -68,11 +71,20 @@ const OrgForm = ({
       reset({
         isActive: true,
         isTrainingOffice: false,
+        officeTypeDTO: orgTypeGovtObject,
+        officeType: orgTypeGovtObject?.metaKey,
       });
     }
-  }, [updateData]);
+  }, [updateData, orgTypeGovtObject]);
 
   const onOrganizationTypeChange = (typeItem: IObject) => {
+    setValue("organizationGroupDTO", null);
+    setValue("organizationCategoryId", null);
+    setOrgGroupList([]);
+    setValue("parent", null);
+    setValue("parentId", null);
+    setOrgParentList([]);
+
     if (!isObjectNull(typeItem)) {
       OMSService.FETCH.organizationGroupbyOrgType(typeItem?.id)
         .then((res) => {
@@ -91,12 +103,19 @@ const OrgForm = ({
   const onOrganizationGroupChange = (groupItem: IObject) => {
     if (!isObjectNull(groupItem)) {
       setValue("organizationCategoryId", groupItem?.id);
-      if (groupItem?.nameEn === "Ministry" || groupItem?.nameEn === "Division")
+      if (
+        groupItem?.nameEn === "Ministry" ||
+        groupItem?.nameEn === "Division"
+      ) {
+        setValue("parent", null);
+        setValue("parentId", null);
+        setOrgParentList([]);
         OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
           .then((res) => {
             setOrgParentList(res?.body || []);
           })
           .catch((err) => toast.error(err?.message));
+      }
     }
   };
 

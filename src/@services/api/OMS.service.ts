@@ -234,7 +234,7 @@ export const OMSService = {
 
     organizationParentListByOrgType: async (payload): Promise<any> =>
       await axiosIns.post(
-        OMS_SERVICE + "organization/get-parent-list-by-org-group-level/",
+        OMS_SERVICE + "organization/get-parent-list-by-org-group-level",
         payload
       ),
     organizationParentListByOrgGroup: async (payload: string): Promise<any> =>

@@ -171,7 +171,7 @@ const List = () => {
   };
 
   const onSubmit = (data) => {
-    setIsSubmitLoading(false);
+    setIsSubmitLoading(true);
     const service = isUpdate
       ? OMSService.organizationUpdate
       : OMSService.organizationCreate;
