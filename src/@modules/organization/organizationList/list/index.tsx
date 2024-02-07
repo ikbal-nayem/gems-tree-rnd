@@ -15,6 +15,7 @@ import {
   IMeta,
   IObject,
   exportXLSX,
+  numEnToBn,
   useDebounce,
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
@@ -228,7 +229,7 @@ const List = () => {
         {/* {Object.keys(filterBody.current).map((filter) => {
 					if (typeof filter === "object") return <Tag title={"filter"} />;
 				})} */}
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 mb-3">
           <Input
             type="search"
             noMargin
@@ -247,6 +248,16 @@ const List = () => {
           />
           <DownloadMenu fnDownloadExcel={getXLSXStoreList} />
         </div>
+
+        {!!listData?.length && (
+          <div className="d-flex justify-content-between gap-3">
+            <div className="text-primary text-center">
+              <h5 className="mt-3">
+                মোট প্রতিষ্ঠান {numEnToBn(respMeta?.totalRecords)} টি
+              </h5>
+            </div>
+          </div>
+        )}
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
