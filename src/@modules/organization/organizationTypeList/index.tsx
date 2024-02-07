@@ -17,6 +17,7 @@ import {
   IObject,
   exportXLSX,
   generatePDF,
+  numEnToBn,
   topProgress,
   useDebounce,
 } from "@gems/utils";
@@ -246,6 +247,16 @@ const OrganizationTypeList = () => {
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
             />
+          </div>
+        )}
+
+        {!!listData?.length && (
+          <div className="d-flex justify-content-between gap-3">
+            <div className="text-primary text-center">
+              <h5 className="mt-3">
+                মোট প্রতিষ্ঠানের ধরণ {numEnToBn(respMeta?.totalRecords)} টি
+              </h5>
+            </div>
           </div>
         )}
 
