@@ -245,7 +245,7 @@ const NodeList = () => {
               />
             </span> */}
 
-            {/* <Input
+            <Input
               type="search"
               noMargin
               placeholder="অনুসন্ধান করুন ..."
@@ -255,7 +255,7 @@ const NodeList = () => {
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
-            /> */}
+            />
           </div>
         )}
 
