@@ -657,7 +657,9 @@ const NodeCreateUpdateForm = ({
 
       <div className="d-flex justify-content-center mt-4">
         <Button color="primary" type="submit" isLoading={isLoading}>
-          {COMMON_LABELS.SAVE}
+          {Object.keys(updateData)?.length > 0
+            ? "হালনাগাদ করুন"
+            : "সংরক্ষণ করুন"}
         </Button>
       </div>
     </form>

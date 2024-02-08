@@ -284,6 +284,14 @@ export const OMSService = {
   UPDATE: {
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "org-post/update", payload),
+    organogramSingleNodeUpdate: async (
+      id: string,
+      payload: IObject
+    ): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-structure/update-single-organogram-structure-by-id/" + id,
+        payload
+      ),
   },
 
   DELETE: {

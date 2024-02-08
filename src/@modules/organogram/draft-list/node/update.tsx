@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import NodeCreateUpdateForm from "./form";
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { toast } from "@gems/components";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 const UpdateNode = () => {
   const { state } = useLocation();
@@ -11,6 +12,7 @@ const UpdateNode = () => {
   const [data, setData] = useState<IObject>({});
   const [searchParams] = useSearchParams();
   const organogramId = searchParams.get("id");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getNodeDetailsById();
@@ -25,17 +27,22 @@ const UpdateNode = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (item) => {
     setIsLoading(true);
     let reqData = {
-      ...data,
+      ...item,
       id: organogramId,
       organizationOrganogramId: state?.id || null,
       organizationId: state?.orgId || null,
       organogramDate: state?.organogramDate || null,
     };
-    console.log(reqData);
-    setIsLoading(false);
+    OMSService.UPDATE.organogramSingleNodeUpdate(organogramId, reqData)
+      .then((res) => {
+        toast.success(res?.message);
+        navigate(ROUTE_L2.OMS_ORGANIZATION_NODE_LIST, { state: state });
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsLoading(false));
   };
   return (
     <div>
