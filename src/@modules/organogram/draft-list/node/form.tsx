@@ -1,5 +1,4 @@
 import { COMMON_LABELS, ERR_MSG, LABELS } from "@constants/common.constant";
-import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
 import {
   Autocomplete,
@@ -13,11 +12,9 @@ import {
   toast,
 } from "@gems/components";
 import {
-  DATE_PATTERN,
   IObject,
   META_TYPE,
   enCheck,
-  generateDateFormat,
   isObjectNull,
   notNullOrUndefined,
   numBnToEn,
@@ -278,48 +275,27 @@ const NodeCreateUpdateForm = ({
       <PageTitle>{`পদ/স্তর ${
         isObjectNull(updateData) ? "যুক্ত" : "হালনাগাদ"
       } করুন`}</PageTitle>
-      <div className="row mb-4 d-flex justify-content-center">
-        <div className="col-12 col-md-4 col-lg-3 col-xl-2 p-2 bg-gray-100">
-          <Autocomplete
-            label={"পদ/স্তরের অভিভাবক"}
-            placeholder="পদ/স্তরের অভিভাবক বাছাই করুন"
-            isRequired={true}
-            control={control}
-            options={parentNodeList || []}
-            getOptionLabel={(op) =>
-              isNotEnamCommittee ? op?.titleBn : op?.titleEn
-            }
-            getOptionValue={(op) => op?.id}
-            name={`parentNodeDTO`}
-            onChange={(t) => setValue("parentNodeId", t?.id)}
-            noMargin
-            isError={!!errors?.parentNodeDTO}
-            errorMessage={errors?.parentNodeDTO?.message as string}
-          />
-        </div>
-        <div className="col-12 col-md-4 col-lg-3 col-xl-2 p-2 bg-gray-100">
-          <Input
-            label="প্রদর্শন ক্রম"
-            placeholder="প্রদর্শন ক্রম লিখুন"
-            isRequired
-            noMargin
-            numaricOnly
-            min={1}
-            type="number"
-            registerProperty={{
-              ...register("displayOrder", {
-                required: true,
-              }),
-            }}
-            isError={!!errors?.displayOrder}
-          />
-        </div>
+      <div className="col-12 col-md-6 col-xl-4 p-2 bg-gray-100">
+        <Autocomplete
+          label={"পদ/স্তরের অভিভাবক"}
+          placeholder="পদ/স্তরের অভিভাবক বাছাই করুন"
+          control={control}
+          options={parentNodeList || []}
+          getOptionLabel={(op) =>
+            isNotEnamCommittee ? op?.titleBn : op?.titleEn
+          }
+          getOptionValue={(op) => op?.id}
+          name={`parentNodeDTO`}
+          onChange={(t) => setValue("parentNodeId", t?.id)}
+          noMargin
+        />
       </div>
+
       <div className="row p-2 my-1 bg-gray-100">
         {isNotEnamCommittee && (
-          <div className="col-md-6 col-12">
+          <div className="col-md-5 col-12">
             <Input
-              label="বাংলা নাম"
+              label="বাংলা নাম(শাখা/সেল/অধিশাখা/অনুবিভাগ)"
               placeholder="বাংলা নাম লিখুন"
               isRequired
               noMargin
@@ -337,9 +313,9 @@ const NodeCreateUpdateForm = ({
             />
           </div>
         )}
-        <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
+        <div className={isNotEnamCommittee ? "col-md-5 col-12" : "col-10"}>
           <Input
-            label="ইংরেজি নাম"
+            label="ইংরেজি নাম (শাখা/সেল/অধিশাখা/অনুবিভাগ)"
             placeholder="নাম ইংরেজিতে লিখুন"
             isRequired={!isNotEnamCommittee}
             noMargin
@@ -357,6 +333,23 @@ const NodeCreateUpdateForm = ({
             suggestionTextKey="titleEn"
             isError={!!errors?.titleEn}
             errorMessage={errors?.titleEn?.message as string}
+          />
+        </div>
+        <div className="col-12 col-md-2">
+          <Input
+            label="প্রদর্শন ক্রম"
+            placeholder="প্রদর্শন ক্রম লিখুন"
+            isRequired
+            noMargin
+            numaricOnly
+            min={1}
+            type="number"
+            registerProperty={{
+              ...register("displayOrder", {
+                required: true,
+              }),
+            }}
+            isError={!!errors?.displayOrder}
           />
         </div>
       </div>
