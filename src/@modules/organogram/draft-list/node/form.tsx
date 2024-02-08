@@ -278,7 +278,7 @@ const NodeCreateUpdateForm = ({
             control={control}
             options={parentNodeList || []}
             getOptionLabel={(op) =>
-              isNotEnamCommittee ? op?.nameBn : op?.nameEn
+              isNotEnamCommittee ? op?.titleBn : op?.titleEn
             }
             getOptionValue={(op) => op?.id}
             name={`parentNodeDTO`}
