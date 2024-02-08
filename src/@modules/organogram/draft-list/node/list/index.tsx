@@ -141,7 +141,7 @@ const OrganogramNodeList = () => {
 
   const handleUpdate = (id: string) => {
     navigate(ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE + "?id=" + id, {
-      state: state,
+      state: organogram,
     });
   };
 

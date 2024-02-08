@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import NodeCreateUpdateForm from "./form";
 import { IObject } from "@gems/utils";
@@ -11,6 +11,13 @@ const UpdateNode = () => {
   const [data, setData] = useState<IObject>({});
   const [searchParams] = useSearchParams();
   const organogramId = searchParams.get("id");
+
+  console.log("dddd",state);
+  
+
+  useEffect(() => {
+    getNodeDetailsById();
+  }, []);
 
   const getNodeDetailsById = () => {
     OMSService.FETCH.nodeDetailsById(organogramId)
