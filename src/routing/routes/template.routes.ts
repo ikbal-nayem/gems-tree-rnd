@@ -10,7 +10,6 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
     element: lazy(() => import("@modules/organogram-template/template/create")),
   },
-
   {
     link: ROUTE_L2.ORG_TEMPLATE_LIST,
     routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_LIST,
@@ -34,6 +33,16 @@ export const TemplateRoutes: IAppRoutes = {
       element: lazy(
         () => import("@modules/organogram-template/template/update")
       ),
+    },
+    {
+      link: ROUTE_L2.ORG_TEMPLATE_NODE_CREATE,
+      routeKey: ROUTE_KEY.ORG_TEMPLATE_NODE_CREATE,
+      element: lazy(() => import("@modules/organogram/draft-list/node/create")),
+    },
+    {
+      link: ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE,
+      routeKey: ROUTE_KEY.ORG_TEMPLATE_NODE_UPDATE,
+      element: lazy(() => import("@modules/organogram/draft-list/node/update")),
     },
     {
       link: ROUTE_L2.ORG_TEMPLATE_VIEW,

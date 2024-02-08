@@ -193,7 +193,13 @@ const OrganogramTable: FC<TableProps> = ({
                         ))
                     }
                   >
-                    <DropdownItem onClick={() => navigateToDetails(item)}>
+                    <DropdownItem
+                      onClick={() =>
+                        navigate(ROUTE_L2.ORG_TEMPLATE_NODE_CREATE, {
+                          state: item,
+                        })
+                      }
+                    >
                       <Icon size={19} icon="add" />
                       <h6 className="mb-0 ms-2">পদ/স্তর যুক্ত করুন</h6>
                     </DropdownItem>
