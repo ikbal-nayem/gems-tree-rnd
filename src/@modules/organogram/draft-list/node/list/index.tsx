@@ -13,9 +13,11 @@ import {
 } from "@gems/components";
 import {
   COMMON_LABELS,
+  DATE_PATTERN,
   IMeta,
   IObject,
   exportXLSX,
+  generateDateFormat,
   generatePDF,
   notNullOrUndefined,
   numEnToBn,
@@ -25,7 +27,7 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
@@ -66,6 +68,9 @@ const OrganogramNodeList = () => {
   // const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
   // const formProps = useForm();
   // const { control } = formProps;
+  const { state } = useLocation();
+  const [organogram] = useState<any>(state);
+  // console.log("ORGANOGRAM: ", organogram);
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -219,16 +224,28 @@ const OrganogramNodeList = () => {
   return (
     <>
       <PageTitle>
-        {MENU.BN.NODE_LIST +
+        {organogram?.organizationNameBn +
+          " - এর " +
+          MENU.BN.NODE_LIST +
           (notNullOrUndefined(respMeta?.totalRecords)
-            ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
+            ? " (মোট : " + numEnToBn(respMeta?.totalRecords) + " টি)"
             : "")}
+        <br />
+        <span className="fs-6 mt-2">
+          {"অর্গানোগ্রাম তারিখ : " +
+          (organogram?.organogramDate &&
+            generateDateFormat(
+              organogram?.organogramDate,
+              DATE_PATTERN.GOVT_STANDARD
+            ))}
+        </span>
+        
       </PageTitle>
-      {/* <PageToolbarRight>
+      <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight> */}
+      </PageToolbarRight>
       <div className="card p-5">
         {respMeta.totalRecords && (
           <div className="d-flex gap-3">
@@ -279,7 +296,6 @@ const OrganogramNodeList = () => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
-
       </div>
       {/* <ConfirmationModal
         isOpen={isDeleteModal}
