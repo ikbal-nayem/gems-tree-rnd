@@ -248,18 +248,6 @@ const OrganogramNodeList = () => {
       <div className="card p-5">
         {respMeta.totalRecords && (
           <div className="d-flex gap-3">
-            {/* <span className="w-25">
-              <Autocomplete
-                placeholder="সংস্থার ধরণ বাছাই করুন"
-                options={orgTypeList || []}
-                name="organizationTypeDTO"
-                getOptionLabel={(op) => op.nameBn}
-                getOptionValue={(op) => op.id}
-                onChange={(op) => setOrgType(op?.id)}
-                control={control}
-              />
-            </span> */}
-
             <Input
               type="search"
               noMargin
