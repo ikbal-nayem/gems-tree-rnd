@@ -35,7 +35,7 @@ import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 20,
+  limit: 50,
   sort: [
     {
       field: "code",
@@ -111,18 +111,16 @@ const OrganogramNodeList = () => {
           : reqMeta || respMeta,
         body: {
           searchKey: searchKey || null,
-          // parentId: orgType || null,
+          organizationOrganogramId: organogram?.id,
         },
       };
 
-      // OMSService.getOrganizationTypeList(payload)
-      // OMSService.FETCH.organogramNodeList(payload, organogram?.id)
-      OMSService.FETCH.organogramNodeList(organogram?.id)
+      OMSService.FETCH.organogramNodeList(payload)
         .then((res) => {
           setListData(res?.body || []);
-          // setRespMeta(
-          //   res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
-          // );
+          setRespMeta(
+            res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+          );
         })
         .catch((err) => toast.error(err?.message))
         .finally(() => {

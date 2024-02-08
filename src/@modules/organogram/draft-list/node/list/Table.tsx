@@ -58,7 +58,13 @@ const DataTable: FC<GradeTableProps> = ({
                   COMMON_LABELS.NOT_ASSIGN
                 }
               />
-              <TableCell text={data?.parentName || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell
+                text={
+                  (isEnamCommittee
+                    ? data?.parentNodeDto?.titleEn
+                    : data?.parentNodeDto?.titleBn) || COMMON_LABELS.NOT_ASSIGN
+                }
+              />
               <TableCell
                 text={
                   numEnToBn(data?.manpowerList?.length) ||
