@@ -27,10 +27,11 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 const initMeta: IMeta = {
   page: 0,
@@ -71,6 +72,7 @@ const OrganogramNodeList = () => {
   const { state } = useLocation();
   const [organogram] = useState<any>(state);
   // console.log("ORGANOGRAM: ", organogram);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -137,11 +139,11 @@ const OrganogramNodeList = () => {
   //   setUpdateData({});
   // };
 
-  // const handleUpdate = (data: any) => {
-  //   setIsUpdate(true);
-  //   setUpdateData(data);
-  //   setIsDrawerOpen(true);
-  // };
+  const handleUpdate = (id: string) => {
+    navigate(ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE + "?id=" + id, {
+      state: state,
+    });
+  };
 
   // const handleDelete = (data: any) => {
   //   setIsDeleteModal(true);
@@ -269,7 +271,7 @@ const OrganogramNodeList = () => {
         <div className="mt-3">
           <DataTable
             data={listData}
-            // handleUpdate={handleUpdate}
+            handleUpdate={handleUpdate}
             // handleDelete={handleDelete}
           >
             <Pagination

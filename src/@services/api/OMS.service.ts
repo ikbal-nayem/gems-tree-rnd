@@ -252,6 +252,14 @@ export const OMSService = {
     //     OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id,
     //     payload
     //   ),
+    nodeParentListByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id
+      ),
+    nodeDetailsById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-structure/get-all-by-structure-id/" + id
+      ),
   },
 
   SAVE: {
@@ -264,6 +272,11 @@ export const OMSService = {
     organogramClone: async (payload): Promise<any> =>
       await axiosIns.post(
         OMS_SERVICE + "organization-organogram/clone/save",
+        payload
+      ),
+    organogramSingleNodeCreate: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "/organogram-structure/single-save",
         payload
       ),
   },

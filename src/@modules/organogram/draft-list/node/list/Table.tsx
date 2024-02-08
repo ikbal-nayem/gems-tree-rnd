@@ -32,14 +32,14 @@ const columns: ITableHeadColumn[] = [
 type GradeTableProps = {
   children?: ReactNode;
   data?: any;
-  // handleUpdate: (data) => void;
+  handleUpdate: (data) => void;
   // handleDelete: (data) => void;
 };
 
 const DataTable: FC<GradeTableProps> = ({
   children,
   data = [],
-  // handleUpdate,
+  handleUpdate,
   // handleDelete,
 }) => {
   if (!data?.length) return;
@@ -71,7 +71,7 @@ const DataTable: FC<GradeTableProps> = ({
                 >
                   <DropdownItem
                     onClick={() => {
-                      // handleUpdate(data);
+                      handleUpdate(data?.id);
                     }}
                   >
                     <Icon size={19} icon="edit" />
