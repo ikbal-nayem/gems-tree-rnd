@@ -1,11 +1,27 @@
 import React from "react";
 
-const nodeForm=()=>{
-    return(
-        <div>
+const postTypeList = [
+  {
+    titleEn: "Proposed",
+    key: "proposed",
+    titleBn: "প্রস্তাবিত",
+  },
+  {
+    titleEn: "Permanent",
+    key: "permanent",
+    titleBn: "স্থায়ী",
+  },
+  {
+    titleEn: "Non Permanent",
+    key: "nonPermanent",
+    titleBn: "অস্থায়ী",
+  },
+];
 
-        </div>
-    )
-}
+const NodeCreateUpdateForm = () => {
+  return <div>
+    
+  </div>;
+};
 
-export default nodeForm
+export default NodeCreateUpdateForm;
