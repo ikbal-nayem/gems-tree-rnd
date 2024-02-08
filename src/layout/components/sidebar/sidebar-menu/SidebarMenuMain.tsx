@@ -118,12 +118,12 @@ const menuData = [
         title: MENU.BN.BUSINESS_OF_ALLOCATION_LIST,
         hasBullet: true,
       },
-      {
-        routeKey: ROUTE_KEY.OMS_ORGANIZATION_NODE_LIST,
-        link: ROUTE_L2.OMS_ORGANIZATION_NODE_LIST,
-        title: MENU.BN.NODE_LIST,
-        hasBullet: true,
-      },
+      // {
+      //   routeKey: ROUTE_KEY.OMS_ORGANIZATION_NODE_LIST,
+      //   link: ROUTE_L2.OMS_ORGANIZATION_NODE_LIST,
+      //   title: MENU.BN.NODE_LIST,
+      //   hasBullet: true,
+      // },
     ],
   },
 ];

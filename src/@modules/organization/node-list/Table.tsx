@@ -1,8 +1,11 @@
 import { MENU } from "@constants/menu-titles.constant";
 import {
+  Dropdown,
+  DropdownItem,
   // Dropdown,
   // DropdownItem,
   ITableHeadColumn,
+  Icon,
   // Icon,
   Table,
   TableCell,
@@ -13,6 +16,7 @@ import {
   DATE_PATTERN,
   generateDateFormat,
   generateRowNumBn,
+  numEnToBn,
 } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
@@ -21,8 +25,10 @@ const columns: ITableHeadColumn[] = [
   // { title: "ধরণ (বাংলা)", minWidth: 100 },
   // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
   { title: "পদবি/স্তর", minWidth: 100 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 },
-  // { title: COMMON_LABELS.ACTION },
+  { title: "অভিভাবক", minWidth: 100 },
+  { title: "জনবল", minWidth: 75 },
+  { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 }, 
+  { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
 type GradeTableProps = {
@@ -48,6 +54,8 @@ const DataTable: FC<GradeTableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
               <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.parentName || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={numEnToBn(data?.manpower)|| COMMON_LABELS.NOT_ASSIGN} />
               <TableCell
                 text={
                   data?.organogramDate
@@ -58,10 +66,10 @@ const DataTable: FC<GradeTableProps> = ({
                     : COMMON_LABELS.NOT_ASSIGN
                 }
               />
-              {/* <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} /> */}
+              
               {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
               {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
-              {/* <TableCell>
+              <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
@@ -69,7 +77,7 @@ const DataTable: FC<GradeTableProps> = ({
                 >
                   <DropdownItem
                     onClick={() => {
-                      handleUpdate(data);
+                      // handleUpdate(data);
                     }}
                   >
                     <Icon size={19} icon="edit" />
@@ -77,14 +85,14 @@ const DataTable: FC<GradeTableProps> = ({
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
-                      handleDelete(data);
+                      // handleDelete(data);
                     }}
                   >
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem>
                 </Dropdown>
-              </TableCell> */}
+              </TableCell>
             </TableRow>
           );
         })}
