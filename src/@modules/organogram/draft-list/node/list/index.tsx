@@ -237,7 +237,12 @@ const OrganogramNodeList = () => {
         <br />
         {notNullOrUndefined(organogram) && (
           <span className="fs-6 mt-2 text-gray-600">
-            প্রতিষ্ঠান :{" " + organogram?.organizationNameBn + " | "}
+            প্রতিষ্ঠান :
+            {" " +
+              (organogram?.isEnamCommittee
+                ? organogram?.organizationNameEn
+                : organogram?.organizationNameBn) +
+              " | "}
             অর্গানোগ্রাম তারিখ :
             {" " +
               (organogram?.organogramDate &&
@@ -278,7 +283,6 @@ const OrganogramNodeList = () => {
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
             isEnamCommittee={organogram?.isEnamCommittee}
-
           >
             <Pagination
               meta={respMeta}
