@@ -12,9 +12,6 @@ const UpdateNode = () => {
   const [searchParams] = useSearchParams();
   const organogramId = searchParams.get("id");
 
-  console.log("dddd",state);
-  
-
   useEffect(() => {
     getNodeDetailsById();
   }, []);
@@ -32,8 +29,9 @@ const UpdateNode = () => {
     setIsLoading(true);
     let reqData = {
       ...data,
+      id: organogramId,
       organizationOrganogramId: state?.id || null,
-      organizationId: state?.organizationId || null,
+      organizationId: state?.orgId || null,
       organogramDate: state?.organogramDate || null,
     };
     console.log(reqData);
