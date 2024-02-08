@@ -1,4 +1,6 @@
 import { COMMON_LABELS, ERR_MSG, LABELS } from "@constants/common.constant";
+import { MENU } from "@constants/menu-titles.constant";
+import { PageTitle } from "@context/PageData";
 import {
   Autocomplete,
   Button,
@@ -11,9 +13,11 @@ import {
   toast,
 } from "@gems/components";
 import {
+  DATE_PATTERN,
   IObject,
   META_TYPE,
   enCheck,
+  generateDateFormat,
   isObjectNull,
   notNullOrUndefined,
   numBnToEn,
@@ -29,8 +33,9 @@ import { isNotEmptyList } from "utility/utils";
 interface INodeCreateUpdateForm {
   onSubmit: (data) => void;
   updateData?: IObject;
-  organogramId?: string;
+  organogramData?: IObject;
   isNotEnamCommittee: boolean;
+  isLoading?: boolean;
 }
 
 const postTypeList = [
@@ -54,8 +59,9 @@ const postTypeList = [
 const NodeCreateUpdateForm = ({
   onSubmit,
   updateData,
-  organogramId,
+  organogramData,
   isNotEnamCommittee,
+  isLoading,
 }: INodeCreateUpdateForm) => {
   const {
     register,
@@ -120,7 +126,7 @@ const NodeCreateUpdateForm = ({
   }, []);
 
   const getParentNodeList = () => {
-    OMSService.FETCH.nodeParentListByOrganogramId(organogramId)
+    OMSService.FETCH.nodeParentListByOrganogramId(organogramData?.id)
       .then((resp) => {
         setParentNodeList(resp?.body);
       })
@@ -269,6 +275,9 @@ const NodeCreateUpdateForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
+      <PageTitle>{`পদ/স্তর ${
+        isObjectNull(updateData) ? "যুক্ত" : "হালনাগাদ"
+      } করুন`}</PageTitle>
       <div className="row mb-4 d-flex justify-content-center">
         <div className="col-12 col-md-4 col-lg-3 col-xl-2 p-2 bg-gray-100">
           <Autocomplete
@@ -655,7 +664,7 @@ const NodeCreateUpdateForm = ({
       </div>
 
       <div className="d-flex justify-content-center mt-4">
-        <Button color="primary" type="submit">
+        <Button color="primary" type="submit" isLoading={isLoading}>
           {COMMON_LABELS.SAVE}
         </Button>
       </div>
