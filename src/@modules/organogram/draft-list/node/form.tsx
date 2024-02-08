@@ -169,20 +169,6 @@ const NodeCreateUpdateForm = ({
 
             return {
               ...item,
-              postDTO:
-                (postList?.length > 0 &&
-                  postList?.find((d) => d?.id === item?.postId)) ||
-                null,
-              gradeDTO:
-                (gradeList?.length > 0 &&
-                  gradeList?.find((d) => d?.id === item?.gradeId)) ||
-                null,
-              serviceTypeDto:
-                (serviceList?.length > 0 &&
-                  serviceList?.find(
-                    (d) => d?.metaKey === item?.serviceTypeKey
-                  )) ||
-                null,
             };
           }),
         };
