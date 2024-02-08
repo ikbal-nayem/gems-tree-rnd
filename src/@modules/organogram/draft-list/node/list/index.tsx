@@ -112,12 +112,14 @@ const OrganogramNodeList = () => {
       },
     };
 
-    OMSService.getOrganizationTypeList(payload)
+    // OMSService.getOrganizationTypeList(payload)
+    // OMSService.FETCH.organogramNodeList(payload, organogram?.id)
+    OMSService.FETCH.organogramNodeList(organogram?.id)
       .then((res) => {
         setListData(res?.body || []);
-        setRespMeta(
-          res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
-        );
+        // setRespMeta(
+        //   res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+        // );
       })
       .catch((err) => toast.error(err?.message))
       .finally(() => {

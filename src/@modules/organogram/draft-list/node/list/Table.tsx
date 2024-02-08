@@ -50,9 +50,17 @@ const DataTable: FC<GradeTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell
+                text={data?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.titleEn || null}
+              />
               <TableCell text={data?.parentName || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={numEnToBn(data?.manpower)|| COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell
+                text={
+                  numEnToBn(data?.manpowerList?.length) ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
+              />
               {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
               {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
               <TableCell textAlign="end">
