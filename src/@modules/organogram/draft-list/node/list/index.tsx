@@ -224,22 +224,21 @@ const OrganogramNodeList = () => {
   return (
     <>
       <PageTitle>
-        {organogram?.organizationNameBn +
-          " - এর " +
-          MENU.BN.NODE_LIST +
+        {MENU.BN.NODE_LIST +
           (notNullOrUndefined(respMeta?.totalRecords)
             ? " (মোট : " + numEnToBn(respMeta?.totalRecords) + " টি)"
             : "")}
         <br />
-        <span className="fs-6 mt-2">
-          {"অর্গানোগ্রাম তারিখ : " +
-          (organogram?.organogramDate &&
-            generateDateFormat(
-              organogram?.organogramDate,
-              DATE_PATTERN.GOVT_STANDARD
-            ))}
+        <span className="fs-6 mt-2 text-gray-600">
+          প্রতিষ্ঠান :{" " + organogram?.organizationNameBn + " | "}
+          অর্গানোগ্রাম তারিখ :
+          {" " +
+            (organogram?.organogramDate &&
+              generateDateFormat(
+                organogram?.organogramDate,
+                DATE_PATTERN.GOVT_STANDARD
+              ))}
         </span>
-        
       </PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
