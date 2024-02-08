@@ -1,10 +1,10 @@
 import React from "react";
 
-const updateNode=()=>{
+const UpdateNode=()=>{
     return(
         <div>
 
         </div>
     )
 }
-export default updateNode
+export default UpdateNode
