@@ -71,7 +71,7 @@ const OrganogramNodeList = () => {
   // const { control } = formProps;
   const { state } = useLocation();
   const [organogram] = useState<any>(state);
-  // console.log("ORGANOGRAM: ", organogram);
+  console.log("ORGANOGRAM: ", organogram);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,31 +102,33 @@ const OrganogramNodeList = () => {
   // };
 
   const getDataList = (reqMeta = null) => {
-    const payload = {
-      meta: searchKey
-        ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
-        : reqMeta || respMeta,
-      body: {
-        searchKey: searchKey || null,
-        // parentId: orgType || null,
-      },
-    };
+    if (notNullOrUndefined(organogram?.id)) {
+      const payload = {
+        meta: searchKey
+          ? reqMeta
+            ? { ...reqMeta, sort: null }
+            : { ...respMeta, page: 0, sort: null }
+          : reqMeta || respMeta,
+        body: {
+          searchKey: searchKey || null,
+          // parentId: orgType || null,
+        },
+      };
 
-    // OMSService.getOrganizationTypeList(payload)
-    // OMSService.FETCH.organogramNodeList(payload, organogram?.id)
-    OMSService.FETCH.organogramNodeList(organogram?.id)
-      .then((res) => {
-        setListData(res?.body || []);
-        // setRespMeta(
-        //   res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
-        // );
-      })
-      .catch((err) => toast.error(err?.message))
-      .finally(() => {
-        setIsLoading(false);
-      });
+      // OMSService.getOrganizationTypeList(payload)
+      // OMSService.FETCH.organogramNodeList(payload, organogram?.id)
+      OMSService.FETCH.organogramNodeList(organogram?.id)
+        .then((res) => {
+          setListData(res?.body || []);
+          // setRespMeta(
+          //   res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+          // );
+        })
+        .catch((err) => toast.error(err?.message))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   const onPageChanged = (metaParams: IMeta) => {
@@ -145,10 +147,10 @@ const OrganogramNodeList = () => {
     });
   };
 
-  // const handleDelete = (data: any) => {
-  //   setIsDeleteModal(true);
-  //   setDeleteData(data);
-  // };
+  const handleDelete = (data: any) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
   // const onCancelDelete = () => {
   //   setIsDeleteModal(false);
   //   setDeleteData(null);
@@ -233,16 +235,18 @@ const OrganogramNodeList = () => {
             ? " (মোট : " + numEnToBn(respMeta?.totalRecords) + " টি)"
             : "")}
         <br />
-        <span className="fs-6 mt-2 text-gray-600">
-          প্রতিষ্ঠান :{" " + organogram?.organizationNameBn + " | "}
-          অর্গানোগ্রাম তারিখ :
-          {" " +
-            (organogram?.organogramDate &&
-              generateDateFormat(
-                organogram?.organogramDate,
-                DATE_PATTERN.GOVT_STANDARD
-              ))}
-        </span>
+        {notNullOrUndefined(organogram) && (
+          <span className="fs-6 mt-2 text-gray-600">
+            প্রতিষ্ঠান :{" " + organogram?.organizationNameBn + " | "}
+            অর্গানোগ্রাম তারিখ :
+            {" " +
+              (organogram?.organogramDate &&
+                generateDateFormat(
+                  organogram?.organogramDate,
+                  DATE_PATTERN.GOVT_STANDARD
+                ))}
+          </span>
+        )}
       </PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
@@ -272,7 +276,9 @@ const OrganogramNodeList = () => {
           <DataTable
             data={listData}
             handleUpdate={handleUpdate}
-            // handleDelete={handleDelete}
+            handleDelete={handleDelete}
+            isEnamCommittee={organogram?.isEnamCommittee}
+
           >
             <Pagination
               meta={respMeta}

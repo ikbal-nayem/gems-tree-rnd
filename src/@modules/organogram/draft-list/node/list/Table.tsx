@@ -33,14 +33,16 @@ type GradeTableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
-  // handleDelete: (data) => void;
+  handleDelete: (data) => void;
+  isEnamCommittee: boolean;
 };
 
 const DataTable: FC<GradeTableProps> = ({
   children,
   data = [],
   handleUpdate,
-  // handleDelete,
+  handleDelete,
+  isEnamCommittee,
 }) => {
   if (!data?.length) return;
   return (
@@ -51,8 +53,10 @@ const DataTable: FC<GradeTableProps> = ({
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
               <TableCell
-                text={data?.titleBn || COMMON_LABELS.NOT_ASSIGN}
-                subText={data?.titleEn || null}
+                text={
+                  (isEnamCommittee ? data?.titleEn : data?.titleBn) ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
               />
               <TableCell text={data?.parentName || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell
@@ -79,7 +83,7 @@ const DataTable: FC<GradeTableProps> = ({
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
-                      // handleDelete(data);
+                      handleDelete(data);
                     }}
                   >
                     <Icon size={19} icon="delete" color="danger" />
