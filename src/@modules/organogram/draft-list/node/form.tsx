@@ -12,9 +12,11 @@ import {
   toast,
 } from "@gems/components";
 import {
+  DATE_PATTERN,
   IObject,
   META_TYPE,
   enCheck,
+  generateDateFormat,
   isObjectNull,
   notNullOrUndefined,
   numBnToEn,
@@ -272,9 +274,20 @@ const NodeCreateUpdateForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
-      <PageTitle>{`পদ/স্তর ${
-        isObjectNull(updateData) ? "যুক্ত" : "হালনাগাদ"
-      } করুন`}</PageTitle>
+      <PageTitle>
+        {`পদ/স্তর ${isObjectNull(updateData) ? "যুক্ত" : "হালনাগাদ"} করুন`}
+        <br />
+        <span className="fs-6 mt-2 text-gray-600">
+          প্রতিষ্ঠান :{" " + organogramData?.organizationNameBn + " | "}
+          অর্গানোগ্রাম তারিখ :
+          {" " +
+            (organogramData?.organogramDate &&
+              generateDateFormat(
+                organogramData?.organogramDate,
+                DATE_PATTERN.GOVT_STANDARD
+              ))}
+        </span>
+      </PageTitle>
       <div className="col-12 col-md-6 col-xl-4 p-2 bg-gray-100">
         <Autocomplete
           label={"পদ/স্তরের অভিভাবক"}
