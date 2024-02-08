@@ -245,6 +245,10 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id
       ),
+    nodeDetailsById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-structure/get-all-by-structure-id/" + id
+      ),
   },
 
   SAVE: {

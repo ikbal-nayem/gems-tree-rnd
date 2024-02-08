@@ -1,22 +1,25 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import NodeCreateUpdateForm from "./form";
 import { IObject } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { toast } from "@gems/components";
 
 const UpdateNode = () => {
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
+  const [searchParams] = useSearchParams();
+  const organogramId = searchParams.get("id");
 
-  //   const getNodeDetailsById = () => {
-  //     setIsLoading(true);
-  //     OMSService.getTemplateDetailsByTemplateId(templateId)
-  //       .then((resp) => {
-  //         setData(resp?.body);
-  //       })
-  //       .catch((e) => toast.error(e?.message))
-  //       .finally(() => setIsLoading(false));
-  //   };
+  const getNodeDetailsById = () => {
+    OMSService.FETCH.nodeDetailsById(organogramId)
+      .then((resp) => {
+        setData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
 
   const onSubmit = (data) => {
     setIsLoading(true);

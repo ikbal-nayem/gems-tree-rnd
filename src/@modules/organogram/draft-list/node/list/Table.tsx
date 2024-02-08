@@ -32,14 +32,14 @@ const columns: ITableHeadColumn[] = [
 type GradeTableProps = {
   children?: ReactNode;
   data?: any;
-  // handleUpdate: (data) => void;
+  handleUpdate: (data) => void;
   // handleDelete: (data) => void;
 };
 
 const DataTable: FC<GradeTableProps> = ({
   children,
   data = [],
-  // handleUpdate,
+  handleUpdate,
   // handleDelete,
 }) => {
   if (!data?.length) return;
@@ -52,7 +52,9 @@ const DataTable: FC<GradeTableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.parentName || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={numEnToBn(data?.manpower)|| COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell
+                text={numEnToBn(data?.manpower) || COMMON_LABELS.NOT_ASSIGN}
+              />
               {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
               {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
               <TableCell textAlign="end">
@@ -63,7 +65,7 @@ const DataTable: FC<GradeTableProps> = ({
                 >
                   <DropdownItem
                     onClick={() => {
-                      // handleUpdate(data);
+                      handleUpdate(data?.id);
                     }}
                   >
                     <Icon size={19} icon="edit" />
