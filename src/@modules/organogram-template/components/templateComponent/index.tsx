@@ -17,19 +17,19 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./Tree";
 // import { orgData } from "./Tree/data2";
+import { META_TYPE } from "@constants/common.constant";
+import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { deFocusById, focusById, isNotEmptyList } from "utility/utils";
+import { useLocation } from "react-router-dom";
+import { focusById, isNotEmptyList } from "utility/utils";
 import { enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
-import Organizations from "./components/organization";
-import { CoreService } from "@services/api/Core.service";
-import { META_TYPE } from "@constants/common.constant";
 import NotesForm from "./components/NotesForm";
-import { useLocation } from "react-router-dom";
+import Organizations from "./components/organization";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -297,6 +297,23 @@ const TemplateComponent = ({
 
   return (
     <div>
+      <div className="d-flex justify-content-end pb-4">
+        {" "}
+        <Button
+          color="primary"
+          type="submit"
+          isLoading={isSubmitLoading}
+          form="templateForm"
+          onClick={() => {
+            if (!notNullOrUndefined(watch("organogramDate")))
+              focusById("orgDateBlock");
+          }}
+        >
+          {!isObjectNull(updateData)
+            ? COMMON_LABELS.UPDATE
+            : COMMON_LABELS.SAVE}
+        </Button>
+      </div>
       <div className="card col-md-12 border p-3 mb-4">
         {isObjectNull(updateData) && (
           <div className="d-flex justify-content-start gap-6">
