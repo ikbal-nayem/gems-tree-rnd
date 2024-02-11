@@ -1,8 +1,8 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
   Button,
-  ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
   Input,
@@ -19,7 +19,6 @@ import {
   generatePDF,
   notNullOrUndefined,
   numEnToBn,
-  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
@@ -28,7 +27,6 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 const initMeta: IMeta = {
   page: 0,
@@ -50,7 +48,7 @@ const OrganogramNodeList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
-  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  // const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [search, setSearch] = useState<string>(
@@ -59,8 +57,7 @@ const OrganogramNodeList = () => {
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
   const { state } = useLocation();
-  const [organogram, setOrganogram] = useState<any>(state);
-  console.log("ORGANOGRAM: ", organogram);
+  const [organogram] = useState<any>(state);
   const navigate = useNavigate();
 
   const orgName = organogram?.isEnamCommittee
@@ -75,8 +72,8 @@ const OrganogramNodeList = () => {
     // params.state = state;
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
-    // setSearchParams({ ...params });
-    // setSearchParams({ ...params, state: organogram, });
+    setSearchParams({ ...params });
+    setSearchParams({ ...params }, { state: state });
     // eslint-disable-next-line
   }, [searchKey, setSearchParams]);
 
