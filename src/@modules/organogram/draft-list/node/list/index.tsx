@@ -69,10 +69,8 @@ const OrganogramNodeList = () => {
     generateDateFormat(organogram?.organogramDate, DATE_PATTERN.GOVT_STANDARD);
 
   useEffect(() => {
-    // params.state = state;
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
-    setSearchParams({ ...params });
     setSearchParams({ ...params }, { state: state });
     // eslint-disable-next-line
   }, [searchKey, setSearchParams]);
