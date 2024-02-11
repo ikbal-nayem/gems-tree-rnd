@@ -3,34 +3,42 @@ import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
-  { nameBn: "ধরণ (বাংলা)", key: "orgTypeBn" },
-  { nameBn: "ধরণ (ইংরেজি)", key: "orgTypeEn" },
-  { nameBn: "গ্রুপ (বাংলা)", key: "orgGroupBn" },
-  { nameBn: "গ্রুপ (ইংরেজি)", key: "orgGroupEn" },
-  { nameBn: "লেভেল", key: "orgLevel" },
-  { nameBn: "সক্রিয়", key: "isActive" },
+  { nameBn: "পদবি/স্তর", key: "node" },
+  { nameBn: "অভিভাবক", key: "parentNode" },
+  { nameBn: "জনবল", key: "nodeManpower" },
 ];
 
-export const organizationTypePDFContent = (data): TDocumentDefinitions => {
+export const organizationTypePDFContent = (
+  data,
+  PDF_Title,
+  langEn
+): TDocumentDefinitions => {
   return {
     content: [
-      { text: "প্রতিষ্ঠানের ধরণ প্রতিবেদন", style: "header" },
+      { text: PDF_Title, style: "header" },
       {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [30, "*", "*", "*", "*", "*", "*"],
+          widths: [40, "*", "*", "*"],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
               columns.map((col) => {
                 if (col?.key) {
                   switch (col?.key) {
-                    case "isActive":
+                    case "node":
                       return [
                         {
-                          text: d[col?.key] ? "True" : "False",
-                          alignment: "center",
+                          text: langEn ? d?.titleEn : d?.titleBn,
+                        },
+                      ];
+                    case "parentNode":
+                      return [
+                        {
+                          text: langEn
+                            ? d?.parentNodeDto?.titleEn
+                            : d?.parentNodeDto?.titleBn,
                         },
                       ];
                     default:
@@ -38,7 +46,6 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                         text: numEnToBn(
                           d[col?.key] || COMMON_LABELS.NOT_ASSIGN
                         ),
-                        alignment: "center",
                       };
                   }
                 } else return { text: numEnToBn(idx + 1), alignment: "center" };
@@ -76,7 +83,6 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
         bold: true,
         fontSize: 10,
         color: "black",
-        alignment: "center",
       },
       textBold: {
         bold: true,

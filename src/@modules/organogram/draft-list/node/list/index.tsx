@@ -1,7 +1,6 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
-  Autocomplete,
   Button,
   ConfirmationModal,
   ContentPreloader,
@@ -15,7 +14,6 @@ import {
   COMMON_LABELS,
   DATE_PATTERN,
   IMeta,
-  IObject,
   exportXLSX,
   generateDateFormat,
   generatePDF,
@@ -26,7 +24,6 @@ import {
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import DataTable from "./Table";
@@ -35,7 +32,7 @@ import { ROUTE_L2 } from "@constants/internal-route.constant";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 50,
+  limit: 200,
   sort: [
     {
       field: "code",
@@ -49,10 +46,8 @@ const initMeta: IMeta = {
 };
 
 const OrganogramNodeList = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
@@ -61,48 +56,38 @@ const OrganogramNodeList = () => {
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
-  // const [orgType, setOrgType] = useState<string>("");
-  // const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
-  // const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
-  // const formProps = useForm();
-  // const { control } = formProps;
   const { state } = useLocation();
-  const [organogram] = useState<any>(state);
+  const [organogram, setOrganogram] = useState<any>(state);
   console.log("ORGANOGRAM: ", organogram);
   const navigate = useNavigate();
 
+  const orgName = organogram?.isEnamCommittee
+    ? organogram?.organizationNameEn
+    : organogram?.organizationNameBn;
+
+  const organogramDate =
+    organogram?.organogramDate &&
+    generateDateFormat(organogram?.organogramDate, DATE_PATTERN.GOVT_STANDARD);
+
   useEffect(() => {
+    // params.state = state;
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
-    setSearchParams({ ...params });
+    // setSearchParams({ ...params });
+    // setSearchParams({ ...params, state: organogram, });
     // eslint-disable-next-line
   }, [searchKey, setSearchParams]);
 
-  // useEffect(() => {
-  //   getOrganizationTypesList();
-  // }, []);
-
   useEffect(() => {
+    // setOrganogram(searchParams.get("state"));
     getDataList();
     // eslint-disable-next-line
-  }, [
-    searchParams,
-    // orgType
-  ]);
-
-  // const getOrganizationTypesList = () => {
-  //   OMSService.FETCH.organizationTypeList()
-  //     .then((res) => {
-  //       setOrgTypeList(res?.body || []);
-  //     })
-  //     .catch((err) => toast.error(err?.message));
-  // };
+  }, [searchParams]);
 
   const getDataList = (reqMeta = null) => {
-    if (notNullOrUndefined(organogram?.id)) {
+    if (notNullOrUndefined(organogram)) {
       const payload = {
         meta: searchKey
           ? reqMeta
@@ -132,12 +117,6 @@ const OrganogramNodeList = () => {
   const onPageChanged = (metaParams: IMeta) => {
     getDataList({ ...metaParams });
   };
-
-  // const onDrawerClose = () => {
-  //   setIsDrawerOpen(false);
-  //   setIsUpdate(false);
-  //   setUpdateData({});
-  // };
 
   const handleUpdate = (id: string) => {
     navigate(ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE + "?id=" + id, {
@@ -173,56 +152,32 @@ const OrganogramNodeList = () => {
   //     });
   // };
 
-  // const onSubmit = (data) => {
-  //   setIsSubmitLoading(true);
-
-  //   const service = isUpdate
-  //     ? OMSService.organizationTypeUpdate
-  //     : OMSService.organizationTypeCreate;
-  //   service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setIsDrawerOpen(false);
-  //       setIsUpdate(false);
-  //       setUpdateData({});
-  //     })
-  //     .catch((error) => toast.error(error?.message))
-  //     .finally(() => setIsSubmitLoading(false));
-  // };
-
   const downloadFile = (downloadtype: "excel" | "pdf") => {
-    topProgress.show();
-    const payload = {
-      meta: {
-        page: 0,
-        limit: respMeta.totalRecords,
-        sort: [{ field: "createdOn", order: "desc" }],
-      },
-      body: {
-        searchKey: searchKey || null,
-      },
-    };
-
-    OMSService.getOrganizationTypeList(payload)
-      .then((res) =>
-        downloadtype === "pdf"
-          ? generatePDF(organizationTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Organization Type list")
-      )
-      .catch((err) => toast.error(err?.message))
-      .finally(() => topProgress.hide());
+    downloadtype === "pdf"
+      ? generatePDF(
+          organizationTypePDFContent(
+            listData,
+            orgName + " (" + organogramDate + ") এর পদবি/স্তরের তালিকা",
+            organogram?.isEnamCommittee
+          )
+        )
+      : exportXLSX(
+          exportData(listData || []),
+          orgName + " (" + organogramDate + ") এর পদবি/স্তরের তালিকা"
+        );
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
-      "ধরণ (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
-      লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
-      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
+      "পদবি/স্তর":
+        (organogram?.isEnamCommittee ? d?.titleEn : d?.titleBn) ||
+        COMMON_LABELS.NOT_ASSIGN,
+      অভিভাবক:
+        (organogram?.isEnamCommittee
+          ? d?.parentNodeDto?.titleEn
+          : d?.parentNodeDto?.titleBn) || COMMON_LABELS.NOT_ASSIGN,
+      জনবল: numEnToBn(d?.nodeManpower) || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
@@ -235,27 +190,26 @@ const OrganogramNodeList = () => {
         <br />
         {notNullOrUndefined(organogram) && (
           <span className="fs-6 mt-2 text-gray-600">
-            প্রতিষ্ঠান :
-            {" " +
-              (organogram?.isEnamCommittee
-                ? organogram?.organizationNameEn
-                : organogram?.organizationNameBn) +
-              " | "}
-            অর্গানোগ্রাম তারিখ :
-            {" " +
-              (organogram?.organogramDate &&
-                generateDateFormat(
-                  organogram?.organogramDate,
-                  DATE_PATTERN.GOVT_STANDARD
-                ))}
+            প্রতিষ্ঠান :{" " + orgName + " | "}
+            অর্গানোগ্রাম তারিখ :{" " + organogramDate}
           </span>
         )}
       </PageTitle>
-      <PageToolbarRight>
-        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
-          যুক্ত করুন
-        </Button>
-      </PageToolbarRight>
+
+      {notNullOrUndefined(organogram) && (
+        <PageToolbarRight>
+          <Button
+            color="primary"
+            onClick={() =>
+              navigate(ROUTE_L2.ORG_TEMPLATE_NODE_CREATE, {
+                state: organogram,
+              })
+            }
+          >
+            যুক্ত করুন
+          </Button>
+        </PageToolbarRight>
+      )}
       <div className="card p-5">
         {respMeta.totalRecords && (
           <div className="d-flex gap-3">
@@ -280,7 +234,7 @@ const OrganogramNodeList = () => {
             data={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
-            isEnamCommittee={organogram?.isEnamCommittee}
+            organogram={organogram}
           >
             <Pagination
               meta={respMeta}

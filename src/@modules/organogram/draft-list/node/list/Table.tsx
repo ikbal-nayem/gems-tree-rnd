@@ -14,6 +14,7 @@ import {
 import {
   COMMON_LABELS,
   DATE_PATTERN,
+  IObject,
   generateDateFormat,
   generateRowNumBn,
   numEnToBn,
@@ -29,22 +30,23 @@ const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
-type GradeTableProps = {
+type DataTableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
-  isEnamCommittee: boolean;
+  organogram: IObject;
 };
 
-const DataTable: FC<GradeTableProps> = ({
+const DataTable: FC<DataTableProps> = ({
   children,
   data = [],
   handleUpdate,
   handleDelete,
-  isEnamCommittee,
+  organogram,
 }) => {
   if (!data?.length) return;
+  const isEnamCommittee = organogram?.isEnamCommittee;
   return (
     <>
       <Table columns={columns}>
@@ -67,7 +69,7 @@ const DataTable: FC<GradeTableProps> = ({
               />
               <TableCell
                 text={
-                  numEnToBn(data?.manpowerList?.length) ||
+                  numEnToBn(data?.nodeManpower) ||
                   COMMON_LABELS.NOT_ASSIGN
                 }
               />
