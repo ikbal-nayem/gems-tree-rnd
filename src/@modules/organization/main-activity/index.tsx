@@ -36,11 +36,7 @@ const initMeta: IMeta = {
   limit: 20,
   sort: [
     {
-      field: "code",
-      order: "asc",
-    },
-    {
-      field: "serialNo",
+      field: "displayOrder",
       order: "asc",
     },
   ],
@@ -108,7 +104,7 @@ const MainActivity = () => {
       },
     };
 
-    OMSService.getOrganizationTypeList(payload)
+    OMSService.FETCH.mainActivityList(payload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -231,10 +227,10 @@ const MainActivity = () => {
         </Button>
       </PageToolbarRight> */}
       <div className="card p-5">
-        {respMeta.totalRecords && (
-          <div className="d-flex gap-3">
-            {/* <span className="w-25">
-              <Autocomplete
+        <div className="d-flex gap-3">
+          {!isLoading && (
+            <span>
+              {/* <Autocomplete
                 placeholder="সংস্থার ধরণ বাছাই করুন"
                 options={orgTypeList || []}
                 name="organizationTypeDTO"
@@ -242,22 +238,24 @@ const MainActivity = () => {
                 getOptionValue={(op) => op.id}
                 onChange={(op) => setOrgType(op?.id)}
                 control={control}
-              />
-            </span> */}
+              />*/}
+            </span>
+          )}
 
-            <Input
-              type="search"
-              noMargin
-              placeholder="অনুসন্ধান করুন ..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+          <Input
+            type="search"
+            noMargin
+            placeholder="অনুসন্ধান করুন ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {!isLoading && (
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
             />
-          </div>
-        )}
+          )}
+        </div>
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 

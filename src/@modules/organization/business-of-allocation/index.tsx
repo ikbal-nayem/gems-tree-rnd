@@ -60,7 +60,7 @@ const BusinessOfAllocation = () => {
     searchParams.get("searchKey") || ""
   );
   // const [orgType, setOrgType] = useState<string>("");
-  // const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
@@ -125,11 +125,11 @@ const BusinessOfAllocation = () => {
     getDataList({ ...metaParams });
   };
 
-  // const onDrawerClose = () => {
-  //   setIsDrawerOpen(false);
-  //   setIsUpdate(false);
-  //   setUpdateData({});
-  // };
+  const onDrawerClose = () => {
+    setIsDrawerOpen(false);
+    setIsUpdate(false);
+    setUpdateData({});
+  };
 
   // const handleUpdate = (data: any) => {
   //   setIsUpdate(true);
@@ -165,23 +165,23 @@ const BusinessOfAllocation = () => {
   //     });
   // };
 
-  // const onSubmit = (data) => {
-  //   setIsSubmitLoading(true);
+  const onSubmit = (data) => {
+    setIsSubmitLoading(true);
 
-  //   const service = isUpdate
-  //     ? OMSService.organizationTypeUpdate
-  //     : OMSService.organizationTypeCreate;
-  //   service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setIsDrawerOpen(false);
-  //       setIsUpdate(false);
-  //       setUpdateData({});
-  //     })
-  //     .catch((error) => toast.error(error?.message))
-  //     .finally(() => setIsSubmitLoading(false));
-  // };
+    const service = isUpdate
+      ? OMSService.organizationTypeUpdate
+      : OMSService.organizationTypeCreate;
+    service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsDrawerOpen(false);
+        setIsUpdate(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
+  };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     topProgress.show();
@@ -225,16 +225,17 @@ const BusinessOfAllocation = () => {
             ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
             : "")}
       </PageTitle>
-      {/* <PageToolbarRight>
+      <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight> */}
+      </PageToolbarRight>
       <div className="card p-5">
-        {respMeta.totalRecords && (
-          <div className="d-flex gap-3">
-            {/* <span className="w-25">
-              <Autocomplete
+        <div className="d-flex gap-3">
+          {!isLoading && (
+            // <span className="w-25">
+            <span>
+              {/* <Autocomplete
                 placeholder="সংস্থার ধরণ বাছাই করুন"
                 options={orgTypeList || []}
                 name="organizationTypeDTO"
@@ -242,22 +243,23 @@ const BusinessOfAllocation = () => {
                 getOptionValue={(op) => op.id}
                 onChange={(op) => setOrgType(op?.id)}
                 control={control}
-              />
-            </span> */}
-
-            <Input
-              type="search"
-              noMargin
-              placeholder="অনুসন্ধান করুন ..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+              />*/}
+            </span>
+          )}
+          <Input
+            type="search"
+            noMargin
+            placeholder="অনুসন্ধান করুন ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {!isLoading && (
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
             />
-          </div>
-        )}
+          )}
+        </div>
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
@@ -282,13 +284,13 @@ const BusinessOfAllocation = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        {/* <Form
+        <Form
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-        /> */}
+        />
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>
       {/* <ConfirmationModal

@@ -47,7 +47,7 @@ const DataTable: FC<GradeTableProps> = ({
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
               {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
-              <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.mainActivityEn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell
                 text={
                   data?.organogramDate

@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Button,
   Checkbox,
+  DateInput,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -13,6 +14,8 @@ import { COMMON_INSTRUCTION, IObject, numBnToEn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import WorkSpaceComponent from "./WorkSpaceComponent";
+import { MENU } from "@constants/menu-titles.constant";
 
 interface IForm {
   isOpen?: boolean;
@@ -42,6 +45,7 @@ const Form = ({
   updateData,
   submitLoading,
 }: IForm) => {
+  const formProps = useForm();
   const {
     register,
     handleSubmit,
@@ -50,7 +54,7 @@ const Form = ({
     watch,
     control,
     formState: { errors },
-  } = useForm();
+  } = formProps;
 
   const [orgParentTypeList, setOrgParentTypeList] = useState<IObject[]>([]);
 
@@ -75,9 +79,9 @@ const Form = ({
 
   return (
     <Drawer
-      title={`প্রতিষ্ঠানের ধরণ ${
-        Object.keys(updateData)?.length > 0 ? "হালনাগাদ" : "সংরক্ষণ"
-      } করুন`}
+      title={`কর্মবন্টন 
+        ${Object.keys(updateData)?.length > 0 ? " হালনাগাদ" : " সংরক্ষণ"}
+       করুন`}
       isOpen={isOpen}
       handleClose={onClose}
       className="w-md-50 w-xl-25"
@@ -85,7 +89,7 @@ const Form = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
-            <Select
+            {/* <Select
               label={"প্রতিষ্ঠানের ধরণ"}
               options={organizationTypeStaticList || []}
               placeholder={"বাছাই করুন"}
@@ -101,8 +105,8 @@ const Form = ({
               isDisabled={updateData?.orgCategoryType}
               isError={!!errors?.orgCategoryType}
               errorMessage={errors?.orgCategoryType?.message as string}
-            />
-            {watch("orgCategoryType") === "ORG_CATEGORY_GROUP" && (
+            /> */}
+            {/* {watch("orgCategoryType") === "ORG_CATEGORY_GROUP" && (
               <div className="col-12">
                 <Autocomplete
                   label="প্রতিষ্ঠানের অভিভাবকের ধরণ"
@@ -119,22 +123,25 @@ const Form = ({
                   errorMessage={errors?.parentDTO?.message as string}
                 />
               </div>
-            )}
+            )} */}
             <div className="col-12">
-              <Input
-                label="নাম (ইংরেজি)"
-                placeholder="নাম (ইংরেজি) লিখুন"
-                registerProperty={{
-                  ...register("nameEn", {
-                    required: "নাম (ইংরেজি) লিখুন",
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.nameEn}
-                errorMessage={errors?.nameEn?.message as string}
+              <WorkSpaceComponent
+                {...formProps}
+                isRequired="প্রতিষ্ঠান বাছাই করুন"
               />
             </div>
             <div className="col-12">
+              <DateInput
+                label="অর্গানোগ্রাম তারিখ"
+                isRequired="অর্গানোগ্রাম তারিখ বাছাই করুন"
+                name="organogramDate"
+                control={control}
+                blockFutureDate
+                isError={!!errors?.organogramDate}
+                errorMessage={errors?.organogramDate?.message as string}
+              />
+            </div>
+            {/* <div className="col-12">
               <Input
                 label="নাম (বাংলা)"
                 placeholder="নাম (বাংলা) লিখুন"
@@ -147,7 +154,7 @@ const Form = ({
                 isError={!!errors?.nameBn}
                 errorMessage={errors?.nameBn?.message as string}
               />
-            </div>
+            </div> */}
             {/* <div className="col-12">
               <Input
                 label="প্রতিষ্ঠানের গ্রুপ (ইংরেজি)"
@@ -176,7 +183,7 @@ const Form = ({
                 errorMessage={errors?.orgGroupBn?.message as string}
               />
             </div> */}
-
+            {/* 
             {watch("orgCategoryType") === "ORG_CATEGORY_TYPE" && (
               <div className="col-12">
                 <Input
@@ -199,8 +206,8 @@ const Form = ({
                   errorMessage={errors?.orgTypeLevel?.message as string}
                 />
               </div>
-            )}
-            <div className="col-12">
+            )} */}
+            {/* <div className="col-12">
               <Input
                 label="প্রদর্শন ক্রম"
                 type="number"
@@ -210,7 +217,7 @@ const Form = ({
                   ...register("serialNo"),
                 }}
               />
-            </div>
+            </div> */}
             {/* <div className="col-12">
               <Input
                 label="কোড"
@@ -220,14 +227,14 @@ const Form = ({
                 }}
               />
             </div> */}
-            <div className="col-12">
+            {/* <div className="col-12">
               <Checkbox
                 label="সক্রিয়"
                 registerProperty={{
                   ...register("isActive"),
                 }}
               />
-            </div>
+            </div> */}
           </div>
         </DrawerBody>
 

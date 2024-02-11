@@ -19,7 +19,7 @@ import { FC, ReactNode } from "react";
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
   // { title: "ধরণ (বাংলা)", minWidth: 100 },
-  // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
+  { title: "প্রতিষ্ঠান", minWidth: 100 },
   { title: "কর্মবন্টন", minWidth: 100 },
   { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 },
   // { title: COMMON_LABELS.ACTION },
@@ -46,7 +46,7 @@ const DataTable: FC<GradeTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
+              <TableCell text={data?.titleBn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell
                 text={

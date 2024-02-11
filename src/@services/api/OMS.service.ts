@@ -242,16 +242,18 @@ export const OMSService = {
         OMS_SERVICE + "organization/get-list-by-org-group/" + payload
       ),
 
-    // organogramNodeList: async (id: string): Promise<any> =>
-    //   await axiosIns.get(
-    //     OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id
-    //   ),
-
     organogramNodeList: async (payload): Promise<any> =>
       await axiosIns.post(
         OMS_SERVICE + "organogram-custom-structure/custom/get-list",
         payload
       ),
+      
+    mainActivityList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-main-activity/get-list",
+        payload
+      ),
+
     nodeParentListByOrganogramId: async (id: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id
