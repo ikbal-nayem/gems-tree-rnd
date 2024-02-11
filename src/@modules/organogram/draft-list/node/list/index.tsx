@@ -208,21 +208,21 @@ const OrganogramNodeList = () => {
         </PageToolbarRight>
       )}
       <div className="card p-5">
-        {respMeta.totalRecords && (
-          <div className="d-flex gap-3">
-            <Input
-              type="search"
-              noMargin
-              placeholder="অনুসন্ধান করুন ..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+        <div className="d-flex gap-3">
+          <Input
+            type="search"
+            noMargin
+            placeholder="অনুসন্ধান করুন ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {respMeta.totalRecords && (
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
             />
-          </div>
-        )}
+          )}
+        </div>
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
@@ -241,7 +241,7 @@ const OrganogramNodeList = () => {
           </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 
