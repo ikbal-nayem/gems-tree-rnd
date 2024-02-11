@@ -296,8 +296,11 @@ const TemplateComponent = ({
   };
 
   return (
-    <div>
-      <div className="d-flex justify-content-end pb-4">
+    <div className="">
+      <div
+        className="position-fixed z-index-1"
+        style={{ right: "20px", top: "73px" }}
+      >
         {" "}
         <Button
           color="primary"
