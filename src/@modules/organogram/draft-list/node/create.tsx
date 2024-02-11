@@ -22,7 +22,7 @@ const CreateNode = () => {
     OMSService.SAVE.organogramSingleNodeCreate(reqData)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANIZATION_NODE_LIST);
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsLoading(false));

@@ -657,7 +657,7 @@ const NodeCreateUpdateForm = ({
 
       <div className="d-flex justify-content-center mt-4">
         <Button color="primary" type="submit" isLoading={isLoading}>
-          {Object.keys(updateData)?.length > 0
+          {updateData && Object.keys(updateData)?.length > 0
             ? "হালনাগাদ করুন"
             : "সংরক্ষণ করুন"}
         </Button>
