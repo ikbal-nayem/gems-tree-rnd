@@ -97,7 +97,7 @@ const GradeForm = ({
         <DrawerBody>
           <div className="row">
             <Select
-              label={"প্রতিষ্ঠানের ধরণ"}
+              label={"ধরণ/গ্রুপ ?"}
               options={organizationTypeStaticList || []}
               placeholder={"বাছাই করুন"}
               isRequired
@@ -116,9 +116,9 @@ const GradeForm = ({
             {watch("orgCategoryType") === "ORG_CATEGORY_GROUP" && (
               <div className="col-12">
                 <Autocomplete
-                  label="প্রতিষ্ঠানের অভিভাবকের ধরণ"
+                  label="প্রতিষ্ঠানের ধরণ"
                   placeholder="বাছাই করুন"
-                  isRequired="প্রতিষ্ঠানের অভিভাবকের ধরণ বাছাই করুন"
+                  isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
                   options={orgParentTypeList || []}
                   name="parent"
                   getOptionLabel={(op) => op.nameBn}

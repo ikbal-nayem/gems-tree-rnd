@@ -16,7 +16,7 @@ const columns: ITableHeadColumn[] = [
   // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
   { title: "নাম (বাংলা)", minWidth: 100 },
   { title: "নাম (ইংরেজি)", minWidth: 100 },
-  { title: "অভিভাবকের ধরণ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
   { title: "গ্রুপ অভিভাবক", minWidth: 100 },
   { title: "কোড", minWidth: 75 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
