@@ -66,7 +66,7 @@ const GradeForm = ({
   }, []);
 
   const getAllGroupParentList = () => {
-    OMSService.getOrganizationGroupList()
+    OMSService.FETCH.organizationGroupList()
       .then((res) => {
         setOrgGroupParentList(res?.body || []);
       })
