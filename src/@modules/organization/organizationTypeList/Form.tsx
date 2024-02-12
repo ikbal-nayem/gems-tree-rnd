@@ -120,7 +120,7 @@ const GradeForm = ({
                   placeholder="বাছাই করুন"
                   isRequired="প্রতিষ্ঠানের অভিভাবকের ধরণ বাছাই করুন"
                   options={orgParentTypeList || []}
-                  name="parentDTO"
+                  name="parent"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
                   onChange={(op) => setValue("parentId", op?.id)}
@@ -133,10 +133,10 @@ const GradeForm = ({
                   label="প্রতিষ্ঠানের গ্রুপ অভিভাবক"
                   placeholder="বাছাই করুন"
                   options={orgGroupParentList || []}
-                  name="groupParentDTO"
+                  name="parentGroup"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
-                  onChange={(op) => setValue("groupParentId", op?.id)}
+                  onChange={(op) => setValue("parentGroupId", op?.id)}
                   control={control}
                 />
               </div>
