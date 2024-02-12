@@ -122,7 +122,11 @@ const OrganogramTab = ({
         <div className="d-flex bg-white rounded mb-3 overflow-auto">
           {verisonList?.map((d, idx) => {
             return (
-              <Button onClick={() => handleVersionChange(d)} key={idx}>
+              <Button
+                onClick={() => handleVersionChange(d)}
+                key={idx}
+                variant="fill"
+              >
                 <span
                   className={`fs-5 ${
                     organogramId === d?.organogramId ? "text-primary" : ""

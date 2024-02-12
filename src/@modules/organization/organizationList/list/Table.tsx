@@ -78,7 +78,7 @@ const OrgTable: FC<OrgTableProps> = ({
                     <div>{data?.nameEn}</div>
                     <div>
                       স্থান:&nbsp;
-                      {data?.location?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                      {data?.location?.chainBn || COMMON_LABELS.NOT_ASSIGN}
                     </div>
                   </>
                 }
@@ -95,8 +95,7 @@ const OrgTable: FC<OrgTableProps> = ({
               />
               <TableCell
                 text={
-                  data?.organizationGroupDTO?.parentDTO?.nameBn ||
-                  COMMON_LABELS.NOT_ASSIGN
+                  data?.organizationTypeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN
                 }
               />
               <TableCell

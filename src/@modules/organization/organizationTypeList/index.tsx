@@ -93,11 +93,12 @@ const OrganizationTypeList = () => {
 
   const getDataList = (reqMeta = null) => {
     const payload = {
-      meta: searchKey
-        ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
-        : reqMeta || respMeta,
+      meta:
+        searchKey || orgType
+          ? reqMeta
+            ? { ...reqMeta, sort: null }
+            : { ...respMeta, page: 0, sort: null }
+          : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
         parentId: orgType || null,
