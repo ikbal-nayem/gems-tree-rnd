@@ -45,7 +45,7 @@ const Organizations = ({
   };
 
   const getOrgGroupList = () => {
-    OMSService.getOrganizationGroupList().then((resp) =>
+    OMSService.FETCH.organizationGroupList().then((resp) =>
       setOrganizationGroupList(resp?.body)
     );
   };

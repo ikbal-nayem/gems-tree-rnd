@@ -1,8 +1,11 @@
 import { MENU } from "@constants/menu-titles.constant";
 import {
+  Dropdown,
+  DropdownItem,
   // Dropdown,
   // DropdownItem,
   ITableHeadColumn,
+  Icon,
   // Icon,
   Table,
   TableCell,
@@ -22,21 +25,21 @@ const columns: ITableHeadColumn[] = [
   // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
   { title: "প্রধান কার্যাবলি", minWidth: 100 },
   { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 },
-  // { title: COMMON_LABELS.ACTION },
+  { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
-type GradeTableProps = {
+type TableProps = {
   children?: ReactNode;
   data?: any;
-  // handleUpdate: (data) => void;
-  // handleDelete: (data) => void;
+  handleUpdate: (data) => void;
+  handleDelete: (data) => void;
 };
 
-const DataTable: FC<GradeTableProps> = ({
+const DataTable: FC<TableProps> = ({
   children,
   data = [],
-  // handleUpdate,
-  // handleDelete,
+  handleUpdate,
+  handleDelete,
 }) => {
   if (!data?.length) return;
   return (
@@ -61,7 +64,7 @@ const DataTable: FC<GradeTableProps> = ({
               {/* <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} /> */}
               {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
               {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
-              {/* <TableCell>
+              <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
@@ -84,7 +87,7 @@ const DataTable: FC<GradeTableProps> = ({
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem>
                 </Dropdown>
-              </TableCell> */}
+              </TableCell>
             </TableRow>
           );
         })}

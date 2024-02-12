@@ -148,7 +148,7 @@ const OrganizationTypeList = () => {
         ids: [deleteData?.id || ""],
       },
     };
-    OMSService.organizationTypeDelete(payload)
+    OMSService.DELETE.organizationType(payload)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -165,8 +165,8 @@ const OrganizationTypeList = () => {
     setIsSubmitLoading(true);
 
     const service = isUpdate
-      ? OMSService.organizationTypeUpdate
-      : OMSService.organizationTypeCreate;
+      ? OMSService.UPDATE.organizationType
+      : OMSService.SAVE.organizationType;
     service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
       .then((res) => {
         toast.success(res?.message);

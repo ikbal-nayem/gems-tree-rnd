@@ -56,7 +56,7 @@ const MainActivity = () => {
     searchParams.get("searchKey") || ""
   );
   // const [orgType, setOrgType] = useState<string>("");
-  // const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
@@ -127,16 +127,16 @@ const MainActivity = () => {
   //   setUpdateData({});
   // };
 
-  // const handleUpdate = (data: any) => {
-  //   setIsUpdate(true);
-  //   setUpdateData(data);
-  //   setIsDrawerOpen(true);
-  // };
+  const handleUpdate = (data: any) => {
+    setIsUpdate(true);
+    setUpdateData(data);
+    setIsDrawerOpen(true);
+  };
 
-  // const handleDelete = (data: any) => {
-  //   setIsDeleteModal(true);
-  //   setDeleteData(data);
-  // };
+  const handleDelete = (data: any) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
   // const onCancelDelete = () => {
   //   setIsDeleteModal(false);
   //   setDeleteData(null);
@@ -221,11 +221,11 @@ const MainActivity = () => {
             ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
             : "")}
       </PageTitle>
-      {/* <PageToolbarRight>
+      <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight> */}
+      </PageToolbarRight>
       <div className="card p-5">
         <div className="d-flex gap-3">
           {!isLoading && (
@@ -262,8 +262,8 @@ const MainActivity = () => {
         <div className="mt-3">
           <DataTable
             data={listData}
-            // handleUpdate={handleUpdate}
-            // handleDelete={handleDelete}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
           >
             <Pagination
               meta={respMeta}

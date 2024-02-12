@@ -14,8 +14,8 @@ import { COMMON_INSTRUCTION, IObject, numBnToEn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import WorkSpaceComponent from "./WorkSpaceComponent";
 import { MENU } from "@constants/menu-titles.constant";
+import WorkSpaceComponent from "./WorkSpaceComponent";
 
 interface IForm {
   isOpen?: boolean;

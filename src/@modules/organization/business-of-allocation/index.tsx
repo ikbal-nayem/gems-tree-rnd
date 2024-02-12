@@ -9,6 +9,7 @@ import {
   Input,
   NoData,
   Pagination,
+  Select,
   toast,
 } from "@gems/components";
 import {
@@ -30,6 +31,8 @@ import { searchParamsToObject } from "utility/makeObject";
 import Form from "./Form";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
+import WorkSpaceComponent from "./WorkSpaceComponent";
+import { useAuth } from "@context/Auth";
 
 const initMeta: IMeta = {
   page: 0,
@@ -56,36 +59,26 @@ const BusinessOfAllocation = () => {
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
-  const [search, setSearch] = useState<string>(
-    searchParams.get("searchKey") || ""
-  );
-  // const [orgType, setOrgType] = useState<string>("");
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
-  const params: any = searchParamsToObject(searchParams);
-  const searchKey = useDebounce(search, 500);
-  // const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
-  // const formProps = useForm();
-  // const { control } = formProps;
+  const [organization, setOrganization] = useState<IObject>();
+  const formProps = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = formProps;
+
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    if (searchKey) params.searchKey = searchKey;
-    else delete params.searchKey;
-    setSearchParams({ ...params });
-    // eslint-disable-next-line
-  }, [searchKey, setSearchParams]);
-
-  // useEffect(() => {
-  //   getOrganizationTypesList();
-  // }, []);
-
-  useEffect(() => {
+    setOrganization(currentUser?.organization);
     getDataList();
-    // eslint-disable-next-line
-  }, [
-    searchParams,
-    // orgType
-  ]);
+  }, []);
 
   // const getOrganizationTypesList = () => {
   //   OMSService.FETCH.organizationTypeList()
@@ -97,15 +90,8 @@ const BusinessOfAllocation = () => {
 
   const getDataList = (reqMeta = null) => {
     const payload = {
-      meta: searchKey
-        ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
-        : reqMeta || respMeta,
-      body: {
-        searchKey: searchKey || null,
-        // parentId: orgType || null,
-      },
+      meta: reqMeta || respMeta,
+      body: {},
     };
 
     OMSService.getOrganizationTypeList(payload)
@@ -131,16 +117,16 @@ const BusinessOfAllocation = () => {
     setUpdateData({});
   };
 
-  // const handleUpdate = (data: any) => {
-  //   setIsUpdate(true);
-  //   setUpdateData(data);
-  //   setIsDrawerOpen(true);
-  // };
+  const handleUpdate = (data: any) => {
+    setIsUpdate(true);
+    setUpdateData(data);
+    setIsDrawerOpen(true);
+  };
 
-  // const handleDelete = (data: any) => {
-  //   setIsDeleteModal(true);
-  //   setDeleteData(data);
-  // };
+  const handleDelete = (data: any) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
   // const onCancelDelete = () => {
   //   setIsDeleteModal(false);
   //   setDeleteData(null);
@@ -165,45 +151,40 @@ const BusinessOfAllocation = () => {
   //     });
   // };
 
-  const onSubmit = (data) => {
-    setIsSubmitLoading(true);
+  // const onSubmit = (data) => {
+  //   setIsSubmitLoading(true);
 
-    const service = isUpdate
-      ? OMSService.organizationTypeUpdate
-      : OMSService.organizationTypeCreate;
-    service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
-      .then((res) => {
-        toast.success(res?.message);
-        getDataList();
-        setIsDrawerOpen(false);
-        setIsUpdate(false);
-        setUpdateData({});
-      })
-      .catch((error) => toast.error(error?.message))
-      .finally(() => setIsSubmitLoading(false));
+  //   const service = isUpdate
+  //     ? OMSService.organizationTypeUpdate
+  //     : OMSService.organizationTypeCreate;
+  //   service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
+  //     .then((res) => {
+  //       toast.success(res?.message);
+  //       getDataList();
+  //       setIsDrawerOpen(false);
+  //       setIsUpdate(false);
+  //       setUpdateData({});
+  //     })
+  //     .catch((error) => toast.error(error?.message))
+  //     .finally(() => setIsSubmitLoading(false));
+  // };
+
+  const onCustomSelection = (organization) => {
+    setOrganization(
+      organization
+        ? {
+            id: organization?.id,
+            nameBn: organization?.nameBn,
+          }
+        : null
+    );
+    console.log("index Organization : ", organization);
   };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
-    topProgress.show();
-    const payload = {
-      meta: {
-        page: 0,
-        limit: respMeta.totalRecords,
-        sort: [{ field: "createdOn", order: "desc" }],
-      },
-      body: {
-        searchKey: searchKey || null,
-      },
-    };
-
-    OMSService.getOrganizationTypeList(payload)
-      .then((res) =>
-        downloadtype === "pdf"
-          ? generatePDF(organizationTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Organization Type list")
-      )
-      .catch((err) => toast.error(err?.message))
-      .finally(() => topProgress.hide());
+    downloadtype === "pdf"
+      ? generatePDF(organizationTypePDFContent(listData))
+      : exportXLSX(exportData(listData || []), "Organization Type list");
   };
 
   const exportData = (data: any[]) =>
@@ -225,40 +206,46 @@ const BusinessOfAllocation = () => {
             ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
             : "")}
       </PageTitle>
-      <PageToolbarRight>
+      {/* <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight>
+      </PageToolbarRight> */}
       <div className="card p-5">
-        <div className="d-flex gap-3">
-          {!isLoading && (
-            // <span className="w-25">
-            <span>
-              {/* <Autocomplete
-                placeholder="সংস্থার ধরণ বাছাই করুন"
-                options={orgTypeList || []}
-                name="organizationTypeDTO"
-                getOptionLabel={(op) => op.nameBn}
-                getOptionValue={(op) => op.id}
-                onChange={(op) => setOrgType(op?.id)}
-                control={control}
-              />*/}
-            </span>
-          )}
-          <Input
-            type="search"
-            noMargin
-            placeholder="অনুসন্ধান করুন ..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          {!isLoading && (
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <WorkSpaceComponent
+              {...formProps}
+              isRequired="প্রতিষ্ঠান বাছাই করুন"
+              organization={organization}
+              onCustomSelection={onCustomSelection}
+            />
+          </div>
+          <div className="col-10 col-md-5">
+            <Select
+              label="অর্গানোগ্রাম তারিখ"
+              // options={organogramDateList || []}
+              options={[]}
+              placeholder="অর্গানোগ্রাম তারিখ বাছাই করুন"
+              noMargin
+              textKey={"titleBn"}
+              valueKey="key"
+              registerProperty={{
+                ...register(`organogramDate`, {
+                  required: true,
+                }),
+              }}
+              isDisabled={updateData?.organogramDate}
+              isError={!!errors?.organogramDate}
+              errorMessage={errors?.organogramDate?.message as string}
+            />
+          </div>
+          <div className="col-2 col-md-1 pt-7">
             <DownloadMenu
               fnDownloadExcel={() => downloadFile("excel")}
               fnDownloadPDF={() => downloadFile("pdf")}
             />
-          )}
+          </div>
         </div>
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
@@ -284,13 +271,13 @@ const BusinessOfAllocation = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        <Form
+        {/* <Form
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-        />
+        /> */}
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>
       {/* <ConfirmationModal

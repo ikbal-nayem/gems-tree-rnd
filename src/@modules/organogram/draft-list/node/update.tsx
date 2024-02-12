@@ -36,7 +36,7 @@ const UpdateNode = () => {
       organizationId: state?.orgId || null,
       organogramDate: state?.organogramDate || null,
     };
-    OMSService.UPDATE.organogramSingleNodeUpdate(organogramId, reqData)
+    OMSService.UPDATE.organogramSingleNodeById(organogramId, reqData)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, { state: state });

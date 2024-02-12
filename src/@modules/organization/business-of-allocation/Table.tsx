@@ -1,8 +1,11 @@
 import { MENU } from "@constants/menu-titles.constant";
 import {
+  Dropdown,
+  DropdownItem,
   // Dropdown,
   // DropdownItem,
   ITableHeadColumn,
+  Icon,
   // Icon,
   Table,
   TableCell,
@@ -18,11 +21,8 @@ import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  // { title: "ধরণ (বাংলা)", minWidth: 100 },
-  { title: "প্রতিষ্ঠান", minWidth: 100 },
-  { title: "কর্মবন্টন", minWidth: 100 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 },
-  // { title: COMMON_LABELS.ACTION },
+  { title: "কর্মবন্টন", minWidth: 800 },
+  // { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
 type GradeTableProps = {
@@ -47,21 +47,7 @@ const DataTable: FC<GradeTableProps> = ({
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
               <TableCell text={data?.titleBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell
-                text={
-                  data?.organogramDate
-                    ? generateDateFormat(
-                        data?.organogramDate,
-                        DATE_PATTERN.GOVT_STANDARD
-                      )
-                    : COMMON_LABELS.NOT_ASSIGN
-                }
-              />
-              {/* <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} /> */}
-              {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
-              {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
-              {/* <TableCell>
+              {/* <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
