@@ -53,6 +53,7 @@ const GradeForm = ({
   } = useForm();
 
   const [orgParentTypeList, setOrgParentTypeList] = useState<IObject[]>([]);
+  const [orgGroupParentList, setOrgGroupParentList] = useState<IObject[]>([]);
 
   useEffect(() => {
     OMSService.FETCH.organizationTypeList()
@@ -60,7 +61,17 @@ const GradeForm = ({
         setOrgParentTypeList(res?.body || []);
       })
       .catch((err) => toast.error(err?.message));
+
+    getAllGroupParentList();
   }, []);
+
+  const getAllGroupParentList = () => {
+    OMSService.getOrganizationGroupList()
+      .then((res) => {
+        setOrgGroupParentList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
 
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
@@ -117,6 +128,16 @@ const GradeForm = ({
                   control={control}
                   isError={!!errors?.parentDTO}
                   errorMessage={errors?.parentDTO?.message as string}
+                />
+                <Autocomplete
+                  label="প্রতিষ্ঠানের গ্রুপ অভিভাবক"
+                  placeholder="বাছাই করুন"
+                  options={orgGroupParentList || []}
+                  name="groupParentDTO"
+                  getOptionLabel={(op) => op.nameBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("groupParentId", op?.id)}
+                  control={control}
                 />
               </div>
             )}
