@@ -1,9 +1,4 @@
-import { MENU } from "@constants/menu-titles.constant";
 import {
-  Dropdown,
-  DropdownItem,
-  // Dropdown,
-  // DropdownItem,
   ITableHeadColumn,
   Icon,
   // Icon,
@@ -13,19 +8,15 @@ import {
 } from "@gems/components";
 import {
   COMMON_LABELS,
-  DATE_PATTERN,
-  generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  // { title: "ধরণ (বাংলা)", minWidth: 100 },
-  // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
-  { title: "প্রধান কার্যাবলি", minWidth: 100 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 },
-  { title: COMMON_LABELS.ACTION, align: "end" },
+  { title: "প্রধান কার্যাবলি (বাংলা)", minWidth: 400 },
+  { title: "প্রধান কার্যাবলি (ইংরেজি)", minWidth: 400 },
+  // { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
 type TableProps = {
@@ -49,22 +40,9 @@ const DataTable: FC<TableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
+              <TableCell text={data?.mainActivityBn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.mainActivityEn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell
-                text={
-                  data?.organogramDate
-                    ? generateDateFormat(
-                        data?.organogramDate,
-                        DATE_PATTERN.GOVT_STANDARD
-                      )
-                    : COMMON_LABELS.NOT_ASSIGN
-                }
-              />
-              {/* <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} /> */}
-              {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
-              {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
-              <TableCell textAlign="end">
+              {/* <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
@@ -87,7 +65,7 @@ const DataTable: FC<TableProps> = ({
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem>
                 </Dropdown>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           );
         })}

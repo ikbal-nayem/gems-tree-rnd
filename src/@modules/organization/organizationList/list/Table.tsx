@@ -1,3 +1,7 @@
+import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { MENU } from "@constants/menu-titles.constant";
 import {
   Dropdown,
   DropdownItem,
@@ -10,10 +14,10 @@ import {
 import {
   COMMON_LABELS,
   IMeta,
+  IObject,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
-import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, width: 50 },
@@ -29,7 +33,7 @@ const columns: ITableHeadColumn[] = [
 
 type OrgTableProps = {
   children?: ReactNode;
-  data?: any;
+  dataList?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
   meta?: IMeta;
@@ -37,16 +41,33 @@ type OrgTableProps = {
 
 const OrgTable: FC<OrgTableProps> = ({
   children,
-  data = [],
+  dataList = [],
   handleUpdate,
   handleDelete,
   meta,
 }) => {
-  if (!data?.length) return;
+  const navigate = useNavigate();
+
+  if (!dataList?.length) return;
+
+  const redirectTo = (page: "main_activity" | "aob", org: IObject) => {
+    switch (page) {
+      case "main_activity":
+        navigate(ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY, {
+          state: org,
+        });
+        break;
+      case "aob":
+        navigate(ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION, {
+          state: org,
+        });
+        break;
+    }
+  };
   return (
     <>
       <Table columns={columns}>
-        {data?.map((data, i) => {
+        {dataList?.map((data, i) => {
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i, meta)} />
@@ -80,8 +101,7 @@ const OrgTable: FC<OrgTableProps> = ({
               />
               <TableCell
                 text={
-                  data?.organizationGroupDTO?.nameBn ||
-                  COMMON_LABELS.NOT_ASSIGN
+                  data?.organizationGroupDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN
                 }
               />
               <TableCell
@@ -117,6 +137,18 @@ const OrgTable: FC<OrgTableProps> = ({
                   >
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">{COMMON_LABELS.EDIT}</h6>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => redirectTo("main_activity", data)}
+                  >
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-3">{MENU.BN.MAIN_ACTIVITY_LIST}</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => redirectTo("aob", data)}>
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-3">
+                      {MENU.BN.ALLOCATION_OF_BUSINESS_LIST}
+                    </h6>
                   </DropdownItem>
                   {/* <DropdownItem
 										onClick={() => {

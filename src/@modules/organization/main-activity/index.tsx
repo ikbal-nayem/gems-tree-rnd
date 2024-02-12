@@ -25,11 +25,12 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import Form from "./Form";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
+import { isNotEmptyList } from "utility/utils";
 
 const initMeta: IMeta = {
   page: 0,
@@ -52,36 +53,18 @@ const MainActivity = () => {
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
-  const [search, setSearch] = useState<string>(
-    searchParams.get("searchKey") || ""
-  );
+  const { state } = useLocation();
+  const [organization, setOrganization] = useState<IObject>(state);
   // const [orgType, setOrgType] = useState<string>("");
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
-  const params: any = searchParamsToObject(searchParams);
-  const searchKey = useDebounce(search, 500);
   // const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
   // const formProps = useForm();
   // const { control } = formProps;
 
   useEffect(() => {
-    if (searchKey) params.searchKey = searchKey;
-    else delete params.searchKey;
-    setSearchParams({ ...params });
-    // eslint-disable-next-line
-  }, [searchKey, setSearchParams]);
-
-  // useEffect(() => {
-  //   getOrganizationTypesList();
-  // }, []);
-
-  useEffect(() => {
     getDataList();
-    // eslint-disable-next-line
-  }, [
-    searchParams,
-    // orgType
-  ]);
+  }, []);
 
   // const getOrganizationTypesList = () => {
   //   OMSService.FETCH.organizationTypeList()
@@ -92,19 +75,7 @@ const MainActivity = () => {
   // };
 
   const getDataList = (reqMeta = null) => {
-    const payload = {
-      meta: searchKey
-        ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
-        : reqMeta || respMeta,
-      body: {
-        searchKey: searchKey || null,
-        // parentId: orgType || null,
-      },
-    };
-
-    OMSService.FETCH.mainActivityList(payload)
+    OMSService.FETCH.mainActivityListByOrgId(organization?.id)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -180,80 +151,53 @@ const MainActivity = () => {
   // };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
-    topProgress.show();
-    const payload = {
-      meta: {
-        page: 0,
-        limit: respMeta.totalRecords,
-        sort: [{ field: "createdOn", order: "desc" }],
-      },
-      body: {
-        searchKey: searchKey || null,
-      },
-    };
-
-    OMSService.getOrganizationTypeList(payload)
-      .then((res) =>
-        downloadtype === "pdf"
-          ? generatePDF(organizationTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Organization Type list")
-      )
-      .catch((err) => toast.error(err?.message))
-      .finally(() => topProgress.hide());
+    downloadtype === "pdf"
+      ? generatePDF(organizationTypePDFContent(listData, organization?.nameBn))
+      : exportXLSX(
+          exportData(listData || []),
+          organization?.nameBn + " এর প্রধান কার্যাবলির তালিকা"
+        );
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
-      "ধরণ (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
-      লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
-      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
+      "প্রধান কার্যাবলি (বাংলা)": d?.mainActivityBn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রধান কার্যাবলি (ইংরেজি)": d?.mainActivityEn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
     <>
       <PageTitle>
         {MENU.BN.MAIN_ACTIVITY_LIST +
-          (notNullOrUndefined(respMeta?.totalRecords)
-            ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
+          (isNotEmptyList(listData)
+            ? " (মোট: " + numEnToBn(listData?.length) + " টি)"
             : "")}
       </PageTitle>
-      <PageToolbarRight>
+      {/* <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight>
+      </PageToolbarRight> */}
       <div className="card p-5">
         <div className="d-flex gap-3">
           {!isLoading && (
-            <span>
-              {/* <Autocomplete
-                placeholder="সংস্থার ধরণ বাছাই করুন"
-                options={orgTypeList || []}
-                name="organizationTypeDTO"
-                getOptionLabel={(op) => op.nameBn}
-                getOptionValue={(op) => op.id}
-                onChange={(op) => setOrgType(op?.id)}
-                control={control}
-              />*/}
-            </span>
-          )}
-
-          <Input
-            type="search"
-            noMargin
-            placeholder="অনুসন্ধান করুন ..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          {!isLoading && (
-            <DownloadMenu
-              fnDownloadExcel={() => downloadFile("excel")}
-              fnDownloadPDF={() => downloadFile("pdf")}
-            />
+            <div className="row fs-3 w-100">
+              <div className="col-12 col-md-11">
+                <div className="d-flex fw-bold text-gray-700 gap-3">
+                  <div>প্রতিষ্ঠান :</div>
+                  <div>{organization?.nameBn}</div>
+                </div>
+              </div>
+              <div className="col-12 col-md-1 text-end">
+                {isNotEmptyList(listData) && (
+                  <DownloadMenu
+                    fnDownloadExcel={() => downloadFile("excel")}
+                    fnDownloadPDF={() => downloadFile("pdf")}
+                  />
+                )}
+              </div>
+            </div>
           )}
         </div>
 
@@ -265,15 +209,15 @@ const MainActivity = () => {
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
           >
-            <Pagination
+            {/* <Pagination
               meta={respMeta}
               pageNeighbours={2}
               onPageChanged={onPageChanged}
-            />
+            /> */}
           </DataTable>
           {isLoading && <ContentPreloader />}
-          {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
+          {!isLoading && !isNotEmptyList(listData) && (
+            <NoData details="কোনো তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 

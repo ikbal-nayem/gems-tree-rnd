@@ -21,18 +21,19 @@ import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  { title: "কর্মবন্টন", minWidth: 800 },
+  { title: "কর্মবন্টন (বাংলা)", minWidth: 400 },
+  { title: "কর্মবন্টন (ইংরেজি)", minWidth: 400 },
   // { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
-type GradeTableProps = {
+type TableProps = {
   children?: ReactNode;
   data?: any;
   // handleUpdate: (data) => void;
   // handleDelete: (data) => void;
 };
 
-const DataTable: FC<GradeTableProps> = ({
+const DataTable: FC<TableProps> = ({
   children,
   data = [],
   // handleUpdate,
@@ -46,7 +47,8 @@ const DataTable: FC<GradeTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.titleBn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN} />
               {/* <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}

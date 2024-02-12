@@ -263,7 +263,7 @@ const List = () => {
 
         <div className="mt-3">
           <OrgTable
-            data={listData}
+            dataList={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
             meta={respMeta}

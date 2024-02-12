@@ -106,18 +106,18 @@ const menuData = [
         title: MENU.BN.ORANIZATION_TYPE,
         hasBullet: true,
       },
-      {
-        routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
-        link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
-        title: MENU.BN.MAIN_ACTIVITY_LIST,
-        hasBullet: true,
-      },
-      {
-        routeKey: ROUTE_KEY.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
-        link: ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
-        title: MENU.BN.BUSINESS_OF_ALLOCATION_LIST,
-        hasBullet: true,
-      },
+      // {
+      //   routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
+      //   link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
+      //   title: MENU.BN.MAIN_ACTIVITY_LIST,
+      //   hasBullet: true,
+      // },
+      // {
+      //   routeKey: ROUTE_KEY.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
+      //   link: ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
+      //   title: MENU.BN.ALLOCATION_OF_BUSINESS_LIST,
+      //   hasBullet: true,
+      // },
       // {
       //   routeKey: ROUTE_KEY.OMS_ORGANIZATION_NODE_LIST,
       //   link: ROUTE_L2.OMS_ORGANIZATION_NODE_LIST,

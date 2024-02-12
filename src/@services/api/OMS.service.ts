@@ -254,6 +254,20 @@ export const OMSService = {
         payload
       ),
 
+    mainActivityListByOrgId: async (id): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-latest-main-activity-by/" +
+          id
+      ),
+
+    allocationOfBusinessListByOrgId: async (id): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-latest-business-allocation-by/" +
+          id
+      ),
+
     nodeParentListByOrganogramId: async (id: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id
@@ -327,9 +341,6 @@ export const OMSService = {
       ),
   },
 
-
-
-  
   getOrganizationTypeList: async (
     payload
   ): Promise<any> => // returns organizationGroups actually

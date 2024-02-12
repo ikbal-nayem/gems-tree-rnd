@@ -15,7 +15,7 @@ export const MENU = {
     ORANIZATION_LIST: "প্রতিষ্ঠানের তালিকা",
     ORANIZATION_TYPE: "প্রতিষ্ঠানের ধরণ",
     MAIN_ACTIVITY_LIST: "প্রধান কার্যাবলির তালিকা",
-    BUSINESS_OF_ALLOCATION_LIST: "কর্মবন্টনের তালিকা",
+    ALLOCATION_OF_BUSINESS_LIST: "কর্মবন্টনের তালিকা",
     NODE_LIST: "পদবি/স্তরের তালিকা",
   },
 
@@ -35,7 +35,7 @@ export const MENU = {
     ORANIZATION_LIST: "Organization List",
     ORANIZATION_TYPE: "Organization Type",
     MAIN_ACTIVITY_LIST: "Main Activity List",
-    BUSINESS_OF_ALLOCATION_LIST: "Business of Allocation List",
+    ALLOCATION_OF_BUSINESS_LIST: "Business of Allocation List",
     NODE_LIST: "Node List",
   },
 };
