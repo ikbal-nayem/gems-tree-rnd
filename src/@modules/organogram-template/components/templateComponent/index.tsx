@@ -296,7 +296,7 @@ const TemplateComponent = ({
   };
 
   return (
-    <div className="">
+    <>
       <div
         className="position-fixed z-index-1"
         style={{ right: "20px", top: "73px" }}
@@ -537,7 +537,7 @@ const TemplateComponent = ({
           </Button>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

@@ -1,4 +1,3 @@
-import { MENU } from "@constants/menu-titles.constant";
 import {
   Dropdown,
   DropdownItem,
@@ -13,9 +12,7 @@ import {
 } from "@gems/components";
 import {
   COMMON_LABELS,
-  DATE_PATTERN,
   IObject,
-  generateDateFormat,
   generateRowNumBn,
   numEnToBn,
 } from "@gems/utils";
@@ -68,10 +65,7 @@ const DataTable: FC<DataTableProps> = ({
                 }
               />
               <TableCell
-                text={
-                  numEnToBn(data?.nodeManpower) ||
-                  COMMON_LABELS.NOT_ASSIGN
-                }
+                text={numEnToBn(data?.nodeManpower) || COMMON_LABELS.NOT_ASSIGN}
               />
               {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}/> */}
               {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
