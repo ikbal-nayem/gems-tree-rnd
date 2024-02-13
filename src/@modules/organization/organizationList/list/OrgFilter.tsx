@@ -79,8 +79,8 @@ const OrgFilter = ({ onFilterDone, options }) => {
         <form onSubmit={handleSubmit(onFilter)}>
           <DrawerBody>
             <Autocomplete
-              label="প্রতিষ্ঠানের ধরণ"
-              placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+              label="প্রতিষ্ঠানের পর্যায়"
+              placeholder="প্রতিষ্ঠানের পর্যায় বাছাই করুন"
               options={options?.institutionTypes || []}
               name="office"
               getOptionLabel={(op) => op.titleBn}
@@ -89,8 +89,8 @@ const OrgFilter = ({ onFilterDone, options }) => {
               control={control}
             />
             <Autocomplete
-              label="সংস্থার ধরণ"
-              placeholder="সংস্থার ধরণ বাছাই করুন"
+              label="প্রতিষ্ঠানের ধরণ"
+              placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
               options={options?.organizationTypes || []}
               name="organizationTypeDTO"
               getOptionLabel={(op) => op.nameBn}
@@ -101,9 +101,9 @@ const OrgFilter = ({ onFilterDone, options }) => {
             {!isObjectNull(watch("organizationTypeDTO")) && (
               <>
                 <Autocomplete
-                  label="সংস্থার গ্রুপ"
-                  placeholder="সংস্থার গ্রুপ বাছাই করুন"
-                  isRequired="সংস্থার ধরণ বাছাই করুন"
+                  label="প্রতিষ্ঠানের গ্রুপ"
+                  placeholder="প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
+                  // isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
                   options={orgGroupList || []}
                   name="organizationGroupDTO"
                   getOptionLabel={(op) => op.nameBn}
@@ -114,8 +114,8 @@ const OrgFilter = ({ onFilterDone, options }) => {
                   errorMessage={errors?.organizationGroupDTO?.message as string}
                 />
                 <Autocomplete
-                  label="অভিভাবক প্রতিষ্ঠানের নাম"
-                  placeholder="অভিভাবক প্রতিষ্ঠানের নাম বাছাই করুন"
+                  label="প্রতিষ্ঠানের অভিভাবক"
+                  placeholder="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
                   options={orgParentList || []}
                   name="parent"
                   getOptionLabel={(op) => op.nameBn}
@@ -126,9 +126,6 @@ const OrgFilter = ({ onFilterDone, options }) => {
               </>
             )}
             {/* <div className="col-12">
-              <WorkSpaceComponent {...formProps} />
-            </div> */}
-            <div className="col-12">
               <Autocomplete
                 label="মন্ত্রণালয়"
                 placeholder="মন্ত্রণালয় বাছাই করুন"
@@ -139,7 +136,7 @@ const OrgFilter = ({ onFilterDone, options }) => {
                 onChange={(op) => setValue("rootParentId", op?.id)}
                 control={control}
               />
-            </div>
+            </div> */}
             <div className="col-12">
               <LocationWorkSpaceComponent {...formProps} />
             </div>

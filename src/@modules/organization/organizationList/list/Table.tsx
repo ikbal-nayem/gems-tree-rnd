@@ -1,5 +1,3 @@
-import { FC, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { MENU } from "@constants/menu-titles.constant";
 import {
@@ -18,6 +16,8 @@ import {
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
+import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, width: 50 },
@@ -77,7 +77,7 @@ const OrgTable: FC<OrgTableProps> = ({
                   <>
                     <div>{data?.nameEn}</div>
                     <div>
-                      স্থান:&nbsp;
+                      {/* স্থান:&nbsp; */}
                       {data?.location?.chainBn || COMMON_LABELS.NOT_ASSIGN}
                     </div>
                   </>
