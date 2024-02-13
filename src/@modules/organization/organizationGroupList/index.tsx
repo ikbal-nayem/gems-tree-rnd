@@ -38,10 +38,6 @@ const initMeta: IMeta = {
       field: "code",
       order: "asc",
     },
-    {
-      field: "serialNo",
-      order: "asc",
-    },
   ],
 };
 
@@ -102,10 +98,11 @@ const OrganizationGroupList = () => {
       body: {
         searchKey: searchKey || null,
         parentId: orgType || null,
+        orgCategoryType: "ORG_CATEGORY_GROUP",
       },
     };
 
-    OMSService.getOrganizationTypeList(payload)
+    OMSService.FETCH.organizationCategoryList(payload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -203,7 +200,7 @@ const OrganizationGroupList = () => {
       },
     };
 
-    OMSService.getOrganizationTypeList(payload)
+    OMSService.FETCH.organizationCategoryList(payload)
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organizationTypePDFContent(res?.body))

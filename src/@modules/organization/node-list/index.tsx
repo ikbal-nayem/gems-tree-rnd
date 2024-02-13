@@ -108,17 +108,17 @@ const NodeList = () => {
       },
     };
 
-    OMSService.getOrganizationTypeList(payload)
-      .then((res) => {
-        setListData(res?.body || []);
-        setRespMeta(
-          res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
-        );
-      })
-      .catch((err) => toast.error(err?.message))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    // OMSService.getOrganizationTypeList(payload)
+    //   .then((res) => {
+    //     setListData(res?.body || []);
+    //     setRespMeta(
+    //       res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+    //     );
+    //   })
+    //   .catch((err) => toast.error(err?.message))
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //   });
   };
 
   const onPageChanged = (metaParams: IMeta) => {
@@ -196,14 +196,14 @@ const NodeList = () => {
       },
     };
 
-    OMSService.getOrganizationTypeList(payload)
-      .then((res) =>
-        downloadtype === "pdf"
-          ? generatePDF(organizationTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Organization Type list")
-      )
-      .catch((err) => toast.error(err?.message))
-      .finally(() => topProgress.hide());
+    // OMSService.getOrganizationTypeList(payload)
+    //   .then((res) =>
+    //     downloadtype === "pdf"
+    //       ? generatePDF(organizationTypePDFContent(res?.body))
+    //       : exportXLSX(exportData(res?.body || []), "Organization Type list")
+    //   )
+    //   .catch((err) => toast.error(err?.message))
+    //   .finally(() => topProgress.hide());
   };
 
   const exportData = (data: any[]) =>

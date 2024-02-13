@@ -281,6 +281,12 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organization-category/get-all-org-group"
       ),
+
+    organizationCategoryList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-category/get-list",
+        payload
+      ),
   },
 
   SAVE: {
@@ -340,12 +346,4 @@ export const OMSService = {
         payload
       ),
   },
-
-  getOrganizationTypeList: async (
-    payload
-  ): Promise<any> => // returns organizationGroups actually
-    await axiosIns.post(
-      OMS_SERVICE + "organization-category/get-list",
-      payload
-    ),
 };
