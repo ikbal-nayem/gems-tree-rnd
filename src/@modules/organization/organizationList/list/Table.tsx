@@ -21,12 +21,12 @@ import {
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, width: 50 },
-  { title: "নাম", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের নাম", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের পর্যায়", minWidth: 100 },
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
-  { title: "সংস্থার ধরণ", minWidth: 100 },
-  { title: "সংস্থার গ্রুপ", minWidth: 100 },
-  { title: "অভিভাবক", minWidth: 150 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের গ্রুপ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের অভিভাবক", minWidth: 150 },
+  { title: "অর্গানোগ্রাম তারিখ", minWidth: 125 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
   { title: COMMON_LABELS.ACTION },
 ];
