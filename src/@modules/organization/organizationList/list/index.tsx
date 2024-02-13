@@ -220,7 +220,7 @@ const List = () => {
       },
       body: {
         searchKey: searchKey || null,
-        ...filterBody.current
+        ...filterBody.current,
       },
     };
 
@@ -246,7 +246,6 @@ const List = () => {
       "প্রতিষ্ঠানের গ্রুপ":
         d?.organizationGroupDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       "প্রতিষ্ঠানের অভিভাবক": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (

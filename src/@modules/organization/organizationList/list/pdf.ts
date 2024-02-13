@@ -3,33 +3,65 @@ import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
-  { nameBn: "ধরণ (বাংলা)", key: "orgTypeBn" },
-  { nameBn: "ধরণ (ইংরেজি)", key: "orgTypeEn" },
-  { nameBn: "গ্রুপ (বাংলা)", key: "orgGroupBn" },
-  { nameBn: "গ্রুপ (ইংরেজি)", key: "orgGroupEn" },
-  { nameBn: "লেভেল", key: "orgLevel" },
-  { nameBn: "সক্রিয়", key: "isActive" },
+  { nameBn: "প্রতিষ্ঠানের নাম", key: "nameBn" },
+  { nameBn: "প্রতিষ্ঠানের পর্যায়", key: "officeTypeDTO" },
+  { nameBn: "প্রতিষ্ঠানের ধরণ", key: "organizationTypeDTO" },
+  { nameBn: "প্রতিষ্ঠানের গ্রুপ", key: "organizationGroupDTO" },
+  { nameBn: "প্রতিষ্ঠানের অভিভাবক", key: "parent" },
 ];
 
 export const organizationPDFContent = (data): TDocumentDefinitions => {
   return {
     content: [
-      { text: "প্রতিষ্ঠানের ধরণ প্রতিবেদন", style: "header" },
+      { text: "প্রতিষ্ঠানের প্রতিবেদন", style: "header" },
       {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [30, "*", "*", "*", "*", "*", "*"],
+          widths: [30, "*", "*", "*", "*", "*"],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
               columns.map((col) => {
                 if (col?.key) {
                   switch (col?.key) {
-                    case "isActive":
+                    case "nameBn":
                       return [
                         {
-                          text: d[col?.key] ? "True" : "False",
+                          text: d[col?.key] || COMMON_LABELS.NOT_ASSIGN,
+                          alignment: "center",
+                        },
+                        {
+                          text: d?.location?.chainBn || null,
+                          alignment: "center",
+                        },
+                      ];
+                    case "officeTypeDTO":
+                      return [
+                        {
+                          text:
+                            d[col?.key]?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+                          alignment: "center",
+                        },
+                      ];
+                    case "organizationTypeDTO":
+                      return [
+                        {
+                          text: d[col?.key]?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+                          alignment: "center",
+                        },
+                      ];
+                    case "organizationGroupDTO":
+                      return [
+                        {
+                          text: d[col?.key]?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+                          alignment: "center",
+                        },
+                      ];
+                    case "parent":
+                      return [
+                        {
+                          text: d[col?.key]?.nameBn || COMMON_LABELS.NOT_ASSIGN,
                           alignment: "center",
                         },
                       ];
