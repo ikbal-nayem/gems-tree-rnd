@@ -49,11 +49,14 @@ const OrgFilter = ({ onFilterDone, options }) => {
     if (!isObjectNull(groupItem)) {
       setValue("organizationCategoryId", groupItem?.id);
       if (groupItem?.nameEn === "Ministry" || groupItem?.nameEn === "Division")
-        OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
-          .then((res) => {
-            setOrgParentList(res?.body || []);
-          })
-          .catch((err) => toast.error(err?.message));
+        setValue("parent", null);
+      setValue("parentId", null);
+      setOrgParentList([]);
+      OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
+        .then((res) => {
+          setOrgParentList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
     }
   };
 
