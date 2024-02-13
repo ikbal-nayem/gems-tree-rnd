@@ -70,12 +70,8 @@ const Form = ({
 
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
-      console.log(updateData);
-      // Todo : parentOrganization is resetting before list preparation. Need to fix
       reset({
         ...updateData,
-        type: updateData?.metaTypeEn,
-        parentOrganization: updateData?.parentOrganization,
         parentType: notNullOrUndefined(updateData?.parentGroupId)
           ? "parent_group"
           : "parent_organization",
@@ -151,6 +147,7 @@ const Form = ({
                   name="parentOrganization"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
+                  key="parentOrganization"
                   onChange={(op) => setValue("parentOrganizationId", op?.id)}
                   control={control}
                 />
