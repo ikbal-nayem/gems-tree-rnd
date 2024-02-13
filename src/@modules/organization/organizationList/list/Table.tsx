@@ -72,13 +72,13 @@ const OrgTable: FC<OrgTableProps> = ({
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i, meta)} />
               <TableCell
-                text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.nameBn || COMMON_LABELS.NO_DATE}
                 subText={
                   <>
                     <div>{data?.nameEn}</div>
                     <div>
                       {/* স্থান:&nbsp; */}
-                      {data?.location?.chainBn || COMMON_LABELS.NOT_ASSIGN}
+                      {data?.location?.chainBn || COMMON_LABELS.NO_DATE}
                     </div>
                   </>
                 }
@@ -90,21 +90,21 @@ const OrgTable: FC<OrgTableProps> = ({
                 tagColor={"info"}
               />
               <TableCell
-                text={data?.officeTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.officeTypeDTO?.titleBn || COMMON_LABELS.NO_DATE}
                 subText={data?.orgTypeDTO?.titleBn}
               />
               <TableCell
                 text={
-                  data?.organizationTypeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                  data?.organizationTypeDTO?.nameBn || COMMON_LABELS.NO_DATE
                 }
               />
               <TableCell
                 text={
-                  data?.organizationGroupDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                  data?.organizationGroupDTO?.nameBn || COMMON_LABELS.NO_DATE
                 }
               />
               <TableCell
-                text={data?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.parent?.nameBn || COMMON_LABELS.NO_DATE}
                 subText={data?.parent?.nameEn}
               />
               <TableCell

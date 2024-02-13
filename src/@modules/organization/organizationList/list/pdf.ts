@@ -1,5 +1,4 @@
-import { COMMON_LABELS } from "@constants/common.constant";
-import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
+import { COMMON_LABELS, TDocumentDefinitions, numEnToBn } from "@gems/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
@@ -28,7 +27,7 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
                     case "nameBn":
                       return [
                         {
-                          text: d[col?.key] || COMMON_LABELS.NOT_ASSIGN,
+                          text: d[col?.key] || COMMON_LABELS.NO_DATE,
                           alignment: "center",
                         },
                         {
@@ -40,35 +39,35 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
                       return [
                         {
                           text:
-                            d[col?.key]?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+                            d[col?.key]?.titleBn || COMMON_LABELS.NO_DATE,
                           alignment: "center",
                         },
                       ];
                     case "organizationTypeDTO":
                       return [
                         {
-                          text: d[col?.key]?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+                          text: d[col?.key]?.nameBn || COMMON_LABELS.NO_DATE,
                           alignment: "center",
                         },
                       ];
                     case "organizationGroupDTO":
                       return [
                         {
-                          text: d[col?.key]?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+                          text: d[col?.key]?.nameBn || COMMON_LABELS.NO_DATE,
                           alignment: "center",
                         },
                       ];
                     case "parent":
                       return [
                         {
-                          text: d[col?.key]?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+                          text: d[col?.key]?.nameBn || COMMON_LABELS.NO_DATE,
                           alignment: "center",
                         },
                       ];
                     default:
                       return {
                         text: numEnToBn(
-                          d[col?.key] || COMMON_LABELS.NOT_ASSIGN
+                          d[col?.key] || COMMON_LABELS.NO_DATE
                         ),
                         alignment: "center",
                       };
