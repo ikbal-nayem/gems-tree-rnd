@@ -133,9 +133,9 @@ const OrgForm = ({
           <div className="row">
             <div className="col-12">
               <Autocomplete
-                label="প্রতিষ্ঠানের ধরণ"
-                placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
-                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                label="প্রতিষ্ঠানের পর্যায়"
+                placeholder="প্রতিষ্ঠানের পর্যায় বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের পর্যায় বাছাই করুন"
                 options={options?.institutionTypes || []}
                 name="officeTypeDTO"
                 getOptionLabel={(op) => op.titleBn}
@@ -148,9 +148,9 @@ const OrgForm = ({
             </div>
             <div className="col-12">
               <Autocomplete
-                label="সংস্থার ধরণ"
-                placeholder="সংস্থার ধরণ বাছাই করুন"
-                isRequired="সংস্থার ধরণ বাছাই করুন"
+                label="প্রতিষ্ঠানের ধরণ"
+                placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
                 options={options?.organizationTypes || []}
                 name="organizationTypeDTO"
                 getOptionLabel={(op) => op.nameBn}
@@ -165,9 +165,9 @@ const OrgForm = ({
               <>
                 <div className="col-12">
                   <Autocomplete
-                    label="সংস্থার গ্রুপ"
-                    placeholder="সংস্থার গ্রুপ বাছাই করুন"
-                    isRequired="সংস্থার গ্রুপ বাছাই করুন"
+                    label="প্রতিষ্ঠানের গ্রুপ"
+                    placeholder="প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
+                    isRequired="প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
                     options={orgGroupList || []}
                     name="organizationGroupDTO"
                     getOptionLabel={(op) => op.nameBn}
@@ -182,9 +182,9 @@ const OrgForm = ({
                 </div>
                 <div className="col-12">
                   <Autocomplete
-                    label="অভিভাবক প্রতিষ্ঠানের নাম"
-                    placeholder="অভিভাবক প্রতিষ্ঠানের নাম বাছাই করুন"
-                    isRequired="অভিভাবক প্রতিষ্ঠানের নাম বাছাই করুন"
+                    label="প্রতিষ্ঠানের অভিভাবক"
+                    placeholder="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
+                    isRequired="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
                     options={orgParentList || []}
                     name="parent"
                     getOptionLabel={(op) => op.nameBn}

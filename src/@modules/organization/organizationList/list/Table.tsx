@@ -1,5 +1,3 @@
-import { FC, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { MENU } from "@constants/menu-titles.constant";
 import {
@@ -18,15 +16,17 @@ import {
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
+import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, width: 50 },
-  { title: "নাম", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের নাম", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের পর্যায়", minWidth: 100 },
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
-  { title: "সংস্থার ধরণ", minWidth: 100 },
-  { title: "সংস্থার গ্রুপ", minWidth: 100 },
-  { title: "অভিভাবক", minWidth: 150 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের গ্রুপ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের অভিভাবক", minWidth: 150 },
+  { title: "অর্গানোগ্রাম তারিখ", minWidth: 125 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
   { title: COMMON_LABELS.ACTION },
 ];
@@ -77,7 +77,7 @@ const OrgTable: FC<OrgTableProps> = ({
                   <>
                     <div>{data?.nameEn}</div>
                     <div>
-                      স্থান:&nbsp;
+                      {/* স্থান:&nbsp; */}
                       {data?.location?.chainBn || COMMON_LABELS.NOT_ASSIGN}
                     </div>
                   </>
