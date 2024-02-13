@@ -40,10 +40,10 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.nameBn || "-"} />
+              <TableCell text={data?.nameEn || "-"} />
               <TableCell
-                text={numEnToBn(data?.orgTypeLevel) || COMMON_LABELS.NOT_ASSIGN}
+                text={numEnToBn(data?.orgTypeLevel) || "-"}
                 textAlign="center"
                 textClassName="fw-bold fs-3"
               />

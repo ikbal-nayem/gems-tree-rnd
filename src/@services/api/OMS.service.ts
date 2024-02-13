@@ -287,6 +287,11 @@ export const OMSService = {
         OMS_SERVICE + "organization-category/get-list",
         payload
       ),
+
+    ministryDivisionDepartmentList: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-ministry-division-and-departmentOf"
+      ),
   },
 
   SAVE: {

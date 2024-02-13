@@ -7,10 +7,10 @@ import {
   DrawerBody,
   DrawerFooter,
   Input,
-  Select,
+  RadioButton,
   toast,
 } from "@gems/components";
-import { COMMON_INSTRUCTION, IObject, numBnToEn } from "@gems/utils";
+import { IObject, notNullOrUndefined } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,19 +23,6 @@ interface IForm {
   submitLoading?: boolean;
 }
 
-const organizationTypeStaticList = [
-  {
-    titleEn: "Type",
-    key: "ORG_CATEGORY_TYPE",
-    titleBn: "ধরণ",
-  },
-  {
-    titleEn: "Group",
-    key: "ORG_CATEGORY_GROUP",
-    titleBn: "গ্রুপ",
-  },
-];
-
 const Form = ({
   isOpen,
   onClose,
@@ -43,6 +30,7 @@ const Form = ({
   updateData,
   submitLoading,
 }: IForm) => {
+  const formProps = useForm();
   const {
     register,
     handleSubmit,
@@ -51,10 +39,11 @@ const Form = ({
     watch,
     control,
     formState: { errors },
-  } = useForm();
+  } = formProps;
 
   const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
   const [orgGroupParentList, setOrgGroupParentList] = useState<IObject[]>([]);
+  const [parentOrgList, setParentOrgList] = useState<IObject[]>([]);
 
   useEffect(() => {
     OMSService.FETCH.organizationTypeList()
@@ -63,25 +52,36 @@ const Form = ({
       })
       .catch((err) => toast.error(err?.message));
 
+    getParentOrgList();
     getAllGroupParentList();
   }, []);
 
   const getAllGroupParentList = () => {
     OMSService.FETCH.organizationGroupList()
-      .then((res) => {
-        setOrgGroupParentList(res?.body || []);
-      })
+      .then((res) => setOrgGroupParentList(res?.body || []))
+      .catch((err) => toast.error(err?.message));
+  };
+
+  const getParentOrgList = () => {
+    OMSService.FETCH.ministryDivisionDepartmentList()
+      .then((resp) => setParentOrgList(resp?.body))
       .catch((err) => toast.error(err?.message));
   };
 
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
+      console.log(updateData);
+      // Todo : parentOrganization is resetting before list preparation. Need to fix
       reset({
         ...updateData,
         type: updateData?.metaTypeEn,
+        parentOrganization: updateData?.parentOrganization,
+        parentType: notNullOrUndefined(updateData?.parentGroupId)
+          ? "parent_group"
+          : "parent_organization",
       });
     } else {
-      reset({ isActive: true });
+      reset({ isActive: true, parentType: "parent_group" });
     }
   }, [updateData, reset]);
 
@@ -114,16 +114,47 @@ const Form = ({
                 isError={!!errors?.parentDTO}
                 errorMessage={errors?.parentDTO?.message as string}
               />
-              <Autocomplete
-                label="প্রতিষ্ঠানের গ্রুপ অভিভাবক"
-                placeholder="বাছাই করুন"
-                options={orgGroupParentList || []}
-                name="parentGroup"
-                getOptionLabel={(op) => op.nameBn}
-                getOptionValue={(op) => op.id}
-                onChange={(op) => setValue("parentGroupId", op?.id)}
-                control={control}
+            </div>
+            <div className="col-12 d-flex justify-content gap-8 mb-2">
+              <RadioButton
+                label="গ্রুপ অভিভাবক"
+                value="parent_group"
+                noMargin
+                registerProperty={{
+                  ...register("parentType"),
+                }}
               />
+              <RadioButton
+                label="অভিভাবক প্রতিষ্ঠান"
+                value="parent_organization"
+                noMargin
+                registerProperty={{
+                  ...register("parentType"),
+                }}
+              />
+            </div>
+            <div className="col-12">
+              {watch("parentType") === "parent_group" ? (
+                <Autocomplete
+                  placeholder="গ্রুপ অভিভাবক বাছাই করুন"
+                  options={orgGroupParentList || []}
+                  name="parentGroup"
+                  getOptionLabel={(op) => op.nameBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("parentGroupId", op?.id)}
+                  control={control}
+                />
+              ) : (
+                <Autocomplete
+                  placeholder="অভিভাবক প্রতিষ্ঠান বাছাই করুন"
+                  options={parentOrgList || []}
+                  name="parentOrganization"
+                  getOptionLabel={(op) => op.nameBn}
+                  getOptionValue={(op) => op.id}
+                  onChange={(op) => setValue("parentOrganizationId", op?.id)}
+                  control={control}
+                />
+              )}
             </div>
             <div className="col-12">
               <Input

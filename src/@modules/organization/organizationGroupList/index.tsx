@@ -172,6 +172,8 @@ const OrganizationGroupList = () => {
           orgCategoryType: "ORG_CATEGORY_GROUP",
         };
 
+    // console.log("Group Data: ", data);
+        
     const service = isUpdate
       ? OMSService.UPDATE.organizationType
       : OMSService.SAVE.organizationType;

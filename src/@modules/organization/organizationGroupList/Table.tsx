@@ -16,6 +16,7 @@ const columns: ITableHeadColumn[] = [
   { title: "নাম (ইংরেজি)", minWidth: 100 },
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
   { title: "গ্রুপ অভিভাবক", minWidth: 100 },
+  { title: "অভিভাবক প্রতিষ্ঠান", minWidth: 100 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
   { title: COMMON_LABELS.ACTION },
 ];
@@ -41,13 +42,16 @@ const GradeTable: FC<GradeTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.nameBn || "-"} />
+              <TableCell text={data?.nameEn || "-"} />
               <TableCell
-                text={data?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.parent?.nameBn || "-"}
               />
               <TableCell
-                text={data?.parentGroup?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.parentGroup?.nameBn || "-"}
+              />
+              <TableCell
+                text={data?.parentOrganization?.nameBn || "-"}
               />
 
               <TableCell isActive={data?.isActive} />

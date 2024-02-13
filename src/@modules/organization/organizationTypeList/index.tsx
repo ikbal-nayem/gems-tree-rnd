@@ -129,7 +129,7 @@ const OrganizationTypeList = () => {
       "ক্রমিক নং": i + 1,
       "নাম (বাংলা)": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       "নাম (ইংরেজি)": d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
-      লেভেল: d?.orgTypeLevel || COMMON_LABELS.NOT_ASSIGN,
+      লেভেল: numEnToBn(d?.orgTypeLevel) || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়:
         (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
     }));
