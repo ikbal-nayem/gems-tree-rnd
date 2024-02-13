@@ -19,6 +19,9 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
     element: lazy(() => import("@modules/organization/organizationTypeList")),
   },
+];
+
+const permiableRouteList = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
@@ -36,4 +39,5 @@ let routeList = [
   },
 ];
 
-export const OtherRoutes = getPermittedRouteList(routeList);
+export const OtherRoutes =
+  getPermittedRouteList(routeList).concat(permiableRouteList);
