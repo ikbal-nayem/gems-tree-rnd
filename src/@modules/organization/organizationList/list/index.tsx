@@ -237,15 +237,14 @@ const List = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": numEnToBn(i + 1),
-      "প্রতিষ্ঠানের নাম": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-      স্থান: d?.location?.chainBn || COMMON_LABELS.NOT_ASSIGN,
-      "প্রতিষ্ঠানের পর্যায়":
-        d?.officeTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের নাম": d?.nameBn || COMMON_LABELS.NO_DATE,
+      স্থান: d?.location?.chainBn || COMMON_LABELS.NO_DATE,
+      "প্রতিষ্ঠানের পর্যায়": d?.officeTypeDTO?.titleBn || COMMON_LABELS.NO_DATE,
       "প্রতিষ্ঠানের ধরণ":
-        d?.organizationTypeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+        d?.organizationTypeDTO?.nameBn || COMMON_LABELS.NO_DATE,
       "প্রতিষ্ঠানের গ্রুপ":
-        d?.organizationGroupDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-      "প্রতিষ্ঠানের অভিভাবক": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+        d?.organizationGroupDTO?.nameBn || COMMON_LABELS.NO_DATE,
+      "প্রতিষ্ঠানের অভিভাবক": d?.parent?.nameBn || COMMON_LABELS.NO_DATE,
     }));
 
   return (
