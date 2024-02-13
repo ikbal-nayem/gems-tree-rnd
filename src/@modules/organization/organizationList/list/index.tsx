@@ -33,8 +33,12 @@ let initPayloadMeta = {
   limit: 10,
   sort: [
     {
-      field: "serialNo",
       order: "asc",
+      field: "serialNo",
+    },
+    {
+      order: "asc",
+      field: "nameEn",
     },
   ],
 };
@@ -107,8 +111,8 @@ const List = () => {
     const payload = {
       meta: searchKey
         ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
+          ? { ...reqMeta }
+          : { ...respMeta, page: 0 }
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
