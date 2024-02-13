@@ -15,7 +15,9 @@ import {
   IMeta,
   IObject,
   exportXLSX,
+  generatePDF,
   numEnToBn,
+  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
@@ -26,7 +28,7 @@ import { searchParamsToObject } from "utility/makeObject";
 import OrgForm from "./Form";
 import OrgFilter from "./OrgFilter";
 import OrgTable from "./Table";
-import { LABELS } from "./labels";
+import { organizationPDFContent } from "./pdf";
 
 let initPayloadMeta = {
   page: 0,
@@ -199,27 +201,53 @@ const List = () => {
     setIsUpdate(false);
   };
 
-  const getXLSXStoreList = () =>
-    exportXLSX(exportData(listData || []), "প্রতিষ্ঠানের_তালিকা");
+  const downloadFile = (downloadtype: "excel" | "pdf") => {
+    topProgress.show();
+    const payload = {
+      meta: {
+        page: 0,
+        limit: respMeta.totalRecords,
+        sort: [
+          {
+            order: "asc",
+            field: "serialNo",
+          },
+          {
+            order: "asc",
+            field: "nameEn",
+          },
+        ],
+      },
+      body: {
+        searchKey: searchKey || null,
+        ...filterBody.current
+      },
+    };
 
-  const exportData = (data: any[], lang: "en" | "bn" = "bn") =>
-    lang === "bn"
-      ? data.map((d) => ({
-          [LABELS.BN.nameBn]: d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.BN.nameEn]: d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.BN.officeType]:
-            d?.officeTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.BN.orgType]:
-            d?.orgTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-        }))
-      : data.map((d) => ({
-          [LABELS.EN.nameBn]: d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.EN.nameEn]: d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.EN.officeType]:
-            d?.officeTypeDTO?.titleEn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.EN.orgType]:
-            d?.orgTypeDTO?.titleEn || COMMON_LABELS.NOT_ASSIGN,
-        }));
+    OMSService.getOrganizationList(payload)
+      .then((res) =>
+        downloadtype === "pdf"
+          ? generatePDF(organizationPDFContent(res?.body))
+          : exportXLSX(exportData(res?.body || []), "Organization Type list")
+      )
+      .catch((err) => toast.error(err?.message))
+      .finally(() => topProgress.hide());
+  };
+
+  const exportData = (data: any[]) =>
+    data.map((d, i) => ({
+      "ক্রমিক নং": numEnToBn(i + 1),
+      "প্রতিষ্ঠানের নাম": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      স্থান: d?.location?.chainBn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের পর্যায়":
+        d?.officeTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের ধরণ":
+        d?.organizationTypeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের গ্রুপ":
+        d?.organizationGroupDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের অভিভাবক": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
+    }));
 
   return (
     <>
@@ -250,7 +278,10 @@ const List = () => {
             }}
             onFilterDone={onFilterDone}
           />
-          <DownloadMenu fnDownloadExcel={getXLSXStoreList} />
+          <DownloadMenu
+            fnDownloadExcel={() => downloadFile("excel")}
+            fnDownloadPDF={() => downloadFile("pdf")}
+          />
         </div>
 
         {!!listData?.length && (

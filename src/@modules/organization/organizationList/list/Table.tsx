@@ -26,7 +26,7 @@ const columns: ITableHeadColumn[] = [
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
   { title: "প্রতিষ্ঠানের গ্রুপ", minWidth: 100 },
   { title: "প্রতিষ্ঠানের অভিভাবক", minWidth: 150 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 125 },
+  { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
   { title: COMMON_LABELS.ACTION },
 ];

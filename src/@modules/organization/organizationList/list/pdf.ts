@@ -11,7 +11,7 @@ const columns = [
   { nameBn: "সক্রিয়", key: "isActive" },
 ];
 
-export const organizationTypePDFContent = (data): TDocumentDefinitions => {
+export const organizationPDFContent = (data): TDocumentDefinitions => {
   return {
     content: [
       { text: "প্রতিষ্ঠানের ধরণ প্রতিবেদন", style: "header" },
