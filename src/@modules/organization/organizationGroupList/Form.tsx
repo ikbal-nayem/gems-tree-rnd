@@ -1,16 +1,21 @@
+import { MENU } from "@constants/menu-titles.constant";
 import {
+  Autocomplete,
   Button,
   Checkbox,
   Drawer,
   DrawerBody,
   DrawerFooter,
   Input,
+  Select,
+  toast,
 } from "@gems/components";
-import { COMMON_INSTRUCTION, numBnToEn } from "@gems/utils";
-import { useEffect } from "react";
+import { COMMON_INSTRUCTION, IObject, numBnToEn } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-interface IGradeForm {
+interface IForm {
   isOpen?: boolean;
   onSubmit: (data) => void;
   onClose: () => void;
@@ -18,19 +23,56 @@ interface IGradeForm {
   submitLoading?: boolean;
 }
 
+const organizationTypeStaticList = [
+  {
+    titleEn: "Type",
+    key: "ORG_CATEGORY_TYPE",
+    titleBn: "ধরণ",
+  },
+  {
+    titleEn: "Group",
+    key: "ORG_CATEGORY_GROUP",
+    titleBn: "গ্রুপ",
+  },
+];
+
 const Form = ({
   isOpen,
   onClose,
   onSubmit,
   updateData,
   submitLoading,
-}: IGradeForm) => {
+}: IForm) => {
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
+    control,
     formState: { errors },
   } = useForm();
+
+  const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
+  const [orgGroupParentList, setOrgGroupParentList] = useState<IObject[]>([]);
+
+  useEffect(() => {
+    OMSService.FETCH.organizationTypeList()
+      .then((res) => {
+        setOrgTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+
+    getAllGroupParentList();
+  }, []);
+
+  const getAllGroupParentList = () => {
+    OMSService.FETCH.organizationGroupList()
+      .then((res) => {
+        setOrgGroupParentList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
 
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
@@ -45,9 +87,11 @@ const Form = ({
 
   return (
     <Drawer
-      title={`প্রতিষ্ঠানের ধরণ ${
-        Object.keys(updateData)?.length > 0 ? "হালনাগাদ" : "সংরক্ষণ"
-      } করুন`}
+      title={
+        MENU.BN.ORGANIZATION_GROUP +
+        (Object.keys(updateData)?.length > 0 ? " হালনাগাদ" : " সংরক্ষণ") +
+        " করুন"
+      }
       isOpen={isOpen}
       handleClose={onClose}
       className="w-md-50 w-xl-25"
@@ -55,6 +99,32 @@ const Form = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
+            <div className="col-12">
+              <Autocomplete
+                label="প্রতিষ্ঠানের ধরণ"
+                placeholder="বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                options={orgTypeList || []}
+                name="parent"
+                getOptionLabel={(op) => op.nameBn}
+                getOptionValue={(op) => op.id}
+                onChange={(op) => setValue("parentId", op?.id)}
+                isDisabled={updateData?.parentDTO}
+                control={control}
+                isError={!!errors?.parentDTO}
+                errorMessage={errors?.parentDTO?.message as string}
+              />
+              <Autocomplete
+                label="প্রতিষ্ঠানের গ্রুপ অভিভাবক"
+                placeholder="বাছাই করুন"
+                options={orgGroupParentList || []}
+                name="parentGroup"
+                getOptionLabel={(op) => op.nameBn}
+                getOptionValue={(op) => op.id}
+                onChange={(op) => setValue("parentGroupId", op?.id)}
+                control={control}
+              />
+            </div>
             <div className="col-12">
               <Input
                 label="নাম (ইংরেজি)"
@@ -81,28 +151,6 @@ const Form = ({
                 isRequired
                 isError={!!errors?.nameBn}
                 errorMessage={errors?.nameBn?.message as string}
-              />
-            </div>
-
-            <div className="col-12">
-              <Input
-                label="প্রতিষ্ঠানের লেভেল"
-                type="number"
-                placeholder="প্রতিষ্ঠানের লেভেল লিখুন"
-                min={1}
-                registerProperty={{
-                  ...register("orgTypeLevel", {
-                    required: "প্রতিষ্ঠানের লেভেল লিখুন",
-                    setValueAs: (v) => numBnToEn(v),
-                    maxLength: {
-                      value: 1,
-                      message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                    },
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.orgTypeLevel}
-                errorMessage={errors?.orgTypeLevel?.message as string}
               />
             </div>
             {/* <div className="col-12">

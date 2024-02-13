@@ -1,24 +1,25 @@
 import { COMMON_LABELS } from "@constants/common.constant";
-import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
+import { TDocumentDefinitions, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { pdfCellAlign } from "utility/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
   { nameBn: "নাম (বাংলা)", key: "nameBn" },
   { nameBn: "নাম (ইংরেজি)", key: "nameEn" },
-  { nameBn: "প্রতিষ্ঠানের লেভেল", key: "orgTypeLevel" },
+  { nameBn: "প্রতিষ্ঠানের ধরণ", key: "orgType" },
+  { nameBn: "গ্রুপ অভিভাবক", key: "parentGroupName" },
   { nameBn: "সক্রিয়", key: "isActive" },
 ];
 
 export const organizationTypePDFContent = (data): TDocumentDefinitions => {
   return {
     content: [
-      { text: "প্রতিষ্ঠানের ধরণের প্রতিবেদন", style: "header" },
+      { text: "প্রতিষ্ঠানের গ্রুপের প্রতিবেদন", style: "header" },
       {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [35, "*", "*", "*", 35],
+          widths: [30, "*", "*", "*", "*", 35],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
@@ -30,6 +31,21 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                         {
                           text: d[col?.key] ? "সক্রিয়" : "সক্রিয় নয়",
                           alignment: "center",
+                          // color: d[col?.key] ? "gray-700" : "red",
+                        },
+                      ];
+                    case "orgType":
+                      return [
+                        {
+                          text: d?.parent?.nameBn || "-",
+                          alignment: pdfCellAlign(d?.parent?.nameBn),
+                        },
+                      ];
+                    case "parentGroupName":
+                      return [
+                        {
+                          text: d?.parentGroup?.nameBn || "-",
+                          alignment: pdfCellAlign(d?.parentGroup?.nameBn),
                         },
                       ];
                     default:
@@ -37,7 +53,7 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                         text: numEnToBn(
                           d[col?.key] || COMMON_LABELS.NOT_ASSIGN
                         ),
-                        alignment: "center",
+                        alignment: pdfCellAlign(d[col?.key]),
                       };
                   }
                 } else return { text: numEnToBn(idx + 1), alignment: "center" };

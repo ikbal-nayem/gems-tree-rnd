@@ -17,7 +17,6 @@ import {
   IObject,
   exportXLSX,
   generatePDF,
-  notNullOrUndefined,
   numEnToBn,
   topProgress,
   useDebounce,
@@ -27,26 +26,22 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
-import Form from "./Form";
-import DataTable from "./Table";
+import GradeForm from "./Form";
+import GradeTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
   page: 0,
-  limit: 20,
+  limit: 100,
   sort: [
     {
       field: "code",
       order: "asc",
     },
-    {
-      field: "serialNo",
-      order: "asc",
-    },
   ],
 };
 
-const NodeList = () => {
+const OrganizationGroupList = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -59,14 +54,14 @@ const NodeList = () => {
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
-  // const [orgType, setOrgType] = useState<string>("");
-  // const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [orgType, setOrgType] = useState<string>("");
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
-  // const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
-  // const formProps = useForm();
-  // const { control } = formProps;
+  const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
+  const formProps = useForm();
+  const { control } = formProps;
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -75,113 +70,122 @@ const NodeList = () => {
     // eslint-disable-next-line
   }, [searchKey, setSearchParams]);
 
-  // useEffect(() => {
-  //   getOrganizationTypesList();
-  // }, []);
+  useEffect(() => {
+    getOrganizationTypesList();
+  }, []);
 
   useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, [
-    searchParams,
-    // orgType
-  ]);
+  }, [searchParams, orgType]);
 
-  // const getOrganizationTypesList = () => {
-  //   OMSService.FETCH.organizationTypeList()
-  //     .then((res) => {
-  //       setOrgTypeList(res?.body || []);
-  //     })
-  //     .catch((err) => toast.error(err?.message));
-  // };
+  const getOrganizationTypesList = () => {
+    OMSService.FETCH.organizationTypeList()
+      .then((res) => {
+        setOrgTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  };
 
   const getDataList = (reqMeta = null) => {
     const payload = {
-      meta: searchKey
-        ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
-        : reqMeta || respMeta,
+      meta:
+        searchKey || orgType
+          ? reqMeta
+            ? { ...reqMeta, sort: null }
+            : { ...respMeta, page: 0, sort: null }
+          : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        // parentId: orgType || null,
+        parentId: orgType || null,
+        orgCategoryType: "ORG_CATEGORY_GROUP",
       },
     };
 
-    // OMSService.getOrganizationTypeList(payload)
-    //   .then((res) => {
-    //     setListData(res?.body || []);
-    //     setRespMeta(
-    //       res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
-    //     );
-    //   })
-    //   .catch((err) => toast.error(err?.message))
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //   });
+    OMSService.FETCH.organizationCategoryList(payload)
+      .then((res) => {
+        setListData(res?.body || []);
+        setRespMeta(
+          res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+        );
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const onPageChanged = (metaParams: IMeta) => {
     getDataList({ ...metaParams });
   };
 
-  // const onDrawerClose = () => {
-  //   setIsDrawerOpen(false);
-  //   setIsUpdate(false);
-  //   setUpdateData({});
-  // };
+  const onDrawerClose = () => {
+    setIsDrawerOpen(false);
+    setIsUpdate(false);
+    setUpdateData({});
+  };
 
-  // const handleUpdate = (data: any) => {
-  //   setIsUpdate(true);
-  //   setUpdateData(data);
-  //   setIsDrawerOpen(true);
-  // };
+  const handleUpdate = (data: any) => {
+    setIsUpdate(true);
+    setUpdateData(data);
+    setIsDrawerOpen(true);
+  };
 
-  // const handleDelete = (data: any) => {
-  //   setIsDeleteModal(true);
-  //   setDeleteData(data);
-  // };
-  // const onCancelDelete = () => {
-  //   setIsDeleteModal(false);
-  //   setDeleteData(null);
-  // };
-  // const onConfirmDelete = () => {
-  //   setIsDeleteLoading(true);
-  //   let payload = {
-  //     body: {
-  //       ids: [deleteData?.id || ""],
-  //     },
-  //   };
-  //   OMSService.organizationTypeDelete(payload)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setDeleteData(null);
-  //     })
-  //     .catch((err) => toast.error(err?.message))
-  //     .finally(() => {
-  //       setIsDeleteLoading(false);
-  //       setIsDeleteModal(false);
-  //     });
-  // };
+  const handleDelete = (data: any) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    let payload = {
+      body: {
+        ids: [deleteData?.id || ""],
+      },
+    };
+    OMSService.DELETE.organizationType(payload)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
 
-  // const onSubmit = (data) => {
-  //   setIsSubmitLoading(true);
+  const onSubmit = (data) => {
+    setIsSubmitLoading(true);
+    data = isUpdate
+      ? {
+          ...data,
+          id: updateData?.id || "",
+          orgCategoryType: "ORG_CATEGORY_GROUP",
+        }
+      : {
+          ...data,
+          orgCategoryType: "ORG_CATEGORY_GROUP",
+        };
 
-  //   const service = isUpdate
-  //     ? OMSService.organizationTypeUpdate
-  //     : OMSService.organizationTypeCreate;
-  //   service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setIsDrawerOpen(false);
-  //       setIsUpdate(false);
-  //       setUpdateData({});
-  //     })
-  //     .catch((error) => toast.error(error?.message))
-  //     .finally(() => setIsSubmitLoading(false));
-  // };
+    const service = isUpdate
+      ? OMSService.UPDATE.organizationType
+      : OMSService.SAVE.organizationType;
+    service(data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsDrawerOpen(false);
+        setIsUpdate(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
+  };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     topProgress.show();
@@ -196,44 +200,42 @@ const NodeList = () => {
       },
     };
 
-    // OMSService.getOrganizationTypeList(payload)
-    //   .then((res) =>
-    //     downloadtype === "pdf"
-    //       ? generatePDF(organizationTypePDFContent(res?.body))
-    //       : exportXLSX(exportData(res?.body || []), "Organization Type list")
-    //   )
-    //   .catch((err) => toast.error(err?.message))
-    //   .finally(() => topProgress.hide());
+    OMSService.FETCH.organizationCategoryList(payload)
+      .then((res) =>
+        downloadtype === "pdf"
+          ? generatePDF(organizationTypePDFContent(res?.body))
+          : exportXLSX(
+              exportData(res?.body || []),
+              "প্রতিষ্ঠানের গ্রুপের তালিকা"
+            )
+      )
+      .catch((err) => toast.error(err?.message))
+      .finally(() => topProgress.hide());
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
-      "ধরণ (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
-      লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
-      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (বাংলা)": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের ধরণ": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "গ্রুপ অভিভাবক": d?.parentGroup?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      সক্রিয়:
+        (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
     <>
-      <PageTitle>
-        {MENU.BN.NODE_LIST +
-          (notNullOrUndefined(respMeta?.totalRecords)
-            ? " (মোট: " + numEnToBn(respMeta?.totalRecords) + " টি)"
-            : "")}
-      </PageTitle>
-      {/* <PageToolbarRight>
+      <PageTitle>{MENU.BN.ORGANIZATION_GROUP}</PageTitle>
+      <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight> */}
+      </PageToolbarRight>
       <div className="card p-5">
         {respMeta.totalRecords && (
           <div className="d-flex gap-3">
-            {/* <span className="w-25">
+            <span className="w-25">
               <Autocomplete
                 placeholder="সংস্থার ধরণ বাছাই করুন"
                 options={orgTypeList || []}
@@ -243,7 +245,7 @@ const NodeList = () => {
                 onChange={(op) => setOrgType(op?.id)}
                 control={control}
               />
-            </span> */}
+            </span>
 
             <Input
               type="search"
@@ -259,39 +261,49 @@ const NodeList = () => {
           </div>
         )}
 
+        {!!listData?.length && (
+          <div className="d-flex justify-content-between gap-3">
+            <div className="text-primary text-center">
+              <h5 className="mt-3">
+                মোট প্রতিষ্ঠানের গ্রুপ : {numEnToBn(respMeta?.totalRecords)} টি
+              </h5>
+            </div>
+          </div>
+        )}
+
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="mt-3">
-          <DataTable
+          <GradeTable
             data={listData}
-            // handleUpdate={handleUpdate}
-            // handleDelete={handleDelete}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
           >
             <Pagination
               meta={respMeta}
               pageNeighbours={2}
               onPageChanged={onPageChanged}
             />
-          </DataTable>
+          </GradeTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো প্রতিষ্ঠান-গ্রুপের তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        {/* <Form
+        <GradeForm
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-        /> */}
+        />
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModal}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
@@ -299,8 +311,8 @@ const NodeList = () => {
         onConfirmLabel={"মুছে ফেলুন"}
       >
         আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
-      </ConfirmationModal> */}
+      </ConfirmationModal>
     </>
   );
 };
-export default NodeList;
+export default OrganizationGroupList;
