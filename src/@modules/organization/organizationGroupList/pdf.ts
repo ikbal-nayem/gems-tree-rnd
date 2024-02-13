@@ -1,5 +1,6 @@
 import { COMMON_LABELS } from "@constants/common.constant";
-import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
+import { TDocumentDefinitions, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { pdfCellAlign } from "utility/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
@@ -18,7 +19,7 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [30, "*", "*", "*", "*", "*"],
+          widths: [30, "*", "*", "*", "*", 35],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
@@ -37,14 +38,14 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                       return [
                         {
                           text: d?.parent?.nameBn || "-",
-                          alignment: "center",
+                          alignment: pdfCellAlign(d?.parent?.nameBn),
                         },
                       ];
                     case "parentGroupName":
                       return [
                         {
                           text: d?.parentGroup?.nameBn || "-",
-                          alignment: "center",
+                          alignment: pdfCellAlign(d?.parentGroup?.nameBn),
                         },
                       ];
                     default:
@@ -52,7 +53,7 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                         text: numEnToBn(
                           d[col?.key] || COMMON_LABELS.NOT_ASSIGN
                         ),
-                        alignment: "center",
+                        alignment: pdfCellAlign(d[col?.key]),
                       };
                   }
                 } else return { text: numEnToBn(idx + 1), alignment: "center" };

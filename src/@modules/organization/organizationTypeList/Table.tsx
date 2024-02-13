@@ -7,30 +7,26 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
-import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
+import { COMMON_LABELS, generateRowNumBn, numEnToBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  // { title: "ধরণ (বাংলা)", minWidth: 100 },
-  // { title: "ধরণ (ইংরেজি)", minWidth: 100 },
   { title: "নাম (বাংলা)", minWidth: 100 },
   { title: "নাম (ইংরেজি)", minWidth: 100 },
-  { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
-  { title: "গ্রুপ অভিভাবক", minWidth: 100 },
-  // { title: "কোড", minWidth: 75 },
+  { title: "প্রতিষ্ঠানের লেভেল", minWidth: 75, align: "center" },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
-  { title: COMMON_LABELS.ACTION },
+  { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
-type GradeTableProps = {
+type DataTableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
 };
 
-const GradeTable: FC<GradeTableProps> = ({
+const DataTable: FC<DataTableProps> = ({
   children,
   data = [],
   handleUpdate,
@@ -44,26 +40,15 @@ const GradeTable: FC<GradeTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              {/* <TableCell text={data?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN} /> */}
-              {/* <TableCell text={data?.orgTypeEn || COMMON_LABELS.NOT_ASSIGN} /> */}
               <TableCell text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.nameEn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell
-                text={data?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={numEnToBn(data?.orgTypeLevel) || COMMON_LABELS.NOT_ASSIGN}
+                textAlign="center"
+                textClassName="fw-bold fs-3"
               />
-              <TableCell
-                text={data?.parentGroup?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-              />
-              {/* <TableCell text={data?.code || COMMON_LABELS.NOT_ASSIGN} /> */}
-
-              <TableCell>
-                {data?.isActive ? (
-                  <Icon icon="done" color="success" size={16} />
-                ) : (
-                  <Icon icon="close" color="danger" size={16} />
-                )}
-              </TableCell>
-              <TableCell>
+              <TableCell isActive={data?.isActive} />
+              <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
@@ -96,4 +81,4 @@ const GradeTable: FC<GradeTableProps> = ({
   );
 };
 
-export default GradeTable;
+export default DataTable;

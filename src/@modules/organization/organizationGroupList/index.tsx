@@ -207,7 +207,10 @@ const OrganizationGroupList = () => {
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organizationTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "প্রতিষ্ঠানের গ্রুপের তালিকা")
+          : exportXLSX(
+              exportData(res?.body || []),
+              "প্রতিষ্ঠানের গ্রুপের তালিকা"
+            )
       )
       .catch((err) => toast.error(err?.message))
       .finally(() => topProgress.hide());
@@ -216,12 +219,12 @@ const OrganizationGroupList = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
-      "ধরণ (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
-      "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
-      লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
-      সক্রিয়: d?.isActive ? "True" : "False" || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (বাংলা)": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের ধরণ": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "গ্রুপ অভিভাবক": d?.parentGroup?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      সক্রিয়:
+        (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
@@ -265,7 +268,7 @@ const OrganizationGroupList = () => {
           <div className="d-flex justify-content-between gap-3">
             <div className="text-primary text-center">
               <h5 className="mt-3">
-                মোট প্রতিষ্ঠানের ধরণ {numEnToBn(respMeta?.totalRecords)} টি
+                মোট প্রতিষ্ঠানের গ্রুপ : {numEnToBn(respMeta?.totalRecords)} টি
               </h5>
             </div>
           </div>
