@@ -1,10 +1,10 @@
-import { ChartContainer } from "@components/OrgChart/ChartContainer";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import { ConfirmationModal } from "@gems/components";
 import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
-import { CoreService } from "@services/api/Core.service";
+import { CoreService } from "../../../../../@services/api/Core.service";
 
 const addNode = (nd, parent, templateData) => {
   if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
