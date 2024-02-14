@@ -7,7 +7,7 @@ import { ENV } from "./ENV.config";
 import { AUTH_INFO, HOME_URL, getResponseStatusMessage } from "@gems/utils";
 
 const axiosIns = axios.create({
-	baseURL: ENV.getway,
+	baseURL: ENV.gateway,
 	headers: {
 		Accept: "application/json",
 		// ds: deviceSignature(),
