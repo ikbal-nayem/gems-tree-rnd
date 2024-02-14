@@ -90,12 +90,17 @@ const OrganogramTable: FC<TableProps> = ({
   const navigate = useNavigate();
 
   const sendTo = (
-    destination: "details" | "node_form" | "node_list",
+    destination: "details" | "node_main_act" | "node_aob" | "node_list",
     item: IObject
   ) => {
     switch (destination) {
-      case "node_form":
-        navigate(ROUTE_L2.ORG_TEMPLATE_NODE_CREATE, {
+      case "node_main_act":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_MAIN_ACTIVITY, {
+          state: item,
+        });
+        break;
+      case "node_aob":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS, {
           state: item,
         });
         break;
@@ -200,12 +205,16 @@ const OrganogramTable: FC<TableProps> = ({
                         ))
                     }
                   >
-                    <DropdownItem onClick={() => sendTo("node_form", item)}>
-                      <Icon size={19} icon="add" />
-                      <h6 className="mb-0 ms-2">পদ/স্তর যুক্ত করুন</h6>
+                    <DropdownItem onClick={() => sendTo("node_main_act", item)}>
+                      <Icon size={19} icon="list" />
+                      <h6 className="mb-0 ms-2">প্রধান কার্যাবলির তালিকা</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => sendTo("node_aob", item)}>
+                      <Icon size={19} icon="list" />
+                      <h6 className="mb-0 ms-2">কর্মবন্টনের তালিকা</h6>
                     </DropdownItem>
                     <DropdownItem onClick={() => sendTo("node_list", item)}>
-                      <Icon size={19} icon="visibility" />
+                      <Icon size={19} icon="list" />
                       <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা</h6>
                     </DropdownItem>
                     <DropdownItem onClick={() => sendTo("details", item)}>

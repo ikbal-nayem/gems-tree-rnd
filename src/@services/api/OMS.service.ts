@@ -292,6 +292,11 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organization/get-ministry-division-and-departmentOf"
       ),
+
+    organogramMainActivityById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-main-activity/get-by-organogram-id/" + id
+      ),
   },
 
   SAVE: {
@@ -317,6 +322,12 @@ export const OMSService = {
         OMS_SERVICE + "organization-category/create",
         payload
       ),
+
+    organogramMainActivity: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-main-activity/save",
+        payload
+      ),
   },
 
   UPDATE: {
@@ -336,6 +347,12 @@ export const OMSService = {
 
     organizationType: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "organization-category/update", payload),
+
+    organogramMainActivity: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-main-activity/update",
+        payload
+      ),
   },
 
   DELETE: {

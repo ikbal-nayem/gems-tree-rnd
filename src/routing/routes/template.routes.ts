@@ -54,6 +54,16 @@ export const TemplateRoutes: IAppRoutes = {
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_NODE_LIST,
       element: lazy(() => import("@modules/organogram/draft-list/node/list")),
     },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_MAIN_ACTIVITY,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_MAIN_ACTIVITY,
+      element: lazy(() => import("@modules/organogram/draft-list/main-activity")),
+    },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS,
+      element: lazy(() => import("@modules/organogram/draft-list/allocation-of-business")),
+    },
     ...permissionRouteList,
   ],
 };
