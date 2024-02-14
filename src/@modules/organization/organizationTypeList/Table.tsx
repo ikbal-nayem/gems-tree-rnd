@@ -45,7 +45,7 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell
                 text={numEnToBn(data?.orgTypeLevel) || "-"}
                 textAlign="center"
-                textClassName="fw-bold fs-3"
+                textClassName="fs-3"
               />
               <TableCell isActive={data?.isActive} />
               <TableCell textAlign="end">
