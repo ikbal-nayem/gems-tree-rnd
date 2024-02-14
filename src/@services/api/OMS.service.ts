@@ -367,5 +367,11 @@ export const OMSService = {
         OMS_SERVICE + "organization-category/delete-all",
         payload
       ),
+
+    organogramMainActivity: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-main-activity/delete-all",
+        payload
+      ),
   },
 };

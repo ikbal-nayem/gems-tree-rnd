@@ -15,7 +15,6 @@ import {
   IObject,
   enCheck,
   generateDateFormat,
-  notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
 import { useEffect } from "react";
@@ -53,7 +52,7 @@ const FormCreate = ({
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "mainActivitiesDtoList",
+    name: "mainActivityRequestList",
   });
 
   useEffect(() => {
@@ -74,8 +73,8 @@ const FormCreate = ({
           <div>
             <div className="card-head d-flex justify-content-between align-items-center">
               <h5 className="m-0">
-                <div className="mb-3">প্রতিষ্ঠান : {orgName}</div>
-                <div className="mb-3">
+                <div className="mb-3 text-gray-700">প্রতিষ্ঠান : {orgName}</div>
+                <div className="mb-3 text-gray-700">
                   অর্গানোগ্রাম তারিখ :{" "}
                   {isEnamCommittee
                     ? "26/12/1982"
@@ -108,22 +107,22 @@ const FormCreate = ({
                           noMargin
                           registerProperty={{
                             ...register(
-                              `mainActivitiesDtoList.${idx}.mainActivityBn`,
+                              `mainActivityRequestList.${idx}.mainActivityBn`,
                               {
                                 required: " ",
-                                onChange: (e) => {
-                                  if (notNullOrUndefined(e.target.value)) {
-                                    setValue(
-                                      `mainActivitiesDtoList.${idx}.displayOrder`,
-                                      idx + 1
-                                    );
-                                  }
-                                },
+                                // onChange: (e) => {
+                                //   if (notNullOrUndefined(e.target.value)) {
+                                //     setValue(
+                                //       `mainActivityRequestList.${idx}.displayOrder`,
+                                //       idx + 1
+                                //     );
+                                //   }
+                                // },
                               }
                             ),
                           }}
                           isError={
-                            !!errors?.mainActivitiesDtoList?.[idx]
+                            !!errors?.mainActivityRequestList?.[idx]
                               ?.mainActivityBn
                           }
                         />
@@ -143,23 +142,23 @@ const FormCreate = ({
                         noMargin
                         registerProperty={{
                           ...register(
-                            `mainActivitiesDtoList.${idx}.mainActivityEn`,
+                            `mainActivityRequestList.${idx}.mainActivityEn`,
                             {
-                              onChange: (e) => {
-                                if (notNullOrUndefined(e.target.value)) {
-                                  setValue(
-                                    `mainActivitiesDtoList.${idx}.displayOrder`,
-                                    idx + 1
-                                  );
-                                }
-                              },
+                              // onChange: (e) => {
+                              //   if (notNullOrUndefined(e.target.value)) {
+                              //     setValue(
+                              //       `mainActivityRequestList.${idx}.displayOrder`,
+                              //       idx + 1
+                              //     );
+                              //   }
+                              // },
                               required: isEnamCommittee,
                               validate: enCheck,
                             }
                           ),
                         }}
                         isError={
-                          !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityEn
+                          !!errors?.mainActivityRequestList?.[idx]?.mainActivityEn
                         }
                       />
                     </div>

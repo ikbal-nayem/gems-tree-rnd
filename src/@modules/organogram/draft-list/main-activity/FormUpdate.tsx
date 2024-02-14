@@ -77,8 +77,8 @@ const FormUpdate = ({
           <div className="row">
           <div className="col-12 d-flex justify-content-between align-items-center">
               <h5 className="m-0">
-                <div className="mb-3">প্রতিষ্ঠান : {orgName}</div>
-                <div className="mb-3">
+                <div className="mb-3 text-gray-700">প্রতিষ্ঠান : {orgName}</div>
+                <div className="mb-3 text-gray-700">
                   অর্গানোগ্রাম তারিখ :{" "}
                   {isEnamCommittee
                     ? "26/12/1982"

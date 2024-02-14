@@ -42,8 +42,8 @@ const DataTable: FC<TableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.mainActivityBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.mainActivityEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.mainActivityBn || "-"} />
+              <TableCell text={data?.mainActivityEn || "-"} />
               <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}

@@ -13,9 +13,11 @@ import {
 } from "@gems/components";
 import {
   COMMON_LABELS,
+  DATE_PATTERN,
   IMeta,
   IObject,
   exportXLSX,
+  generateDateFormat,
   generatePDF,
   notNullOrUndefined,
   numEnToBn,
@@ -45,36 +47,24 @@ const initMeta: IMeta = {
 };
 
 const MainActivity = () => {
+  const { state } = useLocation();
+  const [organogram] = useState<any>(state);
   const [isFormCreateOpen, setIsFormCreateOpen] = useState<boolean>(false);
   const [isFormUpdateOpen, setIsFormUpdateOpen] = useState<boolean>(false);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+  const [listData, setListData] = useState<any>([]);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [updateData, setUpdateData] = useState<any>({});
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
-  const [listData, setListData] = useState<any>([]);
-  const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
-  const { state } = useLocation();
-  const [organogram] = useState<any>(state);
-  // const [orgType, setOrgType] = useState<string>("");
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const [updateData, setUpdateData] = useState<any>({});
-  // const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
-  // const formProps = useForm();
-  // const { control } = formProps;
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
 
   useEffect(() => {
     getDataList();
   }, []);
-
-  // const getOrganizationTypesList = () => {
-  //   OMSService.FETCH.organizationTypeList()
-  //     .then((res) => {
-  //       setOrgTypeList(res?.body || []);
-  //     })
-  //     .catch((err) => toast.error(err?.message));
-  // };
 
   const getDataList = (reqMeta = null) => {
     if (notNullOrUndefined(organogram) && notNullOrUndefined(organogram.id)) {
@@ -90,9 +80,9 @@ const MainActivity = () => {
     setIsLoading(false);
   };
 
-  const onPageChanged = (metaParams: IMeta) => {
-    getDataList({ ...metaParams });
-  };
+  // const onPageChanged = (metaParams: IMeta) => {
+  //   getDataList({ ...metaParams });
+  // };
 
   const onDrawerClose = () => {
     setIsFormCreateOpen(false);
@@ -111,37 +101,52 @@ const MainActivity = () => {
     setIsDeleteModal(true);
     setDeleteData(data);
   };
-  // const onCancelDelete = () => {
-  //   setIsDeleteModal(false);
-  //   setDeleteData(null);
-  // };
-  // const onConfirmDelete = () => {
-  //   setIsDeleteLoading(true);
-  //   let payload = {
-  //     body: {
-  //       ids: [deleteData?.id || ""],
-  //     },
-  //   };
-  //   OMSService.organizationTypeDelete(payload)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setDeleteData(null);
-  //     })
-  //     .catch((err) => toast.error(err?.message))
-  //     .finally(() => {
-  //       setIsDeleteLoading(false);
-  //       setIsDeleteModal(false);
-  //     });
-  // };
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    let payload = {
+      body: {
+        ids: [deleteData?.id || ""],
+      },
+    };
+    OMSService.DELETE.organogramMainActivity(payload)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
 
   const onSubmit = (data) => {
     setIsSubmitLoading(true);
+    data = {
+      ...data,
+      organizationOrganogramId: organogram?.id,
+      organizationId: organogram?.orgId,
+      organogramDate: organogram?.organogramDate,
+    };
+
+    data = isUpdate
+      ? {
+          ...data,
+          id: updateData?.id || "",
+        }
+      : data;
 
     let service = isUpdate
-      ? OMSService.SAVE.organogramMainActivity
-      : OMSService.UPDATE.organogramMainActivity;
-    service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
+      ? OMSService.UPDATE.organogramMainActivity
+      : OMSService.SAVE.organogramMainActivity;
+    // console.log(data);
+
+    service(data)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -168,9 +173,8 @@ const MainActivity = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "প্রধান কার্যাবলি (বাংলা)": d?.mainActivityBn || COMMON_LABELS.NOT_ASSIGN,
-      "প্রধান কার্যাবলি (ইংরেজি)":
-        d?.mainActivityEn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রধান কার্যাবলি (বাংলা)": d?.mainActivityBn || "-",
+      "প্রধান কার্যাবলি (ইংরেজি)": d?.mainActivityEn || "-",
     }));
 
   return (
@@ -194,6 +198,17 @@ const MainActivity = () => {
                 <div className="d-flex fw-bold text-gray-700 gap-3">
                   <div>প্রতিষ্ঠান :</div>
                   <div>{organogram?.organizationNameBn}</div>
+                </div>
+                <div className="mb-3 fs-5 fw-bold text-gray-700">
+                  অর্গানোগ্রাম তারিখ :{" "}
+                  {organogram?.isEnamCommittee
+                    ? "26/12/1982"
+                    : organogram?.organogramDate
+                    ? generateDateFormat(
+                        organogram?.organogramDate,
+                        DATE_PATTERN.GOVT_STANDARD
+                      )
+                    : COMMON_LABELS.NOT_ASSIGN}
                 </div>
               </div>
               <div className="col-12 col-md-1 text-end">
@@ -248,15 +263,15 @@ const MainActivity = () => {
         />
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModal}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
         isSubmitting={isDeleteLoading}
         onConfirmLabel={"মুছে ফেলুন"}
       >
-        আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
-      </ConfirmationModal> */}
+        আপনি কি আসলেই কার্যক্রমটি মুছে ফেলতে চাচ্ছেন ?
+      </ConfirmationModal>
     </>
   );
 };
