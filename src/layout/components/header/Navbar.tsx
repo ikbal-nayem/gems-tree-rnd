@@ -1,12 +1,18 @@
 import { useAuth } from "@context/Auth";
 import clsx from "clsx";
 import { useLayout } from "../../core";
-import HeaderModules from "./header-menus/HeaderModules";
+// import HeaderModules from "./header-menus/HeaderModules";
 // import { HeaderNotificationsMenu } from "./header-menus/HeaderNotificationsMenu";
-import { Icon, MenuWrapper, Thumb } from "@gems/components";
+import {
+  HeaderModules,
+  HeaderUserMenu,
+  Icon,
+  MenuWrapper,
+  Thumb,
+} from "@gems/components";
 import { makePreviewUrl, toAbsoluteUrl } from "@gems/utils";
 import { ReactComponent as ModuleIcon } from "assets/svg/modules.svg";
-import { HeaderUserMenu } from "./header-menus/HeaderUserMenu";
+// import { HeaderUserMenu } from "./header-menus/HeaderUserMenu";
 
 const itemClass = "ms-1 ms-lg-3";
 const btnClass =
@@ -15,7 +21,9 @@ const btnIconClass = "svg-icon-1";
 
 const Navbar = () => {
   const { config } = useLayout();
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
+  console.log("oms",makePreviewUrl(currentUser?.imageUrl));
+
   return (
     <div className="app-navbar flex-shrink-0">
       {/* <div className={clsx('app-navbar-item align-items-stretch', itemClass)}>
@@ -81,7 +89,7 @@ const Navbar = () => {
             }
           />
         </div>
-        <HeaderUserMenu />
+        <HeaderUserMenu currentUser={currentUser} logout={logout} />
       </div>
 
       {config.app?.header?.default?.menu?.display && (
