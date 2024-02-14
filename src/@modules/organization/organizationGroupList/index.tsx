@@ -17,6 +17,7 @@ import {
   IObject,
   exportXLSX,
   generatePDF,
+  notNullOrUndefined,
   numEnToBn,
   topProgress,
   useDebounce,
@@ -26,8 +27,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
-import GradeForm from "./Form";
-import GradeTable from "./Table";
+import Form from "./Form";
+import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
@@ -173,7 +174,7 @@ const OrganizationGroupList = () => {
         };
 
     // console.log("Group Data: ", data);
-        
+
     const service = isUpdate
       ? OMSService.UPDATE.organizationType
       : OMSService.SAVE.organizationType;
@@ -265,18 +266,25 @@ const OrganizationGroupList = () => {
 
         {!!listData?.length && (
           <div className="d-flex justify-content-between gap-3">
-            <div className="text-primary text-center">
               <h5 className="mt-3">
-                মোট প্রতিষ্ঠানের গ্রুপ : {numEnToBn(respMeta?.totalRecords)} টি
+                <div className="d-flex justify-content">
+                  <div className="text-gray-700">
+                    {notNullOrUndefined(orgType)
+                      ? orgTypeList?.find((ot) => ot?.id === orgType)?.nameBn +
+                        " এর "
+                      : "প্রতিষ্ঠানের "}
+                    গ্রুপ মোট :
+                  </div>
+                  <div className="ps-2 text-info">{numEnToBn(respMeta?.totalRecords)} টি</div>
+                </div>
               </h5>
-            </div>
           </div>
         )}
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="mt-3">
-          <GradeTable
+          <DataTable
             data={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
@@ -286,7 +294,7 @@ const OrganizationGroupList = () => {
               pageNeighbours={2}
               onPageChanged={onPageChanged}
             />
-          </GradeTable>
+          </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
             <NoData details="কোনো প্রতিষ্ঠান-গ্রুপের তথ্য পাওয়া যায়নি!" />
@@ -296,7 +304,7 @@ const OrganizationGroupList = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        <GradeForm
+        <Form
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}

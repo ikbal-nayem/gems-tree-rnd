@@ -21,14 +21,14 @@ const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.ACTION },
 ];
 
-type GradeTableProps = {
+type DataTableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
 };
 
-const GradeTable: FC<GradeTableProps> = ({
+const DataTable: FC<DataTableProps> = ({
   children,
   data = [],
   handleUpdate,
@@ -88,4 +88,4 @@ const GradeTable: FC<GradeTableProps> = ({
   );
 };
 
-export default GradeTable;
+export default DataTable;

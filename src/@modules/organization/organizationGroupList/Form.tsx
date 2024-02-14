@@ -148,7 +148,9 @@ const Form = ({
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
                   key="parentOrganization"
-                  onChange={(op) => setValue("parentOrganizationId", op?.id)}
+                  onChange={(op) =>
+                    setValue("parentOrganizationId", op?.id ? op?.id : null)
+                  }
                   control={control}
                 />
               )}
