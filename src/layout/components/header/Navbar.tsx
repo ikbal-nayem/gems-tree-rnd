@@ -11,7 +11,7 @@ import {
   Thumb,
 } from "@gems/components";
 import { makePreviewUrl, toAbsoluteUrl } from "@gems/utils";
-import { ReactComponent as ModuleIcon } from "assets/svg/modules.svg";
+import ModuleIcon from "assets/svg/modules.svg?react";
 // import { HeaderUserMenu } from "./header-menus/HeaderUserMenu";
 
 const itemClass = "ms-1 ms-lg-3";
@@ -22,7 +22,7 @@ const btnIconClass = "svg-icon-1";
 const Navbar = () => {
   const { config } = useLayout();
   const { currentUser, logout } = useAuth();
-  console.log("oms",makePreviewUrl(currentUser?.imageUrl));
+  console.log("oms", makePreviewUrl(currentUser?.imageUrl));
 
   return (
     <div className="app-navbar flex-shrink-0">
