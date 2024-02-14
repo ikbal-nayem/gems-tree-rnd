@@ -32,7 +32,7 @@ export const organizationTypePDFContent = (data, orgName): TDocumentDefinitions 
                     default:
                       return {
                         text: numEnToBn(
-                          d[col?.key] || COMMON_LABELS.NOT_ASSIGN
+                          d[col?.key] || "-"
                         ),
                         alignment: "start",
                       };

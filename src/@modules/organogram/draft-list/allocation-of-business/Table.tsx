@@ -47,8 +47,8 @@ const DataTable: FC<TableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN} />
-              <TableCell text={data?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN} />
+              <TableCell text={data?.businessOfAllocationBn || "-"} />
+              <TableCell text={data?.businessOfAllocationEn || "-"} />
               <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
