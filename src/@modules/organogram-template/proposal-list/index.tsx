@@ -1,4 +1,6 @@
+import { TIME_PATTERN } from "@constants/common.constant";
 import { MENU } from "@constants/menu-titles.constant";
+import { useAuth } from "@context/Auth";
 import { PageTitle } from "@context/PageData";
 import {
   Autocomplete,
@@ -18,15 +20,13 @@ import {
   topProgress,
   useDebounce,
 } from "@gems/utils";
+import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import ProposalTable from "./Table";
-import { CoreService } from "@services/api/Core.service";
-import { useForm } from "react-hook-form";
-import { useAuth } from "@context/Auth";
 import { LABELS } from "./labels";
-import { TIME_PATTERN } from "@constants/common.constant";
 
 const initMeta: IMeta = {
   page: 0,
@@ -74,7 +74,7 @@ const ProposalList = () => {
       if (
         resp?.body &&
         resp?.body.length > 0 &&
-        currentUser?.organization?.id !== "77848f4b-3874-4cd5-b0a3-660660c046b3"
+        currentUser?.organizationId !== "77848f4b-3874-4cd5-b0a3-660660c046b3"
       ) {
         setOfficeScopeList(resp?.body.splice(1, 2));
       } else {
