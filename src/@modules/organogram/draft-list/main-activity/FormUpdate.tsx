@@ -67,7 +67,7 @@ const FormUpdate = ({
 
   return (
     <Drawer
-      title= {LABELS.BN.MAIN_ACTIVITIES +  " হালনাগাদ করুন"}
+      title={LABELS.BN.MAIN_ACTIVITIES + " হালনাগাদ করুন"}
       isOpen={isOpen}
       handleClose={onClose}
       className="w-md-50 w-xl-25"
@@ -75,7 +75,7 @@ const FormUpdate = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
-          <div className="col-12 d-flex justify-content-between align-items-center">
+            <div className="col-12 d-flex justify-content-between align-items-center">
               <h5 className="m-0">
                 <div className="mb-3 text-gray-700">প্রতিষ্ঠান : {orgName}</div>
                 <div className="mb-3 text-gray-700">
@@ -135,7 +135,7 @@ const FormUpdate = ({
               বন্ধ করুন
             </Button>
             <Button color="primary" type="submit" isLoading={submitLoading}>
-              {Object.keys(updateData)?.length > 0 ? "হালনাগাদ" : "সংরক্ষণ"}
+              হালনাগাদ
             </Button>
           </div>
         </DrawerFooter>

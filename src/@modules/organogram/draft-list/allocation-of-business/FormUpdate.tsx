@@ -1,20 +1,20 @@
 import {
-  Autocomplete,
   Button,
-  Checkbox,
-  DateInput,
   Drawer,
   DrawerBody,
   DrawerFooter,
-  Input,
-  Select,
-  toast,
+  Separator,
+  Textarea,
 } from "@gems/components";
-import { COMMON_INSTRUCTION, IObject, numBnToEn } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import {
+  COMMON_LABELS,
+  DATE_PATTERN,
+  IObject,
+  generateDateFormat,
+} from "@gems/utils";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { MENU } from "@constants/menu-titles.constant";
+import { LABELS } from "@constants/common.constant";
 
 interface IForm {
   isOpen?: boolean;
@@ -22,6 +22,7 @@ interface IForm {
   onClose: () => void;
   updateData?: any;
   submitLoading?: boolean;
+  organogram?: IObject;
 }
 
 const FormUpdate = ({
@@ -30,44 +31,34 @@ const FormUpdate = ({
   onSubmit,
   updateData,
   submitLoading,
+  organogram,
 }: IForm) => {
   const formProps = useForm();
   const {
     register,
     handleSubmit,
     reset,
-    setValue,
-    watch,
-    control,
     formState: { errors },
   } = formProps;
 
-  const [orgParentTypeList, setOrgParentTypeList] = useState<IObject[]>([]);
-
-  useEffect(() => {
-    OMSService.FETCH.organizationTypeList()
-      .then((res) => {
-        setOrgParentTypeList(res?.body || []);
-      })
-      .catch((err) => toast.error(err?.message));
-  }, []);
-
+  const isEnamCommittee = organogram?.isEnamCommittee;
+  const orgName = isEnamCommittee
+    ? organogram?.organizationNameEn
+    : organogram?.organizationNameBn;
+  const organogramDate = organogram?.organogramDate;
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
       reset({
         ...updateData,
-        type: updateData?.metaTypeEn,
       });
     } else {
-      reset({ isActive: true, orgCategoryType: "ORG_CATEGORY_GROUP" });
+      reset({});
     }
   }, [updateData, reset]);
 
   return (
     <Drawer
-      title={`কর্মবন্টন 
-        ${Object.keys(updateData)?.length > 0 ? " হালনাগাদ" : " সংরক্ষণ"}
-       করুন`}
+      title={LABELS.BN.ALLOCATION_OF_BUSINESS + " হালনাগাদ করুন"}
       isOpen={isOpen}
       handleClose={onClose}
       className="w-md-50 w-xl-25"
@@ -75,146 +66,53 @@ const FormUpdate = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
-            {/* <Select
-              label={"প্রতিষ্ঠানের ধরণ"}
-              options={organizationTypeStaticList || []}
-              placeholder={"বাছাই করুন"}
-              isRequired
-              textKey={"titleBn"}
-              // defaultValue={"ORG_CATEGORY_GROUP"}
-              valueKey="key"
-              registerProperty={{
-                ...register(`orgCategoryType`, {
-                  required: true,
-                }),
-              }}
-              isDisabled={updateData?.orgCategoryType}
-              isError={!!errors?.orgCategoryType}
-              errorMessage={errors?.orgCategoryType?.message as string}
-            /> */}
-            {/* {watch("orgCategoryType") === "ORG_CATEGORY_GROUP" && (
-              <div className="col-12">
-                <Autocomplete
-                  label="প্রতিষ্ঠানের অভিভাবকের ধরণ"
-                  placeholder="বাছাই করুন"
-                  isRequired="প্রতিষ্ঠানের অভিভাবকের ধরণ বাছাই করুন"
-                  options={orgParentTypeList || []}
-                  name="parentDTO"
-                  getOptionLabel={(op) => op.nameBn}
-                  getOptionValue={(op) => op.id}
-                  onChange={(op) => setValue("parentId", op?.id)}
-                  isDisabled={updateData?.parentDTO}
-                  control={control}
-                  isError={!!errors?.parentDTO}
-                  errorMessage={errors?.parentDTO?.message as string}
-                />
-              </div>
-            )} */}
-            <div className="col-12">
-              <DateInput
-                label="অর্গানোগ্রাম তারিখ"
-                isRequired="অর্গানোগ্রাম তারিখ বাছাই করুন"
-                name="organogramDate"
-                control={control}
-                blockFutureDate
-                isError={!!errors?.organogramDate}
-                errorMessage={errors?.organogramDate?.message as string}
-              />
+            <div className="col-12 d-flex justify-content-between align-items-center">
+              <h5 className="m-0">
+                <div className="mb-3 text-gray-700">প্রতিষ্ঠান : {orgName}</div>
+                <div className="mb-3 text-gray-700">
+                  অর্গানোগ্রাম তারিখ :{" "}
+                  {isEnamCommittee
+                    ? "26/12/1982"
+                    : organogramDate
+                    ? generateDateFormat(
+                        organogramDate,
+                        DATE_PATTERN.GOVT_STANDARD
+                      )
+                    : COMMON_LABELS.NOT_ASSIGN}
+                </div>
+              </h5>
             </div>
-            {/* <div className="col-12">
-              <Input
-                label="নাম (বাংলা)"
-                placeholder="নাম (বাংলা) লিখুন"
-                registerProperty={{
-                  ...register("nameBn", {
-                    required: "নাম (বাংলা) লিখুন",
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.nameBn}
-                errorMessage={errors?.nameBn?.message as string}
-              />
-            </div> */}
-            {/* <div className="col-12">
-              <Input
-                label="প্রতিষ্ঠানের গ্রুপ (ইংরেজি)"
-                placeholder="প্রতিষ্ঠানের গ্রুপ (ইংরেজি) লিখুন"
-                registerProperty={{
-                  ...register("orgGroupEn", {
-                    required: "প্রতিষ্ঠানের গ্রুপ (ইংরেজি) লিখুন",
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.orgGroupEn}
-                errorMessage={errors?.orgGroupEn?.message as string}
-              />
-            </div>
-            <div className="col-12">
-              <Input
-                label="প্রতিষ্ঠানের গ্রুপ (বাংলা)"
-                placeholder="প্রতিষ্ঠানের গ্রুপ (বাংলা) লিখুন"
-                registerProperty={{
-                  ...register("orgGroupBn", {
-                    required: "প্রতিষ্ঠানের গ্রুপ (বাংলা) লিখুন",
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.orgGroupBn}
-                errorMessage={errors?.orgGroupBn?.message as string}
-              />
-            </div> */}
-            {/* 
-            {watch("orgCategoryType") === "ORG_CATEGORY_TYPE" && (
-              <div className="col-12">
-                <Input
-                  label="প্রতিষ্ঠানের লেভেল"
-                  type="number"
-                  placeholder="প্রতিষ্ঠানের লেভেল লিখুন"
-                  min={1}
+            <Separator className="mt-1 mb-5" />
+            {!isEnamCommittee && (
+              <div className="col-12 mb-4">
+                <Textarea
+                  label="কার্যক্রম (বাংলা)"
+                  placeholder="কার্যক্রম (বাংলা) লিখুন"
+                  isRequired
+                  noMargin
                   registerProperty={{
-                    ...register("orgTypeLevel", {
-                      required: "প্রতিষ্ঠানের লেভেল লিখুন",
-                      setValueAs: (v) => numBnToEn(v),
-                      maxLength: {
-                        value: 1,
-                        message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                      },
+                    ...register(`businessOfAllocationBn`, {
+                      required: " ",
                     }),
                   }}
-                  isRequired
-                  isError={!!errors?.orgTypeLevel}
-                  errorMessage={errors?.orgTypeLevel?.message as string}
+                  isError={!!errors?.businessOfAllocationBn}
                 />
               </div>
-            )} */}
-            {/* <div className="col-12">
-              <Input
-                label="প্রদর্শন ক্রম"
-                type="number"
-                placeholder="প্রদর্শন ক্রম লিখুন"
-                min={1}
+            )}
+            <div className="col-12">
+              <Textarea
+                label="কার্যক্রম (ইংরেজি)"
+                placeholder="কার্যক্রম (ইংরেজি) লিখুন"
+                isRequired={isEnamCommittee}
+                noMargin
                 registerProperty={{
-                  ...register("serialNo"),
+                  ...register(`businessOfAllocationEn`, {
+                    required: isEnamCommittee,
+                  }),
                 }}
+                isError={!!errors?.businessOfAllocationEn}
               />
-            </div> */}
-            {/* <div className="col-12">
-              <Input
-                label="কোড"
-                placeholder="কোড লিখুন"
-                registerProperty={{
-                  ...register("orgCode"),
-                }}
-              />
-            </div> */}
-            {/* <div className="col-12">
-              <Checkbox
-                label="সক্রিয়"
-                registerProperty={{
-                  ...register("isActive"),
-                }}
-              />
-            </div> */}
+            </div>
           </div>
         </DrawerBody>
 
@@ -228,7 +126,7 @@ const FormUpdate = ({
               বন্ধ করুন
             </Button>
             <Button color="primary" type="submit" isLoading={submitLoading}>
-              {Object.keys(updateData)?.length > 0 ? "হালনাগাদ" : "সংরক্ষণ"}
+              হালনাগাদ
             </Button>
           </div>
         </DrawerFooter>

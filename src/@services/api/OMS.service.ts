@@ -297,6 +297,13 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organogram-main-activity/get-by-organogram-id/" + id
       ),
+
+    organogramBusinessAllocationById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-business-allocation/get-by-organogram-id/" +
+          id
+      ),
   },
 
   SAVE: {
@@ -328,6 +335,12 @@ export const OMSService = {
         OMS_SERVICE + "organogram-main-activity/save",
         payload
       ),
+      
+    organogramBusinessAllocation: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-business-allocation/save",
+        payload
+      ),
   },
 
   UPDATE: {
@@ -353,6 +366,12 @@ export const OMSService = {
         OMS_SERVICE + "organogram-main-activity/update",
         payload
       ),
+
+    organogramBusinessAllocation: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-business-allocation/update",
+        payload
+      ),
   },
 
   DELETE: {
@@ -371,6 +390,12 @@ export const OMSService = {
     organogramMainActivity: async (payload): Promise<any> =>
       await axiosIns.put(
         OMS_SERVICE + "organogram-main-activity/delete-all",
+        payload
+      ),
+
+    organogramBusinessAllocation: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-business-allocation/delete-all",
         payload
       ),
   },

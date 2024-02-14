@@ -1,50 +1,42 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
-  Autocomplete,
   Button,
   ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
-  Input,
   NoData,
-  Pagination,
   toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
   IMeta,
-  IObject,
   exportXLSX,
   generateDateFormat,
   generatePDF,
   notNullOrUndefined,
   numEnToBn,
-  topProgress,
-  useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { searchParamsToObject } from "utility/makeObject";
+import { useLocation } from "react-router-dom";
 import FormUpdate from "./FormUpdate";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
 import { isNotEmptyList } from "utility/utils";
 import FormCreate from "./FormCreate";
 
-const initMeta: IMeta = {
-  page: 0,
-  limit: 20,
-  sort: [
-    {
-      field: "displayOrder",
-      order: "asc",
-    },
-  ],
-};
+// const initMeta: IMeta = {
+//   page: 0,
+//   limit: 20,
+//   sort: [
+//     {
+//       field: "displayOrder",
+//       order: "asc",
+//     },
+//   ],
+// };
 
 const MainActivity = () => {
   const { state } = useLocation();

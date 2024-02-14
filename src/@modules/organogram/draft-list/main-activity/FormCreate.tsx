@@ -109,7 +109,7 @@ const FormCreate = ({
                             ...register(
                               `mainActivityRequestList.${idx}.mainActivityBn`,
                               {
-                                required: " ",
+                                required: true,
                                 // onChange: (e) => {
                                 //   if (notNullOrUndefined(e.target.value)) {
                                 //     setValue(

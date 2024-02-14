@@ -23,21 +23,21 @@ const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
   { title: "কর্মবন্টন (বাংলা)", minWidth: 400 },
   { title: "কর্মবন্টন (ইংরেজি)", minWidth: 400 },
-  // { title: COMMON_LABELS.ACTION, align: "end" },
+  { title: COMMON_LABELS.ACTION, align: "end" },
 ];
 
 type TableProps = {
   children?: ReactNode;
   data?: any;
-  // handleUpdate: (data) => void;
-  // handleDelete: (data) => void;
+  handleUpdate: (data) => void;
+  handleDelete: (data) => void;
 };
 
 const DataTable: FC<TableProps> = ({
   children,
   data = [],
-  // handleUpdate,
-  // handleDelete,
+  handleUpdate,
+  handleDelete,
 }) => {
   if (!data?.length) return;
   return (
@@ -49,7 +49,7 @@ const DataTable: FC<TableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               <TableCell text={data?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN} />
               <TableCell text={data?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN} />
-              {/* <TableCell textAlign="end">
+              <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
@@ -72,7 +72,7 @@ const DataTable: FC<TableProps> = ({
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem>
                 </Dropdown>
-              </TableCell> */}
+              </TableCell>
             </TableRow>
           );
         })}

@@ -1,6 +1,8 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
+  Button,
+  ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
   NoData,
@@ -9,9 +11,11 @@ import {
 } from "@gems/components";
 import {
   COMMON_LABELS,
+  DATE_PATTERN,
   IMeta,
   IObject,
   exportXLSX,
+  generateDateFormat,
   generatePDF,
   notNullOrUndefined,
   numEnToBn,
@@ -23,6 +27,8 @@ import DataTable from "./Table";
 import { useAuth } from "@context/Auth";
 import { isNotEmptyList } from "utility/utils";
 import { organizationTypePDFContent } from "./pdf";
+import FormUpdate from "./FormUpdate";
+import FormCreate from "./FormCreate";
 
 const initMeta: IMeta = {
   page: 0,
@@ -40,7 +46,10 @@ const initMeta: IMeta = {
 };
 
 const AllocationOfBusiness = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const { state } = useLocation();
+  const [organogram] = useState<any>(state);
+  const [isFormCreateOpen, setIsFormCreateOpen] = useState<boolean>(false);
+  const [isFormUpdateOpen, setIsFormUpdateOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
@@ -50,24 +59,13 @@ const AllocationOfBusiness = () => {
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
-  const { state } = useLocation();
-  const [organization, setOrganization] = useState<IObject>(state);
-  const { currentUser } = useAuth();
 
   useEffect(() => {
-    // setOrganization(currentUser?.organization);
     getDataList();
   }, []);
 
   const getDataList = (reqMeta = null) => {
-    // const payload = {
-    //   meta: reqMeta || respMeta,
-    //   body: {
-    //     // organization
-    //   },
-    // };
-
-    OMSService.FETCH.allocationOfBusinessListByOrgId(organization?.id)
+    OMSService.FETCH.organogramBusinessAllocationById(organogram.id)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -80,12 +78,47 @@ const AllocationOfBusiness = () => {
       });
   };
 
+  const onSubmit = (data) => {
+    setIsSubmitLoading(true);
+    data = {
+      ...data,
+      organizationOrganogramId: organogram?.id,
+      organizationId: organogram?.orgId,
+      organogramDate: organogram?.organogramDate,
+    };
+
+    data = isUpdate
+      ? {
+          ...data,
+          id: updateData?.id || "",
+        }
+      : data;
+
+    let service = isUpdate
+      ? OMSService.UPDATE.organogramBusinessAllocation
+      : OMSService.SAVE.organogramBusinessAllocation;
+    // console.log(data);
+
+    service(data)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsFormCreateOpen(false);
+        setIsFormUpdateOpen(false);
+        setIsUpdate(false);
+        setUpdateData({});
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
+  };
+
   const onPageChanged = (metaParams: IMeta) => {
     getDataList({ ...metaParams });
   };
 
   const onDrawerClose = () => {
-    setIsDrawerOpen(false);
+    setIsFormCreateOpen(false);
+    setIsFormUpdateOpen(false);
     setIsUpdate(false);
     setUpdateData({});
   };
@@ -93,63 +126,55 @@ const AllocationOfBusiness = () => {
   const handleUpdate = (data: any) => {
     setIsUpdate(true);
     setUpdateData(data);
-    setIsDrawerOpen(true);
+    setIsFormUpdateOpen(true);
   };
 
   const handleDelete = (data: any) => {
     setIsDeleteModal(true);
     setDeleteData(data);
   };
-  // const onCancelDelete = () => {
-  //   setIsDeleteModal(false);
-  //   setDeleteData(null);
-  // };
-  // const onConfirmDelete = () => {
-  //   setIsDeleteLoading(true);
-  //   let payload = {
-  //     body: {
-  //       ids: [deleteData?.id || ""],
-  //     },
-  //   };
-  //   OMSService.organizationTypeDelete(payload)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setDeleteData(null);
-  //     })
-  //     .catch((err) => toast.error(err?.message))
-  //     .finally(() => {
-  //       setIsDeleteLoading(false);
-  //       setIsDeleteModal(false);
-  //     });
-  // };
-
-  // const onCustomSelection = (organization) => {
-  //   setOrganization(
-  //     organization
-  //       ? {
-  //           id: organization?.id,
-  //           nameBn: organization?.nameBn,
-  //         }
-  //       : null
-  //   );
-  //   console.log("index Organization : ", organization);
-  // };
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    let payload = {
+      body: {
+        ids: [deleteData?.id || ""],
+      },
+    };
+    OMSService.DELETE.organogramBusinessAllocation(payload)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     downloadtype === "pdf"
-      ? generatePDF(organizationTypePDFContent(listData, organization?.nameBn))
+      ? generatePDF(
+          organizationTypePDFContent(listData, organogram?.organizationNameBn)
+        )
       : exportXLSX(
           exportData(listData || []),
-          organization?.nameBn + " এর কর্মবন্টনের তালিকা"
+          organogram?.organizationNameBn + " এর কর্মবন্টনের তালিকা"
         );
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "কর্মবন্টন (বাংলা)": d?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN,
-      "কর্মবন্টন (ইংরেজি)": d?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN,
+      "কর্মবন্টন (বাংলা)":
+        d?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN,
+      "কর্মবন্টন (ইংরেজি)":
+        d?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
@@ -160,11 +185,11 @@ const AllocationOfBusiness = () => {
             ? " (মোট: " + numEnToBn(listData?.length) + " টি)"
             : "")}
       </PageTitle>
-      {/* <PageToolbarRight>
-        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
+      <PageToolbarRight>
+        <Button color="primary" onClick={() => setIsFormCreateOpen(true)}>
           যুক্ত করুন
         </Button>
-      </PageToolbarRight> */}
+      </PageToolbarRight>
       <div className="card p-5">
         <div className="d-flex gap-3">
           {!isLoading && (
@@ -172,7 +197,18 @@ const AllocationOfBusiness = () => {
               <div className="col-12 col-md-11">
                 <div className="d-flex fw-bold text-gray-700 gap-3">
                   <div>প্রতিষ্ঠান :</div>
-                  <div>{organization?.nameBn}</div>
+                  <div>{organogram?.organizationNameBn}</div>
+                </div>
+                <div className="mb-3 fs-5 fw-bold text-gray-700">
+                  অর্গানোগ্রাম তারিখ :{" "}
+                  {organogram?.isEnamCommittee
+                    ? "26/12/1982"
+                    : organogram?.organogramDate
+                    ? generateDateFormat(
+                        organogram?.organogramDate,
+                        DATE_PATTERN.GOVT_STANDARD
+                      )
+                    : COMMON_LABELS.NOT_ASSIGN}
                 </div>
               </div>
               <div className="col-12 col-md-1 text-end">
@@ -192,8 +228,8 @@ const AllocationOfBusiness = () => {
         <div className="mt-3">
           <DataTable
             data={listData}
-            // handleUpdate={handleUpdate}
-            // handleDelete={handleDelete}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
           >
             {/* <Pagination
               meta={respMeta}
@@ -210,24 +246,32 @@ const AllocationOfBusiness = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        {/* <FormUpdate
-          isOpen={isDrawerOpen}
+        <FormCreate
+          isOpen={isFormCreateOpen}
+          onClose={onDrawerClose}
+          onSubmit={onSubmit}
+          submitLoading={isSubmitLoading}
+          organogram={organogram}
+        />
+        <FormUpdate
+          isOpen={isFormUpdateOpen}
           onClose={onDrawerClose}
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-        /> */}
+          organogram={organogram}
+        />
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModal}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
         isSubmitting={isDeleteLoading}
         onConfirmLabel={"মুছে ফেলুন"}
       >
-        আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
-      </ConfirmationModal> */}
+        আপনি কি আসলেই কর্মবন্টনটি মুছে ফেলতে চাচ্ছেন ?
+      </ConfirmationModal>
     </>
   );
 };
