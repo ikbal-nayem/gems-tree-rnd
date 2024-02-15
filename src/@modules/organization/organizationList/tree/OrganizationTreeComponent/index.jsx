@@ -1,7 +1,7 @@
-import { ChartContainer } from "@components/OrgChart/ChartContainer";
-import { CoreService } from "@services/api/Core.service";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../@services/api/Core.service";
 import { useEffect, useState } from "react";
-import { orgData } from "./data";
+import { orgData } from "./data2";
 import MyNode from "./my-node";
 
 const OrganizationTemplateTree = ({ treeData = orgData }) => {
@@ -27,8 +27,8 @@ const OrganizationTemplateTree = ({ treeData = orgData }) => {
         // ref={download}
         // headerData={headerData}
         // exportPDF={exportPDF}
-        pan={true}
-        zoom={true}
+        // pan={true}
+        // zoom={true}
       />
     </div>
   );
