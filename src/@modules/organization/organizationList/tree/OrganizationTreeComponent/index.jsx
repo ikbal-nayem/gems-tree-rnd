@@ -26,8 +26,9 @@ const OrganizationTemplateTree = ({ treeData }) => {
         // ref={download}
         // headerData={headerData}
         // exportPDF={exportPDF}
-        // pan={true}
-        // zoom={true}
+        pan={true}
+        zoom={true}
+        zoomoutLimit={1}
       />
     </div>
   );

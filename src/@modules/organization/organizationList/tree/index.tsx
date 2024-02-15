@@ -54,12 +54,11 @@ const Tree = () => {
       </div>
       {loading && <ContentPreloader />}
       {!loading && Object.keys(data)?.length > 0 && (
-       <OrganizationTemplateTree treeData={data || {}}/>
+        <OrganizationTemplateTree treeData={data || {}} />
       )}
       {!loading && !(Object.keys(data)?.length > 0) && (
         <NoData details="কোনো প্রতিষ্ঠানের ট্রি তথ্য পাওয়া যায় নি!" />
       )}
-      
     </>
   );
 };

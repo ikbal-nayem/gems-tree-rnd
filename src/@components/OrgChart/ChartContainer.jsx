@@ -207,7 +207,7 @@ const ChartContainer = forwardRef(
 
     const zoomHandler = (e) => {
       console.log(e);
-      let newScale = 1 + (e > 0 ? -0.2 : 0.2);
+      let newScale = 1.1 + (e > 0 ? -0.2 : 0.02);
       console.log("test", newScale);
       updateChartScale(newScale);
     };
