@@ -1,10 +1,9 @@
-import { ChartContainer } from "@components/OrgChart/ChartContainer";
-import { CoreService } from "@services/api/Core.service";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../@services/api/Core.service";
 import { useEffect, useState } from "react";
-import { orgData } from "./data";
 import MyNode from "./my-node";
 
-const OrganizationTemplateTree = ({ treeData = orgData }) => {
+const OrganizationTemplateTree = ({ treeData }) => {
   const [postList, setPostist] = useState([]);
 
   useEffect(() => {
@@ -29,6 +28,7 @@ const OrganizationTemplateTree = ({ treeData = orgData }) => {
         // exportPDF={exportPDF}
         pan={true}
         zoom={true}
+        zoomoutLimit={1}
       />
     </div>
   );

@@ -304,6 +304,10 @@ export const OMSService = {
           "organogram-business-allocation/get-by-organogram-id/" +
           id
       ),
+    oranizationTreeByOrganizationId: async (organizationId: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-organization-tree/" + organizationId
+      ),
   },
 
   SAVE: {
@@ -335,7 +339,7 @@ export const OMSService = {
         OMS_SERVICE + "organogram-main-activity/save",
         payload
       ),
-      
+
     organogramBusinessAllocation: async (payload): Promise<any> =>
       await axiosIns.post(
         OMS_SERVICE + "organogram-business-allocation/save",
