@@ -81,6 +81,8 @@ const Form = ({
     }
   }, [updateData, reset]);
 
+  let parentType = watch("parentType");
+
   return (
     <Drawer
       title={
@@ -130,7 +132,7 @@ const Form = ({
               />
             </div>
             <div className="col-12">
-              {watch("parentType") === "parent_group" ? (
+              {parentType === "parent_group" && (
                 <Autocomplete
                   placeholder="গ্রুপ অভিভাবক বাছাই করুন"
                   options={orgGroupParentList || []}
@@ -140,14 +142,14 @@ const Form = ({
                   onChange={(op) => setValue("parentGroupId", op?.id)}
                   control={control}
                 />
-              ) : (
+              )}
+              {parentType === "parent_organization" && (
                 <Autocomplete
                   placeholder="অভিভাবক প্রতিষ্ঠান বাছাই করুন"
                   options={parentOrgList || []}
                   name="parentOrganization"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
-                  key="parentOrganization"
                   onChange={(op) =>
                     setValue("parentOrganizationId", op?.id ? op?.id : null)
                   }
