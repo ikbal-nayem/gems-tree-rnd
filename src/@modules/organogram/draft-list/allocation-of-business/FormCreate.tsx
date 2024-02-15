@@ -1,6 +1,5 @@
 import {
   Button,
-  Drawer,
   DrawerBody,
   DrawerFooter,
   IconButton,
@@ -19,6 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { LABELS } from "@constants/common.constant";
+import Drawer from "@components/Drawer";
 
 interface IForm {
   isOpen?: boolean;
@@ -82,7 +82,9 @@ const FormCreate = ({
       title={LABELS.BN.ALLOCATION_OF_BUSINESS + " সংরক্ষণ করুন"}
       isOpen={isOpen}
       handleClose={onClose}
-      className="w-md-50 w-xl-25"
+      className="w-50"
+      widthMd="75"
+      widthXl="50"
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
