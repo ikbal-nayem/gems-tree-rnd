@@ -12,14 +12,14 @@
   /* background-color: #215a88; */
   background-color: #fff;
   color: black;
-  width: 140px;
+  width: 120px;
   /* height: 65px; */
   padding: 2px;
 }
 
 .orgchart-container {
-  /* height: 800px !important; */
-  height: fit-content;
+  height: 675px !important;
+  /* height: fit-content; */
   border: none;
   background-color: transparent;
 }
