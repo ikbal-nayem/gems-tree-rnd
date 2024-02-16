@@ -24,7 +24,7 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [30, "*", "*", "*", "*", "*"],
+          widths: [30, "*", "*", "*", "*", "*","*"],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
