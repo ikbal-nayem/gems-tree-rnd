@@ -1,5 +1,9 @@
 import { COMMON_LABELS } from "@constants/common.constant";
-import { TDocumentDefinitions, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import {
+  TDocumentDefinitions,
+  notNullOrUndefined,
+  numEnToBn,
+} from "@gems/utils";
 import { pdfCellAlign } from "utility/utils";
 
 const columns = [
@@ -8,6 +12,7 @@ const columns = [
   { nameBn: "নাম (ইংরেজি)", key: "nameEn" },
   { nameBn: "প্রতিষ্ঠানের ধরণ", key: "orgType" },
   { nameBn: "গ্রুপ অভিভাবক", key: "parentGroupName" },
+  { nameBn: "অভিভাবক প্রতিষ্ঠান", key: "parentOrganizationName" },
   { nameBn: "সক্রিয়", key: "isActive" },
 ];
 
@@ -19,7 +24,7 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [30, "*", "*", "*", "*", 35],
+          widths: [30, "*", "*", "*", "*", "*"],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
@@ -46,6 +51,15 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                         {
                           text: d?.parentGroup?.nameBn || "-",
                           alignment: pdfCellAlign(d?.parentGroup?.nameBn),
+                        },
+                      ];
+                    case "parentOrganizationName":
+                      return [
+                        {
+                          text: d?.parentOrganization?.nameBn || "-",
+                          alignment: pdfCellAlign(
+                            d?.parentOrganization?.nameBn
+                          ),
                         },
                       ];
                     default:

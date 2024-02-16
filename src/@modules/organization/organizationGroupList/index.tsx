@@ -223,6 +223,8 @@ const OrganizationGroupList = () => {
       "নাম (ইংরেজি)": d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
       "প্রতিষ্ঠানের ধরণ": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       "গ্রুপ অভিভাবক": d?.parentGroup?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "অভিভাবক প্রতিষ্ঠান":
+        d?.parentOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়:
         (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
     }));
@@ -266,18 +268,20 @@ const OrganizationGroupList = () => {
 
         {!!listData?.length && (
           <div className="d-flex justify-content-between gap-3">
-              <h5 className="mt-3">
-                <div className="d-flex justify-content">
-                  <div className="text-gray-700">
-                    {notNullOrUndefined(orgType)
-                      ? orgTypeList?.find((ot) => ot?.id === orgType)?.nameBn +
-                        " এর "
-                      : "প্রতিষ্ঠানের "}
-                    গ্রুপ মোট :
-                  </div>
-                  <div className="ps-2 text-info">{numEnToBn(respMeta?.totalRecords)} টি</div>
+            <h5 className="mt-3">
+              <div className="d-flex justify-content">
+                <div className="text-gray-700">
+                  {notNullOrUndefined(orgType)
+                    ? orgTypeList?.find((ot) => ot?.id === orgType)?.nameBn +
+                      " এর "
+                    : "প্রতিষ্ঠানের "}
+                  গ্রুপ মোট :
                 </div>
-              </h5>
+                <div className="ps-2 text-info">
+                  {numEnToBn(respMeta?.totalRecords)} টি
+                </div>
+              </div>
+            </h5>
           </div>
         )}
 
