@@ -1,4 +1,11 @@
-import { COMMON_LABELS, TDocumentDefinitions, numEnToBn } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  DATE_PATTERN,
+  TDocumentDefinitions,
+  generateDateFormat,
+  makeBDLocalTime,
+  numEnToBn,
+} from "@gems/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
@@ -10,6 +17,7 @@ const columns = [
 ];
 
 export const organizationPDFContent = (data): TDocumentDefinitions => {
+  const today = makeBDLocalTime(new Date());
   return {
     content: [
       { text: "প্রতিষ্ঠানের প্রতিবেদন", style: "header" },
@@ -38,8 +46,7 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
                     case "officeTypeDTO":
                       return [
                         {
-                          text:
-                            d[col?.key]?.titleBn || COMMON_LABELS.NO_DATE,
+                          text: d[col?.key]?.titleBn || COMMON_LABELS.NO_DATE,
                           alignment: "center",
                         },
                       ];
@@ -66,9 +73,7 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
                       ];
                     default:
                       return {
-                        text: numEnToBn(
-                          d[col?.key] || COMMON_LABELS.NO_DATE
-                        ),
+                        text: numEnToBn(d[col?.key] || COMMON_LABELS.NO_DATE),
                         alignment: "center",
                       };
                   }
@@ -80,21 +85,34 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
         layout: "lightHorizontalLines",
       },
     ],
-    footer: function (currentPage, pageCount) {
-      return {
-        margin: 10,
-        columns: [
-          {
-            fontSize: 9,
-            text: [
-              {
-                text: currentPage + " of " + pageCount,
-              },
-            ],
-            alignment: "center",
-          },
-        ],
-      };
+    footer: (currentPage, pageCount) => {
+      return [
+        {
+          columns: [
+            {
+              text: `তারিখ: ${generateDateFormat(
+                today,
+                DATE_PATTERN.GOVT_STANDARD
+              )}`,
+            },
+            {
+              text: "Powered by GEMS",
+              fontSize: 8,
+              color: "#009ef7",
+              alignment: "center",
+              marginTop: 3,
+            },
+            {
+              text: `পৃষ্ঠা: ${numEnToBn(currentPage.toString())}/${numEnToBn(
+                pageCount
+              )}`,
+              alignment: "right",
+            },
+          ],
+          marginLeft: 20,
+          marginRight: 20,
+        },
+      ];
     },
     styles: {
       header: {
