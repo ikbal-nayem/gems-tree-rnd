@@ -1,25 +1,24 @@
 import { COMMON_LABELS } from "@constants/common.constant";
 import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
+import { pdfCellAlign } from "utility/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
-  { nameBn: "ধরণ (বাংলা)", key: "orgTypeBn" },
-  { nameBn: "ধরণ (ইংরেজি)", key: "orgTypeEn" },
-  { nameBn: "গ্রুপ (বাংলা)", key: "orgGroupBn" },
-  { nameBn: "গ্রুপ (ইংরেজি)", key: "orgGroupEn" },
-  { nameBn: "লেভেল", key: "orgLevel" },
+  { nameBn: "নাম (বাংলা)", key: "nameBn" },
+  { nameBn: "নাম (ইংরেজি)", key: "nameEn" },
+  { nameBn: "প্রতিষ্ঠানের লেভেল", key: "orgTypeLevel" },
   { nameBn: "সক্রিয়", key: "isActive" },
 ];
 
 export const organizationTypePDFContent = (data): TDocumentDefinitions => {
   return {
     content: [
-      { text: "প্রতিষ্ঠানের ধরণ প্রতিবেদন", style: "header" },
+      { text: "প্রতিষ্ঠানের ধরণের প্রতিবেদন", style: "header" },
       {
         table: {
           headerRows: 1,
           dontBreakRows: true,
-          widths: [30, "*", "*", "*", "*", "*", "*"],
+          widths: [35, "*", "*", "*", 35],
           body: [
             columns.map((col) => ({ text: col.nameBn, style: "tableHeader" })),
             ...data?.map((d, idx) =>
@@ -29,7 +28,7 @@ export const organizationTypePDFContent = (data): TDocumentDefinitions => {
                     case "isActive":
                       return [
                         {
-                          text: d[col?.key] ? "True" : "False",
+                          text: d[col?.key] ? "সক্রিয়" : "সক্রিয় নয়",
                           alignment: "center",
                         },
                       ];

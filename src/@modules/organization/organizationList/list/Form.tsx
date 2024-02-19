@@ -19,7 +19,6 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import LocationWorkSpaceComponent from "./LocationWorkSpaceComponent";
-import WorkSpaceComponent from "./WorkSpaceComponent";
 
 interface IOrgForm {
   isOpen?: boolean;
@@ -51,11 +50,18 @@ const OrgForm = ({
   } = formProps;
 
   const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
+  const [orgParentList, setOrgParentList] = useState<IObject[]>([]);
+  const orgTypeGovtObject = options?.institutionTypes?.find(
+    (d) => d?.metaKey === "INSTITUTION_TYPE_GOVERNMENT"
+  );
 
   useEffect(() => {
     if (!isObjectNull(updateData)) {
       if (!isObjectNull(updateData?.organizationTypeDTO)) {
         onOrganizationTypeChange(updateData?.organizationTypeDTO);
+      }
+      if (!isObjectNull(updateData?.organizationGroupDTO)) {
+        onOrganizationGroupChange(updateData?.organizationGroupDTO);
       }
       reset({
         ...updateData,
@@ -65,17 +71,51 @@ const OrgForm = ({
       reset({
         isActive: true,
         isTrainingOffice: false,
+        officeTypeDTO: orgTypeGovtObject,
+        officeType: orgTypeGovtObject?.metaKey,
       });
     }
-  }, [updateData]);
+  }, [updateData, orgTypeGovtObject]);
 
   const onOrganizationTypeChange = (typeItem: IObject) => {
+    setValue("organizationGroupDTO", null);
+    setValue("organizationCategoryId", null);
+    setOrgGroupList([]);
+    setValue("parent", null);
+    setValue("parentId", null);
+    setOrgParentList([]);
+
     if (!isObjectNull(typeItem)) {
-      OMSService.FETCH.organizationGroupbyOrgType(makeFormData(typeItem))
+      OMSService.FETCH.organizationGroupbyOrgType(typeItem?.id)
         .then((res) => {
           setOrgGroupList(res?.body || []);
         })
         .catch((err) => toast.error(err?.message));
+
+      OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
+        .then((res) => {
+          setOrgParentList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
+    }
+  };
+
+  const onOrganizationGroupChange = (groupItem: IObject) => {
+    if (!isObjectNull(groupItem)) {
+      setValue("organizationCategoryId", groupItem?.id);
+      if (
+        groupItem?.nameEn === "Ministry" ||
+        groupItem?.nameEn === "Division"
+      ) {
+        setValue("parent", null);
+        setValue("parentId", null);
+        setOrgParentList([]);
+        OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
+          .then((res) => {
+            setOrgParentList(res?.body || []);
+          })
+          .catch((err) => toast.error(err?.message));
+      }
     }
   };
 
@@ -91,6 +131,76 @@ const OrgForm = ({
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DrawerBody>
           <div className="row">
+            <div className="col-12">
+              <Autocomplete
+                label="প্রতিষ্ঠানের পর্যায়"
+                placeholder="প্রতিষ্ঠানের পর্যায় বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের পর্যায় বাছাই করুন"
+                options={options?.institutionTypes || []}
+                name="officeTypeDTO"
+                getOptionLabel={(op) => op.titleBn}
+                getOptionValue={(op) => op.metaKey}
+                onChange={(op) => setValue("officeType", op?.metaKey)}
+                control={control}
+                isError={!!errors?.officeTypeDTO}
+                errorMessage={errors?.officeTypeDTO?.message as string}
+              />
+            </div>
+            <div className="col-12">
+              <Autocomplete
+                label="প্রতিষ্ঠানের ধরণ"
+                placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                options={options?.organizationTypes || []}
+                name="organizationTypeDTO"
+                getOptionLabel={(op) => op.nameBn}
+                getOptionValue={(op) => op.id}
+                onChange={(op) => onOrganizationTypeChange(op)}
+                control={control}
+                isError={!!errors?.organizationTypeDTO}
+                errorMessage={errors?.organizationTypeDTO?.message as string}
+              />
+            </div>
+            {!isObjectNull(watch("organizationTypeDTO")) && (
+              <>
+                <div className="col-12">
+                  <Autocomplete
+                    label="প্রতিষ্ঠানের গ্রুপ"
+                    placeholder="প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
+                    isRequired="প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
+                    options={orgGroupList || []}
+                    name="organizationGroupDTO"
+                    getOptionLabel={(op) => op.nameBn}
+                    getOptionValue={(op) => op.id}
+                    onChange={(op) => onOrganizationGroupChange(op)}
+                    control={control}
+                    isError={!!errors?.organizationGroupDTO}
+                    errorMessage={
+                      errors?.organizationGroupDTO?.message as string
+                    }
+                  />
+                </div>
+                <div className="col-12">
+                  <Autocomplete
+                    label="প্রতিষ্ঠানের অভিভাবক"
+                    placeholder="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
+                    isRequired="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
+                    options={orgParentList || []}
+                    name="parent"
+                    getOptionLabel={(op) => op.nameBn}
+                    getOptionValue={(op) => op.id}
+                    onChange={(op) => setValue("parentId", op?.id)}
+                    control={control}
+                    isError={!!errors?.parent}
+                    errorMessage={errors?.parent?.message as string}
+                  />
+                </div>
+              </>
+            )}
+            {/* <div className="col-12">
+              <WorkSpaceComponent {...formProps} />
+            </div> */}
+
             <div className="col-12">
               <Input
                 label="নাম (ইংরেজি)"
@@ -119,57 +229,8 @@ const OrgForm = ({
                 errorMessage={errors?.nameBn?.message as string}
               />
             </div>
-            <div className="col-12">
-              <Autocomplete
-                label="প্রতিষ্ঠানের ধরণ"
-                placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
-                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
-                options={options?.institutionTypes || []}
-                name="officeTypeDTO"
-                getOptionLabel={(op) => op.titleBn}
-                getOptionValue={(op) => op.metaKey}
-                onChange={(op) => setValue("officeType", op?.metaKey)}
-                control={control}
-                isError={!!errors?.officeTypeDTO}
-                errorMessage={errors?.officeTypeDTO?.message as string}
-              />
-            </div>
-            <div className="col-12">
-              <Autocomplete
-                label="সংস্থার ধরণ"
-                placeholder="সংস্থার ধরণ বাছাই করুন"
-                isRequired="সংস্থার ধরণ বাছাই করুন"
-                options={options?.organizationTypes || []}
-                name="organizationTypeDTO"
-                getOptionLabel={(op) => op.orgTypeBn}
-                getOptionValue={(op) => op.orgTypeEn}
-                onChange={(op) => onOrganizationTypeChange(op)}
-                control={control}
-                isError={!!errors?.organizationTypeDTO}
-                errorMessage={errors?.organizationTypeDTO?.message as string}
-              />
-            </div>
-            {!isObjectNull(watch("organizationTypeDTO")) && (
-              <div className="col-12">
-                <Autocomplete
-                  label="সংস্থার গ্রুপ"
-                  placeholder="সংস্থার গ্রুপ বাছাই করুন"
-                  isRequired="সংস্থার গ্রুপ বাছাই করুন"
-                  options={orgGroupList || []}
-                  name="organizationGroupDTO"
-                  getOptionLabel={(op) => op.orgGroupBn}
-                  getOptionValue={(op) => op.id}
-                  onChange={(op) => setValue("organizationGroupId", op?.id)}
-                  control={control}
-                  isError={!!errors?.organizationGroupDTO}
-                  errorMessage={errors?.organizationGroupDTO?.message as string}
-                />
-              </div>
-            )}
-            <div className="col-12">
-              <WorkSpaceComponent {...formProps} />
-            </div>
-            <div className="col-12">
+
+            {/* <div className="col-12">
               <Autocomplete
                 label="মন্ত্রণালয়/বিভাগ"
                 placeholder="মন্ত্রণালয়/বিভাগ বাছাই করুন"
@@ -182,7 +243,7 @@ const OrgForm = ({
                 isError={!!errors?.rootParent}
                 errorMessage={errors?.rootParent?.message as string}
               />
-            </div>
+            </div> */}
 
             <div className="col-12">
               <LocationWorkSpaceComponent

@@ -45,15 +45,7 @@ const Organizations = ({
   };
 
   const getOrgGroupList = () => {
-    const payload = {
-      meta: {
-        page: 0,
-        limit: 500,
-        sort: [{ order: "asc", field: "createdOn" }],
-      },
-      body: { searchKey: "" },
-    };
-    OMSService.getOrganizationTypeList(payload).then((resp) =>
+    OMSService.FETCH.organizationGroupList().then((resp) =>
       setOrganizationGroupList(resp?.body)
     );
   };
@@ -100,7 +92,7 @@ const Organizations = ({
             isRequired={isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false}
             control={control}
             // autoFocus
-            getOptionLabel={(op) => op?.orgGroupBn}
+            getOptionLabel={(op) => op?.nameBn}
             getOptionValue={(op) => op?.id}
             onChange={(org) => onOrgGroupChange(org)}
             isError={!!errors?.organizationGroupDto}

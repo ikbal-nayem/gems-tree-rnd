@@ -15,6 +15,9 @@ import {
   IMeta,
   IObject,
   exportXLSX,
+  generatePDF,
+  numEnToBn,
+  topProgress,
   useDebounce,
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
@@ -25,15 +28,19 @@ import { searchParamsToObject } from "utility/makeObject";
 import OrgForm from "./Form";
 import OrgFilter from "./OrgFilter";
 import OrgTable from "./Table";
-import { LABELS } from "./labels";
+import { organizationPDFContent } from "./pdf";
 
 let initPayloadMeta = {
   page: 0,
   limit: 10,
   sort: [
     {
-      field: "serialNo",
       order: "asc",
+      field: "serialNo",
+    },
+    {
+      order: "asc",
+      field: "nameEn",
     },
   ],
 };
@@ -106,8 +113,8 @@ const List = () => {
     const payload = {
       meta: searchKey
         ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
+          ? { ...reqMeta }
+          : { ...respMeta, page: 0 }
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
@@ -171,7 +178,7 @@ const List = () => {
   };
 
   const onSubmit = (data) => {
-    setIsSubmitLoading(false);
+    setIsSubmitLoading(true);
     const service = isUpdate
       ? OMSService.organizationUpdate
       : OMSService.organizationCreate;
@@ -194,27 +201,51 @@ const List = () => {
     setIsUpdate(false);
   };
 
-  const getXLSXStoreList = () =>
-    exportXLSX(exportData(listData || []), "প্রতিষ্ঠানের_তালিকা");
+  const downloadFile = (downloadtype: "excel" | "pdf") => {
+    topProgress.show();
+    const payload = {
+      meta: {
+        page: 0,
+        limit: respMeta.totalRecords,
+        sort: [
+          {
+            order: "asc",
+            field: "serialNo",
+          },
+          {
+            order: "asc",
+            field: "nameEn",
+          },
+        ],
+      },
+      body: {
+        searchKey: searchKey || null,
+        ...filterBody.current,
+      },
+    };
 
-  const exportData = (data: any[], lang: "en" | "bn" = "bn") =>
-    lang === "bn"
-      ? data.map((d) => ({
-          [LABELS.BN.nameBn]: d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.BN.nameEn]: d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.BN.officeType]:
-            d?.officeTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.BN.orgType]:
-            d?.orgTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN,
-        }))
-      : data.map((d) => ({
-          [LABELS.EN.nameBn]: d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.EN.nameEn]: d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.EN.officeType]:
-            d?.officeTypeDTO?.titleEn || COMMON_LABELS.NOT_ASSIGN,
-          [LABELS.EN.orgType]:
-            d?.orgTypeDTO?.titleEn || COMMON_LABELS.NOT_ASSIGN,
-        }));
+    OMSService.getOrganizationList(payload)
+      .then((res) =>
+        downloadtype === "pdf"
+          ? generatePDF(organizationPDFContent(res?.body))
+          : exportXLSX(exportData(res?.body || []), "Organization Type list")
+      )
+      .catch((err) => toast.error(err?.message))
+      .finally(() => topProgress.hide());
+  };
+
+  const exportData = (data: any[]) =>
+    data.map((d, i) => ({
+      "ক্রমিক নং": numEnToBn(i + 1),
+      "প্রতিষ্ঠানের নাম": d?.nameBn || COMMON_LABELS.NO_DATE,
+      স্থান: d?.location?.chainBn || COMMON_LABELS.NO_DATE,
+      "প্রতিষ্ঠানের পর্যায়": d?.officeTypeDTO?.titleBn || COMMON_LABELS.NO_DATE,
+      "প্রতিষ্ঠানের ধরণ":
+        d?.organizationTypeDTO?.nameBn || COMMON_LABELS.NO_DATE,
+      "প্রতিষ্ঠানের গ্রুপ":
+        d?.organizationGroupDTO?.nameBn || COMMON_LABELS.NO_DATE,
+      "প্রতিষ্ঠানের অভিভাবক": d?.parent?.nameBn || COMMON_LABELS.NO_DATE,
+    }));
 
   return (
     <>
@@ -228,7 +259,7 @@ const List = () => {
         {/* {Object.keys(filterBody.current).map((filter) => {
 					if (typeof filter === "object") return <Tag title={"filter"} />;
 				})} */}
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 mb-3">
           <Input
             type="search"
             noMargin
@@ -245,14 +276,27 @@ const List = () => {
             }}
             onFilterDone={onFilterDone}
           />
-          <DownloadMenu fnDownloadExcel={getXLSXStoreList} />
+          <DownloadMenu
+            fnDownloadExcel={() => downloadFile("excel")}
+            fnDownloadPDF={() => downloadFile("pdf")}
+          />
         </div>
+
+        {!!listData?.length && (
+          <div className="d-flex justify-content-between gap-3">
+            <div className="text-primary text-center">
+              <h5 className="mt-3">
+                মোট প্রতিষ্ঠান {numEnToBn(respMeta?.totalRecords)} টি
+              </h5>
+            </div>
+          </div>
+        )}
 
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="mt-3">
           <OrgTable
-            data={listData}
+            dataList={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
             meta={respMeta}

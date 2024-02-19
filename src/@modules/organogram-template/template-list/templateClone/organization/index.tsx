@@ -57,7 +57,7 @@ const Organizations = ({
           noMargin
           control={control}
           // autoFocus
-          getOptionLabel={(op) => op?.orgGroupBn}
+          getOptionLabel={(op) => op?.nameBn}
           getOptionValue={(op) => op?.id}
           onChange={(org) => onOrgGroupChange(org)}
           isError={!!errors?.organizationGroupDto}

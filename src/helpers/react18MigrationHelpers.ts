@@ -1,9 +1,14 @@
-import { MenuComponent } from "assets/ts/components";
+import {ReactNode} from 'react'
+import {MenuComponent} from 'assets/ts/components'
+
+type WithChildren = {
+  children?: ReactNode
+}
 
 const reInitMenu = () => {
-	setTimeout(() => {
-		MenuComponent.reinitialization();
-	}, 500);
-};
+  setTimeout(() => {
+    MenuComponent.reinitialization()
+  }, 500)
+}
 
-export { reInitMenu };
+export {type WithChildren, reInitMenu}

@@ -195,3 +195,7 @@ export const checkTabPermission = (key: string) => {
   );
   return !isHide;
 };
+
+export const pdfCellAlign = (data: any) => {
+  return notNullOrUndefined(data) ? "start" : "center";
+};

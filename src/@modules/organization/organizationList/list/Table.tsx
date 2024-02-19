@@ -1,3 +1,5 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { MENU } from "@constants/menu-titles.constant";
 import {
   Dropdown,
   DropdownItem,
@@ -10,18 +12,20 @@ import {
 import {
   COMMON_LABELS,
   IMeta,
+  IObject,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
 import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, width: 50 },
-  { title: "নাম", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের নাম", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের পর্যায়", minWidth: 100 },
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
-  { title: "সংস্থার ধরণ", minWidth: 100 },
-  { title: "সংস্থার গ্রুপ", minWidth: 100 },
-  { title: "অভিভাবক", minWidth: 150 },
+  { title: "প্রতিষ্ঠানের গ্রুপ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের অভিভাবক", minWidth: 150 },
   { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
   { title: COMMON_LABELS.ACTION },
@@ -29,7 +33,7 @@ const columns: ITableHeadColumn[] = [
 
 type OrgTableProps = {
   children?: ReactNode;
-  data?: any;
+  dataList?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
   meta?: IMeta;
@@ -37,27 +41,44 @@ type OrgTableProps = {
 
 const OrgTable: FC<OrgTableProps> = ({
   children,
-  data = [],
+  dataList = [],
   handleUpdate,
   handleDelete,
   meta,
 }) => {
-  if (!data?.length) return;
+  const navigate = useNavigate();
+
+  if (!dataList?.length) return;
+
+  const redirectTo = (page: "main_activity" | "aob", org: IObject) => {
+    switch (page) {
+      case "main_activity":
+        navigate(ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY, {
+          state: org,
+        });
+        break;
+      case "aob":
+        navigate(ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION, {
+          state: org,
+        });
+        break;
+    }
+  };
   return (
     <>
       <Table columns={columns}>
-        {data?.map((data, i) => {
+        {dataList?.map((data, i) => {
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i, meta)} />
               <TableCell
-                text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.nameBn || COMMON_LABELS.NO_DATE}
                 subText={
                   <>
                     <div>{data?.nameEn}</div>
                     <div>
-                      স্থান:&nbsp;
-                      {data?.location?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                      {/* স্থান:&nbsp; */}
+                      {data?.location?.chainBn || COMMON_LABELS.NO_DATE}
                     </div>
                   </>
                 }
@@ -69,23 +90,21 @@ const OrgTable: FC<OrgTableProps> = ({
                 tagColor={"info"}
               />
               <TableCell
-                text={data?.officeTypeDTO?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.officeTypeDTO?.titleBn || COMMON_LABELS.NO_DATE}
                 subText={data?.orgTypeDTO?.titleBn}
               />
               <TableCell
                 text={
-                  data?.organizationTypeDTO?.orgTypeBn ||
-                  COMMON_LABELS.NOT_ASSIGN
+                  data?.organizationTypeDTO?.nameBn || COMMON_LABELS.NO_DATE
                 }
               />
               <TableCell
                 text={
-                  data?.organizationGroupDTO?.orgGroupBn ||
-                  COMMON_LABELS.NOT_ASSIGN
+                  data?.organizationGroupDTO?.nameBn || COMMON_LABELS.NO_DATE
                 }
               />
               <TableCell
-                text={data?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN}
+                text={data?.parent?.nameBn || COMMON_LABELS.NO_DATE}
                 subText={data?.parent?.nameEn}
               />
               <TableCell
@@ -117,6 +136,18 @@ const OrgTable: FC<OrgTableProps> = ({
                   >
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">{COMMON_LABELS.EDIT}</h6>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => redirectTo("main_activity", data)}
+                  >
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-3">{MENU.BN.MAIN_ACTIVITY_LIST}</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => redirectTo("aob", data)}>
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-3">
+                      {MENU.BN.ALLOCATION_OF_BUSINESS_LIST}
+                    </h6>
                   </DropdownItem>
                   {/* <DropdownItem
 										onClick={() => {

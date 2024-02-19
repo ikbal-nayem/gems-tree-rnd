@@ -88,40 +88,52 @@ const OrganogramTable: FC<TableProps> = ({
         ];
 
   const navigate = useNavigate();
-  const navigateToDetails = (item: IObject) => {
-    OMSService.getCheckUserOrgPermissionByTemplateId(item?.id)
-      .then((resp) => {
-        if (resp?.body) {
-          navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
-            state: {
-              organizationId: item?.organizationId || null,
-              draftListRecord: true,
-            },
-          });
-        } else {
-          alert("This is not your organogram");
-        }
-      })
-      .catch(() =>
-        navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
-          state: {
-            organizationId: item?.organizationId || null,
-            draftListRecord: true,
-          },
-        })
-      );
-  };
-  // const onTemplateView = (id: string) => {
-  //   navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + id);
-  // };
 
-  // const [template, setTemplate] = useState<any>();
-  // const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const onClose = () => setIsOpen(false);
-  // const onClone = (template) => {
-  //   setTemplate(template);
-  //   setIsOpen(true);
-  // };
+  const sendTo = (
+    destination: "details" | "node_main_act" | "node_aob" | "node_list",
+    item: IObject
+  ) => {
+    switch (destination) {
+      case "node_main_act":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_MAIN_ACTIVITY, {
+          state: item,
+        });
+        break;
+      case "node_aob":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS, {
+          state: item,
+        });
+        break;
+      case "node_list":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, {
+          state: item,
+        });
+        break;
+      default:
+        // destination === "details"
+        OMSService.getCheckUserOrgPermissionByTemplateId(item?.id)
+          .then((resp) => {
+            if (resp?.body) {
+              navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+                state: {
+                  organizationId: item?.organizationId || null,
+                  draftListRecord: true,
+                },
+              });
+            } else {
+              toast.warning("This is not your organogram");
+            }
+          })
+          .catch(() =>
+            navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+              state: {
+                organizationId: item?.organizationId || null,
+                draftListRecord: true,
+              },
+            })
+          );
+    }
+  };
 
   return (
     <>
@@ -193,7 +205,19 @@ const OrganogramTable: FC<TableProps> = ({
                         ))
                     }
                   >
-                    <DropdownItem onClick={() => navigateToDetails(item)}>
+                    <DropdownItem onClick={() => sendTo("node_main_act", item)}>
+                      <Icon size={19} icon="list" />
+                      <h6 className="mb-0 ms-2">প্রধান কার্যাবলির তালিকা</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => sendTo("node_aob", item)}>
+                      <Icon size={19} icon="list" />
+                      <h6 className="mb-0 ms-2">কর্মবন্টনের তালিকা</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => sendTo("node_list", item)}>
+                      <Icon size={19} icon="list" />
+                      <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => sendTo("details", item)}>
                       <Icon size={19} icon="edit" />
                       <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
                     </DropdownItem>

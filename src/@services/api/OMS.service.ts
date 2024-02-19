@@ -216,17 +216,97 @@ export const OMSService = {
       ),
 
     organizationTypeList: async (): Promise<any> =>
-      await axiosIns.get(OMS_SERVICE + "organization-type/get-all-org-type"),
+      await axiosIns.get(
+        OMS_SERVICE + "organization-category/get-all-org-type"
+      ),
 
-    organizationGroupbyOrgType: async (payload): Promise<any> =>
-      await axiosIns.post(
-        OMS_SERVICE + "organization-type/get-all-org-group-by-org-type",
-        payload
+    organizationGroupbyOrgType: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-category/get-all-org-group-by-org-type-id/" +
+          id
       ),
 
     organizationsByGroupId: async (id): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "organization/get-all-org-by-org-group-id/" + id
+      ),
+
+    organizationParentListByOrgType: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization/get-parent-list-by-org-group-level",
+        payload
+      ),
+    organizationParentListByOrgGroup: async (payload: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-list-by-org-group/" + payload
+      ),
+
+    organogramNodeList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-custom-structure/custom/get-list",
+        payload
+      ),
+
+    mainActivityList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-main-activity/get-list",
+        payload
+      ),
+
+    mainActivityListByOrgId: async (id): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-latest-main-activity-by/" +
+          id
+      ),
+
+    allocationOfBusinessListByOrgId: async (id): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-latest-business-allocation-by/" +
+          id
+      ),
+
+    nodeParentListByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-structure/get-all-by-organogram-id/" + id
+      ),
+    nodeDetailsById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-structure/get-all-by-structure-id/" + id
+      ),
+
+    organizationGroupList: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization-category/get-all-org-group"
+      ),
+
+    organizationCategoryList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-category/get-list",
+        payload
+      ),
+
+    ministryDivisionDepartmentList: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-ministry-division-and-departmentOf"
+      ),
+
+    organogramMainActivityById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-main-activity/get-by-organogram-id/" + id
+      ),
+
+    organogramBusinessAllocationById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-business-allocation/get-by-organogram-id/" +
+          id
+      ),
+    oranizationTreeByOrganizationId: async (organizationId: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-organization-tree/" + organizationId
       ),
   },
 
@@ -242,11 +322,60 @@ export const OMSService = {
         OMS_SERVICE + "organization-organogram/clone/save",
         payload
       ),
+    organogramSingleNodeCreate: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "/organogram-structure/single-save",
+        payload
+      ),
+
+    organizationType: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-category/create",
+        payload
+      ),
+
+    organogramMainActivity: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-main-activity/save",
+        payload
+      ),
+
+    organogramBusinessAllocation: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-business-allocation/save",
+        payload
+      ),
   },
 
   UPDATE: {
     orgPostConfig: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "org-post/update", payload),
+
+    organogramSingleNodeById: async (
+      id: string,
+      payload: IObject
+    ): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE +
+          "organogram-structure/update-single-organogram-structure-by-id/" +
+          id,
+        payload
+      ),
+
+    organizationType: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "organization-category/update", payload),
+
+    organogramMainActivity: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-main-activity/update",
+        payload
+      ),
+
+    organogramBusinessAllocation: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-business-allocation/update",
+        payload
+      ),
   },
 
   DELETE: {
@@ -255,16 +384,23 @@ export const OMSService = {
         OMS_SERVICE + "organogram-template/delete-organogram-by-id/" + id
       );
     },
+
+    organizationType: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organization-category/delete-all",
+        payload
+      ),
+
+    organogramMainActivity: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-main-activity/delete-all",
+        payload
+      ),
+
+    organogramBusinessAllocation: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-business-allocation/delete-all",
+        payload
+      ),
   },
-
-  getOrganizationTypeList: async (payload): Promise<any> =>             // returns organizationGroups actually
-    await axiosIns.post(OMS_SERVICE + "organization-type/get-list", payload),
-  organizationTypeCreate: async (payload): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "organization-type/create", payload),
-
-  organizationTypeUpdate: async (payload): Promise<any> =>
-    await axiosIns.put(OMS_SERVICE + "organization-type/update", payload),
-
-  organizationTypeDelete: async (payload): Promise<any> =>
-    await axiosIns.put(OMS_SERVICE + "organization-type/delete-all", payload),
 };

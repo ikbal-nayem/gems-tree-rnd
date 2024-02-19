@@ -1,6 +1,6 @@
-import { ChartContainer } from "@components/OrgChart/ChartContainer";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import { Button, Icon, IconButton } from "@gems/components";
-import { CoreService } from "@services/api/Core.service";
+import { CoreService } from "../../../../../@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
 import MyNode from "./my-node";
 import NodeDetails from "./node-details";

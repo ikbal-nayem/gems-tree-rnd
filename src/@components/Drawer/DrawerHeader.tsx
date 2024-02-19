@@ -27,7 +27,7 @@ const DrawerHeader = ({
         <h3 className="mb-0">{title}</h3>
       </div>
       {closeIconAction ? (
-        <Icon icon="close" onClick={closeIconAction} role="button" />
+        <Icon icon="close" color="danger"  onClick={closeIconAction} role="button" />
       ) : null}
     </div>
   );

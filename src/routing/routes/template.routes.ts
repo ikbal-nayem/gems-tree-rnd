@@ -10,7 +10,6 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_CREATE,
     element: lazy(() => import("@modules/organogram-template/template/create")),
   },
-
   {
     link: ROUTE_L2.ORG_TEMPLATE_LIST,
     routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_LIST,
@@ -36,9 +35,34 @@ export const TemplateRoutes: IAppRoutes = {
       ),
     },
     {
+      link: ROUTE_L2.ORG_TEMPLATE_NODE_CREATE,
+      routeKey: ROUTE_KEY.ORG_TEMPLATE_NODE_CREATE,
+      element: lazy(() => import("@modules/organogram/draft-list/node/create")),
+    },
+    {
+      link: ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE,
+      routeKey: ROUTE_KEY.ORG_TEMPLATE_NODE_UPDATE,
+      element: lazy(() => import("@modules/organogram/draft-list/node/update")),
+    },
+    {
       link: ROUTE_L2.ORG_TEMPLATE_VIEW,
       routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_VIEW,
       element: lazy(() => import("@modules/organogram-template/template/view")),
+    },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_NODE_LIST,
+      element: lazy(() => import("@modules/organogram/draft-list/node/list")),
+    },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_MAIN_ACTIVITY,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_MAIN_ACTIVITY,
+      element: lazy(() => import("@modules/organogram/draft-list/main-activity")),
+    },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS,
+      element: lazy(() => import("@modules/organogram/draft-list/allocation-of-business")),
     },
     ...permissionRouteList,
   ],

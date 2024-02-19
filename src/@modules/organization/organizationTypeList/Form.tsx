@@ -6,6 +6,7 @@ import {
   DrawerFooter,
   Input,
 } from "@gems/components";
+import { COMMON_INSTRUCTION, numBnToEn } from "@gems/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,7 +18,7 @@ interface IGradeForm {
   submitLoading?: boolean;
 }
 
-const GradeForm = ({
+const Form = ({
   isOpen,
   onClose,
   onSubmit,
@@ -56,60 +57,33 @@ const GradeForm = ({
           <div className="row">
             <div className="col-12">
               <Input
-                label="প্রতিষ্ঠানের ধরণ (ইংরেজি)"
-                placeholder="প্রতিষ্ঠানের ধরণ (ইংরেজি) লিখুন"
+                label="নাম (ইংরেজি)"
+                placeholder="নাম (ইংরেজি) লিখুন"
                 registerProperty={{
-                  ...register("orgTypeEn", {
-                    required: "প্রতিষ্ঠানের ধরণ (ইংরেজি) লিখুন",
+                  ...register("nameEn", {
+                    required: "নাম (ইংরেজি) লিখুন",
                   }),
                 }}
                 isRequired
-                isError={!!errors?.orgTypeEn}
-                errorMessage={errors?.orgTypeEn?.message as string}
+                isError={!!errors?.nameEn}
+                errorMessage={errors?.nameEn?.message as string}
               />
             </div>
             <div className="col-12">
               <Input
-                label="প্রতিষ্ঠানের ধরণ (বাংলা)"
-                placeholder="প্রতিষ্ঠানের ধরণ (বাংলা) লিখুন"
+                label="নাম (বাংলা)"
+                placeholder="নাম (বাংলা) লিখুন"
                 registerProperty={{
-                  ...register("orgTypeBn", {
-                    required: "প্রতিষ্ঠানের ধরণ (বাংলা) লিখুন",
+                  ...register("nameBn", {
+                    required: "নাম (বাংলা) লিখুন",
                   }),
                 }}
                 isRequired
-                isError={!!errors?.orgTypeBn}
-                errorMessage={errors?.orgTypeBn?.message as string}
+                isError={!!errors?.nameBn}
+                errorMessage={errors?.nameBn?.message as string}
               />
             </div>
-            <div className="col-12">
-              <Input
-                label="প্রতিষ্ঠানের গ্রুপ (ইংরেজি)"
-                placeholder="প্রতিষ্ঠানের গ্রুপ (ইংরেজি) লিখুন"
-                registerProperty={{
-                  ...register("orgGroupEn", {
-                    required: "প্রতিষ্ঠানের গ্রুপ (ইংরেজি) লিখুন",
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.orgGroupEn}
-                errorMessage={errors?.orgGroupEn?.message as string}
-              />
-            </div>
-            <div className="col-12">
-              <Input
-                label="প্রতিষ্ঠানের গ্রুপ (বাংলা)"
-                placeholder="প্রতিষ্ঠানের গ্রুপ (বাংলা) লিখুন"
-                registerProperty={{
-                  ...register("orgGroupBn", {
-                    required: "প্রতিষ্ঠানের গ্রুপ (বাংলা) লিখুন",
-                  }),
-                }}
-                isRequired
-                isError={!!errors?.orgGroupBn}
-                errorMessage={errors?.orgGroupBn?.message as string}
-              />
-            </div>
+
             <div className="col-12">
               <Input
                 label="প্রতিষ্ঠানের লেভেল"
@@ -117,16 +91,21 @@ const GradeForm = ({
                 placeholder="প্রতিষ্ঠানের লেভেল লিখুন"
                 min={1}
                 registerProperty={{
-                  ...register("orgLevel", {
+                  ...register("orgTypeLevel", {
                     required: "প্রতিষ্ঠানের লেভেল লিখুন",
+                    setValueAs: (v) => numBnToEn(v),
+                    maxLength: {
+                      value: 1,
+                      message: COMMON_INSTRUCTION.MAX_CHAR(1),
+                    },
                   }),
                 }}
                 isRequired
-                isError={!!errors?.orgLevel}
-                errorMessage={errors?.orgLevel?.message as string}
+                isError={!!errors?.orgTypeLevel}
+                errorMessage={errors?.orgTypeLevel?.message as string}
               />
             </div>
-            <div className="col-12">
+            {/* <div className="col-12">
               <Input
                 label="কোড"
                 placeholder="কোড লিখুন"
@@ -134,7 +113,7 @@ const GradeForm = ({
                   ...register("orgCode"),
                 }}
               />
-            </div>
+            </div> */}
             <div className="col-12">
               <Checkbox
                 label="সক্রিয়"
@@ -164,4 +143,4 @@ const GradeForm = ({
     </Drawer>
   );
 };
-export default GradeForm;
+export default Form;

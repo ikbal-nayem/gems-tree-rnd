@@ -5,9 +5,10 @@ import {
   toast,
 } from "@gems/components";
 import { IObject } from "@gems/utils";
-import React, { useEffect, useState } from "react";
-import ModuleNodeComponent from "./organizationNodeComponent";
 import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
+import ModuleNodeComponent from "./organizationNodeComponent";
+import OrganizationTemplateTree from "./OrganizationTreeComponent/index";
 
 const Tree = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const Tree = () => {
     setOrganizationData(e);
     if (e?.id) {
       setLoading(true);
-      OMSService.getTreeByParentOrganization(e?.id)
+      OMSService.FETCH.oranizationTreeByOrganizationId(e?.id)
         .then((res) => {
           setData(res?.body || {});
         })
@@ -53,7 +54,7 @@ const Tree = () => {
       </div>
       {loading && <ContentPreloader />}
       {!loading && Object.keys(data)?.length > 0 && (
-        <ModuleNodeComponent data={data || {}} />
+        <OrganizationTemplateTree treeData={data || {}} />
       )}
       {!loading && !(Object.keys(data)?.length > 0) && (
         <NoData details="কোনো প্রতিষ্ঠানের ট্রি তথ্য পাওয়া যায় নি!" />

@@ -176,6 +176,26 @@ const TemplateEditComponent = ({
 
   return (
     <div>
+       <div
+        className="position-fixed z-index-1"
+        style={{ right: "20px", top: "73px" }}
+      >
+        {" "}
+        <Button
+          color="primary"
+          type="submit"
+          isLoading={isSubmitLoading}
+          form="templateForm"
+          onClick={() => {
+            if (!notNullOrUndefined(watch("organogramDate")))
+              focusById("orgDateBlock");
+          }}
+        >
+          {!isObjectNull(updateData)
+            ? COMMON_LABELS.UPDATE
+            : COMMON_LABELS.SAVE}
+        </Button>
+      </div>
       <div className="card col-md-12 border p-3 mb-4">
         <div className="row">
           <div className="col-md-6 col-12">

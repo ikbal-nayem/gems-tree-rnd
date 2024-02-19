@@ -87,24 +87,24 @@ const ChartNode = ({
 
   // On Mouser Hover Event
 
-  // const addArrows = (e) => {
-  // 	const node = e.target.closest('li');
-  // 	const parent = node.parentNode.closest('li');
-  // 	const isAncestorsCollapsed = node && parent ? parent.firstChild.classList.contains('hidden') : undefined;
-  // 	const isSiblingsCollapsed = Array.from(node.parentNode.children).some((item) => item.classList.contains('hidden'));
+  const addArrows = (e) => {
+  	const node = e.target.closest('li');
+  	const parent = node.parentNode.closest('li');
+  	const isAncestorsCollapsed = node && parent ? parent.firstChild.classList.contains('hidden') : undefined;
+  	const isSiblingsCollapsed = Array.from(node.parentNode.children).some((item) => item.classList.contains('hidden'));
 
-  // 	setTopEdgeExpanded(!isAncestorsCollapsed);
-  // 	setRightEdgeExpanded(!isSiblingsCollapsed);
-  // 	setLeftEdgeExpanded(!isSiblingsCollapsed);
-  // 	setBottomEdgeExpanded(!isChildrenCollapsed);
-  // };
+  	setTopEdgeExpanded(!isAncestorsCollapsed);
+  	setRightEdgeExpanded(!isSiblingsCollapsed);
+  	setLeftEdgeExpanded(!isSiblingsCollapsed);
+  	setBottomEdgeExpanded(!isChildrenCollapsed);
+  };
 
-  // const removeArrows = () => {
-  // 	setTopEdgeExpanded(undefined);
-  // 	setRightEdgeExpanded(undefined);
-  // 	setBottomEdgeExpanded(undefined);
-  // 	setLeftEdgeExpanded(undefined);
-  // };
+  const removeArrows = () => {
+  	setTopEdgeExpanded(undefined);
+  	setRightEdgeExpanded(undefined);
+  	setBottomEdgeExpanded(undefined);
+  	setLeftEdgeExpanded(undefined);
+  };
 
   const toggleAncestors = (actionNode) => {
     let node = actionNode.parentNode.closest("li");
@@ -220,7 +220,6 @@ const ChartNode = ({
     // reset background of all potential drop targets
     dragNodeService.clearDragInfo();
   };
-
   const dropHandler = (event) => {
     if (!event.currentTarget.classList.contains("allowedDrop")) {
       return;
@@ -238,7 +237,7 @@ const ChartNode = ({
         ref={node}
         id={datasource.id}
         className={`${nodeClass}${
-          datasource.children.length && datasource?.isLastNode
+          datasource?.children?.length && datasource?.isLastNode
             ? " last-node-sibling"
             : ""
         }`}
@@ -248,9 +247,8 @@ const ChartNode = ({
         onDragOver={dragoverHandler}
         onDragEnd={dragendHandler}
         onDrop={dropHandler}
-        // On Mouser Hover Event
-        // onMouseEnter={addArrows}
-        // onMouseLeave={removeArrows}
+        onMouseEnter={addArrows}
+        onMouseLeave={removeArrows}
       >
         {NodeTemplate ? (
           <NodeTemplate nodeData={datasource} />

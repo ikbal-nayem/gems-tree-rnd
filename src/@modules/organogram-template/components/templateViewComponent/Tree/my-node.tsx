@@ -19,12 +19,10 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
     manPower = numEnToBn(manPower);
   }
 
+  let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
+
   return (
-    <div
-      className={`position rounded border border-gray-400 border-1 ${
-        nodeData?.isDeleted ? "text-line-through-color-red " : " "
-      }${nodeData?.isAddition ? "text-decoration-underline" : ""}`}
-    >
+    <div className={`position rounded border border-gray-400 border-1`}>
       <div className="bg-light rounded-top d-flex justify-content-between">
         {!nodeData?.isDeleted && (
           <div>
@@ -45,16 +43,16 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           </div>
         )}
 
-        <p className="mb-0 fs-8  text-start">
+        <p className={`mb-0 fs-8  text-start ${deletedClass}`}>
+          {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
+          {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn
             ? longLineBreaker(nodeData.titleEn || "", 17)
             : nodeData.titleBn
             ? longLineBreaker(nodeData.titleBn || "", 20)
             : COMMON_LABELS.NOT_ASSIGN}
         </p>
-        <div>
-          <p className="mb-0 fs-8 text-decoration-nonw">{manPower}</p>
-        </div>
+        <p className={`mb-0 fs-8 ${deletedClass}`}>{manPower}</p>
       </div>
 
       <div
@@ -62,6 +60,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
       >
         {nodeData?.manpowerList?.length > 0 &&
           nodeData?.manpowerList?.map((item, i) => {
+            let itemDeletedClass = item?.isDeleted
+              ? "text-line-through-color-red"
+              : "";
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postId ? (
@@ -74,17 +75,29 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                         : item?.postType === "permanent"
                         ? "text-gray-900"
                         : ""
-                    } ${
-                      item?.isDeleted ? "text-line-through-color-red " : " "
-                    }${item?.isAddition ? "text-decoration-underline" : ""}`}
+                    }`}
                   >
-                    <p className="mb-0 fs-8">
+                    <p
+                      className={`mb-0 fs-8 ${
+                        deletedClass || itemDeletedClass
+                      }`}
+                    >
                       {langEn
                         ? item?.numberOfEmployee || 0
                         : numEnToBn(item?.numberOfEmployee || 0)}{" "}
                     </p>
-                    <p className="mb-0 ms-1 fs-8">x</p>
-                    <p className="ms-1 mb-0 fs-8">
+                    <p
+                      className={`mb-0 ms-1 fs-8 ${
+                        deletedClass || itemDeletedClass
+                      }`}
+                    >
+                      x
+                    </p>
+                    <p
+                      className={`ms-1 mb-0 fs-8 ${
+                        deletedClass || itemDeletedClass
+                      }`}
+                    >
                       {(postList?.length > 0 &&
                         item?.postId &&
                         (langEn

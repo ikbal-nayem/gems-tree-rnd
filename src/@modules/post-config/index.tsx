@@ -63,7 +63,7 @@ const PostConfig = () => {
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
   const { currentUser } = useAuth();
-  const userOrg = currentUser?.organization;
+  const userOrg = currentUser?.posting?.postingOrganizationDto;
   // const [userOrg, setUserOrg] = useState<any>(currentUser?.organization);
 
   useEffect(() => {
