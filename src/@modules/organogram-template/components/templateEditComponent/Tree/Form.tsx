@@ -259,7 +259,6 @@ const NodeForm = ({
         <ModalBody>
           <div className="row mb-4 d-flex justify-content-center">
             <div className="col-12 col-md-4 col-lg-3 col-xl-2 border rounded-4 p-2 bg-gray-100">
-              <p>dddd</p>
               <Input
                 label="প্রদর্শন ক্রম"
                 placeholder="প্রদর্শন ক্রম লিখুন"

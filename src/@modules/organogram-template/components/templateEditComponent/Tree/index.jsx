@@ -83,7 +83,7 @@ const deleteNode = (nd, deleteItem) => {
     if (nodeState && nodeState?.length > 0) {
       nd.children[i] = {
         ...nd.children[i],
-        children: nodeState,
+        children: nodeState || [],
         isDeleted: true,
       };
     }
