@@ -66,7 +66,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             let itemDeletedClass = item?.isDeleted
               ? "text-line-through-color-red"
               : "";
-            let itemAdditionClass = nodeData?.isAddition
+            let itemAdditionClass = item?.isAddition
               ? "text-decoration-underline"
               : "";
             return (
