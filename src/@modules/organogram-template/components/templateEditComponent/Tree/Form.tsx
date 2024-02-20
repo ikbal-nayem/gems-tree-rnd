@@ -198,8 +198,6 @@ const NodeForm = ({
   };
 
   const handleManpowerDelete = (field, index) => {
-    console.log();
-
     if (index >= 0) {
       if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
         manpowerListRemove(index);
@@ -593,6 +591,22 @@ const NodeForm = ({
                       rounded={false}
                       onClick={() => {
                         handleManpowerDelete(field, index);
+                      }}
+                    />
+                  </div>
+                )}
+                {checkFieldIsDeleted(field) && (
+                  <div className={index < 1 ? "mt-6 ms-3" : "mt-1 ms-3"}>
+                    <IconButton
+                      iconName="change_circle"
+                      color="warning"
+                      rounded={false}
+                      onClick={() => {
+                        manpowerListUpdate(index, {
+                          ...field,
+                          isDeleted: false,
+                        });
+                        // manpowerListRemove(index);
                       }}
                     />
                   </div>

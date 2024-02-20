@@ -122,6 +122,40 @@ const deleteNode = (nd, deleteItem) => {
 //   return { ...nd };
 // };
 
+const undoDeleteNode = (nd, undoItem) => {
+  if (nd?.id === undoItem?.id) {
+    return nd?.children && nd?.children?.length > 0
+      ? nd?.children?.map((d) => {
+          return {
+            ...d,
+            children: d?.children?.length > 0 ? undoDeleteNode(d, d) : [],
+            isDeleted: false,
+          };
+        })
+      : null;
+  }
+
+  for (var i = 0; i < nd.children.length; i++) {
+    const nodeState = undoDeleteNode(nd.children[i], undoItem);
+    if (nodeState && nodeState?.length > 0) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: nodeState||[],
+        isDeleted: false,
+      };
+    }
+    if (!nodeState) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: [],
+        isDeleted: false,
+      };
+    }
+  }
+  nd = childSerializer(nd);
+  return { ...nd };
+};
+
 const childSerializer = (parent) => {
   let tempChildList = [];
   parent?.children.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
@@ -264,6 +298,10 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
         setIsDeleteModal(true);
         setDeleteData(data);
         break;
+      case "REMOVE_UNDO":
+        setTreeData(undoDeleteNode(treeData, data));
+        break;
+
       default:
         return;
     }

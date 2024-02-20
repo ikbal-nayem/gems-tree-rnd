@@ -13,6 +13,9 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
       if (a.gradeOrder === b.gradeOrder) return 0;
       return a.gradeOrder > b.gradeOrder ? 1 : -1;
     });
+
+    console.log(nodeData);
+    
   return (
     <div>
       <div
@@ -58,6 +61,17 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                   hoverTitle={"এই নোড মুছুন"}
                 />
               )}
+            </div>
+          )}
+          {nodeData?.isDeleted && (
+            <div className="text-decoration-none">
+              <Icon
+                icon="change_circle"
+                size={20}
+                color="warning"
+                onClick={() => treeDispatch("REMOVE_UNDO", nodeData)}
+                hoverTitle={"মুছে ফেলা এই নোড পূর্বাবস্থায় নিন"}
+              />
             </div>
           )}
         </div>
