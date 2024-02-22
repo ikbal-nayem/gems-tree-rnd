@@ -131,6 +131,7 @@ const undoDeleteNode = (nd, undoItem) => {
             ...d,
             children: d?.children?.length > 0 ? undoDeleteNode(d, d) : [],
             isDeleted: false,
+            isParentDeleted: false,
           };
         })
       : null;
