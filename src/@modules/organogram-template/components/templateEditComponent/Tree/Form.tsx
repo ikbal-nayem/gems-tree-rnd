@@ -1,10 +1,10 @@
-import { Input } from "@components/Input";
 import { ERR_MSG, LABELS } from "@constants/common.constant";
 import {
   Autocomplete,
   Button,
   Checkbox,
   IconButton,
+  Input,
   Label,
   Modal,
   ModalBody,
@@ -161,6 +161,7 @@ const NodeForm = ({
           manpowerList: [
             {
               isNewManpower: true,
+              isAddition: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
             },
@@ -175,6 +176,7 @@ const NodeForm = ({
         manpowerList: [
           {
             isNewManpower: true,
+            isAddition: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
           },
@@ -197,35 +199,13 @@ const NodeForm = ({
 
   const handleManpowerDelete = (field, index) => {
     if (index >= 0) {
-      if (!isObjectNull(field) && field?.isNewManpower) {
+      if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
         manpowerListRemove(index);
       } else {
         manpowerListUpdate(index, { ...field, isDeleted: true });
       }
     }
   };
-
-  // const setEnIntoBnFields = (data) => {
-  //   let postFunctionalityListNew = [];
-  //   if (isNotEmptyList(data?.postFunctionalityList)) {
-  //     data?.postFunctionalityList.forEach((pf) => {
-  //       postFunctionalityListNew.push({
-  //         functionalityBn: pf?.functionalityEn,
-  //         functionalityEn: pf?.functionalityEn,
-  //       });
-  //     });
-  //   }
-
-  //   return {
-  //     ...data,
-  //     postFunctionalityList: postFunctionalityListNew,
-  //     manpowerList: isNotEmptyList(data?.manpowerList)
-  //       ? data?.manpowerList?.map((item) => {
-  //           return { ...item };
-  //         })
-  //       : null,
-  //   };
-  // };
 
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
@@ -250,6 +230,12 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
+    if (isObjectNull(updateData)) {
+      data = {
+        ...data,
+        isAddition: true,
+      };
+    }
 
     onSubmit(data);
   };
@@ -447,6 +433,7 @@ const NodeForm = ({
                   onClick={() => {
                     manpowerListAppend({
                       isNewManpower: true,
+                      isAddition: true,
                       serviceTypeDto: cadreObj,
                       serviceTypeKey: cadreObj?.metaKey,
                     });
@@ -456,144 +443,155 @@ const NodeForm = ({
             </div>
             {manpowerListFields.map((field, index) => (
               <div
-                className={`d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100 ${
-                  checkFieldIsDeleted(field)
-                    ? "disabledDiv border-danger p-1"
-                    : ""
-                }`}
+                className={`d-flex align-items-top border rounded px-3 my-1 bg-gray-100`}
                 key={field?.id}
               >
-                <div className={index < 1 ? "mt-10" : "mt-3"}>
-                  <Label> {numEnToBn(index + 1) + "।"} </Label>
-                </div>
-                <div className="row w-100">
-                  <div className="col-md-6 col-xl-4 px-1">
-                    <Autocomplete
-                      label={index < 1 ? "পদবি" : ""}
-                      placeholder="বাছাই করুন"
-                      isRequired={true}
-                      control={control}
-                      options={postList || []}
-                      getOptionLabel={(op) => op?.nameBn}
-                      getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.postDTO`}
-                      onChange={(t) => onPostChange(index, t)}
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.postDTO}
-                      errorMessage={
-                        errors?.manpowerList?.[index]?.postDTO
-                          ?.message as string
-                      }
-                    />
+                <div
+                  className={`d-flex align-items-top gap-3 w-100 ${
+                    checkFieldIsDeleted(field)
+                      ? "disabledDiv border border-danger rounded p-1"
+                      : ""
+                  }`}
+                >
+                  <div className={index < 1 ? "mt-10" : "mt-3"}>
+                    <Label> {numEnToBn(index + 1) + "।"} </Label>
                   </div>
-
-                  <div className="col-md-6 col-xl-3 px-1">
-                    <Autocomplete
-                      label={index < 1 ? "গ্রেড" : ""}
-                      placeholder="বাছাই করুন"
-                      control={control}
-                      options={gradeList || []}
-                      getOptionLabel={(op) => op?.nameBn}
-                      getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.gradeDTO`}
-                      onChange={(t) => {
-                        setValue(`manpowerList.${index}.gradeId`, t?.id);
-                        setValue(
-                          `manpowerList.${index}.gradeOrder`,
-                          t?.displayOrder
-                        );
-                      }}
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                    />
-                  </div>
-
-                  <div className="col-md-6 col-xl-2 px-1">
-                    <Autocomplete
-                      label={index < 1 ? "সার্ভিসের ধরণ" : ""}
-                      placeholder="বাছাই করুন"
-                      isRequired={true}
-                      control={control}
-                      options={serviceList || []}
-                      getOptionLabel={(op) => op?.titleBn}
-                      getOptionValue={(op) => op?.metaKey}
-                      defaultValue={cadreObj}
-                      name={`manpowerList.${index}.serviceTypeDto`}
-                      onChange={(t) =>
-                        setValue(
-                          `manpowerList.${index}.serviceTypeKey`,
-                          t?.metaKey
-                        )
-                      }
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
-                    />
-                  </div>
-
-                  <div className="col-md-6 col-xl-1 px-1">
-                    <Input
-                      label={index < 1 ? "জনবল সংখ্যা" : ""}
-                      placeholder="জনবল সংখ্যা লিখুন"
-                      registerProperty={{
-                        ...register(`manpowerList.${index}.numberOfEmployee`, {
-                          required: "জনবল সংখ্যা লিখুন",
-                          setValueAs: (v) => numBnToEn(v),
-                          validate: manpowerNumberCheck,
-                        }),
-                      }}
-                      defaultValue={1}
-                      noMargin
-                      isRequired
-                      isError={
-                        !!errors?.manpowerList?.[index]?.numberOfEmployee
-                      }
-                      errorMessage={
-                        errors?.manpowerList?.[index]?.numberOfEmployee
-                          ?.message as string
-                      }
-                    />
-                  </div>
-                  <div className="col-md-6 col-xl-1 px-1">
-                    <Select
-                      label={index < 1 ? "পদের ধরণ" : ""}
-                      options={postTypeList || []}
-                      noMargin
-                      placeholder={"বাছাই করুন"}
-                      isRequired
-                      textKey={"titleBn"}
-                      defaultValue={"permanent"}
-                      valueKey="key"
-                      registerProperty={{
-                        ...register(`manpowerList.${index}.postType`, {
-                          required: " ",
-                        }),
-                      }}
-                      isError={!!errors?.manpowerList?.[index]?.postType}
-                    />
-                  </div>
-
-                  <div
-                    className={
-                      "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
-                      (index < 1 ? "mt-5" : "my-0")
-                    }
-                  >
-                    {isHeadIndex === null || isHeadIndex === index ? (
-                      <Checkbox
+                  <div className="row w-100">
+                    <div className="col-md-6 col-xl-4 px-1">
+                      <Autocomplete
+                        label={index < 1 ? "পদবি" : ""}
+                        placeholder="বাছাই করুন"
+                        isRequired={true}
+                        control={control}
+                        options={postList || []}
+                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionValue={(op) => op?.id}
+                        name={`manpowerList.${index}.postDTO`}
+                        onChange={(t) => onPostChange(index, t)}
                         noMargin
-                        label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
-                        isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                        isError={!!errors?.manpowerList?.[index]?.postDTO}
+                        errorMessage={
+                          errors?.manpowerList?.[index]?.postDTO
+                            ?.message as string
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-6 col-xl-3 px-1">
+                      <Autocomplete
+                        label={index < 1 ? "গ্রেড" : ""}
+                        placeholder="বাছাই করুন"
+                        control={control}
+                        options={gradeList || []}
+                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionValue={(op) => op?.id}
+                        name={`manpowerList.${index}.gradeDTO`}
+                        onChange={(t) => {
+                          setValue(`manpowerList.${index}.gradeId`, t?.id);
+                          setValue(
+                            `manpowerList.${index}.gradeOrder`,
+                            t?.displayOrder
+                          );
+                        }}
+                        noMargin
+                        isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                      />
+                    </div>
+
+                    <div className="col-md-6 col-xl-2 px-1">
+                      <Autocomplete
+                        label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                        placeholder="বাছাই করুন"
+                        isRequired={true}
+                        control={control}
+                        options={serviceList || []}
+                        getOptionLabel={(op) => op?.titleBn}
+                        getOptionValue={(op) => op?.metaKey}
+                        defaultValue={cadreObj}
+                        name={`manpowerList.${index}.serviceTypeDto`}
+                        onChange={(t) =>
+                          setValue(
+                            `manpowerList.${index}.serviceTypeKey`,
+                            t?.metaKey
+                          )
+                        }
+                        noMargin
+                        isError={
+                          !!errors?.manpowerList?.[index]?.serviceTypeDto
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-6 col-xl-1 px-1">
+                      <Input
+                        label={index < 1 ? "জনবল সংখ্যা" : ""}
+                        placeholder="জনবল সংখ্যা লিখুন"
                         registerProperty={{
-                          ...register(`manpowerList.${index}.isHead`, {
-                            onChange: (e) => {
-                              e.target.checked
-                                ? setIsHeadIndex(index)
-                                : setIsHeadIndex(null);
-                            },
+                          ...register(
+                            `manpowerList.${index}.numberOfEmployee`,
+                            {
+                              required: "জনবল সংখ্যা লিখুন",
+                              setValueAs: (v) => numBnToEn(v),
+                              validate: manpowerNumberCheck,
+                            }
+                          ),
+                        }}
+                        defaultValue={1}
+                        noMargin
+                        isRequired
+                        isError={
+                          !!errors?.manpowerList?.[index]?.numberOfEmployee
+                        }
+                        errorMessage={
+                          errors?.manpowerList?.[index]?.numberOfEmployee
+                            ?.message as string
+                        }
+                      />
+                    </div>
+                    <div className="col-md-6 col-xl-1 px-1">
+                      <Select
+                        label={index < 1 ? "পদের ধরণ" : ""}
+                        options={postTypeList || []}
+                        noMargin
+                        placeholder={"বাছাই করুন"}
+                        isRequired
+                        textKey={"titleBn"}
+                        defaultValue={"permanent"}
+                        valueKey="key"
+                        registerProperty={{
+                          ...register(`manpowerList.${index}.postType`, {
+                            required: " ",
                           }),
                         }}
+                        isError={!!errors?.manpowerList?.[index]?.postType}
                       />
-                    ) : null}
+                    </div>
+
+                    <div
+                      className={
+                        "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
+                        (index < 1 ? "mt-5" : "my-0")
+                      }
+                    >
+                      {isHeadIndex === null || isHeadIndex === index ? (
+                        <Checkbox
+                          noMargin
+                          label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
+                          isDisabled={
+                            isHeadIndex ? isHeadIndex !== index : false
+                          }
+                          registerProperty={{
+                            ...register(`manpowerList.${index}.isHead`, {
+                              onChange: (e) => {
+                                e.target.checked
+                                  ? setIsHeadIndex(index)
+                                  : setIsHeadIndex(null);
+                              },
+                            }),
+                          }}
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 </div>
                 {!checkFieldIsDeleted(field) && (
@@ -604,6 +602,22 @@ const NodeForm = ({
                       rounded={false}
                       onClick={() => {
                         handleManpowerDelete(field, index);
+                      }}
+                    />
+                  </div>
+                )}
+                {checkFieldIsDeleted(field) && (
+                  <div className={index < 1 ? "mt-6 ms-3" : "mt-1 ms-3"}>
+                    <IconButton
+                      iconName="change_circle"
+                      color="warning"
+                      rounded={false}
+                      onClick={() => {
+                        manpowerListUpdate(index, {
+                          ...field,
+                          isDeleted: false,
+                        });
+                        // manpowerListRemove(index);
                       }}
                     />
                   </div>

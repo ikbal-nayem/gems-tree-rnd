@@ -1,15 +1,9 @@
-import { Icon } from "@gems/components";
-// import { Dropdown, DropdownItem, Icon, IconButton } from "@gems/components";
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
+import { Icon } from "@gems/components";
 import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
-// import { Dropdown, DropdownItem } from "../Dropdown";
-// import { Button, Modal } from "react-bootstrap";
-// const propTypes = {
-//   nodeData: PropTypes.object.isRequired
-// };
 
 const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
   isNotEmptyList(nodeData?.manpowerList) &&
@@ -19,23 +13,28 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
       if (a.gradeOrder === b.gradeOrder) return 0;
       return a.gradeOrder > b.gradeOrder ? 1 : -1;
     });
+
+  console.log(nodeData);
+
   return (
     <div>
       <div
         className={`position rounded ${
-          nodeData?.isDeleted ? "text-line-through-color-red" : ""
-        }`}
+          nodeData?.isDeleted ? "text-line-through-color-red " : " "
+        }${nodeData?.isAddition ? "text-decoration-underline" : ""}`}
       >
         <div className="d-flex justify-content-between">
           {/* <IconButton iconName="more_vert" color="warning" iconSize={16}/> */}
           {!nodeData?.isDeleted && (
-            <Icon
-              icon="edit_square"
-              size={20}
-              color="warning"
-              onClick={() => treeDispatch("EDIT", nodeData)}
-              hoverTitle={"এই নোড আপডেট করুন"}
-            />
+            <div>
+              <Icon
+                icon="edit_square"
+                size={20}
+                color="warning"
+                onClick={() => treeDispatch("EDIT", nodeData)}
+                hoverTitle={"এই নোড আপডেট করুন"}
+              />
+            </div>
           )}
           <div>
             <p className="p-1 mb-0 fs-7">
@@ -64,6 +63,18 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
               )}
             </div>
           )}
+          {nodeData?.isDeleted &&
+            (!nodeData?.isParentDeleted) && (
+              <div className="text-decoration-none">
+                <Icon
+                  icon="change_circle"
+                  size={20}
+                  color="warning"
+                  onClick={() => treeDispatch("REMOVE_UNDO", nodeData)}
+                  hoverTitle={"মুছে ফেলা এই নোড পূর্বাবস্থায় নিন"}
+                />
+              </div>
+            )}
         </div>
         <div
           className={`bg-light text-start ${
@@ -95,8 +106,8 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                           ? "text-gray-900"
                           : ""
                       } ${
-                        item?.isDeleted ? "text-line-through-color-red" : ""
-                      }`}
+                        item?.isDeleted ? "text-line-through-color-red " : " "
+                      }${item?.isAddition ? "text-decoration-underline" : ""}`}
                     >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
