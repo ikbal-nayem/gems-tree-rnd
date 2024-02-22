@@ -631,8 +631,6 @@ const NodeForm = ({
               registerProperty={{
                 ...register(`commentNode`),
               }}
-              // onChange={(e) => setValue("titleEn", longLineBreaker(e.target.value))}
-              // maxLength={500}
               isError={!!errors?.commentNode}
             />
           </div>

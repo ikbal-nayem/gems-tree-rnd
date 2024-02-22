@@ -50,9 +50,18 @@ const editNode = (nd, node, updateData) => {
 };
 
 const deleteNode = (nd, deleteItem) => {
+  if (
+    nd?.id &&
+    deleteItem?.id &&
+    nd?.id === deleteItem?.id &&
+    deleteItem?.isAddition
+  ) {
+    return null;
+  }
+
   if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
     return nd?.children && nd?.children?.length > 0
-      ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
+      ? nd?.children?.filter((s) => !s?.nodeId && !s?.isAddition)?.length > 0 &&
           nd?.children
             ?.filter((s) => !s?.nodeId)
             ?.map((d) => {
@@ -60,6 +69,7 @@ const deleteNode = (nd, deleteItem) => {
                 ...d,
                 children: d?.children?.length > 0 ? deleteNode(d, d) : [],
                 isDeleted: true,
+                isParentDeleted: true,
               };
             })
       : null;
@@ -74,12 +84,14 @@ const deleteNode = (nd, deleteItem) => {
     if (nodeState && nodeState?.length > 0) {
       nd.children[i] = {
         ...nd.children[i],
-        children: nodeState,
+        children: nodeState || [],
         isDeleted: true,
       };
     }
     if (!nodeState) {
-      if (nd?.children[i]?.id)
+      if (nd?.children[i]?.isAddition) {
+        nd.children.splice(i, 1);
+      } else if (nd?.children[i]?.id)
         nd.children[i] = {
           ...nd.children[i],
           children: [],
@@ -110,6 +122,40 @@ const deleteNode = (nd, deleteItem) => {
 //   nd = childSerializer(nd);
 //   return { ...nd };
 // };
+
+const undoDeleteNode = (nd, undoItem) => {
+  if (nd?.id === undoItem?.id) {
+    return nd?.children && nd?.children?.length > 0
+      ? nd?.children?.map((d) => {
+          return {
+            ...d,
+            children: d?.children?.length > 0 ? undoDeleteNode(d, d) : [],
+            isDeleted: false,
+          };
+        })
+      : null;
+  }
+
+  for (var i = 0; i < nd.children.length; i++) {
+    const nodeState = undoDeleteNode(nd.children[i], undoItem);
+    if (nodeState && nodeState?.length > 0) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: nodeState || [],
+        isDeleted: false,
+      };
+    }
+    if (!nodeState) {
+      nd.children[i] = {
+        ...nd.children[i],
+        children: [],
+        isDeleted: false,
+      };
+    }
+  }
+  nd = childSerializer(nd);
+  return { ...nd };
+};
 
 const childSerializer = (parent) => {
   let tempChildList = [];
@@ -253,6 +299,10 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
         setIsDeleteModal(true);
         setDeleteData(data);
         break;
+      case "REMOVE_UNDO":
+        setTreeData(undoDeleteNode(treeData, data));
+        break;
+
       default:
         return;
     }

@@ -20,6 +20,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
   }
 
   let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
+  let additionClass = nodeData?.isAddition ? "text-decoration-underline" : "";
 
   return (
     <div className={`position rounded border border-gray-400 border-1`}>
@@ -43,7 +44,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           </div>
         )}
 
-        <p className={`mb-0 fs-8  text-start ${deletedClass}`}>
+        <p className={`mb-0 fs-8  text-start ${deletedClass} ${additionClass}`}>
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn
@@ -52,7 +53,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             ? longLineBreaker(nodeData.titleBn || "", 20)
             : COMMON_LABELS.NOT_ASSIGN}
         </p>
-        <p className={`mb-0 fs-8 ${deletedClass}`}>{manPower}</p>
+        <p className={`mb-0 fs-8 ${deletedClass} ${additionClass}`}>
+          {manPower}
+        </p>
       </div>
 
       <div
@@ -62,6 +65,9 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
           nodeData?.manpowerList?.map((item, i) => {
             let itemDeletedClass = item?.isDeleted
               ? "text-line-through-color-red"
+              : "";
+            let itemAdditionClass = item?.isAddition
+              ? "text-decoration-underline"
               : "";
             return (
               <div key={i}>
@@ -80,7 +86,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                     <p
                       className={`mb-0 fs-8 ${
                         deletedClass || itemDeletedClass
-                      }`}
+                      } ${additionClass || itemAdditionClass}`}
                     >
                       {langEn
                         ? item?.numberOfEmployee || 0
@@ -89,14 +95,14 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                     <p
                       className={`mb-0 ms-1 fs-8 ${
                         deletedClass || itemDeletedClass
-                      }`}
+                      } ${additionClass || itemAdditionClass}`}
                     >
                       x
                     </p>
                     <p
                       className={`ms-1 mb-0 fs-8 ${
                         deletedClass || itemDeletedClass
-                      }`}
+                      } ${additionClass || itemAdditionClass}`}
                     >
                       {(postList?.length > 0 &&
                         item?.postId &&
@@ -117,9 +123,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
       </div>
       {notNullOrUndefined(nodeData?.commentNode) && (
         <div className="pt-3 ps-2 text-start ">
-          {/* <u>{isNotEnamCommittee ? "বি. দ্র. :" : "N.B. :"}</u>   */}
           <TextBlock value={nodeData?.commentNode} />
-          {/* {nodeData?.commentNode} */}
         </div>
       )}
     </div>
