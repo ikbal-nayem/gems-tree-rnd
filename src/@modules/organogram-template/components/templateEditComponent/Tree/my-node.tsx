@@ -63,18 +63,17 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
               )}
             </div>
           )}
-          {nodeData?.isDeleted &&
-            (!nodeData?.isParentDeleted) && (
-              <div className="text-decoration-none">
-                <Icon
-                  icon="change_circle"
-                  size={20}
-                  color="warning"
-                  onClick={() => treeDispatch("REMOVE_UNDO", nodeData)}
-                  hoverTitle={"মুছে ফেলা এই নোড পূর্বাবস্থায় নিন"}
-                />
-              </div>
-            )}
+          {nodeData?.isDeleted && !nodeData?.isParentDeleted && (
+            <div className="text-decoration-none">
+              <Icon
+                icon="change_circle"
+                size={20}
+                color="warning"
+                onClick={() => treeDispatch("REMOVE_UNDO", nodeData)}
+                hoverTitle={"মুছে ফেলা এই নোড পূর্বাবস্থায় নিন"}
+              />
+            </div>
+          )}
         </div>
         <div
           className={`bg-light text-start ${
@@ -111,7 +110,9 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                     >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
-                      <p className="mb-0 fs-7 ms-1">{postName}</p>
+                      <p className="mb-0 fs-7 ms-1">
+                        {longLineBreaker(postName,17)}
+                      </p>
                     </div>
                   ) : null}
                 </div>
