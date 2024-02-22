@@ -39,7 +39,7 @@ const defaultProps = {
   containerClass: "",
   chartClass: "",
   draggable: false,
-  collapsible: true,
+  collapsible: false,
   multipleSelect: false,
 };
 
