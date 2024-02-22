@@ -69,6 +69,7 @@ const deleteNode = (nd, deleteItem) => {
                 ...d,
                 children: d?.children?.length > 0 ? deleteNode(d, d) : [],
                 isDeleted: true,
+                isParentDeleted: true,
               };
             })
       : null;
@@ -140,7 +141,7 @@ const undoDeleteNode = (nd, undoItem) => {
     if (nodeState && nodeState?.length > 0) {
       nd.children[i] = {
         ...nd.children[i],
-        children: nodeState||[],
+        children: nodeState || [],
         isDeleted: false,
       };
     }
