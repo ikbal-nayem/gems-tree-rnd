@@ -111,7 +111,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">
-                        {longLineBreaker(postName,17)}
+                        {longLineBreaker(postName, 17)}
                       </p>
                     </div>
                   ) : null}
