@@ -1,8 +1,8 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { notNullOrUndefined, numEnToBn } from "@gems/utils";
-import { longLineBreaker } from "utility/utils";
+import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
 const MyNode = ({ langEn, nodeData, postList, onView }) => {
@@ -69,6 +69,22 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
             let itemAdditionClass = item?.isAddition
               ? "text-decoration-underline"
               : "";
+
+            let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
+            mp = langEn ? mp : numEnToBn(mp);
+            const postExists = isNotEmptyList(postList) && item?.postId;
+
+            const post = postExists
+              ? postList?.find((d) => d?.id === item?.postId)
+              : null;
+
+            const postName = !isObjectNull(post)
+              ? langEn
+                ? post?.nameEn
+                : post?.nameBn
+              : langEn
+              ? COMMON_LABELS.EN.NOT_ASSIGN
+              : COMMON_LABELS.NOT_ASSIGN;
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postId ? (
@@ -88,9 +104,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                         deletedClass || itemDeletedClass
                       } ${additionClass || itemAdditionClass}`}
                     >
-                      {langEn
-                        ? item?.numberOfEmployee || 0
-                        : numEnToBn(item?.numberOfEmployee || 0)}{" "}
+                      {mp}{" "}
                     </p>
                     <p
                       className={`mb-0 ms-1 fs-8 ${
@@ -104,16 +118,7 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                         deletedClass || itemDeletedClass
                       } ${additionClass || itemAdditionClass}`}
                     >
-                      {(postList?.length > 0 &&
-                        item?.postId &&
-                        (langEn
-                          ? postList?.find((d) => d?.id === item?.postId)
-                              ?.nameEn
-                          : postList?.find((d) => d?.id === item?.postId)
-                              ?.nameBn)) ||
-                        (langEn
-                          ? COMMON_LABELS.EN.NOT_ASSIGN
-                          : COMMON_LABELS.NOT_ASSIGN)}
+                      {longLineBreaker(postName, 17)}
                     </p>
                   </div>
                 ) : null}
