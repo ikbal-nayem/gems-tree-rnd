@@ -139,7 +139,11 @@ const Form = ({
                   name="parentGroup"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
-                  onChange={(op) => setValue("parentGroupId", op?.id)}
+                  onChange={(op) => {
+                    setValue("parentGroupId", op?.id ? op?.id : null);
+                    setValue("parentOrganizationId", null);
+                    setValue("parentOrganization", null);
+                  }}
                   control={control}
                 />
               )}
@@ -150,9 +154,11 @@ const Form = ({
                   name="parentOrganization"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
-                  onChange={(op) =>
-                    setValue("parentOrganizationId", op?.id ? op?.id : null)
-                  }
+                  onChange={(op) => {
+                    setValue("parentOrganizationId", op?.id ? op?.id : null);
+                    setValue("parentGroup", null);
+                    setValue("parentGroupId", null);
+                  }}
                   control={control}
                 />
               )}
