@@ -61,7 +61,7 @@ post {
 
             discordSend(
                 description: "**${K8S_SERVICE_NAME}-${DEPLOYMENT_ENV}**",
-                scmWebUrl: 'https://gitlab.gems.gov.bd/gems/backend/ems-service-pmis',
+                scmWebUrl: 'https://gitlab.gems.gov.bd/gems/frontend/web-oms',
                 showChangeset: true,
                 footer: "Status:  ${currentBuild.currentResult}, build ${env.BUILD_NUMBER} Job ${env.JOB_NAME}\nMore info at: ${env.BUILD_URL}",
                 webhookURL: 'https://discord.com/api/webhooks/1208421423119470662/GC0oRal1UnnOEgaA7CLo9LEjIJJOdoCmUg5jrkiX0AZ9q33UjhI8vh-YpTLZy0CDqIPA',
