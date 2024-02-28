@@ -58,10 +58,7 @@ const OrgForm = ({
   useEffect(() => {
     if (!isObjectNull(updateData)) {
       if (!isObjectNull(updateData?.organizationTypeDTO)) {
-        onOrganizationTypeChange(updateData?.organizationTypeDTO);
-      }
-      if (!isObjectNull(updateData?.organizationGroupDTO)) {
-        onOrganizationGroupChange(updateData?.organizationGroupDTO);
+        onOrganizationTypeChange(updateData?.organizationTypeDTO, true);
       }
       reset({
         ...updateData,
@@ -77,7 +74,7 @@ const OrgForm = ({
     }
   }, [updateData, orgTypeGovtObject]);
 
-  const onOrganizationTypeChange = (typeItem: IObject) => {
+  const onOrganizationTypeChange = (typeItem: IObject, updateValue = false) => {
     setValue("organizationGroupDTO", null);
     setValue("organizationCategoryId", null);
     setOrgGroupList([]);
@@ -92,11 +89,15 @@ const OrgForm = ({
         })
         .catch((err) => toast.error(err?.message));
 
-      OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
-        .then((res) => {
-          setOrgParentList(res?.body || []);
-        })
-        .catch((err) => toast.error(err?.message));
+      if (updateValue && !isObjectNull(updateData?.organizationGroupDTO)) {
+        onOrganizationGroupChange(updateData?.organizationGroupDTO);
+      } else {
+        OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
+          .then((res) => {
+            setOrgParentList(res?.body || []);
+          })
+          .catch((err) => toast.error(err?.message));
+      }
     }
   };
 
@@ -116,6 +117,8 @@ const OrgForm = ({
           })
           .catch((err) => toast.error(err?.message));
       }
+    } else {
+      onOrganizationTypeChange(watch("organizationTypeDTO"));
     }
   };
 
@@ -189,7 +192,9 @@ const OrgForm = ({
                     name="parent"
                     getOptionLabel={(op) => op.nameBn}
                     getOptionValue={(op) => op.id}
-                    onChange={(op) => setValue("parentId", op?.id)}
+                    onChange={(op) =>
+                      setValue("parentId", op?.id ? op?.id : null)
+                    }
                     control={control}
                     // isError={!!errors?.parent}
                     // errorMessage={errors?.parent?.message as string}
