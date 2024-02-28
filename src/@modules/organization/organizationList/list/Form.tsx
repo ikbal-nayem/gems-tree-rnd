@@ -184,15 +184,15 @@ const OrgForm = ({
                   <Autocomplete
                     label="প্রতিষ্ঠানের অভিভাবক"
                     placeholder="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
-                    isRequired="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
+                    // isRequired="প্রতিষ্ঠানের অভিভাবক বাছাই করুন"
                     options={orgParentList || []}
                     name="parent"
                     getOptionLabel={(op) => op.nameBn}
                     getOptionValue={(op) => op.id}
                     onChange={(op) => setValue("parentId", op?.id)}
                     control={control}
-                    isError={!!errors?.parent}
-                    errorMessage={errors?.parent?.message as string}
+                    // isError={!!errors?.parent}
+                    // errorMessage={errors?.parent?.message as string}
                   />
                 </div>
               </>
