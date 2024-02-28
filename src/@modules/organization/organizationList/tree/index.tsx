@@ -7,7 +7,6 @@ import {
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import ModuleNodeComponent from "./organizationNodeComponent";
 import OrganizationTemplateTree from "./OrganizationTreeComponent/index";
 
 const Tree = () => {
@@ -17,9 +16,9 @@ const Tree = () => {
   const [organizationList, setOrganizationList] = useState<IObject[]>([]);
 
   useEffect(() => {
-    OMSService.getOrganizationByType("ORG_TYPE_MINISTRY").then((resp) => {
-      setOrganizationList(resp?.body || []);
-    });
+    OMSService.FETCH.ministryDivisionDepartmentList()
+      .then((resp) => setOrganizationList(resp?.body || []))
+      .catch((err) => toast.error(err?.message));
   }, []);
 
   const onOrganizationChange = (e) => {
