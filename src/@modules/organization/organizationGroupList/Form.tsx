@@ -82,6 +82,9 @@ const Form = ({
   }, [updateData, reset]);
 
   let parentType = watch("parentType");
+  let parent = watch("parent");
+
+  console.log(parent);
 
   return (
     <Drawer
@@ -113,56 +116,63 @@ const Form = ({
                 errorMessage={errors?.parentDTO?.message as string}
               />
             </div>
-            <div className="col-12 d-flex justify-content gap-8 mb-2">
-              <RadioButton
-                label="গ্রুপ অভিভাবক"
-                value="parent_group"
-                noMargin
-                registerProperty={{
-                  ...register("parentType"),
-                }}
-              />
-              <RadioButton
-                label="অভিভাবক প্রতিষ্ঠান"
-                value="parent_organization"
-                noMargin
-                registerProperty={{
-                  ...register("parentType"),
-                }}
-              />
-            </div>
-            <div className="col-12">
-              {parentType === "parent_group" && (
-                <Autocomplete
-                  placeholder="গ্রুপ অভিভাবক বাছাই করুন"
-                  options={orgGroupParentList || []}
-                  name="parentGroup"
-                  getOptionLabel={(op) => op.nameBn}
-                  getOptionValue={(op) => op.id}
-                  onChange={(op) => {
-                    setValue("parentGroupId", op?.id ? op?.id : null);
-                    setValue("parentOrganizationId", null);
-                    setValue("parentOrganization", null);
-                  }}
-                  control={control}
-                />
-              )}
-              {parentType === "parent_organization" && (
-                <Autocomplete
-                  placeholder="অভিভাবক প্রতিষ্ঠান বাছাই করুন"
-                  options={parentOrgList || []}
-                  name="parentOrganization"
-                  getOptionLabel={(op) => op.nameBn}
-                  getOptionValue={(op) => op.id}
-                  onChange={(op) => {
-                    setValue("parentOrganizationId", op?.id ? op?.id : null);
-                    setValue("parentGroup", null);
-                    setValue("parentGroupId", null);
-                  }}
-                  control={control}
-                />
-              )}
-            </div>
+            {!(parent?.orgTypeLevel === 1 || parent?.orgTypeLevel === 2) && (
+              <>
+                <div className="col-12 d-flex justify-content gap-8 mb-2">
+                  <RadioButton
+                    label="গ্রুপ অভিভাবক"
+                    value="parent_group"
+                    noMargin
+                    registerProperty={{
+                      ...register("parentType"),
+                    }}
+                  />
+                  <RadioButton
+                    label="অভিভাবক প্রতিষ্ঠান"
+                    value="parent_organization"
+                    noMargin
+                    registerProperty={{
+                      ...register("parentType"),
+                    }}
+                  />
+                </div>
+                <div className="col-12">
+                  {parentType === "parent_group" && (
+                    <Autocomplete
+                      placeholder="গ্রুপ অভিভাবক বাছাই করুন"
+                      options={orgGroupParentList || []}
+                      name="parentGroup"
+                      getOptionLabel={(op) => op.nameBn}
+                      getOptionValue={(op) => op.id}
+                      onChange={(op) => {
+                        setValue("parentGroupId", op?.id ? op?.id : null);
+                        setValue("parentOrganizationId", null);
+                        setValue("parentOrganization", null);
+                      }}
+                      control={control}
+                    />
+                  )}
+                  {parentType === "parent_organization" && (
+                    <Autocomplete
+                      placeholder="অভিভাবক প্রতিষ্ঠান বাছাই করুন"
+                      options={parentOrgList || []}
+                      name="parentOrganization"
+                      getOptionLabel={(op) => op.nameBn}
+                      getOptionValue={(op) => op.id}
+                      onChange={(op) => {
+                        setValue(
+                          "parentOrganizationId",
+                          op?.id ? op?.id : null
+                        );
+                        setValue("parentGroup", null);
+                        setValue("parentGroupId", null);
+                      }}
+                      control={control}
+                    />
+                  )}
+                </div>
+              </>
+            )}
             <div className="col-12">
               <Input
                 label="নাম (ইংরেজি)"
