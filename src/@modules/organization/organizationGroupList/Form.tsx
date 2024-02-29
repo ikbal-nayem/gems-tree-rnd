@@ -84,8 +84,6 @@ const Form = ({
   let parentType = watch("parentType");
   let parent = watch("parent");
 
-  console.log(parent);
-
   return (
     <Drawer
       title={
