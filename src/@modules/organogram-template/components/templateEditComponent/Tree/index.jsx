@@ -63,7 +63,7 @@ const deleteNode = (nd, deleteItem) => {
     return nd?.children && nd?.children?.length > 0
       ? nd?.children?.filter((s) => !s?.nodeId && !s?.isAddition)?.length > 0 &&
           nd?.children
-            ?.filter((s) => !s?.nodeId)
+            ?.filter((s) => !s?.nodeId && !s?.isAddition)
             ?.map((d) => {
               return {
                 ...d,
