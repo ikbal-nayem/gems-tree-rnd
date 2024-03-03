@@ -13,12 +13,14 @@ interface ITab {
   templateData: IObject;
   setIsLatestVersion: (d) => void;
   organogramId: string;
+  isPreviousVerison: boolean;
   setOrganogramId: (id: string) => void;
 }
 
 const OrganogramTab = ({
   organogramId,
   setOrganogramId,
+  isPreviousVerison,
   templateData,
   setIsLatestVersion,
 }: ITab) => {
@@ -73,7 +75,7 @@ const OrganogramTab = ({
       getParentOrganization();
     }
   }, [templateData]);
-
+  
   const getParentOrganization = () => {
     setIsLoading(true);
     OMSService.getOrganizationParentByOrgId(templateData?.organization?.id)
@@ -86,7 +88,7 @@ const OrganogramTab = ({
 
   useEffect(() => {
     getVersionListById();
-  }, []);
+  }, [isPreviousVerison]);
 
   const getVersionListById = () => {
     OMSService.getVersionListByOrganogramId(organogramId)
@@ -118,7 +120,7 @@ const OrganogramTab = ({
   };
   return (
     <div>
-      {verisonList?.length > 0 && (
+      {isPreviousVerison && verisonList?.length > 0 && (
         <div className="d-flex bg-white rounded mb-3 overflow-auto">
           {verisonList?.map((d, idx) => {
             return (

@@ -13,7 +13,6 @@ const NotesReviewApproverList = ({
   langEn,
 }: INotesReviewApproverList) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
-  console.log(data);
 
   return (
     <div className="card border p-3">
