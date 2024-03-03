@@ -13,6 +13,7 @@ const OrganizationTemplateTree = ({
   headerData,
   isPDFLoading,
   organogramView = false,
+  isLatestVersion=false
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -75,6 +76,7 @@ const OrganizationTemplateTree = ({
             langEn={langEn}
             nodeData={nodeData}
             postList={postList}
+            isLatestVersion={isLatestVersion}
             onView={onView}
           />
         )}

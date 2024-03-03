@@ -49,6 +49,7 @@ interface ITemplateViewComponent {
   parentOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
+  isLatestVersion?: boolean;
   organogramId?: string;
   isBeginningVersion?: boolean;
   stateOrganizationData?: IObject;
@@ -61,6 +62,7 @@ const TemplateViewComponent = ({
   attachedOrganizationData,
   parentOrganizationData,
   organogramView = false,
+  isLatestVersion = false,
   organogramId,
   isBeginningVersion = false,
   stateOrganizationData,
@@ -370,6 +372,7 @@ const TemplateViewComponent = ({
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
           organogramView={organogramOrganizationView}
+          isLatestVersion={isLatestVersion}
           headerData={{
             titleName: titleName || null,
             versionName: versionName || null,
