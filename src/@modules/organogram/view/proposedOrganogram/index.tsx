@@ -1,9 +1,44 @@
-import { ContentPreloader, toast } from "@gems/components";
+import { ContentPreloader, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
 import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
+const tabs = [
+  {
+    label: "অর্গানোগ্রাম",
+    key: "ORGANOGRAM",
+  },
+  {
+    label: "জনবল",
+    key: "MANPOWER",
+  },
+  {
+    label: "টাস্ক বিল্ডার",
+    key: "TASK_BUILDER",
+  },
+  {
+    label: "জনবলের সারসংক্ষেপ",
+    key: "SUMMARY_OF_MANPOWER",
+  },
+  {
+    label: "যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
+    key: "INVENTORY",
+  },
+  {
+    label: "শব্দসংক্ষেপ",
+    key: "ABBREVIATION",
+  },
+  {
+    label: "সংযুক্ত দপ্তরসমহূ",
+    key: "ATTACHED_ORGANIZATION",
+  },
+  {
+    label: "চেক লিস্ট",
+    key: "CHECKLIST",
+  },
+];
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -11,10 +46,8 @@ const ProposedOrganogramView = () => {
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [organogramData, setOrganogramData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
-  const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
-    {}
-  );
-
+  const [parentOrgData, setParentOrgData] = useState<IObject>({});
+  const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
   const organogramId = state?.organogramId;
   const subjects = state?.subjects;
@@ -25,6 +58,10 @@ const ProposedOrganogramView = () => {
     getManpowerSummaryById();
     getAttachedOrganizationById();
   }, [organogramId]);
+
+  const handleTabIndex = (idx: number) => {
+    setActiveTab(idx);
+  };
 
   const getOrganogramDetails = () => {
     OMSService.getOrganogramDetailsByOrganogramId(organogramId)
@@ -72,7 +109,7 @@ const ProposedOrganogramView = () => {
     setIsLoading(true);
     OMSService.getOrganizationParentByOrgId(organogramData?.organization?.id)
       .then((resp) => {
-        setParentOrganizationData(resp?.body);
+        setParentOrgData(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -106,17 +143,28 @@ const ProposedOrganogramView = () => {
       </div>
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(organogramData) && (
-        <div>
-          <TemplateViewComponent
-            updateData={organogramData}
-            inventoryData={inventoryData}
-            manpowerData={manpowerData}
-            attachedOrganizationData={attachOrgData}
-            organogramView={true}
-            parentOrganizationData={parentOrganizationData}
-            isBeginningVersion={true}
-            organogramId={organogramId}
-          />
+        <div className="mt-3">
+          <TabBlock index={0} activeIndex={activeTab}>
+            <TemplateViewComponent
+              updateData={organogramData}
+              inventoryData={inventoryData}
+              manpowerData={manpowerData}
+              attachedOrganizationData={attachOrgData}
+              organogramView={true}
+              parentOrganizationData={parentOrgData}
+              isBeginningVersion={true}
+              organogramId={organogramId}
+            />
+          </TabBlock>
+          <TabBlock index={1} activeIndex={activeTab}></TabBlock>
+          <TabBlock index={2} activeIndex={activeTab}>
+            {/* <TaskBuilder /> */}
+          </TabBlock>
+          <TabBlock index={3} activeIndex={activeTab}></TabBlock>
+          <TabBlock index={4} activeIndex={activeTab}></TabBlock>
+          <TabBlock index={5} activeIndex={activeTab}></TabBlock>
+          <TabBlock index={6} activeIndex={activeTab}></TabBlock>
+          <TabBlock index={7} activeIndex={activeTab}></TabBlock>
         </div>
       )}
     </div>
