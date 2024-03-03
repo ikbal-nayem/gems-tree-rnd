@@ -349,7 +349,7 @@ const OrganizationTemplateTree = ({
         />
         <NodeForm
           isOpen={formOpen}
-          postList={postList}
+          // postList={postList}
           gradeList={gradeList}
           serviceList={serviceList}
           cadreObj={cadreObj}
