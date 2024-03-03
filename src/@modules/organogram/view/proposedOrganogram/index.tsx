@@ -80,9 +80,29 @@ const ProposedOrganogramView = () => {
 
   return (
     <div>
-      <div className="d-flex bg-white rounded mb-3 overflow-auto fs-4 p-2 gap-3">
-        <div className="fw-bold"> প্রস্তাবিত পরিবর্তনসমূহ :- </div>
-        <div> {subjects}</div>
+      <div className="d-flex bg-white rounded mb-3 overflow-auto fs-4 p-2 py-4 gap-3">
+        <div
+          className="cursor-pointer"
+          data-kt-menu-trigger="{default: 'click'}"
+        >
+          <span
+            className={`nav-link text-active-primary cursor-pointer ms-4 fw-bold text-gray-700`}
+          >
+            প্রস্তাবিত পরিবর্তনসমূহ
+          </span>
+          <div
+            className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-700 menu-state-bg menu-state-primary fw-bold py-2 fs-6 w-200px"
+            data-kt-menu="true"
+          >
+            {subjects?.map((p) => {
+              return (
+                <div className="menu-item px-2">
+                  <div className="menu-link">{p.titleBn}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(organogramData) && (

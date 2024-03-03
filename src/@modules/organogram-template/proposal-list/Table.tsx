@@ -48,7 +48,7 @@ const ProposalTable: FC<TableProps> = ({
 
   const navigate = useNavigate();
   const navigateToView = (item, subjects) => {
-    navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW + "?id=", {
+    navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW, {
       state: {
         organogramId: item?.proposedOrganogram?.id || null,
         subjects: subjects || null,
@@ -65,7 +65,13 @@ const ProposalTable: FC<TableProps> = ({
             return (
               <TableRow key={idx}>
                 <TableCell text={generateRowNumBn(idx, respMeta)} />
-                <TableCell text={COMMON_LABELS.NOT_ASSIGN} />
+                <TableCell
+                  text={
+                    item?.proposedOrganization?.nameBn ||
+                    COMMON_LABELS.NOT_ASSIGN
+                  }
+                  subText={item?.proposedOrganization?.nameEn || null}
+                />
                 <TableCell
                   text={
                     item?.proposedOrganization?.nameBn ||
@@ -103,7 +109,7 @@ const ProposalTable: FC<TableProps> = ({
                     id={item?.id}
                   >
                     <DropdownItem
-                      onClick={() => navigateToView(item, subjects)}
+                      onClick={() => navigateToView(item, item?.subjects)}
                     >
                       <Icon size={19} icon="visibility" />
                       <h6 className="mb-0 ms-3">দেখুন</h6>
