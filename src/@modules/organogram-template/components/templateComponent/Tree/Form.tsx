@@ -111,7 +111,7 @@ const NodeForm = ({
   const postPayload = {
     meta: {
       page: 0,
-      limit: 1000,
+      limit: 100,
       sort: [{ order: "asc", field: isNotEnamCommittee ? "nameBn" : "nameEn" }],
     },
     body: { searchKey: "" },

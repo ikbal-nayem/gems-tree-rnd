@@ -109,7 +109,7 @@ const NodeForm = ({
   const postPayload = {
     meta: {
       page: 0,
-      limit: 1000,
+      limit: 100,
       sort: [{ order: "asc", field: "nameBn" }],
     },
     body: { searchKey: "" },
