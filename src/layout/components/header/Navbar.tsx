@@ -22,7 +22,6 @@ const btnIconClass = "svg-icon-1";
 const Navbar = () => {
   const { config } = useLayout();
   const { currentUser, logout } = useAuth();
-  console.log("oms", makePreviewUrl(currentUser?.imageUrl));
 
   return (
     <div className="app-navbar flex-shrink-0">
