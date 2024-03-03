@@ -39,6 +39,7 @@ const ProposalTable: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.BN.SENDER, width: 250 },
+    { title: LABELS.BN.ORGANIZATION, width: 250 },
     { title: LABELS.BN.TOPIC, width: 150 },
     { title: LABELS.BN.STATUS, width: 100 },
     { title: LABELS.BN.RECEIVED_DATE_TIME, width: 100 },
@@ -46,71 +47,80 @@ const ProposalTable: FC<TableProps> = ({
   ];
 
   const navigate = useNavigate();
-  //   const navigateToDetails = (id: string) => {
-  //     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
-  //   };
-  const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
+  const navigateToView = (item, subjects) => {
+    navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW + "?id=", {
+      state: {
+        organogramId: item?.proposedOrganogram?.id || null,
+        subjects: subjects || null,
+      },
+    });
   };
-
+  let subjects;
   return (
     <>
       {dataList?.length ? (
         <Table columns={columns}>
-          {dataList?.map((item, idx) => (
-            <TableRow key={idx}>
-              <TableCell text={generateRowNumBn(idx, respMeta)} />
-              <TableCell
-                text={
-                  item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN
-                }
-                subText={item?.proposedOrganization?.nameEn || null}
-              />
-              <TableCell
-                text={item?.subjects?.map((i) => i.titleBn).join(" , ") || COMMON_LABELS.NOT_ASSIGN}
-                // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
-              />
-              <TableCell>
-                <Tag
-                  title={item?.status === "NEW" ? "অপেক্ষমান" : item?.status}
-                  color={item?.status === "NEW" ? "primary" : "dark"}
+          {dataList?.map((item, idx) => {
+            subjects = item?.subjects?.map((i) => i.titleBn).join(" , ");
+            return (
+              <TableRow key={idx}>
+                <TableCell text={generateRowNumBn(idx, respMeta)} />
+                <TableCell text={COMMON_LABELS.NOT_ASSIGN} />
+                <TableCell
+                  text={
+                    item?.proposedOrganization?.nameBn ||
+                    COMMON_LABELS.NOT_ASSIGN
+                  }
+                  subText={item?.proposedOrganization?.nameEn || null}
                 />
-              </TableCell>
-              <TableCell
-                text={
-                  generateDateFormat(
-                    item?.proposedDate,
-                    DATE_PATTERN.GOVT_STANDARD
-                  ) || COMMON_LABELS.NOT_ASSIGN
-                }
-                subText={
-                  generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
-                  null
-                }
-              />
+                <TableCell
+                  text={subjects || COMMON_LABELS.NOT_ASSIGN}
+                  // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
+                />
+                <TableCell>
+                  <Tag
+                    title={item?.status === "NEW" ? "অপেক্ষমান" : item?.status}
+                    color={item?.status === "NEW" ? "primary" : "dark"}
+                  />
+                </TableCell>
+                <TableCell
+                  text={
+                    generateDateFormat(
+                      item?.proposedDate,
+                      DATE_PATTERN.GOVT_STANDARD
+                    ) || COMMON_LABELS.NOT_ASSIGN
+                  }
+                  subText={
+                    generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
+                    null
+                  }
+                />
 
-              <TableCell textAlign="end" verticalAlign="top">
-                <Dropdown
-                  btnIcon={true}
-                  btnContent={<Icon icon="more_vert" size={20} />}
-                  id={item?.id}
-                >
-                  <DropdownItem onClick={() => navigateToView(item?.id)}>
-                    <Icon size={19} icon="visibility" />
-                    <h6 className="mb-0 ms-3">দেখুন</h6>
-                  </DropdownItem>
-                  {/* <DropdownItem onClick={() => null}>
+                <TableCell textAlign="end" verticalAlign="top">
+                  <Dropdown
+                    btnIcon={true}
+                    btnContent={<Icon icon="more_vert" size={20} />}
+                    id={item?.id}
+                  >
+                    <DropdownItem
+                      onClick={() => navigateToView(item, subjects)}
+                    >
+                      <Icon size={19} icon="visibility" />
+                      <h6 className="mb-0 ms-3">দেখুন</h6>
+                    </DropdownItem>
+                    {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem> */}
-                  {/* <DropdownItem onClick={() => null}>
+                    {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem> */}
-                </Dropdown>
-              </TableCell>
-            </TableRow>
-          ))}
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </Table>
       ) : isLoading ? (
         <ContentPreloader />

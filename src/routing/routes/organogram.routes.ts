@@ -37,6 +37,11 @@ export const OrganogramRoutes: IAppRoutes = {
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_VIEW,
       element: lazy(() => import("@modules/organogram/view")),
     },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
+      element: lazy(() => import("@modules/organogram/view/proposedOrganogram")),
+    },
     ...permissionRouteList,
   ],
 };
