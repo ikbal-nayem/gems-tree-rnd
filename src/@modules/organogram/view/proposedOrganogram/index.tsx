@@ -5,6 +5,7 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TaskBuilder } from "./taskBuilder";
+import ManpowerRequest from "./manpowerRequest";
 
 const tabs = [
   {
@@ -158,7 +159,9 @@ const ProposedOrganogramView = () => {
               organogramId={organogramId}
             />
           </TabBlock>
-          <TabBlock index={1} activeIndex={activeTab}></TabBlock>
+          <TabBlock index={1} activeIndex={activeTab}>
+            <ManpowerRequest dataList={null} isEnamCommittee={true} />
+          </TabBlock>
           <TabBlock index={2} activeIndex={activeTab}>
             <TaskBuilder />
           </TabBlock>
