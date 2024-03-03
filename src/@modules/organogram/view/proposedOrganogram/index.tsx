@@ -1,4 +1,4 @@
-import { ContentPreloader, TabBlock, toast } from "@gems/components";
+import { ContentPreloader, Tab, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
 import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { OMSService } from "@services/api/OMS.service";
@@ -117,13 +117,13 @@ const ProposedOrganogramView = () => {
 
   return (
     <div>
-      <div className="d-flex bg-white rounded mb-3 overflow-auto fs-4 p-2 py-4 gap-3">
+      <div className="d-flex bg-white rounded mb-3 overflow-auto fs-5 px-4 gap-3">
         <div
-          className="cursor-pointer"
+          className="cursor-pointer pe-6"
           data-kt-menu-trigger="{default: 'click'}"
         >
           <span
-            className={`nav-link text-active-primary cursor-pointer ms-4 fw-bold text-gray-700`}
+            className={`nav-link text-active-primary cursor-pointer my-2 fw-bold text-gray-700`}
           >
             প্রস্তাবিত পরিবর্তনসমূহ
           </span>
@@ -140,6 +140,7 @@ const ProposedOrganogramView = () => {
             })}
           </div>
         </div>
+        <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} />
       </div>
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(organogramData) && (
