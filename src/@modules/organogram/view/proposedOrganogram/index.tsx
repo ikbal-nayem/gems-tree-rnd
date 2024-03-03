@@ -4,6 +4,7 @@ import TemplateViewComponent from "@modules/organogram-template/components/templ
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { TaskBuilder } from "./taskBuilder";
 
 const tabs = [
   {
@@ -159,7 +160,7 @@ const ProposedOrganogramView = () => {
           </TabBlock>
           <TabBlock index={1} activeIndex={activeTab}></TabBlock>
           <TabBlock index={2} activeIndex={activeTab}>
-            {/* <TaskBuilder /> */}
+            <TaskBuilder />
           </TabBlock>
           <TabBlock index={3} activeIndex={activeTab}></TabBlock>
           <TabBlock index={4} activeIndex={activeTab}></TabBlock>
