@@ -35,6 +35,7 @@ interface INodeForm {
   onSubmit: (data) => void;
   updateData?: IObject;
   defaultDisplayOrder?: number;
+  postList:IObject[]
   gradeList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
@@ -61,6 +62,7 @@ const postTypeList = [
 
 const NodeForm = ({
   isOpen,
+  postList,
   gradeList,
   serviceList,
   cadreObj,
@@ -150,10 +152,10 @@ const NodeForm = ({
 
             return {
               ...item,
-              // postDTO:
-              //   (postList?.length > 0 &&
-              //     postList?.find((d) => d?.id === item?.postId)) ||
-              //   null,
+              postDTO:
+                (postList?.length > 0 &&
+                  postList?.find((d) => d?.id === item?.postId)) ||
+                null,
               gradeDTO:
                 (gradeList?.length > 0 &&
                   gradeList?.find((d) => d?.id === item?.gradeId)) ||
