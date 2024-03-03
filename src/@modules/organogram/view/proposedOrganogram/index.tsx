@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { TaskBuilder } from "./taskBuilder";
 import ManpowerRequest from "./manpowerRequest";
 import { tabs } from "./configs";
+import { sortBy } from "utility/utils";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -85,9 +86,9 @@ const ProposedOrganogramView = () => {
 
   return (
     <div>
-      <div className="d-flex bg-white rounded mb-3 overflow-auto fs-5 px-4 gap-3">
+      <div className="d-flex bg-white rounded mb-3 fs-5 px-4 gap-3">
         <div
-          className="cursor-pointer pe-6"
+          className="cursor-pointer pe-6 overflow-auto"
           data-kt-menu-trigger="{default: 'click'}"
         >
           <span
@@ -108,34 +109,35 @@ const ProposedOrganogramView = () => {
             })}
           </div>
         </div>
-        <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} />
+        <Tab
+          tabs={sortBy(tabs)}
+          activeIndex={activeTab}
+          onChange={handleTabIndex}
+        />
       </div>
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(organogramData) && (
         <div className="mt-3">
-          <TabBlock index={0} activeIndex={activeTab}>
-            <TemplateViewComponent
-              updateData={organogramData}
-              inventoryData={inventoryData}
-              manpowerData={manpowerData}
-              attachedOrganizationData={attachOrgData}
-              organogramView={true}
-              parentOrganizationData={parentOrgData}
-              isBeginningVersion={true}
-              organogramId={organogramId}
-            />
-          </TabBlock>
-          <TabBlock index={1} activeIndex={activeTab}>
-            <ManpowerRequest dataList={null} isEnamCommittee={true} />
-          </TabBlock>
-          <TabBlock index={2} activeIndex={activeTab}>
-            <TaskBuilder />
-          </TabBlock>
-          <TabBlock index={3} activeIndex={activeTab}></TabBlock>
-          <TabBlock index={4} activeIndex={activeTab}></TabBlock>
-          <TabBlock index={5} activeIndex={activeTab}></TabBlock>
-          <TabBlock index={6} activeIndex={activeTab}></TabBlock>
-          <TabBlock index={7} activeIndex={activeTab}></TabBlock>
+          {sortBy(tabs)?.map((t) => (
+            <TabBlock index={t?.displayOrder} activeIndex={activeTab}>
+              {t?.key === "ORGANOGRAM" ? (
+                <TemplateViewComponent
+                  updateData={organogramData}
+                  inventoryData={inventoryData}
+                  manpowerData={manpowerData}
+                  attachedOrganizationData={attachOrgData}
+                  organogramView={true}
+                  parentOrganizationData={parentOrgData}
+                  isBeginningVersion={true}
+                  organogramId={organogramId}
+                />
+              ) : t?.key === "MANPOWER" ? (
+                <ManpowerRequest dataList={null} isEnamCommittee={true} />
+              ) : t?.key === "TASK_BUILDER" ? (
+                <TaskBuilder />
+              ) : null}
+            </TabBlock>
+          ))}
         </div>
       )}
     </div>

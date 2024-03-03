@@ -202,8 +202,8 @@ export const pdfCellAlign = (data: any) => {
 
 export const sortBy = (
   list,
+  criteria: "property" | "propLength" = "property",
   prop: string = "displayOrder",
-  criteria: "property" | "propLength" = "property"
 ) => {
   if (isNotEmptyList(list)) {
     return list.sort((a, b) => {
