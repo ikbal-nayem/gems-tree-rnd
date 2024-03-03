@@ -60,7 +60,7 @@ const OrganogramView = () => {
             variant="fill"
           >
             <span className={`fs-5 ${isPreviousVerison ? "text-primary" : ""}`}>
-              পূর্ববর্তী ভার্সন সমূহ
+              {isPreviousVerison ? "ভার্সন সমূহ" : "পূর্ববর্তী ভার্সন সমূহ"}
             </span>
           </Button>
         </div>
