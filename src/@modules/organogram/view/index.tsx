@@ -16,7 +16,7 @@ const tabs = [
 const OrganogramView = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [templateData, setTemplateData] = useState<IObject>({});
-  const [isLatestVersion, setIsLatestVersion] = useState<boolean>(true);
+  // const [isLatestVersion, setIsLatestVersion] = useState<boolean>(true);
   const [organizationId, setOrganizationId] = useState<string>();
   const active = tabs.findIndex((t) => t.key === searchParam.get("active"));
   const [activeTab, setActiveTab] = useState<number>(active > -1 ? active : 0);
@@ -64,7 +64,7 @@ const OrganogramView = () => {
             </span>
           </Button>
         </div>
-        {isLatestVersion && (
+        {!isPreviousVerison && (
           <NewProposalMenu
             organogramId={organogramId}
             organizationId={organizationId}
@@ -76,8 +76,8 @@ const OrganogramView = () => {
           <OrganogramTab
             templateData={templateData}
             isPreviousVerison={isPreviousVerison}
-            isLatestVersion={isLatestVersion}
-            setIsLatestVersion={setIsLatestVersion}
+            // isLatestVersion={isLatestVersion}
+            // setIsLatestVersion={setIsLatestVersion}
             organogramId={organogramId}
             setOrganogramId={setOrganogramId}
           />

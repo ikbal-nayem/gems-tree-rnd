@@ -11,10 +11,10 @@ import { useEffect, useState } from "react";
 
 interface ITab {
   templateData: IObject;
-  setIsLatestVersion: (d) => void;
+  // setIsLatestVersion: (d) => void;
   organogramId: string;
   isPreviousVerison: boolean;
-  isLatestVersion: boolean;
+  // isLatestVersion: boolean;
   setOrganogramId: (id: string) => void;
 }
 
@@ -23,8 +23,8 @@ const OrganogramTab = ({
   setOrganogramId,
   isPreviousVerison,
   templateData,
-  isLatestVersion,
-  setIsLatestVersion,
+  // isLatestVersion,
+  // setIsLatestVersion,
 }: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
@@ -101,11 +101,11 @@ const OrganogramTab = ({
             (resp?.body.length < 2 ||
               resp?.body[resp?.body.length - 1]?.organogramId === organogramId)
         );
-        setIsLatestVersion(
-          resp?.body?.length &&
-            (resp?.body.length < 2 ||
-              resp?.body[0]?.organogramId === organogramId)
-        );
+        // setIsLatestVersion(
+        //   resp?.body?.length &&
+        //     (resp?.body.length < 2 ||
+        //       resp?.body[0]?.organogramId === organogramId)
+        // );
       })
       .catch((e) => toast.error(e?.message));
   };
@@ -116,9 +116,9 @@ const OrganogramTab = ({
       verisonList?.length &&
         verisonList[verisonList.length - 1]?.organogramId === item?.organogramId
     );
-    setIsLatestVersion(
-      verisonList?.length && verisonList[0]?.organogramId === item?.organogramId
-    );
+    // setIsLatestVersion(
+    //   verisonList?.length && verisonList[0]?.organogramId === item?.organogramId
+    // );
   };
   return (
     <div>
@@ -156,7 +156,7 @@ const OrganogramTab = ({
             manpowerData={manpowerData}
             attachedOrganizationData={attachOrgData}
             organogramView={true}
-            isLatestVersion={isLatestVersion}
+            isPreviousVerison={isPreviousVerison}
             parentOrganizationData={parentOrganizationData}
             isBeginningVersion={isBeginningVersion}
             organogramId={organogramId}
