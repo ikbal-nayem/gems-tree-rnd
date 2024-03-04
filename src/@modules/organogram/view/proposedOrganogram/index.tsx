@@ -84,30 +84,35 @@ const ProposedOrganogramView = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const onProposalChange = (proposalKey: string) => {
+    console.log("proposal-Key: ", proposalKey);
+  };
+
   return (
     <div>
-      <div className="d-flex bg-white rounded mb-3 fs-5 px-4 gap-3">
-        <div
-          className="cursor-pointer pe-6 overflow-auto"
-          data-kt-menu-trigger="{default: 'click'}"
-        >
-          <span
-            className={`nav-link text-active-primary cursor-pointer my-2 fw-bold text-gray-700`}
+      <div className="d-flex bg-white rounded mb-3 fs-5 gap-5">
+        <div className="dropdown">
+          <button
+            className="btn dropdown-toggle fs-5 fw-bold text-hover-info text-gray-700 overflow-auto"
+            type="button"
+            id="listOfProposal"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
           >
             প্রস্তাবিত পরিবর্তনসমূহ
-          </span>
-          <div
-            className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-700 menu-state-bg menu-state-primary fw-bold py-2 fs-6 w-200px"
-            data-kt-menu="true"
-          >
+          </button>
+          <ul className="dropdown-menu ms-1" aria-labelledby="listOfProposal">
             {subjects?.map((p) => {
               return (
-                <div className="menu-item px-2">
-                  <div className="menu-link">{p.titleBn}</div>
-                </div>
+                <li
+                  className="dropdown-item text-hover-primary rounded-pill py-2 my-4 mx-1 fs-5 cursor-pointer w-150px"
+                  onClick={() => onProposalChange(p?.metaKey)}
+                >
+                  {p.titleBn}
+                </li>
               );
             })}
-          </div>
+          </ul>
         </div>
         <Tab
           tabs={sortBy(tabs)}
