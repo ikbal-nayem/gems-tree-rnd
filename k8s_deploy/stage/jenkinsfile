@@ -7,8 +7,6 @@ pipeline {
         IMAGE_CREATED_BY="jenkins"
         PROJECT_NAME="web-oms"
         K8S_NAMESPACE="gems-uat"
-        PROJECT="gems"
-
         GIT_TAG=sh(returnStdout: true, script: '''
             echo $(git describe --tags)
         ''').trim()
