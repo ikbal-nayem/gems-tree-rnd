@@ -1,38 +1,20 @@
-import { Button, Tab, TabBlock, toast } from "@gems/components";
-import { IObject, searchParamsToObject } from "@gems/utils";
+import { Button, toast } from "@gems/components";
+import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { NewProposalMenu } from "../components/NewProposalMenu";
 import OrganogramTab from "./organogram";
 
-// const tabs = [
-//   {
-//     label: "অর্গানোগ্রাম",
-//     key: "ORGANOGRAM",
-//   },
-// ];
-
 const OrganogramView = () => {
   const [searchParam] = useSearchParams();
   const [templateData, setTemplateData] = useState<IObject>({});
-  // const [isLatestVersion, setIsLatestVersion] = useState<boolean>(true);
   const [organizationId, setOrganizationId] = useState<string>();
-  // const active = tabs.findIndex((t) => t.key === searchParam.get("active"));
-  // const [activeTab, setActiveTab] = useState<number>(active > -1 ? active : 0);
   const [organogramId, setOrganogramId] = useState<string>(
     searchParam.get("id") || ""
   );
   const [isPreviousVerison, setIsPreviousVersion] = useState<boolean>(false);
   const [isOrgangramTab, setIsOrgangramTab] = useState<boolean>(true);
-  // const handleTabIndex = (idx: number) => {
-  //   setActiveTab(idx);
-  //   setSearchParam({
-  //     ...searchParamsToObject(searchParam),
-  //     active: tabs[idx].key,
-  //   });
-  // };
-
   useEffect(() => {
     getTemplateDetailsDetailsById();
   }, [organogramId]);
@@ -51,7 +33,6 @@ const OrganogramView = () => {
     <div className="p-5">
       <div className="d-flex justify-content-between bg-white rounded ps-4">
         <div className="d-flex">
-          {/* <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} /> */}
           <Button
             onClick={() => {
               setIsOrgangramTab(true);
@@ -79,7 +60,9 @@ const OrganogramView = () => {
             }}
             className={`
               ${
-                isPreviousVerison ? "border-bottom border-primary rounded-0" : ""
+                isPreviousVerison
+                  ? "border-bottom border-primary rounded-0"
+                  : ""
               } px-2 ms-2`}
             variant="fill"
           >
@@ -100,16 +83,12 @@ const OrganogramView = () => {
         )}
       </div>
       <div className="mt-3">
-        {/* <TabBlock index={0} activeIndex={activeTab}> */}
         <OrganogramTab
           templateData={templateData}
           isPreviousVerison={isPreviousVerison}
-          // isLatestVersion={isLatestVersion}
-          // setIsLatestVersion={setIsLatestVersion}
           organogramId={organogramId}
           setOrganogramId={setOrganogramId}
         />
-        {/* </TabBlock> */}
       </div>
     </div>
   );
