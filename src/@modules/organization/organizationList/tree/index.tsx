@@ -8,6 +8,7 @@ import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import OrganizationTemplateTree from "./OrganizationTreeComponent/index";
+import ModuleNodeComponent from "./organizationNodeComponent";
 
 const Tree = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,7 +54,8 @@ const Tree = () => {
       </div>
       {loading && <ContentPreloader />}
       {!loading && Object.keys(data)?.length > 0 && (
-        <OrganizationTemplateTree treeData={data || {}} />
+        // <OrganizationTemplateTree treeData={data || {}} />
+        <ModuleNodeComponent data={data} />
       )}
       {!loading && !(Object.keys(data)?.length > 0) && (
         <NoData details="কোনো প্রতিষ্ঠানের ট্রি তথ্য পাওয়া যায় নি!" />

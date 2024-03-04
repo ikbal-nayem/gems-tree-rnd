@@ -200,6 +200,8 @@ const OrganizationGroupList = () => {
       },
       body: {
         searchKey: searchKey || null,
+        parentId: orgType || null,
+        orgCategoryType: "ORG_CATEGORY_GROUP",
       },
     };
 

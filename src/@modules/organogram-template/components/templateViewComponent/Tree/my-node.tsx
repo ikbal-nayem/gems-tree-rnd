@@ -5,7 +5,7 @@ import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, postList, onView, isLatestVersion }) => {
+const MyNode = ({ langEn, nodeData, postList, onView, isPreviousVerison }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -20,11 +20,13 @@ const MyNode = ({ langEn, nodeData, postList, onView, isLatestVersion }) => {
   }
 
   let deletedClass =
-    !isLatestVersion && nodeData?.isDeleted
+    isPreviousVerison && nodeData?.isDeleted
       ? "text-line-through-color-red"
       : "";
   let additionClass =
-    !isLatestVersion && nodeData?.isAddition ? "text-decoration-underline" : "";
+    isPreviousVerison && nodeData?.isAddition
+      ? "text-decoration-underline"
+      : "";
 
   return (
     <div className={`position rounded border border-gray-400 border-1`}>
@@ -68,11 +70,11 @@ const MyNode = ({ langEn, nodeData, postList, onView, isLatestVersion }) => {
         {nodeData?.manpowerList?.length > 0 &&
           nodeData?.manpowerList?.map((item, i) => {
             let itemDeletedClass =
-              !isLatestVersion && item?.isDeleted
+              isPreviousVerison && item?.isDeleted
                 ? "text-line-through-color-red"
                 : "";
             let itemAdditionClass =
-              !isLatestVersion && item?.isAddition
+              isPreviousVerison && item?.isAddition
                 ? "text-decoration-underline"
                 : "";
 
