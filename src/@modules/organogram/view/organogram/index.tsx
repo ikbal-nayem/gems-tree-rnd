@@ -14,6 +14,7 @@ interface ITab {
   setIsLatestVersion: (d) => void;
   organogramId: string;
   isPreviousVerison: boolean;
+  isLatestVersion: boolean;
   setOrganogramId: (id: string) => void;
 }
 
@@ -22,6 +23,7 @@ const OrganogramTab = ({
   setOrganogramId,
   isPreviousVerison,
   templateData,
+  isLatestVersion,
   setIsLatestVersion,
 }: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,7 +77,7 @@ const OrganogramTab = ({
       getParentOrganization();
     }
   }, [templateData]);
-  
+
   const getParentOrganization = () => {
     setIsLoading(true);
     OMSService.getOrganizationParentByOrgId(templateData?.organization?.id)
@@ -154,6 +156,7 @@ const OrganogramTab = ({
             manpowerData={manpowerData}
             attachedOrganizationData={attachOrgData}
             organogramView={true}
+            isLatestVersion={isLatestVersion}
             parentOrganizationData={parentOrganizationData}
             isBeginningVersion={isBeginningVersion}
             organogramId={organogramId}
