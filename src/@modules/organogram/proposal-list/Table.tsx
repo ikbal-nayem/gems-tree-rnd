@@ -39,6 +39,7 @@ const ProposalTable: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.BN.SENDER, width: 250 },
+    { title: LABELS.BN.ORGANIZATION, width: 250 },
     { title: LABELS.BN.TOPIC, width: 150 },
     { title: LABELS.BN.STATUS, width: 100 },
     { title: LABELS.BN.RECEIVED_DATE_TIME, width: 100 },
@@ -46,13 +47,15 @@ const ProposalTable: FC<TableProps> = ({
   ];
 
   const navigate = useNavigate();
-  //   const navigateToDetails = (id: string) => {
-  //     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
-  //   };
-  const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
+  const navigateToView = (item, subjects) => {
+    navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW, {
+      state: {
+        organogramId: item?.proposedOrganogram?.id || null,
+        subjects: subjects || null,
+      },
+    });
   };
-
+  let subjects;
   return (
     <>
       {dataList?.length ? (
@@ -67,7 +70,16 @@ const ProposalTable: FC<TableProps> = ({
                 subText={item?.proposedOrganization?.nameEn || null}
               />
               <TableCell
-                text={item?.subjects?.map((i) => i.titleBn).join(" , ") || COMMON_LABELS.NOT_ASSIGN}
+                text={
+                  item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={item?.proposedOrganization?.nameEn || null}
+              />
+              <TableCell
+                text={
+                  item?.subjects?.map((i) => i.titleBn).join(" , ") ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
                 // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
               />
               <TableCell>
@@ -95,7 +107,9 @@ const ProposalTable: FC<TableProps> = ({
                   btnContent={<Icon icon="more_vert" size={20} />}
                   id={item?.id}
                 >
-                  <DropdownItem onClick={() => navigateToView(item?.id)}>
+                  <DropdownItem
+                    onClick={() => navigateToView(item, item?.subjects)}
+                  >
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>

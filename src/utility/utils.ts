@@ -199,3 +199,25 @@ export const checkTabPermission = (key: string) => {
 export const pdfCellAlign = (data: any) => {
   return notNullOrUndefined(data) ? "start" : "center";
 };
+
+export const sortBy = (
+  list,
+  criteria: "property" | "propLength" = "property",
+  prop: string = "displayOrder",
+) => {
+  if (isNotEmptyList(list)) {
+    return list.sort((a, b) => {
+      if (!notNullOrUndefined(a[prop])) return 1;
+      if (!notNullOrUndefined(b[prop])) return -1;
+      if (criteria === "property") {
+        if (a[prop] === b[prop]) return 0;
+      return a[prop] > b[prop] ? 1 : -1;
+      } else {
+        if (a[prop]?.length === b[prop]?.length) return 0;
+        return a[prop]?.length > b[prop]?.length ? 1 : -1;
+      }
+      
+    });
+  }
+  return null;
+};
