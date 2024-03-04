@@ -64,28 +64,6 @@ const OrganizationGroupList = () => {
   const formProps = useForm();
   const { control } = formProps;
 
-  const payloadOf = (contentType: "ui" | "downloadFile", reqMeta = null) => {
-    return {
-      meta:
-        contentType === "downloadFile"
-          ? {
-              page: 0,
-              limit: respMeta.totalRecords,
-              sort: [{ field: "code", order: "desc" }],
-            }
-          : searchKey || orgType
-          ? reqMeta
-            ? { ...reqMeta, sort: null }
-            : { ...respMeta, page: 0, sort: null }
-          : reqMeta || respMeta,
-      body: {
-        searchKey: searchKey || null,
-        parentId: orgType || null,
-        orgCategoryType: "ORG_CATEGORY_GROUP",
-      },
-    };
-  };
-
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
@@ -111,8 +89,21 @@ const OrganizationGroupList = () => {
   };
 
   const getDataList = (reqMeta = null) => {
-    topProgress.show();
-    OMSService.FETCH.organizationCategoryList(payloadOf("ui", reqMeta))
+    const payload = {
+      meta:
+        searchKey || orgType
+          ? reqMeta
+            ? { ...reqMeta, sort: null }
+            : { ...respMeta, page: 0, sort: null }
+          : reqMeta || respMeta,
+      body: {
+        searchKey: searchKey || null,
+        parentId: orgType || null,
+        orgCategoryType: "ORG_CATEGORY_GROUP",
+      },
+    };
+
+    OMSService.FETCH.organizationCategoryList(payload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -201,7 +192,20 @@ const OrganizationGroupList = () => {
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     topProgress.show();
-    OMSService.FETCH.organizationCategoryList(payloadOf("downloadFile", null))
+    const payload = {
+      meta: {
+        page: 0,
+        limit: respMeta.totalRecords,
+        sort: [{ field: "createdOn", order: "desc" }],
+      },
+      body: {
+        searchKey: searchKey || null,
+        parentId: orgType || null,
+        orgCategoryType: "ORG_CATEGORY_GROUP",
+      },
+    };
+
+    OMSService.FETCH.organizationCategoryList(payload)
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organizationTypePDFContent(res?.body))
@@ -217,12 +221,14 @@ const OrganizationGroupList = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "নাম (বাংলা)": d?.nameBn || "-",
-      "নাম (ইংরেজি)": d?.nameEn || "-",
-      "প্রতিষ্ঠানের ধরণ": d?.parent?.nameBn || "-",
-      "গ্রুপ অভিভাবক": d?.parentGroup?.nameBn || "-",
-      "অভিভাবক প্রতিষ্ঠান": d?.parentOrganization?.nameBn || "-",
-      সক্রিয়: (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || "-",
+      "নাম (বাংলা)": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
+      "প্রতিষ্ঠানের ধরণ": d?.parent?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "গ্রুপ অভিভাবক": d?.parentGroup?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      "অভিভাবক প্রতিষ্ঠান":
+        d?.parentOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN,
+      সক্রিয়:
+        (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
     }));
 
   return (
