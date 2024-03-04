@@ -25,6 +25,11 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INAPPROVE_LIST,
     element: lazy(() => import("@modules/organogram/inapprove-list")),
   },
+  {
+    link: ROUTE_L2.OMS_PROPOSAL_LIST,
+    routeKey: ROUTE_KEY.OMS_PROPOSAL_LIST,
+    element: lazy(() => import("@modules/organogram/proposal-list")),
+  },
 ];
 
 let permissionRouteList = getPermittedRouteList(routeList);
