@@ -12,7 +12,6 @@ import {
   toast,
 } from "@gems/components";
 import {
-  COMMON_LABELS,
   IMeta,
   IObject,
   exportXLSX,
@@ -111,7 +110,6 @@ const OrganizationGroupList = () => {
   };
 
   const getDataList = (reqMeta = null) => {
-    topProgress.show();
     OMSService.FETCH.organizationCategoryList(payloadOf("ui", reqMeta))
       .then((res) => {
         setListData(res?.body || []);
