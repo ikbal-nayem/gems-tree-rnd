@@ -1,19 +1,21 @@
 import { COMMON_LABELS } from "@constants/common.constant";
 import { numEnToBn } from "@gems/utils";
 
-const MpNode = ({ officeData }) => {
-  const list = officeData?.manpowerList;
+const MpNode = ({ nodeData, isEnamCommittee }) => {
+  const list = nodeData?.manpowerDtoList;
   return (
     <div className="position rounded">
       <div className="row bg-light text-start px-3 py-2">
         {list?.length > 0 &&
-          list?.map((item, i) => {
+          list?.map((mp, i) => {
             return (
               <div className="col-12 col-lg-4 " key={i}>
-                {item?.postNameBn || item?.manpower ? (
+                {mp?.postTitleBn || mp?.postTitleEn || mp?.manpower ? (
                   <p className="mb-0">
-                    {numEnToBn(item?.manpower + " " || 0)} x{" "}
-                    {" " + item?.postNameBn || COMMON_LABELS.NOT_ASSIGN}
+                    {numEnToBn(mp?.manpower + " " || 0)} x{" "}
+                    {(isEnamCommittee
+                      ? mp?.postTitleEn
+                      : mp?.postTitleBn) || COMMON_LABELS.NOT_ASSIGN}
                   </p>
                 ) : null}
               </div>

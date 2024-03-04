@@ -60,73 +60,71 @@ const ProposalTable: FC<TableProps> = ({
     <>
       {dataList?.length ? (
         <Table columns={columns}>
-          {dataList?.map((item, idx) => {
-            subjects = item?.subjects?.map((i) => i.titleBn).join(" , ");
-            return (
-              <TableRow key={idx}>
-                <TableCell text={generateRowNumBn(idx, respMeta)} />
-                <TableCell
-                  text={
-                    item?.proposedOrganization?.nameBn ||
-                    COMMON_LABELS.NOT_ASSIGN
-                  }
-                  subText={item?.proposedOrganization?.nameEn || null}
+          {dataList?.map((item, idx) => (
+            <TableRow key={idx}>
+              <TableCell text={generateRowNumBn(idx, respMeta)} />
+              <TableCell
+                text={
+                  item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={item?.proposedOrganization?.nameEn || null}
+              />
+              <TableCell
+                text={
+                  item?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={item?.proposedOrganization?.nameEn || null}
+              />
+              <TableCell
+                text={
+                  item?.subjects?.map((i) => i.titleBn).join(" , ") ||
+                  COMMON_LABELS.NOT_ASSIGN
+                }
+                // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
+              />
+              <TableCell>
+                <Tag
+                  title={item?.status === "NEW" ? "অপেক্ষমান" : item?.status}
+                  color={item?.status === "NEW" ? "primary" : "dark"}
                 />
-                <TableCell
-                  text={
-                    item?.proposedOrganization?.nameBn ||
-                    COMMON_LABELS.NOT_ASSIGN
-                  }
-                  subText={item?.proposedOrganization?.nameEn || null}
-                />
-                <TableCell
-                  text={subjects || COMMON_LABELS.NOT_ASSIGN}
-                  // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
-                />
-                <TableCell>
-                  <Tag
-                    title={item?.status === "NEW" ? "অপেক্ষমান" : item?.status}
-                    color={item?.status === "NEW" ? "primary" : "dark"}
-                  />
-                </TableCell>
-                <TableCell
-                  text={
-                    generateDateFormat(
-                      item?.proposedDate,
-                      DATE_PATTERN.GOVT_STANDARD
-                    ) || COMMON_LABELS.NOT_ASSIGN
-                  }
-                  subText={
-                    generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
-                    null
-                  }
-                />
+              </TableCell>
+              <TableCell
+                text={
+                  generateDateFormat(
+                    item?.proposedDate,
+                    DATE_PATTERN.GOVT_STANDARD
+                  ) || COMMON_LABELS.NOT_ASSIGN
+                }
+                subText={
+                  generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
+                  null
+                }
+              />
 
-                <TableCell textAlign="end" verticalAlign="top">
-                  <Dropdown
-                    btnIcon={true}
-                    btnContent={<Icon icon="more_vert" size={20} />}
-                    id={item?.id}
+              <TableCell textAlign="end" verticalAlign="top">
+                <Dropdown
+                  btnIcon={true}
+                  btnContent={<Icon icon="more_vert" size={20} />}
+                  id={item?.id}
+                >
+                  <DropdownItem
+                    onClick={() => navigateToView(item, item?.subjects)}
                   >
-                    <DropdownItem
-                      onClick={() => navigateToView(item, item?.subjects)}
-                    >
-                      <Icon size={19} icon="visibility" />
-                      <h6 className="mb-0 ms-3">দেখুন</h6>
-                    </DropdownItem>
-                    {/* <DropdownItem onClick={() => null}>
+                    <Icon size={19} icon="visibility" />
+                    <h6 className="mb-0 ms-3">দেখুন</h6>
+                  </DropdownItem>
+                  {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem> */}
-                    {/* <DropdownItem onClick={() => null}>
+                  {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem> */}
-                  </Dropdown>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+                </Dropdown>
+              </TableCell>
+            </TableRow>
+          ))}
         </Table>
       ) : isLoading ? (
         <ContentPreloader />
