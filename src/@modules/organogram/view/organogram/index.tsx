@@ -11,16 +11,20 @@ import { useEffect, useState } from "react";
 
 interface ITab {
   templateData: IObject;
-  setIsLatestVersion: (d) => void;
+  // setIsLatestVersion: (d) => void;
   organogramId: string;
+  isPreviousVerison: boolean;
+  // isLatestVersion: boolean;
   setOrganogramId: (id: string) => void;
 }
 
 const OrganogramTab = ({
   organogramId,
   setOrganogramId,
+  isPreviousVerison,
   templateData,
-  setIsLatestVersion,
+  // isLatestVersion,
+  // setIsLatestVersion,
 }: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
@@ -86,7 +90,7 @@ const OrganogramTab = ({
 
   useEffect(() => {
     getVersionListById();
-  }, []);
+  }, [isPreviousVerison]);
 
   const getVersionListById = () => {
     OMSService.getVersionListByOrganogramId(organogramId)
@@ -97,11 +101,11 @@ const OrganogramTab = ({
             (resp?.body.length < 2 ||
               resp?.body[resp?.body.length - 1]?.organogramId === organogramId)
         );
-        setIsLatestVersion(
-          resp?.body?.length &&
-            (resp?.body.length < 2 ||
-              resp?.body[0]?.organogramId === organogramId)
-        );
+        // setIsLatestVersion(
+        //   resp?.body?.length &&
+        //     (resp?.body.length < 2 ||
+        //       resp?.body[0]?.organogramId === organogramId)
+        // );
       })
       .catch((e) => toast.error(e?.message));
   };
@@ -112,13 +116,13 @@ const OrganogramTab = ({
       verisonList?.length &&
         verisonList[verisonList.length - 1]?.organogramId === item?.organogramId
     );
-    setIsLatestVersion(
-      verisonList?.length && verisonList[0]?.organogramId === item?.organogramId
-    );
+    // setIsLatestVersion(
+    //   verisonList?.length && verisonList[0]?.organogramId === item?.organogramId
+    // );
   };
   return (
     <div>
-      {verisonList?.length > 0 && (
+      {isPreviousVerison && verisonList?.length > 0 && (
         <div className="d-flex bg-white rounded mb-3 overflow-auto">
           {verisonList?.map((d, idx) => {
             return (
@@ -152,6 +156,7 @@ const OrganogramTab = ({
             manpowerData={manpowerData}
             attachedOrganizationData={attachOrgData}
             organogramView={true}
+            isPreviousVerison={isPreviousVerison}
             parentOrganizationData={parentOrganizationData}
             isBeginningVersion={isBeginningVersion}
             organogramId={organogramId}

@@ -64,14 +64,21 @@ const ParentNode = ({ item }) => {
 };
 
 const ModuleNodeComponent = ({ data }: IModuleNodeComponent) => {
+  let isDataArray = Array.isArray(data);
   return (
     <>
-      {data?.length > 0 &&
-        data?.map((item, i) => (
-          <div key={i}>
-            <ParentNode item={item} />
-          </div>
-        ))}
+      {isDataArray
+        ? data?.length > 0 &&
+          data?.map((item, i) => (
+            <div key={i}>
+              <ParentNode item={item} />
+            </div>
+          ))
+        : Object.keys(data)?.length > 0 && (
+            <div>
+              <ParentNode item={data} />
+            </div>
+          )}
     </>
   );
 };
