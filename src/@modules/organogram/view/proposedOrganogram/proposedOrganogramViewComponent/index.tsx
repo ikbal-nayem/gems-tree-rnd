@@ -52,7 +52,6 @@ interface IProposedOrganogramViewComponent {
   isPreviousVerison?: boolean;
   organogramId?: string;
   isBeginningVersion?: boolean;
-  stateOrganizationData?: IObject;
 }
 
 const ProposedOrganogramViewComponent = ({
@@ -65,7 +64,6 @@ const ProposedOrganogramViewComponent = ({
   isPreviousVerison = false,
   organogramId,
   isBeginningVersion = false,
-  stateOrganizationData,
 }: IProposedOrganogramViewComponent) => {
   const treeData =
     !isObjectNull(organogramData) &&
@@ -73,11 +71,13 @@ const ProposedOrganogramViewComponent = ({
       ? organogramData?.organizationStructureDto
       : {
           id: generateUUID(),
-          titleBn: "হালনাগাদ করে শুরু করুন",
+          titleBn: "কোনো অর্গানোগ্রাম ট্রি নেই",
           children: [],
         };
 
-  const [langEn, setLangEn] = useState<boolean>(organogramData?.isEnamCommittee);
+  const [langEn, setLangEn] = useState<boolean>(
+    organogramData?.isEnamCommittee
+  );
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
@@ -89,10 +89,6 @@ const ProposedOrganogramViewComponent = ({
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
   const navigate = useNavigate();
-
-  let organogramOrganizationView = stateOrganizationData?.organizationId
-    ? true
-    : organogramView;
 
   const switchLang = () => {
     setLangEn(!langEn);
@@ -245,16 +241,10 @@ const ProposedOrganogramViewComponent = ({
     setPDFLoading(false);
   };
 
-  let orgName = langEn
-    ? stateOrganizationData?.organizationNameEn
-    : stateOrganizationData?.organizationNameBn;
-
   // let orgParentName = langEn
   //   ? stateOrganizationData?.parentNameEN || parentOrganizationData?.nameEn
   //   : stateOrganizationData?.parentNameBN || parentOrganizationData?.nameBn;
-  let orgStateParentName = langEn
-    ? stateOrganizationData?.parentNameEN
-    : stateOrganizationData?.parentNameBN;
+
   let orgParentName = langEn
     ? parentOrganizationData?.nameEn
     : parentOrganizationData?.nameBn;
@@ -273,14 +263,14 @@ const ProposedOrganogramViewComponent = ({
     : langEn
     ? organogramData?.organogramDate
       ? generateDateFormat(
-        organogramData?.organogramDate,
+          organogramData?.organogramDate,
           DATE_PATTERN.GOVT_STANDARD,
           "en"
         ) + " Report"
       : ""
     : organogramData?.organogramDate
     ? generateDateFormat(
-      organogramData?.organogramDate,
+        organogramData?.organogramDate,
         DATE_PATTERN.GOVT_STANDARD
       ) + " রিপোর্ট"
     : "";
@@ -290,26 +280,10 @@ const ProposedOrganogramViewComponent = ({
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">
-            {stateOrganizationData?.templateView ? (
-              <div className="fs-2 text-center fw-bolder mb-0">
-                <span className="me-1">{LABEL.TEMPLATE_NAME}: </span>
-                {titleName || COMMON_LABELS.NOT_ASSIGN}
-              </div>
-            ) : (
-              <div className="fs-2 text-center fw-bolder mb-0">
-                {orgName || titleName || COMMON_LABELS.NOT_ASSIGN}
-              </div>
-            )}
+            <div className="fs-2 text-center fw-bolder mb-0">
+              {titleName || COMMON_LABELS.NOT_ASSIGN}
+            </div>
 
-            {stateOrganizationData?.templateView &&
-              !isObjectNull(organogramData?.organizationGroupDto) && (
-                <div className="fs-2 text-center fw-bolder mb-0">
-                  <span className="me-1">{LABEL.TEMPLATE_TYPE}: </span>
-                  {organogramData?.isEnamCommittee
-                    ? organogramData?.organizationGroupDto?.nameEn
-                    : organogramData?.organizationGroupDto?.nameBn}
-                </div>
-              )}
             {orgParentName && (
               <div className="fs-2 text-center fw-bolder mb-0">
                 {orgParentName || COMMON_LABELS.NOT_ASSIGN}
@@ -351,11 +325,9 @@ const ProposedOrganogramViewComponent = ({
               {organogramData?.organizationHeaderMsc || null}
             </p>
           )}
-          <p className="fs-2 mb-0">{orgName || titleName || null}</p>
-          {(orgParentName || orgStateParentName) && (
-            <p className="fs-2 mb-0">
-              {orgParentName || orgStateParentName || null}
-            </p>
+          <p className="fs-2 mb-0">{titleName || null}</p>
+          {orgParentName && (
+            <p className="fs-2 mb-0">{orgParentName || null}</p>
           )}
           <p className="fs-3 mb-0">{versionName}</p>
         </div>
@@ -371,20 +343,21 @@ const ProposedOrganogramViewComponent = ({
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
-          organogramView={organogramOrganizationView}
+          organogramView={organogramView}
           isPreviousVerison={isPreviousVerison}
           headerData={{
             titleName: titleName || null,
             versionName: versionName || null,
-            orgName: orgName || null,
-            orgParentName: orgParentName || orgStateParentName || null,
+            orgName: titleName || null,
+            orgParentName: orgParentName || null,
             organizationHeader: organogramData?.organizationHeader || null,
-            organizationHeaderMsc: organogramData?.organizationHeaderMsc || null,
+            organizationHeaderMsc:
+              organogramData?.organizationHeaderMsc || null,
           }}
         />
         <div
           className="position-absolute"
-          style={{ top: 10, right: organogramOrganizationView ? 175 : 125 }}
+          style={{ top: 10, right: organogramView ? 175 : 125 }}
         >
           <IconButton
             iconName="fullscreen"
@@ -397,9 +370,7 @@ const ProposedOrganogramViewComponent = ({
           isOpen={formOpen}
           handleClose={onFormClose}
           fullscreen
-          title={`${orgName || titleName} ${
-            versionName ? "( " + versionName + " )" : ""
-          }`}
+          title={`${titleName} ${versionName ? "( " + versionName + " )" : ""}`}
         >
           <ModalBody className="p-0">
             <OrganizationTemplateTree
@@ -408,12 +379,12 @@ const ProposedOrganogramViewComponent = ({
               onCapturePDF={captureAndConvertToPDF}
               pdfClass=""
               isPDFLoading={isPDFLoading}
-              organogramView={organogramOrganizationView}
+              organogramView={organogramView}
               headerData={{
                 titleName: titleName || null,
                 versionName: versionName || null,
-                orgName: orgName || null,
-                orgParentName: orgParentName || orgStateParentName || null,
+                orgName: titleName || null,
+                orgParentName: orgParentName || null,
                 organizationHeader: organogramData?.organizationHeader || null,
                 organizationHeaderMsc:
                   organogramData?.organizationHeaderMsc || null,
@@ -439,12 +410,10 @@ const ProposedOrganogramViewComponent = ({
               {organogramData?.organizationHeaderMsc || null}
             </p>
           )}
-          {(orgParentName || orgStateParentName) && (
-            <p className="fs-2 mb-0">
-              {orgParentName || orgStateParentName || null}
-            </p>
+          {orgParentName && (
+            <p className="fs-2 mb-0">{orgParentName || null}</p>
           )}
-          <p className="fs-2 mb-0">{orgName || titleName || null}</p>
+          <p className="fs-2 mb-0">{titleName || null}</p>
           <p className="fs-3 mb-0">{versionName}</p>
         </div>
         <div className="d-flex">
@@ -468,10 +437,7 @@ const ProposedOrganogramViewComponent = ({
             )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
-            {(orgName ||
-              orgParentName ||
-              orgStateParentName ||
-              organogramView) && (
+            {(orgParentName || organogramView) && (
               <AttachedOrgList
                 data={attachedOrganizationData?.attachedOrganization || []}
                 langEn={langEn}
@@ -507,7 +473,7 @@ const ProposedOrganogramViewComponent = ({
               langEn={langEn}
             />
           </div>
-          
+
           <div className="mt-3">
             <AttachmentList
               data={organogramData?.attachmentDtoList || []}
@@ -531,7 +497,7 @@ const ProposedOrganogramViewComponent = ({
               />
             </div>
           )}
-        
+
           {organogramView && (
             <div className="mt-3">
               <AttachedOrgList
@@ -569,7 +535,7 @@ const ProposedOrganogramViewComponent = ({
         </div>
       </div>
 
-      {!organogramView && !stateOrganizationData?.templateView && (
+      {!organogramView && (
         <>
           <div className="d-flex justify-content-center gap-14 mt-12">
             <ACLWrapper
@@ -588,7 +554,9 @@ const ProposedOrganogramViewComponent = ({
 
             <ACLWrapper
               visibleToRoles={[ROLES.OMS_TEMPLATE_REVIEW]}
-              visibleCustom={organogramData?.status === TEMPLATE_STATUS.IN_REVIEW}
+              visibleCustom={
+                organogramData?.status === TEMPLATE_STATUS.IN_REVIEW
+              }
             >
               <Button
                 className="rounded-pill fw-bold pe-8"
@@ -610,7 +578,9 @@ const ProposedOrganogramViewComponent = ({
 
             <ACLWrapper
               visibleToRoles={[ROLES.OMS_TEMPLATE_APPROVE]}
-              visibleCustom={organogramData?.status === TEMPLATE_STATUS.IN_APPROVE}
+              visibleCustom={
+                organogramData?.status === TEMPLATE_STATUS.IN_APPROVE
+              }
             >
               <Button
                 className="rounded-pill fw-bold pe-8"

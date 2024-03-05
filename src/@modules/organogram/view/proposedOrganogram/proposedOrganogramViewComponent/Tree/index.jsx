@@ -41,21 +41,6 @@ const OrganizationTemplateTree = ({
     }, 1500);
   }, []);
 
-  // // Export PDF
-  // const exportPDF = async (canvas, exportFilename) => {
-  //   const canvasWidth = Math.floor(canvas.width);
-  //   const canvasHeight = Math.floor(canvas.height);
-  //   const canW = canvasWidth > canvasHeight ? canvasWidth : canvasHeight;
-  //   const canH = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
-  //   const doc = new jsPDF({
-  //     orientation: canvasWidth > canvasHeight ? "landscape" : "portrait",
-  //     unit: "pt",
-  //     format: [canW, canH],
-  //     compress: true,
-  //   });
-  //   doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
-  //   pdfCallRef.current = { ...pdfCallRef.current, doc, exportFilename };
-  // };
 
   const download = useRef();
   const onDownload = () => {
@@ -82,7 +67,6 @@ const OrganizationTemplateTree = ({
         )}
         ref={download}
         headerData={headerData}
-        // exportPDF={exportPDF}
         pan={true}
         zoom={true}
       />
