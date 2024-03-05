@@ -224,7 +224,7 @@ const List = () => {
       },
     };
 
-    OMSService.getOrganizationList(payload)
+    OMSService.getOrganizationCustomList(payload)
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organizationPDFContent(res?.body))
