@@ -1,6 +1,6 @@
 import { ContentPreloader, Tab, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
-import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
+import ProposedOrganogramViewComponent from "./proposedOrganogramViewComponent";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -66,7 +66,6 @@ const ProposedOrganogramView = () => {
       .then((resp) => {
         setNodeManpowerList(resp?.body);
         // console.log(resp?.body);
-        
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -115,7 +114,10 @@ const ProposedOrganogramView = () => {
           >
             প্রস্তাবিত পরিবর্তনসমূহ
           </button>
-          <ul className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-4 border-top-0" aria-labelledby="listOfProposal">
+          <ul
+            className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-4 border-top-0"
+            aria-labelledby="listOfProposal"
+          >
             {subjects?.map((p) => {
               return (
                 <li
@@ -140,8 +142,8 @@ const ProposedOrganogramView = () => {
           {sortBy(tabs)?.map((t) => (
             <TabBlock index={t?.displayOrder} activeIndex={activeTab}>
               {t?.key === "ORGANOGRAM" ? (
-                <TemplateViewComponent
-                  updateData={organogramData}
+                <ProposedOrganogramViewComponent
+                  organogramData={organogramData}
                   inventoryData={inventoryData}
                   manpowerData={manpowerData}
                   attachedOrganizationData={attachOrgData}
@@ -151,7 +153,10 @@ const ProposedOrganogramView = () => {
                   organogramId={organogramId}
                 />
               ) : t?.key === "MANPOWER" ? (
-                <ManpowerRequest dataList={nodeManpowerList} isEnamCommittee={false} />
+                <ManpowerRequest
+                  dataList={nodeManpowerList}
+                  isEnamCommittee={false}
+                />
               ) : t?.key === "TASK_BUILDER" ? (
                 <TaskBuilder />
               ) : null}
