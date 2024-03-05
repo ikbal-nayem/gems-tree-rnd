@@ -4,8 +4,8 @@ import ProposedOrganogramViewComponent from "./proposedOrganogramViewComponent";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { TaskBuilder } from "./taskBuilder";
-import ManpowerRequest from "./manpowerRequest";
+import { TaskBuilder } from "./tabComponent/taskBuilder";
+import ManpowerRequest from "./tabComponent/manpowerRequest";
 import { tabs } from "./configs";
 import { sortBy } from "utility/utils";
 
