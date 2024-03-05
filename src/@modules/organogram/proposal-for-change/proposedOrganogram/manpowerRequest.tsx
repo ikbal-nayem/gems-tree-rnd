@@ -1,5 +1,8 @@
 import {
+  Dropdown,
+  DropdownItem,
   ITableHeadColumn,
+  Icon,
   NoData,
   Table,
   TableCell,
@@ -17,9 +20,10 @@ type TableProps = {
 const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
-    { title: "প্রতিষ্ঠান", width: 145 },
+    { title: "পদবি/স্তর", width: 145 },
     { title: "পদের নাম ও সংখ্যা", width: 145, align: "center" },
-    { title: "প্রস্তাবিত পদ  ও সংখ্যা", width: 145, align: "center" },
+    // { title: "প্রস্তাবিত পদ  ও সংখ্যা", width: 145, align: "center" },
+    { title: COMMON_LABELS.ACTION, width: 145, align: "center" },
   ];
 
   // console.log(dataList);
@@ -32,12 +36,26 @@ const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
             <TableRow key={idx}>
               <TableCell verticalAlign="middle" text={generateRowNumBn(idx)} />
               <TableCell
-                text={(isEnamCommittee ? node?.nodeTitleEn : node?.nodeTitleBn) || "-"}
+                text={
+                  (isEnamCommittee ? node?.nodeTitleEn : node?.nodeTitleBn) ||
+                  "-"
+                }
               />
               <TableCell>
                 <MpNode nodeData={node} isEnamCommittee={isEnamCommittee} />
               </TableCell>
-              <TableCell></TableCell>
+              <TableCell textAlign="end" verticalAlign="top">
+                <Dropdown
+                  btnIcon={true}
+                  btnContent={<Icon icon="more_vert" size={20} />}
+                  id={node?.id}
+                >
+                  <DropdownItem onClick={() => null}>
+                    {/* <Icon size={19} icon="visibility" /> */}
+                    {/* <h6 className="mb-0 ms-3">দেখুন</h6> */}
+                  </DropdownItem>
+                </Dropdown>
+              </TableCell>
             </TableRow>
           ))
         ) : (
