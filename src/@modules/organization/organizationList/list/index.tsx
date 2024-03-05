@@ -123,7 +123,7 @@ const List = () => {
     };
 
     const reqData = { ...payload, body: payload?.body };
-    OMSService.getOrganizationList(reqData)
+    OMSService.getOrganizationCustomList(reqData)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(

@@ -129,6 +129,9 @@ export const OMSService = {
   getOrganizationList: async (payload: IObject): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organization/get-list", payload),
 
+  getOrganizationCustomList: async (payload: IObject): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "/organization/custom/get-list", payload),
+
   getOrganogramDetailsByOrganogramId: async (
     organogramId: string
   ): Promise<any> =>

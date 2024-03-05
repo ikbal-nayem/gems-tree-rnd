@@ -78,7 +78,7 @@ const OrgTable: FC<OrgTableProps> = ({
                     <div>{data?.nameEn}</div>
                     <div>
                       {/* স্থান:&nbsp; */}
-                      {data?.location?.chainBn || COMMON_LABELS.NO_DATE}
+                      {data?.locationChainNameBn || COMMON_LABELS.NO_DATE}
                     </div>
                   </>
                 }
@@ -90,22 +90,22 @@ const OrgTable: FC<OrgTableProps> = ({
                 tagColor={"info"}
               />
               <TableCell
-                text={data?.officeTypeDTO?.titleBn || COMMON_LABELS.NO_DATE}
-                subText={data?.orgTypeDTO?.titleBn}
+                text={data?.orgLevelBn || COMMON_LABELS.NO_DATE}
+                subText={data?.orgTypeBn}
               />
               <TableCell
                 text={
-                  data?.organizationTypeDTO?.nameBn || COMMON_LABELS.NO_DATE
+                  data?.orgCategoryTypeBn || COMMON_LABELS.NO_DATE
                 }
               />
               <TableCell
                 text={
-                  data?.organizationGroupDTO?.nameBn || COMMON_LABELS.NO_DATE
+                  data?.orgCategoryGroupBn || COMMON_LABELS.NO_DATE
                 }
               />
               <TableCell
-                text={data?.parent?.nameBn || COMMON_LABELS.NO_DATE}
-                subText={data?.parent?.nameEn}
+                text={data?.parentOrgNameBn || COMMON_LABELS.NO_DATE}
+                subText={data?.parentOrgNameEn}
               />
               <TableCell
                 text={
