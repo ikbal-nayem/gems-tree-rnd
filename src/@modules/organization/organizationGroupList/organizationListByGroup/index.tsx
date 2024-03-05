@@ -1,8 +1,5 @@
-import { MENU } from "@constants/menu-titles.constant";
-import { PageTitle, PageToolbarRight } from "@context/PageData";
+import { PageTitle } from "@context/PageData";
 import {
-  Button,
-  ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
   Input,
@@ -13,17 +10,15 @@ import {
 import {
   COMMON_LABELS,
   IMeta,
-  IObject,
   exportXLSX,
   generatePDF,
   numEnToBn,
   topProgress,
   useDebounce,
 } from "@gems/utils";
-import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import OrgTable from "./Table";
 import { organizationPDFContent } from "./pdf";
@@ -44,68 +39,30 @@ let initPayloadMeta = {
 };
 
 const OrgListByGroup = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<any>();
-  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
-  const [institutionTypeList, setInstitutionTypeList] = useState<IObject[]>([]);
-  const [orgTypeList, setOrgTypeList] = useState<IObject[]>([]);
-  const [ministryList, setMinistryList] = useState<IObject[]>([]);
 
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<any>(initPayloadMeta);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
-  const filterBody = useRef<IObject>({});
-  const updateData = useRef<IObject>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
+  const { state } = useLocation();
+  const groupId = searchParams.get("groupId") || null;
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
-    setSearchParams({ ...params });
+    setSearchParams({ ...params }, { state: state });
     // eslint-disable-next-line
   }, [searchKey]);
 
   useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, [searchParams]);
-
-  useEffect(() => {
-    getInstitutionTypesList();
-    getOrganizationTypesList();
-    getMinistryList();
-  }, []);
-
-  const getInstitutionTypesList = () => {
-    CoreService.getByMetaTypeList("INSTITUTION_TYPE/asc")
-      .then((res) => {
-        setInstitutionTypeList(res?.body || []);
-      })
-      .catch((err) => toast.error(err?.message));
-  };
-  const getOrganizationTypesList = () => {
-    OMSService.FETCH.organizationTypeList()
-      .then((res) => {
-        setOrgTypeList(res?.body || []);
-      })
-      .catch((err) => toast.error(err?.message));
-  };
-
-  const getMinistryList = () => {
-    OMSService.getOrgByTypes("ORG_TYPE_MINISTRY,ORG_TYPE_DIVISION")
-      .then((res) => {
-        setMinistryList(res?.body || []);
-      })
-      .catch((err) => toast.error(err?.message));
-  };
+  }, [groupId, searchParams]);
 
   const getDataList = (reqMeta = null) => {
     const payload = {
@@ -116,7 +73,7 @@ const OrgListByGroup = () => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        ...filterBody.current,
+        orgCategoryGroupId: groupId || null,
       },
     };
 
@@ -132,71 +89,8 @@ const OrgListByGroup = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const onFilterDone = (data) => {
-    filterBody.current = data;
-    getDataList();
-  };
-
   const onPageChanged = (metaParams: IMeta) => {
     getDataList({ ...metaParams });
-  };
-
-  const handleUpdate = (data: IObject) => {
-    updateData.current = data;
-    setIsDrawerOpen(true);
-    setIsUpdate(true);
-  };
-
-  const handleDelete = (data: any) => {
-    setIsDeleteModal(true);
-    setDeleteData(data);
-  };
-  const onCancelDelete = () => {
-    setIsDeleteModal(false);
-    setDeleteData(null);
-  };
-  const onConfirmDelete = () => {
-    setIsDeleteLoading(true);
-    // let payload = {
-    //   body: {
-    //     ids: [deleteData?.id || ""],
-    //   },
-    // };
-    // MasterDataService.trainingDelete(payload)
-    //   .then((res) => {
-    //     toast.success(res?.message);
-    //     getDataList();
-    //     setDeleteData(null);
-    //   })
-    //   .catch((err) => toast.error(err?.message))
-    //   .finally(() => {
-    //     setIsDeleteLoading(false);
-    //     setIsDeleteModal(false);
-    //   });
-  };
-
-  const onSubmit = (data) => {
-    setIsSubmitLoading(true);
-    const service = isUpdate
-      ? OMSService.organizationUpdate
-      : OMSService.organizationCreate;
-
-    service(isUpdate ? { ...data, id: updateData?.current?.id || "" } : data)
-      .then((res) => {
-        toast.success(res?.message);
-        getDataList();
-        setIsDrawerOpen(false);
-        setIsUpdate(false);
-        updateData.current = null;
-      })
-      .catch((error) => toast.error(error?.message))
-      .finally(() => setIsSubmitLoading(false));
-  };
-
-  const onDrawerClose = () => {
-    updateData.current = null;
-    setIsDrawerOpen(false);
-    setIsUpdate(false);
   };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
@@ -218,7 +112,7 @@ const OrgListByGroup = () => {
       },
       body: {
         searchKey: searchKey || null,
-        ...filterBody.current,
+        orgCategoryGroupId: groupId || null,
       },
     };
 
@@ -226,7 +120,10 @@ const OrgListByGroup = () => {
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organizationPDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Organization Type list")
+          : exportXLSX(
+              exportData(res?.body || []),
+              "Organization list by Group"
+            )
       )
       .catch((err) => toast.error(err?.message))
       .finally(() => topProgress.hide());
@@ -245,12 +142,7 @@ const OrgListByGroup = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.ORANIZATION}</PageTitle>
-      <PageToolbarRight>
-        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
-          যুক্ত করুন
-        </Button>
-      </PageToolbarRight>
+      <PageTitle>{state?.groupName + " গ্রুপের প্রতিষ্ঠানের তালিকা"}</PageTitle>
       <div className="card p-5">
         {/* {Object.keys(filterBody.current).map((filter) => {
 					if (typeof filter === "object") return <Tag title={"filter"} />;
@@ -283,12 +175,7 @@ const OrgListByGroup = () => {
         {/* ============================================================ TABLE STARTS ============================================================ */}
 
         <div className="mt-3">
-          <OrgTable
-            dataList={listData}
-            handleUpdate={handleUpdate}
-            handleDelete={handleDelete}
-            meta={respMeta}
-          >
+          <OrgTable dataList={listData} meta={respMeta}>
             <Pagination
               meta={respMeta}
               pageNeighbours={2}
@@ -303,15 +190,6 @@ const OrgListByGroup = () => {
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
       </div>
-      <ConfirmationModal
-        isOpen={isDeleteModal}
-        onClose={onCancelDelete}
-        onConfirm={onConfirmDelete}
-        isSubmitting={isDeleteLoading}
-        onConfirmLabel={COMMON_LABELS.DELETE}
-      >
-        আপনি কি আসলেই <b>{deleteData?.nameBn}</b> মুছে ফেলতে চাচ্ছেন ?
-      </ConfirmationModal>
     </>
   );
 };

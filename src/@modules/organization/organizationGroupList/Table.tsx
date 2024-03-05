@@ -86,18 +86,23 @@ const DataTable: FC<DataTableProps> = ({
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">প্রতিষ্ঠানের অভিভাবক হালনাগাদ</h6>
                   </DropdownItem>
-                  {/* <DropdownItem
+                  <DropdownItem
                     onClick={() => {
                       navigate(
                         ROUTE_L2.OMS_ORGANIZATION_GROUP_ORG_LIST +
                           "?groupId=" +
-                          data?.id
+                          data?.id,
+                        {
+                          state: {
+                            groupName: data?.nameBn || "",
+                          },
+                        }
                       );
                     }}
                   >
                     <Icon size={19} icon="menu" />
                     <h6 className="mb-0 ms-3">প্রতিষ্ঠানের তালিকা</h6>
-                  </DropdownItem> */}
+                  </DropdownItem>
                   <DropdownItem
                     onClick={() => {
                       handleDelete(data);
