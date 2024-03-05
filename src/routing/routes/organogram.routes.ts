@@ -25,10 +25,12 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INAPPROVE_LIST,
     element: lazy(() => import("@modules/organogram/inapprove-list")),
   },
+
+  // Organogram Change Proposal (Non-permieble) Routs Start Here ...
   {
     link: ROUTE_L2.OMS_PROPOSAL_LIST,
     routeKey: ROUTE_KEY.OMS_PROPOSAL_LIST,
-    element: lazy(() => import("@modules/organogram/proposal-list")),
+    element: lazy(() => import("@modules/organogram/proposal-for-change/proposal-list")),
   },
 ];
 
@@ -42,10 +44,12 @@ export const OrganogramRoutes: IAppRoutes = {
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_VIEW,
       element: lazy(() => import("@modules/organogram/view")),
     },
+
+    // Organogram Change Proposal (Permieble) Routs Start Here ...
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
-      element: lazy(() => import("@modules/organogram/view/proposedOrganogram")),
+      element: lazy(() => import("@modules/organogram/proposal-for-change/proposedOrganogram")),
     },
     ...permissionRouteList,
   ],
