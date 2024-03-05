@@ -10,14 +10,14 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
 import { FC } from "react";
-import MpNode from "./mpNode";
+import MpBlock from "./manpowerBlock";
 
 type TableProps = {
   dataList: any[];
   isEnamCommittee: boolean;
 };
 
-const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
+const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
     { title: "পদবি/স্তর", width: 145 },
@@ -37,26 +37,39 @@ const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
             <TableRow key={idx}>
               <TableCell verticalAlign="middle" text={generateRowNumBn(idx)} />
               <TableCell
+                verticalAlign="middle"
                 text={
                   (isEnamCommittee ? node?.nodeTitleEn : node?.nodeTitleBn) ||
                   "-"
                 }
               />
               <TableCell>
-                <MpNode nodeData={node} isEnamCommittee={isEnamCommittee} color="light" />
+                <MpBlock
+                  nodeData={node}
+                  isEnamCommittee={isEnamCommittee}
+                  color="light"
+                />
               </TableCell>
               <TableCell>
-                <MpNode nodeData={node} isEnamCommittee={isEnamCommittee}  color="secondary"/>
+                <MpBlock
+                  nodeData={node}
+                  isEnamCommittee={isEnamCommittee}
+                  color="secondary"
+                />
               </TableCell>
-              <TableCell textAlign="end" verticalAlign="top">
+              <TableCell textAlign="end" verticalAlign="middle">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
                   id={node?.id}
                 >
                   <DropdownItem onClick={() => null}>
-                    {/* <Icon size={19} icon="visibility" /> */}
-                    {/* <h6 className="mb-0 ms-3">দেখুন</h6> */}
+                    <Icon size={19} icon="edit" />
+                    <h6 className="mb-0 ms-2">পরিবর্তন প্রস্তাব করুন</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => null}>
+                    <Icon size={19} icon="delete" color="danger" />
+                    <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem>
                 </Dropdown>
               </TableCell>
@@ -74,4 +87,4 @@ const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   );
 };
 
-export default ManpowerRequest;
+export default Manpower;

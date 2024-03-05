@@ -5,8 +5,8 @@ import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TaskBuilder } from "./tabComponent/taskBuilder";
-import ManpowerRequest from "./tabComponent/manpowerRequest";
-import { tabs } from "./configs";
+import Manpower from "./tabComponent/manpower";
+import { TAB_KEY, tabs } from "./configs";
 import { sortBy } from "utility/utils";
 
 const ProposedOrganogramView = () => {
@@ -141,7 +141,7 @@ const ProposedOrganogramView = () => {
         <div className="mt-3">
           {sortBy(tabs)?.map((t) => (
             <TabBlock index={t?.displayOrder} activeIndex={activeTab}>
-              {t?.key === "ORGANOGRAM" ? (
+              {t?.key === TAB_KEY.ORGANOGRAM ? (
                 <ProposedOrganogramViewComponent
                   organogramData={organogramData}
                   inventoryData={inventoryData}
@@ -152,12 +152,12 @@ const ProposedOrganogramView = () => {
                   isBeginningVersion={true}
                   organogramId={organogramId}
                 />
-              ) : t?.key === "MANPOWER" ? (
-                <ManpowerRequest
+              ) : t?.key === TAB_KEY.MANPOWER ? (
+                <Manpower
                   dataList={nodeManpowerList}
                   isEnamCommittee={false}
                 />
-              ) : t?.key === "TASK_BUILDER" ? (
+              ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <TaskBuilder />
               ) : null}
             </TabBlock>
