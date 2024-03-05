@@ -4,11 +4,12 @@ import { CoreService } from "../../../../../../@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
 import MyNode from "./my-node";
 import NodeDetails from "./node-details";
+import { captureAndConvertToPDF } from "../local-util";
 
-const OrganizationTemplateTree = ({
+const OrganogramTree = ({
   treeData,
   langEn,
-  onCapturePDF,
+  setPDFLoading,
   pdfClass,
   headerData,
   isPDFLoading,
@@ -44,11 +45,11 @@ const OrganizationTemplateTree = ({
 
   const download = useRef();
   const onDownload = () => {
-    onCapturePDF();
+    captureAndConvertToPDF(false, setPDFLoading);
   };
 
   const onPrint = () => {
-    onCapturePDF(true);
+    captureAndConvertToPDF(true, setPDFLoading);
   };
 
   return (
@@ -114,4 +115,4 @@ const OrganizationTemplateTree = ({
   );
 };
 
-export default OrganizationTemplateTree;
+export default OrganogramTree;
