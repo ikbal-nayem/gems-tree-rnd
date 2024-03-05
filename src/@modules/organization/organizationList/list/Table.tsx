@@ -94,14 +94,10 @@ const OrgTable: FC<OrgTableProps> = ({
                 subText={data?.orgTypeBn}
               />
               <TableCell
-                text={
-                  data?.orgCategoryTypeBn || COMMON_LABELS.NO_DATE
-                }
+                text={data?.orgCategoryTypeBn || COMMON_LABELS.NO_DATE}
               />
               <TableCell
-                text={
-                  data?.orgCategoryGroupBn || COMMON_LABELS.NO_DATE
-                }
+                text={data?.orgCategoryGroupBn || COMMON_LABELS.NO_DATE}
               />
               <TableCell
                 text={data?.parentOrgNameBn || COMMON_LABELS.NO_DATE}

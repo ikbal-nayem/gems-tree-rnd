@@ -10,10 +10,10 @@ import {
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
   { nameBn: "প্রতিষ্ঠানের নাম", key: "nameBn" },
-  { nameBn: "প্রতিষ্ঠানের পর্যায়", key: "officeTypeDTO" },
-  { nameBn: "প্রতিষ্ঠানের ধরণ", key: "organizationTypeDTO" },
-  { nameBn: "প্রতিষ্ঠানের গ্রুপ", key: "organizationGroupDTO" },
-  { nameBn: "প্রতিষ্ঠানের অভিভাবক", key: "parent" },
+  { nameBn: "প্রতিষ্ঠানের পর্যায়", key: "orgLevelBn" },
+  { nameBn: "প্রতিষ্ঠানের ধরণ", key: "orgCategoryTypeBn" },
+  { nameBn: "প্রতিষ্ঠানের গ্রুপ", key: "orgCategoryGroupBn" },
+  { nameBn: "প্রতিষ্ঠানের অভিভাবক", key: "parentOrgNameBn" },
 ];
 
 export const organizationPDFContent = (data): TDocumentDefinitions => {
@@ -39,38 +39,11 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
                           alignment: "center",
                         },
                         {
-                          text: d?.location?.chainBn || null,
+                          text: d?.locationChainNameBn || null,
                           alignment: "center",
                         },
                       ];
-                    case "officeTypeDTO":
-                      return [
-                        {
-                          text: d[col?.key]?.titleBn || COMMON_LABELS.NO_DATE,
-                          alignment: "center",
-                        },
-                      ];
-                    case "organizationTypeDTO":
-                      return [
-                        {
-                          text: d[col?.key]?.nameBn || COMMON_LABELS.NO_DATE,
-                          alignment: "center",
-                        },
-                      ];
-                    case "organizationGroupDTO":
-                      return [
-                        {
-                          text: d[col?.key]?.nameBn || COMMON_LABELS.NO_DATE,
-                          alignment: "center",
-                        },
-                      ];
-                    case "parent":
-                      return [
-                        {
-                          text: d[col?.key]?.nameBn || COMMON_LABELS.NO_DATE,
-                          alignment: "center",
-                        },
-                      ];
+
                     default:
                       return {
                         text: numEnToBn(d[col?.key] || COMMON_LABELS.NO_DATE),
