@@ -1,7 +1,7 @@
 import { COMMON_LABELS } from "@constants/common.constant";
 import { numEnToBn } from "@gems/utils";
 
-const MpNode = ({ nodeData, isEnamCommittee, color }) => {
+const MpBlock = ({ nodeData, isEnamCommittee, color }) => {
   const list = nodeData?.manpowerDtoList;
   return (
     <div className="position rounded">
@@ -25,4 +25,4 @@ const MpNode = ({ nodeData, isEnamCommittee, color }) => {
   );
 };
 
-export default MpNode;
+export default MpBlock;

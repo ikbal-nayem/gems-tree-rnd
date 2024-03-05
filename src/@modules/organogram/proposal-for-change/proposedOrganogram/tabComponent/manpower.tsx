@@ -10,14 +10,14 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
 import { FC } from "react";
-import MpNode from "./mpNode";
+import MpNode from "./manpowerBlock";
 
 type TableProps = {
   dataList: any[];
   isEnamCommittee: boolean;
 };
 
-const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
+const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
     { title: "পদবি/স্তর", width: 145 },
@@ -74,4 +74,4 @@ const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   );
 };
 
-export default ManpowerRequest;
+export default Manpower;

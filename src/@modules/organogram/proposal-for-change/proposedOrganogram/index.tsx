@@ -5,7 +5,7 @@ import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TaskBuilder } from "./tabComponent/taskBuilder";
-import ManpowerRequest from "./tabComponent/manpowerRequest";
+import Manpower from "./tabComponent/manpower";
 import { tabs } from "./configs";
 import { sortBy } from "utility/utils";
 
@@ -153,7 +153,7 @@ const ProposedOrganogramView = () => {
                   organogramId={organogramId}
                 />
               ) : t?.key === "MANPOWER" ? (
-                <ManpowerRequest
+                <Manpower
                   dataList={nodeManpowerList}
                   isEnamCommittee={false}
                 />
