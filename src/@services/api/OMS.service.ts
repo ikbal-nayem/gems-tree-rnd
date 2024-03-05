@@ -304,7 +304,9 @@ export const OMSService = {
           "organogram-business-allocation/get-by-organogram-id/" +
           id
       ),
-    oranizationTreeByOrganizationId: async (organizationId: string): Promise<any> =>
+    oranizationTreeByOrganizationId: async (
+      organizationId: string
+    ): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "organization/get-organization-tree/" + organizationId
       ),
@@ -375,6 +377,13 @@ export const OMSService = {
       await axiosIns.put(
         OMS_SERVICE + "organogram-business-allocation/update",
         payload
+      ),
+
+    organizationParentByOrgGroupId: async (groupId: string): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE +
+          "organization-category/update-org-parent-by-category-grouping-id/" +
+          groupId
       ),
   },
 
