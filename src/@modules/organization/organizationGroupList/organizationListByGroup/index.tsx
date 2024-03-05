@@ -43,7 +43,7 @@ let initPayloadMeta = {
   ],
 };
 
-const List = () => {
+const OrgListByGroup = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
@@ -316,4 +316,4 @@ const List = () => {
     </>
   );
 };
-export default List;
+export default OrgListByGroup;

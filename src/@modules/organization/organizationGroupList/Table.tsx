@@ -1,3 +1,4 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   Dropdown,
   DropdownItem,
@@ -11,6 +12,7 @@ import {
 import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
@@ -37,6 +39,8 @@ const DataTable: FC<DataTableProps> = ({
   handleDelete,
 }) => {
   if (!data?.length) return;
+
+  const navigate = useNavigate();
 
   const handleUpdateOrganizationParent = (item) => {
     OMSService.UPDATE.organizationParentByOrgGroupId(item?.id)
@@ -84,7 +88,11 @@ const DataTable: FC<DataTableProps> = ({
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
-                      handleUpdateOrganizationParent(data);
+                      navigate(
+                        ROUTE_L2.OMS_ORGANIZATION_GROUP_ORG_LIST +
+                          "?groupId=" +
+                          data?.id
+                      );
                     }}
                   >
                     <Icon size={19} icon="menu" />
