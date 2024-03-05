@@ -20,7 +20,7 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
   const today = makeBDLocalTime(new Date());
   return {
     content: [
-      { text: "প্রতিষ্ঠানের প্রতিবেদন", style: "header" },
+      { text: "প্রতিষ্ঠানের গ্রুপ ভিত্তিক তালিকা", style: "header" },
       {
         table: {
           headerRows: 1,

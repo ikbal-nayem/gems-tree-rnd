@@ -83,12 +83,12 @@ const WorkSpaceComponent: FC<WorkSpaceComponentProps> = ({
   const onSelect = (ws: IObject | null) => {
     clearErrors("parent");
     setValue("parent", ws);
-    setValue("parentId", ws?.id);
+    setValue("orgParentId", ws?.id);
     onInstitutionChange && onInstitutionChange(ws);
     setSearchOpen(false);
   };
 
-  const values = getValues(["parent", "parentId"]);
+  const values = getValues(["parent", "orgParentId"]);
 
   return (
     <>
