@@ -1,7 +1,7 @@
 export const tabs = [
   {
     displayOrder: 0,
-    label: "অর্গানোগ্রাম",
+    label: "প্রস্তাবিত অর্গানোগ্রাম",
     key: "ORGANOGRAM",
   },
   {

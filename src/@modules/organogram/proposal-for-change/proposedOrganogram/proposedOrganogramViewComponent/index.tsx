@@ -39,7 +39,7 @@ import ManPowerList from "./components/ManPowerList";
 import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModal";
 import NotesList from "./components/NotesList";
 import NotesReviewApproverList from "./components/NotesReviewApproverList";
-import { BUTTON_LABEL, MSG } from "./message";
+import { ACTIONS, BUTTON_LABEL, MSG, STATE } from "./local-constants";
 import { ProposalService } from "@services/api/Proposal.service";
 
 interface IProposedOrganogramViewComponent {
@@ -102,44 +102,54 @@ const ProposedOrganogramViewComponent = ({
 
   const openModal = (currentStat, action) => {
     setIsModalOpen(true);
-    if (currentStat === "TEMPLATE_ENTRY") {
-      setModalMsg(msg.SEND_TO_REVIEW);
-      setModalButtonLabel(modalBtnLabel.SEND);
-      setModalAction(action);
-    } else if (currentStat === "TEMPLATE_REVIEW") {
-      if (action === "BACK_TO_NEW") {
-        setModalMsg(msg.SEND_BACK_TO_NEW);
-        setModalButtonLabel(modalBtnLabel.SEND_BACK);
-        setModalAction(action);
-      } else if (action === "SEND_TO_APPROVE") {
-        setModalMsg(msg.SEND_TO_APPROVE);
+    switch (currentStat) {
+      case STATE.ENTRY:
+        setModalMsg(msg.SEND_TO_REVIEW);
         setModalButtonLabel(modalBtnLabel.SEND);
         setModalAction(action);
-      }
-    } else if (currentStat === "TEMPLATE_APPROVE") {
-      if (action === "BACK_TO_REVIEW") {
-        setModalMsg(msg.SEND_BACK_TO_REVIEW);
-        setModalButtonLabel(modalBtnLabel.SEND_BACK);
-        setModalAction(action);
-      } else if (action === "APPROVE") {
-        setModalMsg(msg.APPROVE);
-        setModalButtonLabel(modalBtnLabel.APPROVE);
-        setModalAction(action);
-      }
+        break;
+      case STATE.REVIEW:
+        if (action === ACTIONS.BACK_TO_NEW) {
+          setModalMsg(msg.SEND_BACK_TO_NEW);
+          setModalButtonLabel(modalBtnLabel.SEND_BACK);
+          setModalAction(action);
+        } else if (action === ACTIONS.SEND_TO_APPROVE) {
+          setModalMsg(msg.SEND_TO_APPROVE);
+          setModalButtonLabel(modalBtnLabel.SEND);
+          setModalAction(action);
+        }
+        break;
+      case STATE.APPROVAL:
+        if (action === ACTIONS.BACK_TO_REVIEW) {
+          setModalMsg(msg.SEND_BACK_TO_REVIEW);
+          setModalButtonLabel(modalBtnLabel.SEND_BACK);
+          setModalAction(action);
+        } else if (action === ACTIONS.APPROVE) {
+          setModalMsg(msg.APPROVE);
+          setModalButtonLabel(modalBtnLabel.APPROVE);
+          setModalAction(action);
+        }
+        break;
+      default:
+      // That's it
     }
   };
 
   const onModalActionConfirm = (note = null) => {
-    if (modalAction === "SEND_TO_REVIEW") {
-      onStatusChange("IN_REVIEW", ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
-    } else if (modalAction === "BACK_TO_REVIEW") {
-      onStatusChange("IN_REVIEW", ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST, note);
-    } else if (modalAction === "BACK_TO_NEW") {
-      onStatusChange("NEW", ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST, note);
-    } else if (modalAction === "SEND_TO_APPROVE") {
-      onStatusChange("IN_APPROVE", ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST);
-    } else if (modalAction === "APPROVE") {
-      onTemplateApprove();
+    if (modalAction === ACTIONS.SEND_TO_REVIEW)
+      onStatusChange(STATE.REVIEW, ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
+    else if (modalAction === ACTIONS.BACK_TO_REVIEW) {
+      onStatusChange(
+        STATE.REVIEW,
+        ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST,
+        note
+      );
+    } else if (modalAction === ACTIONS.BACK_TO_NEW) {
+      onStatusChange(STATE.ENTRY, ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST, note);
+    } else if (modalAction === ACTIONS.SEND_TO_APPROVE) {
+      onStatusChange(STATE.APPROVAL, ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST);
+    } else if (modalAction === ACTIONS.APPROVE) {
+      onOrganogramApprove();
     }
     setIsModalOpen(false);
   };
@@ -165,12 +175,12 @@ const ProposedOrganogramViewComponent = ({
       .finally(() => setIsSubmitting(false));
   };
 
-  const onTemplateApprove = () => {
+  const onOrganogramApprove = () => {
     setApproveLoading(true);
     ProposalService.UPDATE.approveOrganogramById(organogramData?.id)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST);
+        navigate(ROUTE_L2.OMS_PROPOSAL_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setApproveLoading(false));
@@ -546,7 +556,7 @@ const ProposedOrganogramViewComponent = ({
               <Button
                 className="rounded-pill px-8 fw-bold"
                 color="success"
-                onClick={() => openModal("TEMPLATE_ENTRY", "SEND_TO_REVIEW")}
+                onClick={() => openModal(STATE.ENTRY, ACTIONS.SEND_TO_REVIEW)}
               >
                 <span> {BTN_LABELS.SEND} </span>
                 <Icon icon="send" size={12} className="fw-bold ms-2" />
@@ -562,7 +572,7 @@ const ProposedOrganogramViewComponent = ({
               <Button
                 className="rounded-pill fw-bold pe-8"
                 color="danger"
-                onClick={() => openModal("TEMPLATE_REVIEW", "BACK_TO_NEW")}
+                onClick={() => openModal(STATE.REVIEW, ACTIONS.BACK_TO_NEW)}
               >
                 <Icon icon="arrow_back" className="fw-bold me-2" />
                 <span> {BTN_LABELS.SEND_BACK} </span>
@@ -570,7 +580,7 @@ const ProposedOrganogramViewComponent = ({
               <Button
                 className="rounded-pill px-10 ps-12 fw-bold"
                 color="success"
-                onClick={() => openModal("TEMPLATE_REVIEW", "SEND_TO_APPROVE")}
+                onClick={() => openModal(STATE.REVIEW, ACTIONS.SEND_TO_APPROVE)}
               >
                 <span> {BTN_LABELS.SEND} </span>
                 <Icon icon="send" size={15} className="fw-bold ms-1" />
@@ -586,7 +596,9 @@ const ProposedOrganogramViewComponent = ({
               <Button
                 className="rounded-pill fw-bold pe-8"
                 color="danger"
-                onClick={() => openModal("TEMPLATE_APPROVE", "BACK_TO_REVIEW")}
+                onClick={() =>
+                  openModal(STATE.APPROVAL, ACTIONS.BACK_TO_REVIEW)
+                }
               >
                 <Icon icon="arrow_back" className="fw-bold me-2" />
                 <span> {BTN_LABELS.SEND_BACK} </span>
@@ -595,7 +607,7 @@ const ProposedOrganogramViewComponent = ({
                 className="rounded-pill px-8 fw-bold"
                 color="success"
                 isLoading={isApproveLoading}
-                onClick={() => openModal("TEMPLATE_APPROVE", "APPROVE")}
+                onClick={() => openModal(STATE.APPROVAL, ACTIONS.APPROVE)}
               >
                 <span> {BTN_LABELS.APPROVE} </span>
                 <Icon icon="check" size={15} className="fw-bold ms-1" />

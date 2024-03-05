@@ -27,3 +27,17 @@ export const BUTTON_LABEL = {
     APPROVE: "অনুমোদন",
   },
 };
+
+export const STATE = {
+  ENTRY: "NEW",
+  REVIEW: "IN_REVIEW",
+  APPROVAL: "IN_APPROVE",
+};
+
+export const ACTIONS = {
+  SEND_TO_REVIEW: "SEND_TO_REVIEW",
+  BACK_TO_NEW: "BACK_TO_NEW",
+  SEND_TO_APPROVE: "SEND_TO_APPROVE",
+  BACK_TO_REVIEW: "BACK_TO_REVIEW",
+  APPROVE: "APPROVE",
+};
