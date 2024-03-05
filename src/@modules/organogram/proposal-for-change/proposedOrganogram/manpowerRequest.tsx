@@ -22,6 +22,7 @@ const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
     { title: "পদবি/স্তর", width: 145 },
     { title: "পদের নাম ও সংখ্যা", width: 145, align: "center" },
+    { title: "প্রস্তাবিত পদের নাম ও সংখ্যা", width: 145, align: "center" },
     // { title: "প্রস্তাবিত পদ  ও সংখ্যা", width: 145, align: "center" },
     { title: COMMON_LABELS.ACTION, width: 145, align: "center" },
   ];
@@ -42,7 +43,10 @@ const ManpowerRequest: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
                 }
               />
               <TableCell>
-                <MpNode nodeData={node} isEnamCommittee={isEnamCommittee} />
+                <MpNode nodeData={node} isEnamCommittee={isEnamCommittee} color="light" />
+              </TableCell>
+              <TableCell>
+                <MpNode nodeData={node} isEnamCommittee={isEnamCommittee}  color="secondary"/>
               </TableCell>
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
