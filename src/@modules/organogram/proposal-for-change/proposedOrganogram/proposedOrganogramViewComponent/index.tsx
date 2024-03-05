@@ -40,6 +40,7 @@ import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModa
 import NotesList from "./components/NotesList";
 import NotesReviewApproverList from "./components/NotesReviewApproverList";
 import { BUTTON_LABEL, MSG } from "./message";
+import { ProposalService } from "@services/api/Proposal.service";
 
 interface IProposedOrganogramViewComponent {
   organogramData: IObject;
@@ -152,7 +153,7 @@ const ProposedOrganogramViewComponent = ({
 
   const onStatusChange = (status: string, destination, note = null) => {
     setIsSubmitting(true);
-    OMSService.updateTemplateStatusById(organogramData?.id, status, {
+    ProposalService.UPDATE.statusByOrganogramId(organogramData?.id, status, {
       note: note,
       status: organogramData?.status,
     })
@@ -166,7 +167,7 @@ const ProposedOrganogramViewComponent = ({
 
   const onTemplateApprove = () => {
     setApproveLoading(true);
-    OMSService.approveTemplateById(organogramData?.id)
+    ProposalService.UPDATE.approveOrganogramById(organogramData?.id)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST);

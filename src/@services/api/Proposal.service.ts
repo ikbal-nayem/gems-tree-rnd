@@ -1,0 +1,87 @@
+import { OMS_SERVICE } from "@gems/utils";
+import { axiosIns } from "config/api.config";
+
+export const ProposalService = {
+  // ======================= FETCH API =================================
+  FETCH: {
+    organogramDetailsByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization-organogram/get-by-organogram-id/" + id
+      ),
+
+    inventoryByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-template/get-organogram-inventory-list-group-by-type/" +
+          id
+      ),
+
+    manpowerSummaryById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-template/get-summary-manpower-list-by-organogramId/" +
+          id
+      ),
+
+    nodeWiseManpowerById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-proposal-node-manpower-by/" +
+          id
+      ),
+
+    attachedOrganizationById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-attached-by-organogram-id/" +
+          id
+      ),
+
+    parentOrganizationByOrgId: async (organizationId: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization-organogram/get-parent-org/" + organizationId
+      ),
+
+    manpowerDifferenceByOrganogram: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/summary-manpower-difference-by-organogram/" +
+          id
+      ),
+  },
+
+  // ======================= SAVE API =================================
+
+  SAVE: {
+    // orgPostConfig: async (payload): Promise<any> =>
+    //   await axiosIns.post(OMS_SERVICE + "org-post/save", payload),
+  },
+
+  // ======================= UPDATE API =================================
+
+  UPDATE: {
+    statusByOrganogramId: async (id, status, payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE +
+          "organogram-template/update-template-status-by-id/" +
+          id +
+          "/" +
+          status,
+        payload
+      ),
+
+    approveOrganogramById: async (id): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-template/template-approve/" + id
+      ),
+  },
+
+  // ======================= DELETE API =================================
+
+  DELETE: {
+    // organogramByID: async (id: string): Promise<any> =>
+    //   await axiosIns.delete(
+    //     OMS_SERVICE + "organogram-template/delete-organogram-by-id/" + id
+    //   ),
+  },
+};

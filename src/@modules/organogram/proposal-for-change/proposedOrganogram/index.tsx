@@ -1,7 +1,7 @@
 import { ContentPreloader, Tab, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
 import ProposedOrganogramViewComponent from "./proposedOrganogramViewComponent";
-import { OMSService } from "@services/api/OMS.service";
+import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TaskBuilder } from "./taskBuilder";
@@ -35,14 +35,14 @@ const ProposedOrganogramView = () => {
   };
 
   const getOrganogramDetails = () => {
-    OMSService.getOrganogramDetailsByOrganogramId(organogramId)
+    ProposalService.FETCH.organogramDetailsByOrganogramId(organogramId)
       .then((resp) => setOrganogramData(resp?.body))
       .catch((e) => toast.error(e?.message));
   };
 
   const getTemplateInventoryById = () => {
     setIsLoading(true);
-    OMSService.getTemplateInventoryByTemplateId(organogramId)
+    ProposalService.FETCH.inventoryByOrganogramId(organogramId)
       .then((resp) => {
         setInventoryData(resp?.body);
       })
@@ -52,7 +52,7 @@ const ProposedOrganogramView = () => {
 
   const getManpowerSummaryById = () => {
     setIsLoading(true);
-    OMSService.getTemplateManpowerSummaryById(organogramId)
+    ProposalService.FETCH.manpowerSummaryById(organogramId)
       .then((resp) => {
         setManpowerData(resp?.body);
       })
@@ -62,7 +62,7 @@ const ProposedOrganogramView = () => {
 
   const getNodeWiseManpowerById = () => {
     setIsLoading(true);
-    OMSService.FETCH.nodeWiseManpowerById(organogramId)
+    ProposalService.FETCH.nodeWiseManpowerById(organogramId)
       .then((resp) => {
         setNodeManpowerList(resp?.body);
         // console.log(resp?.body);
@@ -73,7 +73,7 @@ const ProposedOrganogramView = () => {
 
   const getAttachedOrganizationById = () => {
     setIsLoading(true);
-    OMSService.getAttachedOrganizationById(organogramId)
+    ProposalService.FETCH.attachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
       })
@@ -89,7 +89,7 @@ const ProposedOrganogramView = () => {
 
   const getParentOrganization = () => {
     setIsLoading(true);
-    OMSService.getOrganizationParentByOrgId(organogramData?.organization?.id)
+    ProposalService.FETCH.parentOrganizationByOrgId(organogramData?.organization?.id)
       .then((resp) => {
         setParentOrgData(resp?.body);
       })

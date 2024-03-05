@@ -2,7 +2,7 @@ import { IObject } from "@gems/utils";
 import ManPowerList from "./ManPowerList";
 import { useEffect, useState } from "react";
 import { LABELS } from "@constants/common.constant";
-import { OMSService } from "@services/api/OMS.service";
+import { ProposalService } from "@services/api/Proposal.service";
 import { Icon, Modal, ModalBody } from "@gems/components";
 
 interface IForm {
@@ -24,7 +24,7 @@ const MPListChanges = ({
 
   useEffect(() => {
     if (organogramId)
-      OMSService.FETCH.manpowerDifferenceByOrganogram(organogramId).then(
+    ProposalService.FETCH.manpowerDifferenceByOrganogram(organogramId).then(
         (resp) => {
           setPrevManpower(resp?.body);
         }
