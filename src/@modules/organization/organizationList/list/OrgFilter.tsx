@@ -30,8 +30,9 @@ const OrgFilter = ({ onFilterDone, options }) => {
   const [orgGroupList, setOrgGroupList] = useState<IObject[]>([]);
 
   const onOrganizationTypeChange = (typeItem: IObject) => {
+    setValue("organizationTypeId", typeItem?.id);
     setValue("organizationGroupDTO", null);
-    setValue("organizationCategoryId", null);
+    setValue("orgCategoryGroupId", null);
     setOrgGroupList([]);
     if (!isObjectNull(typeItem)) {
       OMSService.FETCH.organizationGroupbyOrgType(typeItem?.id)
@@ -44,6 +45,8 @@ const OrgFilter = ({ onFilterDone, options }) => {
   const onClose = () => setOpen(false);
 
   const onFilter = (data: IObject) => {
+    delete data.organizationTypeDTO;
+    delete data.organizationGroupDTO;
     onFilterDone(data);
     reset();
     onClose();
@@ -92,7 +95,7 @@ const OrgFilter = ({ onFilterDone, options }) => {
                   name="organizationGroupDTO"
                   getOptionLabel={(op) => op.nameBn}
                   getOptionValue={(op) => op.id}
-                  onChange={(op) => setValue("organizationCategoryId", op?.id)}
+                  onChange={(op) => setValue("orgCategoryGroupId", op?.id)}
                   control={control}
                   isError={!!errors?.organizationGroupDTO}
                   errorMessage={errors?.organizationGroupDTO?.message as string}

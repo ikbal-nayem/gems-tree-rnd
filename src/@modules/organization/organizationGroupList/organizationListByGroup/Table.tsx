@@ -28,42 +28,19 @@ const columns: ITableHeadColumn[] = [
   { title: "প্রতিষ্ঠানের অভিভাবক", minWidth: 150 },
   { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
-  { title: COMMON_LABELS.ACTION },
+  // { title: COMMON_LABELS.ACTION },
 ];
 
 type OrgTableProps = {
   children?: ReactNode;
   dataList?: any;
-  handleUpdate: (data) => void;
-  handleDelete: (data) => void;
   meta?: IMeta;
 };
 
-const OrgTable: FC<OrgTableProps> = ({
-  children,
-  dataList = [],
-  handleUpdate,
-  handleDelete,
-  meta,
-}) => {
+const OrgTable: FC<OrgTableProps> = ({ children, dataList = [], meta }) => {
   const navigate = useNavigate();
 
   if (!dataList?.length) return;
-
-  const redirectTo = (page: "main_activity" | "aob", org: IObject) => {
-    switch (page) {
-      case "main_activity":
-        navigate(ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY, {
-          state: org,
-        });
-        break;
-      case "aob":
-        navigate(ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION, {
-          state: org,
-        });
-        break;
-    }
-  };
   return (
     <>
       <Table columns={columns}>
@@ -120,7 +97,7 @@ const OrgTable: FC<OrgTableProps> = ({
                   <Icon icon="close" color="danger" size={20} />
                 )}
               </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
@@ -145,16 +122,8 @@ const OrgTable: FC<OrgTableProps> = ({
                       {MENU.BN.ALLOCATION_OF_BUSINESS_LIST}
                     </h6>
                   </DropdownItem>
-                  {/* <DropdownItem
-										onClick={() => {
-											handleDelete(data);
-										}}
-									>
-										<Icon size={19} icon="delete" color="danger" />
-										<h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-									</DropdownItem> */}
                 </Dropdown>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           );
         })}

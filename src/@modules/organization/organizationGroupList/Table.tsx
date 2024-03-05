@@ -1,3 +1,4 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   Dropdown,
   DropdownItem,
@@ -6,9 +7,12 @@ import {
   Table,
   TableCell,
   TableRow,
+  toast,
 } from "@gems/components";
 import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
@@ -35,6 +39,17 @@ const DataTable: FC<DataTableProps> = ({
   handleDelete,
 }) => {
   if (!data?.length) return;
+
+  const navigate = useNavigate();
+
+  const handleUpdateOrganizationParent = (item) => {
+    OMSService.UPDATE.organizationParentByOrgGroupId(item?.id)
+      .then((res) => {
+        toast.success(res?.message);
+      })
+      .catch((error) => toast.error(error?.message));
+  };
+
   return (
     <>
       <Table columns={columns}>
@@ -44,15 +59,9 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               <TableCell text={data?.nameBn || "-"} />
               <TableCell text={data?.nameEn || "-"} />
-              <TableCell
-                text={data?.parent?.nameBn || "-"}
-              />
-              <TableCell
-                text={data?.parentGroup?.nameBn || "-"}
-              />
-              <TableCell
-                text={data?.parentOrganization?.nameBn || "-"}
-              />
+              <TableCell text={data?.parent?.nameBn || "-"} />
+              <TableCell text={data?.parentGroup?.nameBn || "-"} />
+              <TableCell text={data?.parentOrganization?.nameBn || "-"} />
 
               <TableCell isActive={data?.isActive} />
               <TableCell>
@@ -68,6 +77,31 @@ const DataTable: FC<DataTableProps> = ({
                   >
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      handleUpdateOrganizationParent(data);
+                    }}
+                  >
+                    <Icon size={19} icon="edit" />
+                    <h6 className="mb-0 ms-3">প্রতিষ্ঠানের অভিভাবক হালনাগাদ</h6>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      navigate(
+                        ROUTE_L2.OMS_ORGANIZATION_GROUP_ORG_LIST +
+                          "?groupId=" +
+                          data?.id,
+                        {
+                          state: {
+                            groupName: data?.nameBn || "",
+                          },
+                        }
+                      );
+                    }}
+                  >
+                    <Icon size={19} icon="menu" />
+                    <h6 className="mb-0 ms-3">প্রতিষ্ঠানের তালিকা</h6>
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {

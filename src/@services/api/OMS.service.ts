@@ -129,6 +129,9 @@ export const OMSService = {
   getOrganizationList: async (payload: IObject): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organization/get-list", payload),
 
+  getOrganizationCustomList: async (payload: IObject): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "/organization/custom/get-list", payload),
+
   getOrganogramDetailsByOrganogramId: async (
     organogramId: string
   ): Promise<any> =>
@@ -384,6 +387,13 @@ export const OMSService = {
       await axiosIns.put(
         OMS_SERVICE + "organogram-business-allocation/update",
         payload
+      ),
+
+    organizationParentByOrgGroupId: async (groupId: string): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE +
+          "organization-category/update-org-parent-by-category-grouping-id/" +
+          groupId
       ),
   },
 
