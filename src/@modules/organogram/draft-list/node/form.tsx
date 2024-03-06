@@ -25,7 +25,7 @@ import {
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isNotEmptyList } from "utility/utils";
 
@@ -252,6 +252,11 @@ const NodeCreateUpdateForm = ({
       if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
     }
   };
+
+  const getAsyncPostList = useCallback((searchKey, callback) => {
+    postPayload.body = { searchKey };
+    CoreService.getPostList(postPayload).then((resp) => callback(resp?.body));
+  }, []);
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
@@ -490,27 +495,29 @@ const NodeCreateUpdateForm = ({
         </div>
         {manpowerListFields.map((field, index) => (
           <div
-            className={`d-flex align-items-top gap-3 w-100 px-1 my-1 bg-gray-100`}
+            className={`d-flex align-items-top gap-3 w-100 my-1 mb-3 mb-xl-0 bg-gray-100`}
             key={field?.id}
           >
             <div className={index < 1 ? "mt-10" : "mt-3"}>
               <Label> {numEnToBn(index + 1) + "।"} </Label>
             </div>
             <div className="row w-100">
-              <div className="col-md-6 col-xl-4 px-1">
+              <div className="col-md-6 col-xl-3 col-xxl-4 px-1">
                 <Autocomplete
                   label={index < 1 ? "পদবি" : ""}
                   placeholder="বাছাই করুন"
-                  isRequired={true}
+                  isRequired
+                  isAsync
+                  // isMulti
                   control={control}
-                  options={postList || []}
+                  noMargin
                   getOptionLabel={(op) =>
                     isNotEnamCommittee ? op?.nameBn : op?.nameEn
                   }
                   getOptionValue={(op) => op?.id}
                   name={`manpowerList.${index}.postDTO`}
                   onChange={(t) => onPostChange(index, t)}
-                  noMargin
+                  loadOptions={getAsyncPostList}
                   isError={!!errors?.manpowerList?.[index]?.postDTO}
                   errorMessage={
                     errors?.manpowerList?.[index]?.postDTO?.message as string
@@ -518,7 +525,7 @@ const NodeCreateUpdateForm = ({
                 />
               </div>
 
-              <div className="col-md-6 col-xl-3 px-1">
+              <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
                 <Autocomplete
                   label={index < 1 ? "গ্রেড" : ""}
                   placeholder="বাছাই করুন"
@@ -561,7 +568,7 @@ const NodeCreateUpdateForm = ({
                 />
               </div>
 
-              <div className="col-md-6 col-xl-1 px-1">
+              <div className="col-md-6 col-xl-2 col-xxl-1 px-1">
                 <Input
                   label={index < 1 ? "জনবল সংখ্যা" : ""}
                   placeholder="জনবল সংখ্যা লিখুন"
@@ -583,7 +590,7 @@ const NodeCreateUpdateForm = ({
                 />
               </div>
 
-              <div className="col-md-6 col-xl-1 px-1">
+              <div className="col-md-6 col-xl-2 col-xxl-1 px-1">
                 <Select
                   label={index < 1 ? "পদের ধরণ" : ""}
                   options={postTypeList || []}
