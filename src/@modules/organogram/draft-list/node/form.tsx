@@ -25,7 +25,7 @@ import {
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isNotEmptyList } from "utility/utils";
 
@@ -252,6 +252,11 @@ const NodeCreateUpdateForm = ({
       if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
     }
   };
+
+  const getAsyncPostList = useCallback((searchKey, callback) => {
+    postPayload.body = { searchKey };
+    CoreService.getPostList(postPayload).then((resp) => callback(resp?.body));
+  }, []);
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
@@ -498,7 +503,7 @@ const NodeCreateUpdateForm = ({
             </div>
             <div className="row w-100">
               <div className="col-md-6 col-xl-4 px-1">
-                <Autocomplete
+                {/* <Autocomplete
                   label={index < 1 ? "পদবি" : ""}
                   placeholder="বাছাই করুন"
                   isRequired={true}
@@ -511,6 +516,26 @@ const NodeCreateUpdateForm = ({
                   name={`manpowerList.${index}.postDTO`}
                   onChange={(t) => onPostChange(index, t)}
                   noMargin
+                  isError={!!errors?.manpowerList?.[index]?.postDTO}
+                  errorMessage={
+                    errors?.manpowerList?.[index]?.postDTO?.message as string
+                  }
+                /> */}
+                <Autocomplete
+                  label={index < 1 ? "পদবি" : ""}
+                  placeholder="বাছাই করুন"
+                  isRequired
+                  isAsync
+                  // isMulti
+                  control={control}
+                  noMargin
+                  getOptionLabel={(op) =>
+                    isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                  }
+                  getOptionValue={(op) => op?.id}
+                  name={`manpowerList.${index}.postDTO`}
+                  onChange={(t) => onPostChange(index, t)}
+                  loadOptions={getAsyncPostList}
                   isError={!!errors?.manpowerList?.[index]?.postDTO}
                   errorMessage={
                     errors?.manpowerList?.[index]?.postDTO?.message as string
