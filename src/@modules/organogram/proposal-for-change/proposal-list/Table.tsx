@@ -1,3 +1,4 @@
+import { TIME_PATTERN } from "@constants/common.constant";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   ContentPreloader,
@@ -21,7 +22,6 @@ import {
 import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
-import { TIME_PATTERN } from "@constants/common.constant";
 
 type TableProps = {
   children: ReactNode;
@@ -113,14 +113,14 @@ const ProposalTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  {/* <DropdownItem onClick={() => null}>
+                  <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
-                  </DropdownItem> */}
-                  {/* <DropdownItem onClick={() => null}>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-                  </DropdownItem> */}
+                  </DropdownItem>
                 </Dropdown>
               </TableCell>
             </TableRow>
