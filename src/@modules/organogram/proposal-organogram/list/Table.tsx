@@ -11,7 +11,6 @@ import {
   TableCell,
   TableRow,
   Tag,
-  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -24,7 +23,6 @@ import {
 import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
-import { OMSService } from "@services/api/OMS.service";
 
 type TableProps = {
   children: ReactNode;
