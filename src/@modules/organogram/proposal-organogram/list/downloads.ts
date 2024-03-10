@@ -1,18 +1,17 @@
 // import { ReportService } from "@services/api/Report.service";
-import { promotableEmployeePDFcontent } from "./pdf";
-import { generatePDF, topProgress } from "@gems/utils";
+import { topProgress } from "@gems/utils";
 
 export const downloadAsPDF = (reqPayload, totalRecords) => {
-	topProgress.show();
-	const req = { ...reqPayload };
-	// ReportService.getDCPromotableEmployeeList({
-	// 	...req,
-	// 	meta: { ...req.meta, limit: totalRecords },
-	// })
-	// 	.then((resp) =>
-	// 		generatePDF(promotableEmployeePDFcontent(resp?.body, reqPayload?.body))
-	// 	)
-	// 	.finally(() => topProgress.hide());
+  topProgress.show();
+  const req = { ...reqPayload };
+  // ReportService.getDCPromotableEmployeeList({
+  // 	...req,
+  // 	meta: { ...req.meta, limit: totalRecords },
+  // })
+  // 	.then((resp) =>
+  // 		generatePDF(promotableEmployeePDFcontent(resp?.body, reqPayload?.body))
+  // 	)
+  // 	.finally(() => topProgress.hide());
 };
 
 // export const downloadExcel = (reqPayload, respMeta) => {

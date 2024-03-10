@@ -21,17 +21,17 @@ import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
 import WorkSpaceComponent from "./components/WorkSpaceComponent";
 
-interface ITemplateEditComponent {
+interface IProposalOrganogramEditComponent {
   updateData?: IObject;
   onSubmit: (data) => void;
   isSubmitLoading: boolean;
 }
 
-const TemplateEditComponent = ({
+const ProposalOrganogramEditComponent = ({
   updateData,
   onSubmit,
   isSubmitLoading,
-}: ITemplateEditComponent) => {
+}: IProposalOrganogramEditComponent) => {
   const [treeData, setTreeData] = useState<IObject>(
     !isObjectNull(updateData) &&
       !isObjectNull(updateData?.organizationStructureDto)
@@ -159,7 +159,7 @@ const TemplateEditComponent = ({
       ...data,
       titleBn: getValues("titleBn") || null,
       titleEn: getValues("titleEn") || null,
-      organizationHeader:  getValues("organizationHeader") || "",
+      organizationHeader: getValues("organizationHeader") || "",
       organizationHeaderMsc: getValues("organizationHeaderMsc") || "",
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
@@ -176,7 +176,7 @@ const TemplateEditComponent = ({
 
   return (
     <div>
-       <div
+      <div
         className="position-fixed z-index-1"
         style={{ right: "20px", top: "73px" }}
       >
@@ -333,4 +333,4 @@ const TemplateEditComponent = ({
   );
 };
 
-export default TemplateEditComponent;
+export default ProposalOrganogramEditComponent;

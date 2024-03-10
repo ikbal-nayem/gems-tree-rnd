@@ -74,6 +74,12 @@ export const ProposalService = {
       await axiosIns.put(
         OMS_SERVICE + "organogram-template/template-approve/" + id
       ),
+
+    proposalOrganogramUpdate: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-template/update-proposed-organogram-by-id",
+        payload
+      ),
   },
 
   // ======================= DELETE API =================================
