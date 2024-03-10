@@ -35,7 +35,7 @@ interface INodeForm {
   onSubmit: (data) => void;
   updateData?: IObject;
   defaultDisplayOrder?: number;
-  postList:IObject[]
+  postList: IObject[];
   gradeList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
@@ -489,25 +489,6 @@ const NodeForm = ({
                 </div>
                 <div className="row w-100">
                   <div className="col-md-6 col-xl-4 px-1">
-                    {/* <Autocomplete
-                      label={index < 1 ? "পদবি" : ""}
-                      placeholder="বাছাই করুন"
-                      isRequired={true}
-                      control={control}
-                      options={postList || []}
-                      getOptionLabel={(op) =>
-                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
-                      }
-                      getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.postDTO`}
-                      onChange={(t) => onPostChange(index, t)}
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.postDTO}
-                      errorMessage={
-                        errors?.manpowerList?.[index]?.postDTO
-                          ?.message as string
-                      }
-                    /> */}
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="বাছাই করুন"

@@ -421,5 +421,11 @@ export const OMSService = {
         OMS_SERVICE + "organogram-business-allocation/delete-all",
         payload
       ),
+    organogramNodeDeleteById: async (nodeId): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE +
+          "organogram-structure/delete-organogram-structure-node-by-id/" +
+          nodeId
+      ),
   },
 };

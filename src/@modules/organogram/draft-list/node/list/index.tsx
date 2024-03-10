@@ -3,6 +3,7 @@ import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
   Button,
+  ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
   Input,
@@ -48,7 +49,7 @@ const OrganogramNodeList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
-  // const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [search, setSearch] = useState<string>(
@@ -123,29 +124,24 @@ const OrganogramNodeList = () => {
     setIsDeleteModal(true);
     setDeleteData(data);
   };
-  // const onCancelDelete = () => {
-  //   setIsDeleteModal(false);
-  //   setDeleteData(null);
-  // };
-  // const onConfirmDelete = () => {
-  //   setIsDeleteLoading(true);
-  //   let payload = {
-  //     body: {
-  //       ids: [deleteData?.id || ""],
-  //     },
-  //   };
-  //   OMSService.organizationTypeDelete(payload)
-  //     .then((res) => {
-  //       toast.success(res?.message);
-  //       getDataList();
-  //       setDeleteData(null);
-  //     })
-  //     .catch((err) => toast.error(err?.message))
-  //     .finally(() => {
-  //       setIsDeleteLoading(false);
-  //       setIsDeleteModal(false);
-  //     });
-  // };
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    OMSService.DELETE.organogramNodeDeleteById(deleteData?.id || "")
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     downloadtype === "pdf"
@@ -174,7 +170,7 @@ const OrganogramNodeList = () => {
           : d?.parentNodeDto?.titleBn) || COMMON_LABELS.NOT_ASSIGN,
       জনবল: numEnToBn(d?.nodeManpower) || COMMON_LABELS.NOT_ASSIGN,
     }));
-
+    
   return (
     <>
       <PageTitle>
@@ -245,15 +241,15 @@ const OrganogramNodeList = () => {
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
       </div>
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModal}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
         isSubmitting={isDeleteLoading}
         onConfirmLabel={"মুছে ফেলুন"}
       >
-        আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
-      </ConfirmationModal> */}
+        আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+      </ConfirmationModal>
     </>
   );
 };
