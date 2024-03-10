@@ -1,3 +1,4 @@
+import { COMMON_LABELS } from "@gems/utils";
 export const MSG = {
   EN: {
     SEND_TO_REVIEW: "Do you want to Send this to Reviewer",
@@ -42,8 +43,28 @@ export const ACTIONS = {
   APPROVE: "APPROVE",
 };
 
-
 export const LABEL = {
+  ...COMMON_LABELS,
+  NAME_OF_POSTS: "পদবি",
+  NO_OF_POSTS: "লোকবল",
+  TOTAL: "মোট",
+  GRAND_TOTAL: "সর্বমোট",
+  NAME: "নাম",
+  GO_NUMBER: "জিও নম্বর",
+  GO_DATE: "জিও তারিখ",
   CURRENT_MANPOWER: "বর্তমান জনবল",
   PROPOSED_MANPOWER: "প্রস্তাবিত জনবল",
+  SUM_OF_MANPOWER: "জনবল",
+
+  EN: {
+    NAME_OF_POSTS: "Name of Posts",
+    NO_OF_POSTS: "No of Posts",
+    TOTAL: "Total",
+    GRAND_TOTAL: "GRAND TOTAL",
+    NAME: "Name",
+    SL_NO:"Sl No",
+    GO_NUMBER: "GO No",
+    GO_DATE: "GO Date",
+    SUM_OF_MANPOWER: "Summary of Manpower",
+  },
 };

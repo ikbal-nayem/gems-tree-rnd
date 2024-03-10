@@ -1,4 +1,3 @@
-import { LABELS } from "@constants/common.constant";
 import {
   ContentPreloader,
   ITableHeadColumn,
@@ -9,7 +8,7 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 import { FC, Fragment } from "react";
-import { LOCAL_LABELS } from "./labels";
+import { LABEL } from "../local-constants";
 
 type TableProps = {
   data: any;
@@ -26,8 +25,7 @@ const ManPowerList: FC<TableProps> = ({
   isTabContent,
   title,
 }) => {
-  const LABEL = langEn ? LABELS.EN : LABELS.BN;
-  const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
+  const LOCAL_LABEL = langEn ? LABEL.EN : LABEL;
   const columns: ITableHeadColumn[] = [
     { title: LOCAL_LABEL.SL_NO, width: 50 },
     { title: LOCAL_LABEL.NAME_OF_POSTS, align: "start" },
@@ -42,7 +40,7 @@ const ManPowerList: FC<TableProps> = ({
       <div className="card border p-3">
         <div className="d-flex justify-content-between">
           <h4 className={title ? "m-0 text-info" : "m-0"}>
-            {isTabContent && title ? title : LABEL.SUM_OF_MANPOWER}
+            {isTabContent && title ? title : LOCAL_LABEL.SUM_OF_MANPOWER}
           </h4>
         </div>
 
