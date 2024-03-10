@@ -80,28 +80,17 @@ const ProposalTable: FC<TableProps> = ({
         });
         break;
       default:
-        // destination === "details"
-        OMSService.getCheckUserOrgPermissionByTemplateId(item?.id)
-          .then((resp) => {
-            if (resp?.body) {
-              navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
-                state: {
-                  organizationId: item?.organizationId || null,
-                  draftListRecord: true,
-                },
-              });
-            } else {
-              toast.warning("This is not your organogram");
-            }
-          })
-          .catch(() =>
-            navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
-              state: {
-                organizationId: item?.organizationId || null,
-                draftListRecord: true,
-              },
-            })
-          );
+        navigate(
+          ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_UPDATE +
+            "?id=" +
+            item?.proposedOrganogram?.id,
+          {
+            state: {
+              organizationId: item?.organizationId || null,
+              draftListRecord: true,
+            },
+          }
+        );
     }
   };
   return (
