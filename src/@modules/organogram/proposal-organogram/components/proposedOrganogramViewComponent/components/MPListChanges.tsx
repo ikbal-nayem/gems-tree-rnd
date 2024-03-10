@@ -48,7 +48,7 @@ const MPListChanges = ({
               isLoading={false}
               data={prevManpower}
               langEn={langEn}
-              insideModal={true}
+              isTabContent={true}
               title={LABEL.PREV_MANPOWER}
             />
           </div>
@@ -65,7 +65,7 @@ const MPListChanges = ({
               isLoading={false}
               data={currentManpower}
               langEn={langEn}
-              insideModal={true}
+              isTabContent={true}
               title={LABEL.CURRENT_MANPOWER}
             />
           </div>

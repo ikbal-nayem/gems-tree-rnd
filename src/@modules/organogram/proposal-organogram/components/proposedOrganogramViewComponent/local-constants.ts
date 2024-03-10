@@ -41,3 +41,9 @@ export const ACTIONS = {
   BACK_TO_REVIEW: "BACK_TO_REVIEW",
   APPROVE: "APPROVE",
 };
+
+
+export const LABEL = {
+  CURRENT_MANPOWER: "বর্তমান জনবল",
+  PROPOSED_MANPOWER: "প্রস্তাবিত জনবল",
+};
