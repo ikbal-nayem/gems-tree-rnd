@@ -11,17 +11,20 @@ import {
   TableCell,
   TableRow,
   Tag,
+  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
   IMeta,
+  IObject,
   generateDateFormat,
   generateRowNumBn,
 } from "@gems/utils";
 import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
+import { OMSService } from "@services/api/OMS.service";
 
 type TableProps = {
   children: ReactNode;
@@ -55,7 +58,52 @@ const ProposalTable: FC<TableProps> = ({
       },
     });
   };
-  let subjects;
+
+  const sendTo = (
+    destination: "update" | "node_main_act" | "node_aob" | "node_list",
+    item: IObject
+  ) => {
+    switch (destination) {
+      case "node_main_act":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_MAIN_ACTIVITY, {
+          state: item,
+        });
+        break;
+      case "node_aob":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS, {
+          state: item,
+        });
+        break;
+      case "node_list":
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, {
+          state: item,
+        });
+        break;
+      default:
+        // destination === "details"
+        OMSService.getCheckUserOrgPermissionByTemplateId(item?.id)
+          .then((resp) => {
+            if (resp?.body) {
+              navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+                state: {
+                  organizationId: item?.organizationId || null,
+                  draftListRecord: true,
+                },
+              });
+            } else {
+              toast.warning("This is not your organogram");
+            }
+          })
+          .catch(() =>
+            navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + item?.id, {
+              state: {
+                organizationId: item?.organizationId || null,
+                draftListRecord: true,
+              },
+            })
+          );
+    }
+  };
   return (
     <>
       {dataList?.length ? (
@@ -113,13 +161,21 @@ const ProposalTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => null}>
-                    <Icon size={19} icon="edit" />
-                    <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                  {/* <DropdownItem onClick={() => sendTo("node_main_act", item)}>
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-2">প্রধান কার্যাবলির তালিকা</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => null}>
-                    <Icon size={19} icon="delete" color="danger" />
-                    <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
+                  <DropdownItem onClick={() => sendTo("node_aob", item)}>
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-2">কর্মবন্টনের তালিকা</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => sendTo("node_list", item)}>
+                    <Icon size={19} icon="list" />
+                    <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা</h6>
+                  </DropdownItem> */}
+                  <DropdownItem onClick={() => sendTo("update", item)}>
+                    <Icon size={19} icon="edit" />
+                    <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
                   </DropdownItem>
                 </Dropdown>
               </TableCell>

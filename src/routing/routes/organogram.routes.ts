@@ -30,7 +30,9 @@ let routeList = [
   {
     link: ROUTE_L2.OMS_PROPOSAL_LIST,
     routeKey: ROUTE_KEY.OMS_PROPOSAL_LIST,
-    element: lazy(() => import("@modules/organogram/proposal-for-change/proposal-list")),
+    element: lazy(
+      () => import("@modules/organogram/proposal-organogram/proposal-list")
+    ),
   },
 ];
 
@@ -49,8 +51,15 @@ export const OrganogramRoutes: IAppRoutes = {
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
-      element: lazy(() => import("@modules/organogram/proposal-for-change/proposedOrganogram")),
+      element: lazy(
+        () => import("@modules/organogram/proposal-organogram/view/index")
+      ),
     },
+    // {
+    //   link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW,
+    //   routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
+    //   element: lazy(() => import("@modules/organogram/proposal-for-change/proposedOrganogram")),
+    // },
     ...permissionRouteList,
   ],
 };
