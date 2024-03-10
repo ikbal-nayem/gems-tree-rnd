@@ -310,7 +310,6 @@ const NodeForm = ({
                 errorMessage={errors?.titleBn?.message as string}
               />
             </div>
-            {/* )} */}
             <div className={"col-md-6 col-12"}>
               <Input
                 label="ইংরেজি নাম"
@@ -346,11 +345,9 @@ const NodeForm = ({
                 />
               </div>
             </div>
-            {/* <div className="bg-gray-100 p-3 rounded my-1"> */}
             {postFunctionalityListFields.map((field, index) => (
               <div
                 className="d-flex align-items-top gap-3 w-100 border rounded px-3 my-1 bg-gray-100"
-                // className="d-flex align-items-top gap-3 w-100 py-1"
                 key={field?.id}
               >
                 <div className={index < 1 ? "mt-9" : "mt-2"}>
@@ -473,23 +470,6 @@ const NodeForm = ({
                   </div>
                   <div className="row w-100">
                     <div className="col-md-6 col-xl-4 px-1">
-                      {/* <Autocomplete
-                        label={index < 1 ? "পদবি" : ""}
-                        placeholder="বাছাই করুন"
-                        isRequired={true}
-                        control={control}
-                        options={postList || []}
-                        getOptionLabel={(op) => op?.nameBn}
-                        getOptionValue={(op) => op?.id}
-                        name={`manpowerList.${index}.postDTO`}
-                        onChange={(t) => onPostChange(index, t)}
-                        noMargin
-                        isError={!!errors?.manpowerList?.[index]?.postDTO}
-                        errorMessage={
-                          errors?.manpowerList?.[index]?.postDTO
-                            ?.message as string
-                        }
-                      /> */}
                       <Autocomplete
                         label={index < 1 ? "পদবি" : ""}
                         placeholder="বাছাই করুন"
