@@ -29,12 +29,14 @@ type TableProps = {
   dataList: any[];
   isLoading: boolean;
   respMeta?: IMeta;
+  onDelete: (data) => void;
 };
 
 const ProposalTable: FC<TableProps> = ({
   children,
   dataList,
   isLoading,
+  onDelete,
   respMeta,
 }) => {
   const columns: ITableHeadColumn[] = [
@@ -163,6 +165,12 @@ const ProposalTable: FC<TableProps> = ({
                   <DropdownItem onClick={() => sendTo("update", item)}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => onDelete(item?.proposedOrganogram)}
+                  >
+                    <Icon size={19} icon="delete" color="danger" />
+                    <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
                   </DropdownItem>
                 </Dropdown>
               </TableCell>
