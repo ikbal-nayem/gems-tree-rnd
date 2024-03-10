@@ -1,6 +1,5 @@
 import { ContentPreloader, Tab, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
-import ProposedOrganogramViewComponent from "./proposedOrganogramViewComponent";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -8,6 +7,7 @@ import { TaskBuilder } from "./tabComponent/taskBuilder";
 import Manpower from "./tabComponent/manpower";
 import { TAB_KEY, tabs } from "./configs";
 import { sortBy } from "utility/utils";
+import ProposedOrganogramViewComponent from "../components/proposedOrganogramViewComponent";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -89,7 +89,9 @@ const ProposedOrganogramView = () => {
 
   const getParentOrganization = () => {
     setIsLoading(true);
-    ProposalService.FETCH.parentOrganizationByOrgId(organogramData?.organization?.id)
+    ProposalService.FETCH.parentOrganizationByOrgId(
+      organogramData?.organization?.id
+    )
       .then((resp) => {
         setParentOrgData(resp?.body);
       })
@@ -153,10 +155,7 @@ const ProposedOrganogramView = () => {
                   organogramId={organogramId}
                 />
               ) : t?.key === TAB_KEY.MANPOWER ? (
-                <Manpower
-                  dataList={nodeManpowerList}
-                  isEnamCommittee={false}
-                />
+                <Manpower dataList={nodeManpowerList} isEnamCommittee={false} />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <TaskBuilder />
               ) : null}
