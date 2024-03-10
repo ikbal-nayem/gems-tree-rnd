@@ -66,5 +66,6 @@ export const LABEL = {
     GO_NUMBER: "GO No",
     GO_DATE: "GO Date",
     SUM_OF_MANPOWER: "Summary of Manpower",
+    ATTACHMENT: "ATTACHMENT",
   },
 };

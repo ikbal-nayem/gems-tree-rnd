@@ -24,17 +24,17 @@ const ContentComparision = ({
   useEffect(() => {
     if (organogramId)
       switch (content) {
+        case "abbr":
+          break;
+        case "attached_org":
+          break;
+        case "equipments":
+          break;
         case "manpower":
           // Current Manpower Data
           SERVICE.manpowerDifferenceByOrganogram(organogramId).then((resp) => {
             setCurrentData(resp?.body);
           });
-          break;
-        case "abbr":
-          break;
-        case "equipments":
-          break;
-        case "attached_org":
           break;
       }
   }, [organogramId]);

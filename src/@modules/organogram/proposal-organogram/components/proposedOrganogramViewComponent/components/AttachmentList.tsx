@@ -27,7 +27,7 @@ const AttachmentList: FC<TableProps> = ({ data, langEn }) => {
     { title: LOCAL_LABEL.NAME, minWidth: 100 },
     { title: LOCAL_LABEL.GO_NUMBER, minWidth: 100 },
     { title: LOCAL_LABEL.GO_DATE, minWidth: 100 },
-    { title: LABEL.ATTACHMENT, minWidth: 100 },
+    { title: LOCAL_LABEL.ATTACHMENT, minWidth: 100 },
   ];
   let idx = 1000; // lets take a common index for both parent-child list
   return (
