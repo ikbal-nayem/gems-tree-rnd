@@ -1,4 +1,4 @@
-import { LABELS } from "@constants/common.constant";
+import { LABEL } from "../local-constants";
 import {
   ITableHeadColumn,
   MediaPreview,
@@ -15,7 +15,6 @@ import {
   numBnToEn,
 } from "@gems/utils";
 import { FC } from "react";
-import { LOCAL_LABELS } from "./labels";
 
 type TableProps = {
   data: any;
@@ -23,8 +22,7 @@ type TableProps = {
 };
 
 const AttachmentList: FC<TableProps> = ({ data, langEn }) => {
-  const LABEL = langEn ? LABELS.EN : LABELS.BN;
-  const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
+  const LOCAL_LABEL = langEn ? LABEL.EN : LABEL;
   const columns: ITableHeadColumn[] = [
     { title: LOCAL_LABEL.NAME, minWidth: 100 },
     { title: LOCAL_LABEL.GO_NUMBER, minWidth: 100 },

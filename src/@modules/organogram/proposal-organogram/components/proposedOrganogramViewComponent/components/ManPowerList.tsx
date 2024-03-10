@@ -1,25 +1,20 @@
-import { LABELS } from "@constants/common.constant";
 import {
   ContentPreloader,
   ITableHeadColumn,
-  Icon,
   Separator,
   Table,
   TableCell,
   TableRow,
 } from "@gems/components";
 import { COMMON_LABELS, numEnToBn } from "@gems/utils";
-import { FC, Fragment, useState } from "react";
-import { LOCAL_LABELS } from "./labels";
-import MPListChanges from "./MPListChanges";
+import { FC, Fragment } from "react";
+import { LABEL } from "../local-constants";
 
 type TableProps = {
   data: any;
   isLoading: boolean;
   langEn: boolean;
-  isBeginningVersion?: boolean;
-  insideModal?: boolean;
-  organogramId?: string;
+  isTabContent?: boolean;
   title?: string;
 };
 
@@ -27,13 +22,10 @@ const ManPowerList: FC<TableProps> = ({
   data,
   isLoading,
   langEn,
-  isBeginningVersion,
-  insideModal,
-  organogramId,
+  isTabContent,
   title,
 }) => {
-  const LABEL = langEn ? LABELS.EN : LABELS.BN;
-  const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
+  const LOCAL_LABEL = langEn ? LABEL.EN : LABEL;
   const columns: ITableHeadColumn[] = [
     { title: LOCAL_LABEL.SL_NO, width: 50 },
     { title: LOCAL_LABEL.NAME_OF_POSTS, align: "start" },
@@ -43,25 +35,13 @@ const ManPowerList: FC<TableProps> = ({
   let idx = 1000; // lets take a common index for both parent-child list
   let slNo = 1; // serial number count only for posts
   const COMMON_LABEL = langEn ? COMMON_LABELS.EN : COMMON_LABELS;
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const onClose = () => setIsOpen(false);
   return (
     <>
       <div className="card border p-3">
         <div className="d-flex justify-content-between">
           <h4 className={title ? "m-0 text-info" : "m-0"}>
-            {title ? title : LABEL.SUM_OF_MANPOWER}
+            {isTabContent && title ? title : LOCAL_LABEL.SUM_OF_MANPOWER}
           </h4>
-          {organogramId && !isBeginningVersion && !insideModal && (
-            <Icon
-              icon="swap_horiz"
-              variants="outlined"
-              hoverTitle={LABEL.CHANGES}
-              size={25}
-              className="text-primary text-hover-warning"
-              onClick={() => setIsOpen(true)}
-            />
-          )}
         </div>
 
         <Separator className="mt-1 mb-0" />
@@ -145,13 +125,6 @@ const ManPowerList: FC<TableProps> = ({
           <ContentPreloader />
         ) : null}
       </div>
-      <MPListChanges
-        langEn={langEn}
-        isOpen={isOpen}
-        onClose={onClose}
-        currentManpower={data}
-        organogramId={organogramId}
-      />
     </>
   );
 };

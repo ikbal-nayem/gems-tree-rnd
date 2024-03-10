@@ -457,9 +457,7 @@ const ProposedOrganogramViewComponent = ({
               isLoading={false}
               data={manpowerData}
               langEn={langEn}
-              isBeginningVersion={isBeginningVersion}
-              organogramId={organogramId}
-              insideModal={false}
+              isTabContent={false}
             />
           </div>
           {langEn && (

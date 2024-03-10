@@ -8,6 +8,7 @@ import Manpower from "./tabComponent/manpower";
 import { TAB_KEY, tabs } from "./configs";
 import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposedOrganogramViewComponent";
+import ContentComparision from "../components/proposedOrganogramViewComponent/components/ContentComparision";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -158,6 +159,12 @@ const ProposedOrganogramView = () => {
                 <Manpower dataList={nodeManpowerList} isEnamCommittee={false} />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <TaskBuilder />
+              ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
+                <ContentComparision
+                  organogramId={organogramId}
+                  proposedData={manpowerData}
+                  content="manpower"
+                />
               ) : null}
             </TabBlock>
           ))}
