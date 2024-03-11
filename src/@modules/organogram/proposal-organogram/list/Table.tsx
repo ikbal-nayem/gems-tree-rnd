@@ -54,6 +54,7 @@ const ProposalTable: FC<TableProps> = ({
     navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW, {
       state: {
         organogramId: item?.proposedOrganogram?.id || null,
+        previousOrganogramId: item?.previousOrganogram?.id || null,
         subjects: subjects || null,
       },
     });

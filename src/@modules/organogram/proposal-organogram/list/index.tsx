@@ -28,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import ProposalTable from "./Table";
 import { LABELS } from "./labels";
+import { ProposalService } from "@services/api/Proposal.service";
 
 const initMeta: IMeta = {
   page: 0,
@@ -176,7 +177,7 @@ const ProposalList = () => {
 
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    OMSService.DELETE.organogramByID(deleteData?.id)
+    ProposalService.DELETE.proposedOrganogramByID(deleteData?.id)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
