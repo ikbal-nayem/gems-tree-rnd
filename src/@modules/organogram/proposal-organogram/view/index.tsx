@@ -21,6 +21,7 @@ const ProposedOrganogramView = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
   const organogramId = state?.organogramId;
+  const previousOrganogramId = state?.previousOrganogramId;
   const subjects = state?.subjects;
 
   useEffect(() => {
@@ -161,7 +162,7 @@ const ProposedOrganogramView = () => {
                 <TaskBuilder />
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
                 <ContentComparision
-                  organogramId={organogramId}
+                  previousOrganogramId={previousOrganogramId}
                   proposedData={manpowerData}
                   content="manpower"
                 />

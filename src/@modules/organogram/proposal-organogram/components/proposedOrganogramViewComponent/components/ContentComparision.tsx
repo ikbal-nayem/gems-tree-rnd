@@ -6,23 +6,24 @@ import { Icon } from "@gems/components";
 import { LABEL } from "../local-constants";
 
 interface IForm {
-  organogramId: any;
+  previousOrganogramId: any;
   proposedData: any;
   langEn?: boolean;
   content: "manpower" | "equipments" | "abbr" | "attached_org";
 }
 
 const ContentComparision = ({
-  organogramId,
+  previousOrganogramId,
   proposedData,
   langEn,
   content,
 }: IForm) => {
-  const [currentData, setCurrentData] = useState<IObject>();
+  const [previousApprovedData, setPreviousApprovedData] = useState<IObject>();
+  const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
   useEffect(() => {
-    if (organogramId)
+    if (previousOrganogramId)
       switch (content) {
         case "abbr":
           break;
@@ -31,50 +32,60 @@ const ContentComparision = ({
         case "equipments":
           break;
         case "manpower":
-          // Current Manpower Data
-          SERVICE.manpowerDifferenceByOrganogram(organogramId).then((resp) => {
-            setCurrentData(resp?.body);
-          });
+          // Approved Manpower Data
+          SERVICE.manpowerSummaryById(previousOrganogramId).then(
+            (resp) => {
+              setPreviousApprovedData(resp?.body);
+              setSameData(
+                JSON.stringify(resp?.body) === JSON.stringify(proposedData)
+              );
+            //   console.log(sameData);
+            //   console.log("Previous Approved Data: " ,resp?.body);
+            //   console.log("Proposed Data: " ,proposedData);
+              
+            }
+          );
           break;
       }
-  }, [organogramId]);
-
-
+  }, [previousOrganogramId]);
 
   return (
     <div className=" card border p-3">
       <div className="row d-flex align-items-center">
-        <div className="col-12 col-md-5">
-          {content === "manpower" ? (
-            <ManPowerList
-              isLoading={false}
-              // data={currentData}
-              data={proposedData}
-              langEn={langEn}
-              isTabContent={true}
-              title={LABEL.CURRENT_MANPOWER}
-            />
-          ) : null}
-        </div>
-        <div className="col-12 col-md-2 d-none d-md-block">
-          <span className="d-flex justify-content-center">
-            <Icon
-              icon="arrow_right_alt"
-              variants="outlined"
-              color="info"
-              size={60}
-            />
-          </span>
-        </div>
-        <div className="col-12 d-block d-md-none px-20">
-            <Icon
-              icon="arrow_downward_alt"
-              variants="outlined"
-              color="info"
-              size={60}
-              className="mx-20"
-            />
-        </div>
+        {!sameData &&
+          <>
+            <div className="col-12 col-md-5">
+              {content === "manpower" ? (
+                <ManPowerList
+                  isLoading={false}
+                  data={previousApprovedData}
+                  langEn={langEn}
+                  isTabContent={true}
+                  title={LABEL.CURRENT_MANPOWER}
+                />
+              ) : null}
+            </div>
+            <div className="col-12 col-md-2 d-none d-md-block">
+              <span className="d-flex justify-content-center">
+                <Icon
+                  icon="arrow_right_alt"
+                  variants="outlined"
+                  color="info"
+                  size={60}
+                />
+              </span>
+            </div>
+            <div className="col-12 d-block d-md-none px-20">
+              <Icon
+                icon="arrow_downward_alt"
+                variants="outlined"
+                color="info"
+                size={60}
+                className="mx-20"
+              />
+            </div>
+          </>
+        }
         <div className="col-12 col-md-5">
           {content === "manpower" ? (
             <ManPowerList
