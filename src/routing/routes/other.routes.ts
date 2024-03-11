@@ -48,7 +48,7 @@ const permiableRouteList = [
     element: lazy(
       () =>
         import(
-          "@modules/organization/organizationGroupList/organizationListByGroup"
+          "@modules/organization/organizationGroupList/list/organizationListByGroup"
         )
     ),
   },
