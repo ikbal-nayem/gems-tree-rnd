@@ -6,7 +6,7 @@ const MpBlock = ({ nodeData, isEnamCommittee, color }) => {
   return (
     <div className="position rounded">
       <div className={"row text-start px-3 py-2 bg-" + color}>
-        {list?.length > 0 &&
+        {list?.length > 0 ? (
           list?.map((mp, i) => {
             return (
               <div className="col-12 col-lg-12 " key={i}>
@@ -19,7 +19,10 @@ const MpBlock = ({ nodeData, isEnamCommittee, color }) => {
                 ) : null}
               </div>
             );
-          })}
+          })
+        ) : (
+          <p> - </p>
+        )}
       </div>
     </div>
   );
