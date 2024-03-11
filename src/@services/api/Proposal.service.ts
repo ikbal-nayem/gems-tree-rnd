@@ -85,9 +85,9 @@ export const ProposalService = {
   // ======================= DELETE API =================================
 
   DELETE: {
-    // organogramByID: async (id: string): Promise<any> =>
-    //   await axiosIns.delete(
-    //     OMS_SERVICE + "organogram-template/delete-organogram-by-id/" + id
-    //   ),
+    proposedOrganogramByID: async (id: string): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE + "/organogram-proposal/delete-by-id/" + id
+      ),
   },
 };
