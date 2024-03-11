@@ -67,7 +67,6 @@ const ProposedOrganogramView = () => {
     ProposalService.FETCH.nodeWiseManpowerById(organogramId)
       .then((resp) => {
         setNodeManpowerList(resp?.body);
-        // console.log(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -153,8 +152,6 @@ const ProposedOrganogramView = () => {
                   attachedOrganizationData={attachOrgData}
                   organogramView={true}
                   parentOrganizationData={parentOrgData}
-                  isBeginningVersion={true}
-                  organogramId={organogramId}
                 />
               ) : t?.key === TAB_KEY.MANPOWER ? (
                 <Manpower dataList={nodeManpowerList} previousOrganogramId={previousOrganogramId} isEnamCommittee={false} />

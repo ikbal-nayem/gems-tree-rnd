@@ -39,10 +39,6 @@ const ContentComparision = ({
               setSameData(
                 JSON.stringify(resp?.body) === JSON.stringify(proposedData)
               );
-            //   console.log(sameData);
-            //   console.log("Previous Approved Data: " ,resp?.body);
-            //   console.log("Proposed Data: " ,proposedData);
-              
             }
           );
           break;

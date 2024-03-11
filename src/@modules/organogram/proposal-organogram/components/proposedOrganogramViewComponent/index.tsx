@@ -48,8 +48,6 @@ interface IProposedOrganogramViewComponent {
   isSubmitLoading?: boolean;
   organogramView?: boolean;
   isPreviousVerison?: boolean;
-  organogramId?: string;
-  isBeginningVersion?: boolean;
 }
 
 const ProposedOrganogramViewComponent = ({
@@ -60,8 +58,6 @@ const ProposedOrganogramViewComponent = ({
   parentOrganizationData,
   organogramView = false,
   isPreviousVerison = false,
-  organogramId,
-  isBeginningVersion = false,
 }: IProposedOrganogramViewComponent) => {
   const treeData =
     !isObjectNull(organogramData) &&
