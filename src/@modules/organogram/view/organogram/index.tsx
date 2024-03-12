@@ -16,6 +16,7 @@ interface ITab {
   isPreviousVerison: boolean;
   // isLatestVersion: boolean;
   setOrganogramId: (id: string) => void;
+  isOrgangramTab: boolean;
 }
 
 const OrganogramTab = ({
@@ -23,9 +24,10 @@ const OrganogramTab = ({
   setOrganogramId,
   isPreviousVerison,
   templateData,
-  // isLatestVersion,
-  // setIsLatestVersion,
-}: ITab) => {
+  isOrgangramTab,
+}: // isLatestVersion,
+// setIsLatestVersion,
+ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
