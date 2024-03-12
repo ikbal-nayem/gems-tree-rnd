@@ -225,7 +225,7 @@ const List = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.ORGANIZATION_GROUP}</PageTitle>
+      <PageTitle>{MENU.BN.ORANIZATION_GROUP_LIST}</PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন

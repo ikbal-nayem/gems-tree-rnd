@@ -130,7 +130,7 @@ const organizationType = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.ORANIZATION_TYPE_LIST}</PageTitle>
+      <PageTitle>{MENU.BN.ORANIZATION_TYPE}</PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
