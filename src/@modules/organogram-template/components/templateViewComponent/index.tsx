@@ -62,7 +62,7 @@ const TemplateViewComponent = ({
   attachedOrganizationData,
   parentOrganizationData,
   organogramView = false,
-  isPreviousVerison = false,
+  isPreviousVerison = null,
   organogramId,
   isBeginningVersion = false,
   stateOrganizationData,
