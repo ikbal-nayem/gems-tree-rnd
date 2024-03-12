@@ -307,11 +307,19 @@ export const OMSService = {
           "organogram-business-allocation/get-by-organogram-id/" +
           id
       ),
+
     oranizationTreeByOrganizationId: async (
       organizationId: string
     ): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "organization/get-organization-tree/" + organizationId
+      ),
+
+    orgGroupTreeByOrganizationId: async (
+      organizationId: string
+    ): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization/get-sum-organization/" + organizationId
       ),
 
     nodeWiseManpowerById: async (id: string): Promise<any> =>
