@@ -3,7 +3,7 @@ import { PageTitle } from "@context/PageData";
 import { ContentPreloader, NoData } from "@gems/components";
 import { IObject } from "@gems/utils";
 import { useEffect, useState } from "react";
-import OrganizationTemplateTree from "./OrganizationTreeComponent/index";
+import CountTreeComponent from "./countTreeComponent";
 
 const Tree = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,10 +30,8 @@ const Tree = () => {
     <>
       <PageTitle>{MENU.BN.ORANIZATION_TYPE_TREE}</PageTitle>
       {loading && <ContentPreloader />}
-      {!loading && Object.keys(data)?.length > 0 && (
-        <OrganizationTemplateTree treeData={data || {}} />
-      )}
-      {!loading && !(Object.keys(data)?.length > 0) && (
+      {!loading && data?.length > 0 && <CountTreeComponent data={data || {}} />}
+      {!loading && !(data?.length > 0) && (
         <NoData details="কোনো প্রতিষ্ঠানের ধরণের ট্রি তথ্য পাওয়া যায় নি!" />
       )}
     </>

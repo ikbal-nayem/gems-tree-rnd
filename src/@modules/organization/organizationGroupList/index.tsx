@@ -12,13 +12,13 @@ const OrganizationGroup = () => {
   const tabs = [
     {
       label: "তালিকা",
-      key: "ORGANIZATION_TYPE_LIST",
-      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_TYPE_LIST),
+      key: "ORGANIZATION_GROUP_LIST",
+      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_GROUP_LIST),
     },
     {
       label: "ট্রি",
-      key: "ORGANIZATION_TYPE_TREE",
-      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_TYPE_TREE),
+      key: "ORGANIZATION_GROUP_TREE",
+      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_GROUP_TREE),
     },
   ];
   const [searchParam, setSearchParam] = useSearchParams();
@@ -34,7 +34,7 @@ const OrganizationGroup = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.ORANIZATION_TYPE}</PageTitle>
+      <PageTitle>{MENU.BN.ORGANIZATION_GROUP}</PageTitle>
       <div className="card p-5">
         <Tab tabs={tabs} activeIndex={activeTab} onChange={handleTabIndex} />
         <div className="mt-4 bg-white">

@@ -41,7 +41,7 @@ const initMeta: IMeta = {
   ],
 };
 
-const OrganizationGroupList = () => {
+const List = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -323,4 +323,4 @@ const OrganizationGroupList = () => {
     </>
   );
 };
-export default OrganizationGroupList;
+export default List;
