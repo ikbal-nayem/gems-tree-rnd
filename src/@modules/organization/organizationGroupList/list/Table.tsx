@@ -38,9 +38,8 @@ const DataTable: FC<DataTableProps> = ({
   handleUpdate,
   handleDelete,
 }) => {
-  if (!data?.length) return;
-
   const navigate = useNavigate();
+  if (!data?.length) return;
 
   const handleUpdateOrganizationParent = (item) => {
     OMSService.UPDATE.organizationParentByOrgGroupId(item?.id)

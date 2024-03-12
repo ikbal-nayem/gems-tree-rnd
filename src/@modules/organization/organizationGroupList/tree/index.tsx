@@ -7,7 +7,7 @@ import {
   NoData,
   toast,
 } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { IObject, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
 import GroupWiseOrgListModal from "./groupWiseOrgListModal";
@@ -83,7 +83,7 @@ const Tree = () => {
                   {item?.nameBn}
                   <span className="mb-0">
                     {" "}
-                    {`(${item?.count || 0})`}
+                    {`(${numEnToBn(item?.count || 0)})`}
                   </span>
                 </div>
               </div>

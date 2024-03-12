@@ -21,6 +21,7 @@ const GroupWiseOrgListModal = ({
       isOpen={isOpen}
       handleClose={onClose}
       size="lg"
+      scrollBody
     >
       <ModalBody>
         {data && data?.orgList && data?.orgList?.length > 0 && (
