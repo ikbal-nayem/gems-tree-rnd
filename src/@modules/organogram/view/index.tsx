@@ -86,6 +86,7 @@ const OrganogramView = () => {
         <OrganogramTab
           templateData={templateData}
           isPreviousVerison={isPreviousVerison}
+          isOrgangramTab={isOrgangramTab}
           organogramId={organogramId}
           setOrganogramId={setOrganogramId}
         />

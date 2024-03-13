@@ -20,11 +20,19 @@ const MyNode = ({ langEn, nodeData, postList, onView, isPreviousVerison }) => {
   }
 
   let deletedClass =
-    isPreviousVerison && nodeData?.isDeleted
+    isPreviousVerison !== null
+      ? isPreviousVerison && nodeData?.isDeleted
+        ? "text-line-through-color-red"
+        : ""
+      : nodeData?.isDeleted
       ? "text-line-through-color-red"
       : "";
   let additionClass =
-    isPreviousVerison && nodeData?.isAddition
+    isPreviousVerison !== null
+      ? isPreviousVerison && nodeData?.isAddition
+        ? "text-decoration-underline"
+        : ""
+      : nodeData?.isAddition
       ? "text-decoration-underline"
       : "";
 
@@ -70,11 +78,19 @@ const MyNode = ({ langEn, nodeData, postList, onView, isPreviousVerison }) => {
         {nodeData?.manpowerList?.length > 0 &&
           nodeData?.manpowerList?.map((item, i) => {
             let itemDeletedClass =
-              isPreviousVerison && item?.isDeleted
+              isPreviousVerison !== null
+                ? isPreviousVerison && item?.isDeleted
+                  ? "text-line-through-color-red"
+                  : ""
+                : item?.isDeleted
                 ? "text-line-through-color-red"
                 : "";
             let itemAdditionClass =
-              isPreviousVerison && item?.isAddition
+              isPreviousVerison !== null
+                ? isPreviousVerison && nodeData?.isAddition
+                  ? "text-decoration-underline"
+                  : ""
+                : nodeData?.isAddition
                 ? "text-decoration-underline"
                 : "";
 
