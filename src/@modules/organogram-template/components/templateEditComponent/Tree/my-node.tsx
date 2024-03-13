@@ -14,8 +14,6 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
       return a.gradeOrder > b.gradeOrder ? 1 : -1;
     });
 
-  console.log(nodeData);
-
   return (
     <div>
       <div
