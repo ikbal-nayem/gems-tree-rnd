@@ -55,8 +55,6 @@ const AllocationOfBusiness = () => {
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
 
-  console.log(state);
-
   useEffect(() => {
     getDataList();
   }, []);
