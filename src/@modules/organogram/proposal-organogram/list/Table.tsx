@@ -45,7 +45,7 @@ const ProposalTable: FC<TableProps> = ({
     { title: LABELS.BN.ORGANIZATION, width: 250 },
     { title: LABELS.BN.TOPIC, width: 150 },
     { title: LABELS.BN.STATUS, width: 100 },
-    { title: LABELS.BN.RECEIVED_DATE_TIME, width: 100 },
+    { title: LABELS.BN.RECEIVED_DATE, width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
@@ -133,10 +133,10 @@ const ProposalTable: FC<TableProps> = ({
                     DATE_PATTERN.GOVT_STANDARD
                   ) || COMMON_LABELS.NOT_ASSIGN
                 }
-                subText={
-                  generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
-                  null
-                }
+                // subText={
+                //   generateDateFormat(item?.proposedDate, TIME_PATTERN.HM12) ||
+                //   null
+                // }
               />
 
               <TableCell textAlign="end" verticalAlign="top">

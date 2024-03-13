@@ -5,6 +5,7 @@ export const LABELS = {
     TOPIC: "বিষয়",
     STATUS: "অবস্থা",
     RECEIVED_DATE_TIME: "প্রাপ্তির তারিখ ও সময়",
+    RECEIVED_DATE: "প্রাপ্তির তারিখ",
   },
   EN: {
     SENDER: "Sender (Ministry/Division)",
