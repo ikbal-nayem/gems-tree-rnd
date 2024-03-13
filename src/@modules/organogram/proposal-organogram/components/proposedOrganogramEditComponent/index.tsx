@@ -1,4 +1,4 @@
-import { Autocomplete, Button, DateInput, Input } from "@gems/components";
+import { Autocomplete, Button, Input } from "@gems/components";
 import {
   COMMON_LABELS,
   IObject,
@@ -237,7 +237,7 @@ const ProposalOrganogramEditComponent = ({
               </div>
             </>
           )}
-          <div className="col-md-6 col-12" id="orgDateBlock">
+          {/* <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
               isRequired
@@ -247,7 +247,7 @@ const ProposalOrganogramEditComponent = ({
               blockFutureDate
               isError={!!errors?.organogramDate}
             />
-          </div>
+          </div> */}
           <div className="col-md-6 col-12">
             <Autocomplete
               label="অর্গানোগ্রাম পরিবর্তনের কারণসমূহ"

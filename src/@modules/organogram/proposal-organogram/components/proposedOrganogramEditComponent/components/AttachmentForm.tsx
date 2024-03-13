@@ -170,20 +170,6 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     }
                   />
                 </div>
-                {/* <div
-                  className={
-                    idx < 1 ? "col-xl-3 mt-xl-9 mt-0" : "col-xl-3 mt-3"
-                  }
-                >
-                  <Checkbox
-                    label="বাধ্যতামূলক ?"
-                    noMargin
-                    labelClass="mb-0"
-                    registerProperty={{
-                      ...register(`attachmentDtoList.${idx}.isMandatory`),
-                    }}
-                  />
-                </div> */}
                 <div className="col-xl-3 col-12">
                   <SingleFile
                     isRequired="ফাইল আপলোড করুন"
