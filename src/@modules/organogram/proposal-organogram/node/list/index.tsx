@@ -115,7 +115,7 @@ const OrganogramNodeList = () => {
   };
 
   const handleUpdate = (id: string) => {
-    navigate(ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE + "?id=" + id, {
+    navigate(ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE + "?id=" + id, {
       state: organogram,
     });
   };
@@ -159,7 +159,7 @@ const OrganogramNodeList = () => {
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
-      "ক্রমিক নং": i + 1,
+      "ক্রমিক নং": numEnToBn(i + 1),
       "পদবি/স্তর":
         (organogram?.isEnamCommittee ? d?.titleEn : d?.titleBn) ||
         COMMON_LABELS.NOT_ASSIGN,
@@ -191,7 +191,7 @@ const OrganogramNodeList = () => {
           <Button
             color="primary"
             onClick={() =>
-              navigate(ROUTE_L2.ORG_TEMPLATE_NODE_CREATE, {
+              navigate(ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE, {
                 state: organogram,
               })
             }

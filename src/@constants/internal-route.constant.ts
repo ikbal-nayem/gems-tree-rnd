@@ -38,5 +38,9 @@ export const ROUTE_L2 = {
   OMS_ORGANOGRAM_PROPOSAL_VIEW: ROUTE_L1.OMS_ORGANOGRAM + "/proposal-view",
   OMS_ORGANOGRAM_PROPOSAL_UPDATE: ROUTE_L1.OMS_ORGANOGRAM + "/proposal-update",
   OMS_ORGANOGRAM_PROPOSAL_NODE_LIST:
-    ROUTE_L1.OMS_ORGANOGRAM + "/proposal-organogram-node-list",
+    ROUTE_L1.OMS_ORGANOGRAM + "/proposal-node-list",
+  ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE:
+    ROUTE_L1.OMS_ORGANOGRAM + "/proposal-node-create",
+  ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE:
+    ROUTE_L1.OMS_ORGANOGRAM + "/proposal-node-update",
 };

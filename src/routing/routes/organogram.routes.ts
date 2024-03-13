@@ -67,6 +67,20 @@ export const OrganogramRoutes: IAppRoutes = {
         () => import("@modules/organogram/proposal-organogram/node/list")
       ),
     },
+    {
+      link: ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
+      routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
+      element: lazy(
+        () => import("@modules/organogram/proposal-organogram/node/create")
+      ),
+    },
+    {
+      link: ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
+      routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
+      element: lazy(
+        () => import("@modules/organogram/proposal-organogram/node/update")
+      ),
+    },
     ...permissionRouteList,
   ],
 };

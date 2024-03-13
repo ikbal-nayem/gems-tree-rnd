@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import NodeCreateUpdateForm from "./form";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { toast } from "@gems/components";
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { toast } from "@gems/components";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import NodeCreateUpdateForm from "./form";
 
 const UpdateNode = () => {
   const { state } = useLocation();
@@ -39,7 +39,7 @@ const UpdateNode = () => {
     OMSService.UPDATE.organogramSingleNodeById(organogramId, reqData)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, { state: state });
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, { state: state });
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsLoading(false));
