@@ -88,6 +88,16 @@ export const OrganogramRoutes: IAppRoutes = {
         () => import("@modules/organogram/proposal-organogram/main-activity")
       ),
     },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS,
+      element: lazy(
+        () =>
+          import(
+            "@modules/organogram/proposal-organogram/allocation-of-business"
+          )
+      ),
+    },
     ...permissionRouteList,
   ],
 };

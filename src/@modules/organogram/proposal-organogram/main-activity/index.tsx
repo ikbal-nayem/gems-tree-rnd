@@ -56,8 +56,6 @@ const MainActivity = () => {
     getDataList();
   }, []);
 
-  console.log(state);
-
   const getDataList = () => {
     if (
       notNullOrUndefined(state) &&

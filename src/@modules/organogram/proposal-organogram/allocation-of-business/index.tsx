@@ -6,29 +6,25 @@ import {
   ContentPreloader,
   DownloadMenu,
   NoData,
-  Pagination,
   toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
   IMeta,
-  IObject,
   exportXLSX,
   generateDateFormat,
   generatePDF,
-  notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import DataTable from "./Table";
-import { useAuth } from "@context/Auth";
 import { isNotEmptyList } from "utility/utils";
-import { organizationTypePDFContent } from "./pdf";
-import FormUpdate from "./FormUpdate";
 import FormCreate from "./FormCreate";
+import FormUpdate from "./FormUpdate";
+import DataTable from "./Table";
+import { organizationTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
   page: 0,
@@ -47,7 +43,6 @@ const initMeta: IMeta = {
 
 const AllocationOfBusiness = () => {
   const { state } = useLocation();
-  const [organogram] = useState<any>(state);
   const [isFormCreateOpen, setIsFormCreateOpen] = useState<boolean>(false);
   const [isFormUpdateOpen, setIsFormUpdateOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -60,12 +55,16 @@ const AllocationOfBusiness = () => {
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
 
+  console.log(state);
+
   useEffect(() => {
     getDataList();
   }, []);
 
   const getDataList = (reqMeta = null) => {
-    OMSService.FETCH.organogramBusinessAllocationById(organogram.id)
+    OMSService.FETCH.organogramBusinessAllocationById(
+      state?.proposedOrganogram?.id
+    )
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -82,9 +81,9 @@ const AllocationOfBusiness = () => {
     setIsSubmitLoading(true);
     data = {
       ...data,
-      organizationOrganogramId: organogram?.id,
-      organizationId: organogram?.orgId,
-      organogramDate: organogram?.organogramDate,
+      organizationOrganogramId: state?.proposedOrganogram?.id,
+      organizationId: state?.proposedOrganization?.id,
+      organogramDate: state?.proposedDate,
     };
 
     data = isUpdate
@@ -160,17 +159,20 @@ const AllocationOfBusiness = () => {
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     downloadtype === "pdf"
       ? generatePDF(
-          organizationTypePDFContent(listData, organogram?.organizationNameBn)
+          organizationTypePDFContent(
+            listData,
+            state?.proposedOrganization?.nameBn
+          )
         )
       : exportXLSX(
           exportData(listData || []),
-          organogram?.organizationNameBn + " এর কর্মবন্টনের তালিকা"
+          state?.proposedOrganization?.nameBn + " এর কর্মবন্টনের তালিকা"
         );
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
-      "ক্রমিক নং": i + 1,
+      "ক্রমিক নং": numEnToBn(i + 1),
       "কর্মবন্টন (বাংলা)":
         d?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN,
       "কর্মবন্টন (ইংরেজি)":
@@ -197,15 +199,13 @@ const AllocationOfBusiness = () => {
               <div className="col-12 col-md-11">
                 <div className="d-flex fw-bold text-gray-700 gap-3">
                   <div>প্রতিষ্ঠান :</div>
-                  <div>{organogram?.organizationNameBn}</div>
+                  <div>{state?.proposedOrganization?.nameBn}</div>
                 </div>
                 <div className="mb-3 fs-5 fw-bold text-gray-700">
                   অর্গানোগ্রাম তারিখ :{" "}
-                  {organogram?.isEnamCommittee
-                    ? "26/12/1982"
-                    : organogram?.organogramDate
+                  {state?.proposedDate
                     ? generateDateFormat(
-                        organogram?.organogramDate,
+                        state?.proposedDate,
                         DATE_PATTERN.GOVT_STANDARD
                       )
                     : COMMON_LABELS.NOT_ASSIGN}
@@ -251,7 +251,7 @@ const AllocationOfBusiness = () => {
           onClose={onDrawerClose}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-          organogram={organogram}
+          organogram={state}
         />
         <FormUpdate
           isOpen={isFormUpdateOpen}
@@ -259,7 +259,7 @@ const AllocationOfBusiness = () => {
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-          organogram={organogram}
+          organogram={state}
         />
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>

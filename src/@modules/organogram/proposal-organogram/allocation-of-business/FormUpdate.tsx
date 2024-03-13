@@ -1,3 +1,4 @@
+import { LABELS } from "@constants/common.constant";
 import {
   Button,
   Drawer,
@@ -14,7 +15,6 @@ import {
 } from "@gems/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { LABELS } from "@constants/common.constant";
 
 interface IForm {
   isOpen?: boolean;
@@ -42,10 +42,8 @@ const FormUpdate = ({
   } = formProps;
 
   const isEnamCommittee = organogram?.isEnamCommittee;
-  const orgName = isEnamCommittee
-    ? organogram?.organizationNameEn
-    : organogram?.organizationNameBn;
-  const organogramDate = organogram?.organogramDate;
+  const orgName = organogram?.proposedOrganization?.nameBn;
+  const organogramDate = organogram?.proposedDate;
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
       reset({
