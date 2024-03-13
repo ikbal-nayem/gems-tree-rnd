@@ -11,7 +11,7 @@ const UpdateNode = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IObject>({});
   const [searchParams] = useSearchParams();
-  const organogramId = searchParams.get("id");
+  const nodeId = searchParams.get("id");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const UpdateNode = () => {
   }, []);
 
   const getNodeDetailsById = () => {
-    OMSService.FETCH.nodeDetailsById(organogramId)
+    OMSService.FETCH.nodeDetailsById(nodeId)
       .then((resp) => {
         setData(resp?.body);
       })
@@ -31,12 +31,12 @@ const UpdateNode = () => {
     setIsLoading(true);
     let reqData = {
       ...item,
-      id: organogramId,
-      organizationOrganogramId: state?.id || null,
-      organizationId: state?.orgId || null,
-      organogramDate: state?.organogramDate || null,
+      id: nodeId,
+      organizationnodeId: state?.proposedOrganogram?.id || null,
+      organizationId: state?.proposedOrganization?.id || null,
+      organogramDate: state?.proposedDate || null,
     };
-    OMSService.UPDATE.organogramSingleNodeById(organogramId, reqData)
+    OMSService.UPDATE.organogramSingleNodeById(nodeId, reqData)
       .then((res) => {
         toast.success(res?.message);
         navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, { state: state });

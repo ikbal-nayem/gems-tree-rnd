@@ -15,14 +15,14 @@ const CreateNode = () => {
     setIsLoading(true);
     let reqData = {
       ...data,
-      organizationOrganogramId: state?.id || null,
-      organizationId: state?.orgId || null,
-      organogramDate: state?.organogramDate || null,
+      organizationOrganogramId: state?.proposedOrganogram?.id || null,
+      organizationId: state?.proposedOrganization?.id || null,
+      organogramDate: state?.proposedDate || null,
     };
     OMSService.SAVE.organogramSingleNodeCreate(reqData)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, { state: state });
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, { state: state });
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsLoading(false));

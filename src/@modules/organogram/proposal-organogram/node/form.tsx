@@ -108,7 +108,7 @@ const NodeCreateUpdateForm = ({
     meta: {
       page: 0,
       limit: 10000000,
-      sort: [{ order: "asc", field: isNotEnamCommittee ? "nameBn" : "nameEn" }],
+      sort: [{ order: "asc", field: "nameBn" }],
     },
     body: {},
   };
@@ -125,7 +125,9 @@ const NodeCreateUpdateForm = ({
   }, []);
 
   const getParentNodeList = () => {
-    OMSService.FETCH.nodeParentListByOrganogramId(organogramData?.id)
+    OMSService.FETCH.nodeParentListByOrganogramId(
+      organogramData?.proposedOrganogram?.id
+    )
       .then((resp) => {
         setParentNodeList(resp?.body);
       })
@@ -269,12 +271,13 @@ const NodeCreateUpdateForm = ({
         {`পদ/স্তর ${isObjectNull(updateData) ? "যুক্ত" : "হালনাগাদ"} করুন`}
         <br />
         <span className="fs-6 mt-2 text-gray-600">
-          প্রতিষ্ঠান :{" " + organogramData?.organizationNameBn + " | "}
+          প্রতিষ্ঠান :
+          {" " + organogramData?.proposedOrganization?.nameBn + " | "}
           অর্গানোগ্রাম তারিখ :
           {" " +
-            (organogramData?.organogramDate &&
+            (organogramData?.proposedDate &&
               generateDateFormat(
-                organogramData?.organogramDate,
+                organogramData?.proposedDate,
                 DATE_PATTERN.GOVT_STANDARD
               ))}
         </span>
