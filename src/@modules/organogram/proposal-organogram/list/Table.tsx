@@ -71,7 +71,7 @@ const ProposalTable: FC<TableProps> = ({
         });
         break;
       case "node_aob":
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_ALLOCATION_OF_BUSINESS, {
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS, {
           state: item,
         });
         break;
@@ -155,10 +155,10 @@ const ProposalTable: FC<TableProps> = ({
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2">প্রধান কার্যাবলির তালিকা</h6>
                   </DropdownItem>
-                  {/* <DropdownItem onClick={() => sendTo("node_aob", item)}>
+                  <DropdownItem onClick={() => sendTo("node_aob", item)}>
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2">কর্মবন্টনের তালিকা</h6>
-                  </DropdownItem> */}
+                  </DropdownItem>
                   <DropdownItem onClick={() => sendTo("node_list", item)}>
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা</h6>
