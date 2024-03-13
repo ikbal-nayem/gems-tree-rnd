@@ -11,7 +11,6 @@ import {
 import {
   COMMON_LABELS,
   DATE_PATTERN,
-  IMeta,
   exportXLSX,
   generateDateFormat,
   generatePDF,
@@ -21,11 +20,11 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { isNotEmptyList } from "utility/utils";
+import FormCreate from "./FormCreate";
 import FormUpdate from "./FormUpdate";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
-import { isNotEmptyList } from "utility/utils";
-import FormCreate from "./FormCreate";
 
 // const initMeta: IMeta = {
 //   page: 0,
@@ -40,7 +39,6 @@ import FormCreate from "./FormCreate";
 
 const MainActivity = () => {
   const { state } = useLocation();
-  const [organogram] = useState<any>(state);
   const [isFormCreateOpen, setIsFormCreateOpen] = useState<boolean>(false);
   const [isFormUpdateOpen, setIsFormUpdateOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -58,9 +56,14 @@ const MainActivity = () => {
     getDataList();
   }, []);
 
-  const getDataList = (reqMeta = null) => {
-    if (notNullOrUndefined(organogram) && notNullOrUndefined(organogram.id)) {
-      OMSService.FETCH.organogramMainActivityById(organogram?.id)
+  console.log(state);
+
+  const getDataList = () => {
+    if (
+      notNullOrUndefined(state) &&
+      notNullOrUndefined(state?.proposedOrganogram?.id)
+    ) {
+      OMSService.FETCH.organogramMainActivityById(state?.proposedOrganogram?.id)
         .then((res) => {
           setListData(res?.body || []);
           // setRespMeta(
@@ -121,9 +124,9 @@ const MainActivity = () => {
     setIsSubmitLoading(true);
     data = {
       ...data,
-      organizationOrganogramId: organogram?.id,
-      organizationId: organogram?.orgId,
-      organogramDate: organogram?.organogramDate,
+      organizationOrganogramId: state?.proposedOrganogram?.id,
+      organizationId: state?.proposedOrganization?.id,
+      organogramDate: state?.proposedDate,
     };
 
     data = isUpdate
@@ -154,17 +157,20 @@ const MainActivity = () => {
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     downloadtype === "pdf"
       ? generatePDF(
-          organizationTypePDFContent(listData, organogram?.organizationNameBn)
+          organizationTypePDFContent(
+            listData,
+            state?.proposedOrganization?.nameBn
+          )
         )
       : exportXLSX(
           exportData(listData || []),
-          organogram?.organizationNameBn + " এর প্রধান কার্যাবলির তালিকা"
+          state?.proposedOrganization?.nameBn + " এর প্রধান কার্যাবলির তালিকা"
         );
   };
 
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
-      "ক্রমিক নং": i + 1,
+      "ক্রমিক নং": numEnToBn(i + 1),
       "প্রধান কার্যাবলি (বাংলা)": d?.mainActivityBn || "-",
       "প্রধান কার্যাবলি (ইংরেজি)": d?.mainActivityEn || "-",
     }));
@@ -189,18 +195,16 @@ const MainActivity = () => {
               <div className="col-12 col-md-11">
                 <div className="d-flex fw-bold text-gray-700 gap-3">
                   <div>প্রতিষ্ঠান :</div>
-                  <div>{organogram?.organizationNameBn}</div>
+                  <div>{state?.proposedOrganization?.nameBn}</div>
                 </div>
                 <div className="mb-3 fs-5 fw-bold text-gray-700">
                   অর্গানোগ্রাম তারিখ :{" "}
-                  {organogram?.isEnamCommittee
-                    ? "26/12/1982"
-                    : organogram?.organogramDate
+                  {state?.proposedDate
                     ? generateDateFormat(
-                        organogram?.organogramDate,
+                        state?.proposedDate,
                         DATE_PATTERN.GOVT_STANDARD
                       )
-                    : COMMON_LABELS.NOT_ASSIGN}
+                    : COMMON_LABELS.NO_DATE}
                 </div>
               </div>
               <div className="col-12 col-md-1 text-end">
@@ -243,7 +247,7 @@ const MainActivity = () => {
           onClose={onDrawerClose}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-          organogram={organogram}
+          organogram={state}
         />
         <FormUpdate
           isOpen={isFormUpdateOpen}
@@ -251,7 +255,7 @@ const MainActivity = () => {
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
-          organogram={organogram}
+          organogram={state}
         />
         {/* =========================================================== FORM ENDS============================================================ */}
       </div>

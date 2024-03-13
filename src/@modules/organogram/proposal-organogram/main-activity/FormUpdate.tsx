@@ -1,28 +1,19 @@
 import { LABELS } from "@constants/common.constant";
 import {
-  Autocomplete,
   Button,
-  Checkbox,
   Drawer,
   DrawerBody,
   DrawerFooter,
-  Input,
-  Select,
   Separator,
   Textarea,
-  toast,
 } from "@gems/components";
 import {
-  COMMON_INSTRUCTION,
   COMMON_LABELS,
   DATE_PATTERN,
   IObject,
   generateDateFormat,
-  notNullOrUndefined,
-  numBnToEn,
 } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface IForm {
@@ -51,10 +42,8 @@ const FormUpdate = ({
     formState: { errors },
   } = useForm();
   const isEnamCommittee = organogram?.isEnamCommittee;
-  const orgName = isEnamCommittee
-    ? organogram?.organizationNameEn
-    : organogram?.organizationNameBn;
-  const organogramDate = organogram?.organogramDate;
+  const orgName = organogram?.proposedOrganization?.nameBn;
+  const organogramDate = organogram?.proposedDate;
   useEffect(() => {
     if (Object.keys(updateData).length > 0) {
       reset({

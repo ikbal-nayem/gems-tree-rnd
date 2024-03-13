@@ -8,10 +8,7 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
-import {
-  COMMON_LABELS,
-  generateRowNumBn,
-} from "@gems/utils";
+import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [

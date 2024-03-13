@@ -39,16 +39,13 @@ const FormCreate = ({
   const {
     register,
     handleSubmit,
-    setValue,
     control,
     formState: { errors },
   } = useForm();
 
   const isEnamCommittee = organogram?.isEnamCommittee;
-  const orgName = isEnamCommittee
-    ? organogram?.organizationNameEn
-    : organogram?.organizationNameBn;
-  const organogramDate = organogram?.organogramDate;
+  const orgName = organogram?.proposedOrganization?.nameBn;
+  const organogramDate = organogram?.proposedDate;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -158,7 +155,8 @@ const FormCreate = ({
                           ),
                         }}
                         isError={
-                          !!errors?.mainActivityRequestList?.[idx]?.mainActivityEn
+                          !!errors?.mainActivityRequestList?.[idx]
+                            ?.mainActivityEn
                         }
                       />
                     </div>
