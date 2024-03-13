@@ -60,6 +60,13 @@ export const OrganogramRoutes: IAppRoutes = {
         () => import("@modules/organogram/proposal-organogram/update")
       ),
     },
+    {
+      link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
+      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
+      element: lazy(
+        () => import("@modules/organogram/proposal-organogram/node/list")
+      ),
+    },
     ...permissionRouteList,
   ],
 };

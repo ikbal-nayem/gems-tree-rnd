@@ -76,7 +76,7 @@ const ProposalTable: FC<TableProps> = ({
         });
         break;
       case "node_list":
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, {
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, {
           state: item,
         });
         break;
@@ -158,11 +158,11 @@ const ProposalTable: FC<TableProps> = ({
                   <DropdownItem onClick={() => sendTo("node_aob", item)}>
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2">কর্মবন্টনের তালিকা</h6>
-                  </DropdownItem>
+                  </DropdownItem> */}
                   <DropdownItem onClick={() => sendTo("node_list", item)}>
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2"> পদ/স্তরের তালিকা</h6>
-                  </DropdownItem> */}
+                  </DropdownItem>
                   <DropdownItem onClick={() => sendTo("update", item)}>
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
