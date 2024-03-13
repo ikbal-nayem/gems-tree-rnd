@@ -66,7 +66,7 @@ const ProposalTable: FC<TableProps> = ({
   ) => {
     switch (destination) {
       case "node_main_act":
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_MAIN_ACTIVITY, {
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_MAIN_ACTIVITY, {
           state: item,
         });
         break;
@@ -151,11 +151,11 @@ const ProposalTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>
                   </DropdownItem>
-                  {/* <DropdownItem onClick={() => sendTo("node_main_act", item)}>
+                  <DropdownItem onClick={() => sendTo("node_main_act", item)}>
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2">প্রধান কার্যাবলির তালিকা</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => sendTo("node_aob", item)}>
+                  {/* <DropdownItem onClick={() => sendTo("node_aob", item)}>
                     <Icon size={19} icon="list" />
                     <h6 className="mb-0 ms-2">কর্মবন্টনের তালিকা</h6>
                   </DropdownItem> */}

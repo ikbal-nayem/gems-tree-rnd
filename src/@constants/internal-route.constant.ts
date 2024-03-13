@@ -43,4 +43,6 @@ export const ROUTE_L2 = {
     ROUTE_L1.OMS_ORGANOGRAM + "/proposal-node-create",
   ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE:
     ROUTE_L1.OMS_ORGANOGRAM + "/proposal-node-update",
+  OMS_ORGANOGRAM_PROPOSAL_MAIN_ACTIVITY:
+    ROUTE_L1.OMS_ORGANOGRAM + "/proposal-main-activity",
 };
