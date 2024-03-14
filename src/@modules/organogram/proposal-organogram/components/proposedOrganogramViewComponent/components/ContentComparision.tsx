@@ -1,9 +1,9 @@
-import { IObject } from "@gems/utils";
-import ManPowerList from "./ManPowerList";
-import { useEffect, useState } from "react";
-import { ProposalService } from "@services/api/Proposal.service";
 import { Icon } from "@gems/components";
+import { ProposalService } from "@services/api/Proposal.service";
+import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
+import EquipmentsList from "./EquipmentsList";
+import ManPowerList from "./ManPowerList";
 
 interface IForm {
   previousOrganogramId: any;
@@ -18,7 +18,7 @@ const ContentComparision = ({
   langEn,
   content,
 }: IForm) => {
-  const [previousApprovedData, setPreviousApprovedData] = useState<IObject>();
+  const [previousApprovedData, setPreviousApprovedData] = useState<any>();
   const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
@@ -30,17 +30,22 @@ const ContentComparision = ({
         case "attached_org":
           break;
         case "equipments":
+          // Approved Inventory Data
+          SERVICE.inventoryByOrganogramId(previousOrganogramId).then((resp) => {
+            setPreviousApprovedData(resp?.body);
+            setSameData(
+              JSON.stringify(resp?.body) === JSON.stringify(proposedData)
+            );
+          });
           break;
         case "manpower":
           // Approved Manpower Data
-          SERVICE.manpowerSummaryById(previousOrganogramId).then(
-            (resp) => {
-              setPreviousApprovedData(resp?.body);
-              setSameData(
-                JSON.stringify(resp?.body) === JSON.stringify(proposedData)
-              );
-            }
-          );
+          SERVICE.manpowerSummaryById(previousOrganogramId).then((resp) => {
+            setPreviousApprovedData(resp?.body);
+            setSameData(
+              JSON.stringify(resp?.body) === JSON.stringify(proposedData)
+            );
+          });
           break;
       }
   }, [previousOrganogramId]);
@@ -48,7 +53,7 @@ const ContentComparision = ({
   return (
     <div className=" card border p-3">
       <div className="row d-flex align-items-center">
-        {!sameData &&
+        {!sameData && (
           <>
             <div className="col-12 col-md-5">
               {content === "manpower" ? (
@@ -58,6 +63,14 @@ const ContentComparision = ({
                   langEn={langEn}
                   isTabContent={true}
                   title={LABEL.CURRENT_MANPOWER}
+                />
+              ) : content === "equipments" ? (
+                <EquipmentsList
+                  data={[]}
+                  inventoryData={previousApprovedData || []}
+                  langEn={langEn}
+                  isTabContent={true}
+                  title={LABEL.CURRENT_INVENTORY}
                 />
               ) : null}
             </div>
@@ -81,7 +94,7 @@ const ContentComparision = ({
               />
             </div>
           </>
-        }
+        )}
         <div className="col-12 col-md-5">
           {content === "manpower" ? (
             <ManPowerList
@@ -90,6 +103,14 @@ const ContentComparision = ({
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_MANPOWER}
+            />
+          ) : content === "equipments" ? (
+            <EquipmentsList
+              data={proposedData?.data || []}
+              inventoryData={proposedData?.inventoryData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_INVENTORY}
             />
           ) : null}
         </div>

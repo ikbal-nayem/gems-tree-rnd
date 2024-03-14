@@ -55,6 +55,8 @@ export const LABEL = {
   CURRENT_MANPOWER: "বর্তমান জনবল",
   PROPOSED_MANPOWER: "প্রস্তাবিত জনবল",
   SUM_OF_MANPOWER: "জনবল",
+  CURRENT_INVENTORY: "বর্তমান যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
+  PROPOSED_INVENTORY: "প্রস্তাবিত যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
 
   EN: {
     NAME_OF_POSTS: "Name of Posts",

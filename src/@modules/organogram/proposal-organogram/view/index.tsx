@@ -154,7 +154,11 @@ const ProposedOrganogramView = () => {
                   parentOrganizationData={parentOrgData}
                 />
               ) : t?.key === TAB_KEY.MANPOWER ? (
-                <Manpower dataList={nodeManpowerList} previousOrganogramId={previousOrganogramId} isEnamCommittee={false} />
+                <Manpower
+                  dataList={nodeManpowerList}
+                  previousOrganogramId={previousOrganogramId}
+                  isEnamCommittee={false}
+                />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <TaskBuilder />
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
@@ -162,6 +166,15 @@ const ProposedOrganogramView = () => {
                   previousOrganogramId={previousOrganogramId}
                   proposedData={manpowerData}
                   content="manpower"
+                />
+              ) : t?.key === TAB_KEY.INVENTORY ? (
+                <ContentComparision
+                  previousOrganogramId={previousOrganogramId}
+                  proposedData={{
+                    inventoryData: inventoryData,
+                    data: organogramData?.miscellaneousPointDtoList,
+                  }}
+                  content="equipments"
                 />
               ) : null}
             </TabBlock>
