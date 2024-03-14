@@ -57,6 +57,8 @@ export const LABEL = {
   SUM_OF_MANPOWER: "জনবল",
   CURRENT_INVENTORY: "বর্তমান যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
   PROPOSED_INVENTORY: "প্রস্তাবিত যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
+  CURRENT_ABBREVIATION: "বর্তমান শব্দসংক্ষেপ",
+  PROPOSED_ABBREVIATION: "প্রস্তাবিত শব্দসংক্ষেপ",
 
   EN: {
     NAME_OF_POSTS: "Name of Posts",
@@ -64,7 +66,7 @@ export const LABEL = {
     TOTAL: "Total",
     GRAND_TOTAL: "GRAND TOTAL",
     NAME: "Name",
-    SL_NO:"Sl No",
+    SL_NO: "Sl No",
     GO_NUMBER: "GO No",
     GO_DATE: "GO Date",
     SUM_OF_MANPOWER: "Summary of Manpower",

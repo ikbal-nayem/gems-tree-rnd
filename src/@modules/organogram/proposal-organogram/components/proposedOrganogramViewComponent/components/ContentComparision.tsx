@@ -2,6 +2,7 @@ import { Icon } from "@gems/components";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
+import AbbreviationList from "./AbbreviationList";
 import EquipmentsList from "./EquipmentsList";
 import ManPowerList from "./ManPowerList";
 
@@ -9,7 +10,7 @@ interface IForm {
   previousOrganogramId: any;
   proposedData: any;
   langEn?: boolean;
-  content: "manpower" | "equipments" | "abbr" | "attached_org";
+  content: "manpower" | "equipments" | "abbreviation" | "attached_org";
 }
 
 const ContentComparision = ({
@@ -22,10 +23,13 @@ const ContentComparision = ({
   const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
+  console.log(previousOrganogramId);
+  
+
   useEffect(() => {
     if (previousOrganogramId)
       switch (content) {
-        case "abbr":
+        case "abbreviation":
           break;
         case "attached_org":
           break;
@@ -72,6 +76,13 @@ const ContentComparision = ({
                   isTabContent={true}
                   title={LABEL.CURRENT_INVENTORY}
                 />
+              ) : content === "abbreviation" ? (
+                <AbbreviationList
+                  data={previousApprovedData || []}
+                  langEn={langEn}
+                  isTabContent={true}
+                  title={LABEL.CURRENT_ABBREVIATION}
+                />
               ) : null}
             </div>
             <div className="col-12 col-md-2 d-none d-md-block">
@@ -111,6 +122,13 @@ const ContentComparision = ({
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_INVENTORY}
+            />
+          ) : content === "abbreviation" ? (
+            <AbbreviationList
+              data={proposedData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_ABBREVIATION}
             />
           ) : null}
         </div>

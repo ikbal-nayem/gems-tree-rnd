@@ -3,12 +3,12 @@ import { IObject, isObjectNull } from "@gems/utils";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { TaskBuilder } from "./tabComponent/taskBuilder";
-import Manpower from "./tabComponent/manpower";
-import { TAB_KEY, tabs } from "./configs";
 import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposedOrganogramViewComponent";
 import ContentComparision from "../components/proposedOrganogramViewComponent/components/ContentComparision";
+import { TAB_KEY, tabs } from "./configs";
+import Manpower from "./tabComponent/manpower";
+import { TaskBuilder } from "./tabComponent/taskBuilder";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -175,6 +175,12 @@ const ProposedOrganogramView = () => {
                     data: organogramData?.miscellaneousPointDtoList,
                   }}
                   content="equipments"
+                />
+              ) : t?.key === TAB_KEY.ABBREVIATION ? (
+                <ContentComparision
+                  previousOrganogramId={previousOrganogramId}
+                  proposedData={organogramData?.abbreviationDtoList}
+                  content="abbreviation"
                 />
               ) : null}
             </TabBlock>
