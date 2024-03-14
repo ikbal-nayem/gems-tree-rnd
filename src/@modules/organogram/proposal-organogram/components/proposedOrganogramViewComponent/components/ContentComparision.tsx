@@ -1,15 +1,16 @@
-import { IObject } from "@gems/utils";
-import ManPowerList from "./ManPowerList";
-import { useEffect, useState } from "react";
-import { ProposalService } from "@services/api/Proposal.service";
 import { Icon } from "@gems/components";
+import { ProposalService } from "@services/api/Proposal.service";
+import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
+import AbbreviationList from "./AbbreviationList";
+import EquipmentsList from "./EquipmentsList";
+import ManPowerList from "./ManPowerList";
 
 interface IForm {
   previousOrganogramId: any;
   proposedData: any;
   langEn?: boolean;
-  content: "manpower" | "equipments" | "abbr" | "attached_org";
+  content: "manpower" | "equipments" | "abbreviation" | "attached_org";
 }
 
 const ContentComparision = ({
@@ -18,29 +19,75 @@ const ContentComparision = ({
   langEn,
   content,
 }: IForm) => {
-  const [previousApprovedData, setPreviousApprovedData] = useState<IObject>();
+  const [previousApprovedData, setPreviousApprovedData] = useState<any>();
   const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
+
+  const handleAlphabeticSorting = (sortData, sortKey) => {
+    sortData?.length > 0 &&
+      sortData?.sort(function (a, b) {
+        if (a?.[sortKey] < b?.[sortKey]) {
+          return -1;
+        }
+        if (a?.[sortKey] > b?.[sortKey]) {
+          return 1;
+        }
+        return 0;
+      });
+    return sortData;
+  };
 
   useEffect(() => {
     if (previousOrganogramId)
       switch (content) {
-        case "abbr":
+        case "abbreviation":
+          // Approved abbreviation Data
+          SERVICE.abbreviationByOrganogramId(previousOrganogramId).then(
+            (resp) => {
+              setPreviousApprovedData(resp?.body);
+              setSameData(
+                JSON.stringify(
+                  handleAlphabeticSorting(resp?.body, "shortForm")
+                  // resp?.body
+                ) ===
+                  JSON.stringify(
+                    handleAlphabeticSorting(proposedData, "shortForm")
+                    // proposedData
+                  )
+              );
+            }
+          );
           break;
         case "attached_org":
           break;
         case "equipments":
+          // Approved Inventory Data
+          SERVICE.inventoryByOrganogramId(previousOrganogramId).then((resp) => {
+            SERVICE.miscellaneousPointByOrganogramId(previousOrganogramId).then(
+              (resp1) => {
+                setPreviousApprovedData({
+                  data: resp1?.body,
+                  inventoryData: resp?.body,
+                });
+                setSameData(
+                  JSON.stringify({
+                    data: resp1?.body,
+                    inventoryData: resp?.body,
+                  }) === JSON.stringify(proposedData)
+                );
+              }
+            );
+          });
+
           break;
         case "manpower":
           // Approved Manpower Data
-          SERVICE.manpowerSummaryById(previousOrganogramId).then(
-            (resp) => {
-              setPreviousApprovedData(resp?.body);
-              setSameData(
-                JSON.stringify(resp?.body) === JSON.stringify(proposedData)
-              );
-            }
-          );
+          SERVICE.manpowerSummaryById(previousOrganogramId).then((resp) => {
+            setPreviousApprovedData(resp?.body);
+            setSameData(
+              JSON.stringify(resp?.body) === JSON.stringify(proposedData)
+            );
+          });
           break;
       }
   }, [previousOrganogramId]);
@@ -48,7 +95,7 @@ const ContentComparision = ({
   return (
     <div className=" card border p-3">
       <div className="row d-flex align-items-center">
-        {!sameData &&
+        {!sameData && (
           <>
             <div className="col-12 col-md-5">
               {content === "manpower" ? (
@@ -58,6 +105,21 @@ const ContentComparision = ({
                   langEn={langEn}
                   isTabContent={true}
                   title={LABEL.CURRENT_MANPOWER}
+                />
+              ) : content === "equipments" ? (
+                <EquipmentsList
+                  data={previousApprovedData?.data || []}
+                  inventoryData={previousApprovedData?.inventoryData || []}
+                  langEn={langEn}
+                  isTabContent={true}
+                  title={LABEL.CURRENT_INVENTORY}
+                />
+              ) : content === "abbreviation" ? (
+                <AbbreviationList
+                  data={previousApprovedData || []}
+                  langEn={langEn}
+                  isTabContent={true}
+                  title={LABEL.CURRENT_ABBREVIATION}
                 />
               ) : null}
             </div>
@@ -81,7 +143,7 @@ const ContentComparision = ({
               />
             </div>
           </>
-        }
+        )}
         <div className="col-12 col-md-5">
           {content === "manpower" ? (
             <ManPowerList
@@ -90,6 +152,21 @@ const ContentComparision = ({
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_MANPOWER}
+            />
+          ) : content === "equipments" ? (
+            <EquipmentsList
+              data={proposedData?.data || []}
+              inventoryData={proposedData?.inventoryData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_INVENTORY}
+            />
+          ) : content === "abbreviation" ? (
+            <AbbreviationList
+              data={proposedData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_ABBREVIATION}
             />
           ) : null}
         </div>

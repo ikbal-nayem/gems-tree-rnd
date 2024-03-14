@@ -1,14 +1,21 @@
 import { LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
-import "../style.scss";
 import { COMMON_LABELS } from "@gems/utils";
+import "../style.scss";
 
-interface IAbbreviationForm {
+interface IAbbreviationList {
   data: any;
   langEn: boolean;
+  isTabContent?: boolean;
+  title?: string;
 }
 
-const AbbreviationForm = ({ data, langEn }: IAbbreviationForm) => {
+const AbbreviationList = ({
+  data,
+  langEn,
+  isTabContent,
+  title,
+}: IAbbreviationList) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   if (langEn) {
     data = data.sort((item1, item2) => {
@@ -20,7 +27,9 @@ const AbbreviationForm = ({ data, langEn }: IAbbreviationForm) => {
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABEL.ABBREVIATIONS}</h4>
+        <h4 className={title ? "m-0 text-info" : "m-0"}>
+          {isTabContent && title ? title : LABEL.ABBREVIATIONS}
+        </h4>
       </div>
       <Separator className="mt-1 mb-1" />
       <div>
@@ -38,4 +47,4 @@ const AbbreviationForm = ({ data, langEn }: IAbbreviationForm) => {
   );
 };
 
-export default AbbreviationForm;
+export default AbbreviationList;

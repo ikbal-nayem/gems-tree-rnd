@@ -3,12 +3,12 @@ import { IObject, isObjectNull } from "@gems/utils";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { TaskBuilder } from "./tabComponent/taskBuilder";
-import Manpower from "./tabComponent/manpower";
-import { TAB_KEY, tabs } from "./configs";
 import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposedOrganogramViewComponent";
 import ContentComparision from "../components/proposedOrganogramViewComponent/components/ContentComparision";
+import { TAB_KEY, tabs } from "./configs";
+import Manpower from "./tabComponent/manpower";
+import { TaskBuilder } from "./tabComponent/taskBuilder";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,6 +17,7 @@ const ProposedOrganogramView = () => {
   const [organogramData, setOrganogramData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
   const [nodeManpowerList, setNodeManpowerList] = useState<IObject[]>([]);
+  const [abbreviationList, setAbbreviationList] = useState<IObject[]>([]);
   const [parentOrgData, setParentOrgData] = useState<IObject>({});
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
@@ -30,6 +31,7 @@ const ProposedOrganogramView = () => {
     getManpowerSummaryById();
     getAttachedOrganizationById();
     getNodeWiseManpowerById();
+    getAbbreviationByById();
   }, [organogramId]);
 
   const handleTabIndex = (idx: number) => {
@@ -77,6 +79,16 @@ const ProposedOrganogramView = () => {
     ProposalService.FETCH.attachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getAbbreviationByById = () => {
+    setIsLoading(true);
+    ProposalService.FETCH.abbreviationByOrganogramId(organogramId)
+      .then((resp) => {
+        setAbbreviationList(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -154,7 +166,11 @@ const ProposedOrganogramView = () => {
                   parentOrganizationData={parentOrgData}
                 />
               ) : t?.key === TAB_KEY.MANPOWER ? (
-                <Manpower dataList={nodeManpowerList} previousOrganogramId={previousOrganogramId} isEnamCommittee={false} />
+                <Manpower
+                  dataList={nodeManpowerList}
+                  previousOrganogramId={previousOrganogramId}
+                  isEnamCommittee={false}
+                />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <TaskBuilder />
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
@@ -162,6 +178,21 @@ const ProposedOrganogramView = () => {
                   previousOrganogramId={previousOrganogramId}
                   proposedData={manpowerData}
                   content="manpower"
+                />
+              ) : t?.key === TAB_KEY.INVENTORY ? (
+                <ContentComparision
+                  previousOrganogramId={previousOrganogramId}
+                  proposedData={{
+                    inventoryData: inventoryData,
+                    data: organogramData?.miscellaneousPointDtoList,
+                  }}
+                  content="equipments"
+                />
+              ) : t?.key === TAB_KEY.ABBREVIATION ? (
+                <ContentComparision
+                  previousOrganogramId={previousOrganogramId}
+                  proposedData={abbreviationList}
+                  content="abbreviation"
                 />
               ) : null}
             </TabBlock>

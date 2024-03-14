@@ -48,6 +48,15 @@ export const ProposalService = {
           "organization-organogram/summary-manpower-difference-by-organogram/" +
           id
       ),
+
+    miscellaneousPointByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "miscellaneous-point/get-by-organogram-id/" + id
+      ),
+    abbreviationByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "abbreviation/get-by-organogram-id/" + id
+      ),
   },
 
   // ======================= SAVE API =================================
