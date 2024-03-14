@@ -23,9 +23,6 @@ const ContentComparision = ({
   const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
-  console.log(previousOrganogramId);
-  
-
   useEffect(() => {
     if (previousOrganogramId)
       switch (content) {
@@ -35,12 +32,24 @@ const ContentComparision = ({
           break;
         case "equipments":
           // Approved Inventory Data
+          let check;
           SERVICE.inventoryByOrganogramId(previousOrganogramId).then((resp) => {
-            setPreviousApprovedData(resp?.body);
-            setSameData(
-              JSON.stringify(resp?.body) === JSON.stringify(proposedData)
+            SERVICE.miscellaneousPointByOrganogramId(previousOrganogramId).then(
+              (resp1) => {
+                setPreviousApprovedData({
+                  data: resp1?.body,
+                  inventoryData: resp?.body,
+                });
+                setSameData(
+                  JSON.stringify({
+                    data: resp1?.body,
+                    inventoryData: resp?.body,
+                  }) === JSON.stringify(proposedData)
+                );
+              }
             );
           });
+
           break;
         case "manpower":
           // Approved Manpower Data
@@ -70,8 +79,8 @@ const ContentComparision = ({
                 />
               ) : content === "equipments" ? (
                 <EquipmentsList
-                  data={[]}
-                  inventoryData={previousApprovedData || []}
+                  data={previousApprovedData?.data || []}
+                  inventoryData={previousApprovedData?.inventoryData || []}
                   langEn={langEn}
                   isTabContent={true}
                   title={LABEL.CURRENT_INVENTORY}
