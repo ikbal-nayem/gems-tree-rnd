@@ -23,16 +23,45 @@ const ContentComparision = ({
   const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
+  const handleAlphabeticSorting = (sortData, sortKey) => {
+    sortData?.length > 0 &&
+      sortData?.sort(function (a, b) {
+        if (a?.[sortKey] < b?.[sortKey]) {
+          return -1;
+        }
+        if (a?.[sortKey] > b?.[sortKey]) {
+          return 1;
+        }
+        return 0;
+      });
+    return sortData;
+  };
+
   useEffect(() => {
     if (previousOrganogramId)
       switch (content) {
         case "abbreviation":
+          // Approved abbreviation Data
+          SERVICE.abbreviationByOrganogramId(previousOrganogramId).then(
+            (resp) => {
+              setPreviousApprovedData(resp?.body);
+              setSameData(
+                JSON.stringify(
+                  handleAlphabeticSorting(resp?.body, "shortForm")
+                  // resp?.body
+                ) ===
+                  JSON.stringify(
+                    handleAlphabeticSorting(proposedData, "shortForm")
+                    // proposedData
+                  )
+              );
+            }
+          );
           break;
         case "attached_org":
           break;
         case "equipments":
           // Approved Inventory Data
-          let check;
           SERVICE.inventoryByOrganogramId(previousOrganogramId).then((resp) => {
             SERVICE.miscellaneousPointByOrganogramId(previousOrganogramId).then(
               (resp1) => {

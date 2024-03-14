@@ -17,6 +17,7 @@ const ProposedOrganogramView = () => {
   const [organogramData, setOrganogramData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
   const [nodeManpowerList, setNodeManpowerList] = useState<IObject[]>([]);
+  const [abbreviationList, setAbbreviationList] = useState<IObject[]>([]);
   const [parentOrgData, setParentOrgData] = useState<IObject>({});
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
@@ -30,6 +31,7 @@ const ProposedOrganogramView = () => {
     getManpowerSummaryById();
     getAttachedOrganizationById();
     getNodeWiseManpowerById();
+    getAbbreviationByById();
   }, [organogramId]);
 
   const handleTabIndex = (idx: number) => {
@@ -77,6 +79,16 @@ const ProposedOrganogramView = () => {
     ProposalService.FETCH.attachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getAbbreviationByById = () => {
+    setIsLoading(true);
+    ProposalService.FETCH.abbreviationByOrganogramId(organogramId)
+      .then((resp) => {
+        setAbbreviationList(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -179,7 +191,7 @@ const ProposedOrganogramView = () => {
               ) : t?.key === TAB_KEY.ABBREVIATION ? (
                 <ContentComparision
                   previousOrganogramId={previousOrganogramId}
-                  proposedData={organogramData?.abbreviationDtoList}
+                  proposedData={abbreviationList}
                   content="abbreviation"
                 />
               ) : null}
