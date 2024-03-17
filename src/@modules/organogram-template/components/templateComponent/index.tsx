@@ -60,7 +60,7 @@ const TemplateComponent = ({
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
   const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
-  const [isTemplate, setIsTemplate] = useState<boolean>(true);
+  const [isTemplate, setIsTemplate] = useState<boolean>(false);
 
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
