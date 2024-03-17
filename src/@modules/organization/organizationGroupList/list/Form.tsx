@@ -199,15 +199,17 @@ const Form = ({
                 errorMessage={errors?.nameBn?.message as string}
               />
             </div>
-            {/* <div className="col-12">
+            <div className="col-12">
               <Input
-                label="কোড"
-                placeholder="কোড লিখুন"
+                label="প্রদর্শন ক্রম"
+                type="number"
+                placeholder="প্রদর্শন ক্রম লিখুন"
+                min={1}
                 registerProperty={{
-                  ...register("orgCode"),
+                  ...register("serialNo"),
                 }}
               />
-            </div> */}
+            </div>
             <div className="col-12">
               <Checkbox
                 label="সক্রিয়"
