@@ -194,6 +194,12 @@ const ProposedOrganogramView = () => {
                   proposedData={abbreviationList}
                   content="abbreviation"
                 />
+              ) : t?.key === TAB_KEY.ATTACHED_ORGANIZATION ? (
+                <ContentComparision
+                  previousOrganogramId={previousOrganogramId}
+                  proposedData={attachOrgData}
+                  content="attached_org"
+                />
               ) : null}
             </TabBlock>
           ))}

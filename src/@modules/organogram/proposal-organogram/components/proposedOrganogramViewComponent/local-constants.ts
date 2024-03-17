@@ -59,6 +59,8 @@ export const LABEL = {
   PROPOSED_INVENTORY: "প্রস্তাবিত যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
   CURRENT_ABBREVIATION: "বর্তমান শব্দসংক্ষেপ",
   PROPOSED_ABBREVIATION: "প্রস্তাবিত শব্দসংক্ষেপ",
+  CURRENT_ATTACHED_ORGANIZATION: "বর্তমান সংযুক্ত দপ্তরসমহূ",
+  PROPOSED_ATTACHED_ORGANIZATION: "প্রস্তাবিত সংযুক্ত দপ্তরসমহূ",
 
   EN: {
     NAME_OF_POSTS: "Name of Posts",

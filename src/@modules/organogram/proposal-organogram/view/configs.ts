@@ -45,7 +45,7 @@ export const tabs = [
   },
   {
     displayOrder: 6,
-    label: "সংযুক্ত দপ্তরসমহূ",
+    label: "সংযুক্ত দপ্তরসমূহ",
     key: TAB_KEY.ATTACHED_ORGANIZATION,
   },
   {

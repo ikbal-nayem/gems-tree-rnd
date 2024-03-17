@@ -1,8 +1,9 @@
-import { Icon } from "@gems/components";
+import { Icon, toast } from "@gems/components";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
 import AbbreviationList from "./AbbreviationList";
+import AttachedOrgList from "./AttachedOrgList";
 import EquipmentsList from "./EquipmentsList";
 import ManPowerList from "./ManPowerList";
 
@@ -42,13 +43,19 @@ const ContentComparision = ({
       switch (content) {
         case "abbreviation":
           // Approved abbreviation Data
-          SERVICE.abbreviationByOrganogramId(previousOrganogramId).then(
-            (resp) => {
+          SERVICE.abbreviationByOrganogramId(previousOrganogramId)
+            .then((resp) => {
               setPreviousApprovedData(resp?.body);
-            }
-          );
+            })
+            .catch((e) => toast.error(e?.message));
           break;
         case "attached_org":
+          // Approved Attached Organization Data
+          SERVICE.attachedOrganizationById(previousOrganogramId)
+            .then((resp) => {
+              setPreviousApprovedData(resp?.body);
+            })
+            .catch((e) => toast.error(e?.message));
           break;
         case "equipments":
           // Approved Inventory Data
@@ -66,9 +73,11 @@ const ContentComparision = ({
           break;
         case "manpower":
           // Approved Manpower Data
-          SERVICE.manpowerSummaryById(previousOrganogramId).then((resp) => {
-            setPreviousApprovedData(resp?.body);
-          });
+          SERVICE.manpowerSummaryById(previousOrganogramId)
+            .then((resp) => {
+              setPreviousApprovedData(resp?.body);
+            })
+            .catch((e) => toast.error(e?.message));
           break;
       }
   }, [previousOrganogramId]);
@@ -101,6 +110,13 @@ const ContentComparision = ({
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_ABBREVIATION}
+              />
+            ) : content === "attached_org" ? (
+              <AttachedOrgList
+                data={previousApprovedData || []}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_ATTACHED_ORGANIZATION}
               />
             ) : null}
           </div>
@@ -148,6 +164,13 @@ const ContentComparision = ({
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_ABBREVIATION}
+            />
+          ) : content === "attached_org" ? (
+            <AttachedOrgList
+              data={proposedData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_ATTACHED_ORGANIZATION}
             />
           ) : null}
         </div>

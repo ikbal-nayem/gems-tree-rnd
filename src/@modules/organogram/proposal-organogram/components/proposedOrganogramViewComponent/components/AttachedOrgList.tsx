@@ -6,15 +6,24 @@ import { isNotEmptyList } from "utility/utils";
 interface IAttachedOrgList {
   data: IObject[];
   langEn: boolean;
+  isTabContent?: boolean;
+  title?: string;
 }
 
-const AttachedOrgList = ({ data, langEn }: IAttachedOrgList) => {
+const AttachedOrgList = ({
+  data,
+  langEn,
+  isTabContent,
+  title,
+}: IAttachedOrgList) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const COMMON_LABEL = langEn ? COMMON_LABELS.EN : COMMON_LABELS;
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABEL.ATTACHED_OFFICE}</h4>
+        <h4 className={title ? "m-0 text-info" : "m-0"}>
+          {isTabContent && title ? title : LABEL.ATTACHED_OFFICE}
+        </h4>
       </div>
       <Separator className="mt-1 mb-2" />
       <div className="row">
