@@ -20,7 +20,8 @@ const columns: ITableHeadColumn[] = [
   { title: "নাম (ইংরেজি)", minWidth: 100 },
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
   { title: "গ্রুপ অভিভাবক", minWidth: 100 },
-  { title: "অভিভাবক প্রতিষ্ঠান", minWidth: 100 },
+  { title: "অভিভাবক প্রতিষ্ঠান", minWidth: 125 },
+  { title: "প্রদর্শন ক্রম", minWidth: 75 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
   { title: COMMON_LABELS.ACTION },
 ];
@@ -61,7 +62,7 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell text={data?.parent?.nameBn || "-"} />
               <TableCell text={data?.parentGroup?.nameBn || "-"} />
               <TableCell text={data?.parentOrganization?.nameBn || "-"} />
-
+              <TableCell text={data?.serialNo} />
               <TableCell isActive={data?.isActive} />
               <TableCell>
                 <Dropdown
