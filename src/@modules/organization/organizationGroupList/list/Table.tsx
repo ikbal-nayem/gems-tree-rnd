@@ -62,7 +62,7 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell text={data?.parent?.nameBn || "-"} />
               <TableCell text={data?.parentGroup?.nameBn || "-"} />
               <TableCell text={data?.parentOrganization?.nameBn || "-"} />
-              <TableCell text={data?.serialNo} />
+              <TableCell text={data?.serialNo || "-"} />
               <TableCell isActive={data?.isActive} />
               <TableCell>
                 <Dropdown
