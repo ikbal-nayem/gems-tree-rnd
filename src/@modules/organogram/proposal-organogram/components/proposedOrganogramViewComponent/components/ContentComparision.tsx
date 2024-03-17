@@ -84,67 +84,69 @@ const ContentComparision = ({
           // Approved Manpower Data
           SERVICE.manpowerSummaryById(previousOrganogramId).then((resp) => {
             setPreviousApprovedData(resp?.body);
-            setSameData(
-              JSON.stringify(resp?.body) === JSON.stringify(proposedData)
-            );
+            // setSameData(
+            //   JSON.stringify(resp?.body) === JSON.stringify(proposedData)
+            // );
           });
           break;
       }
   }, [previousOrganogramId]);
 
+  console.log(proposedData);
+
   return (
     <div className=" card border p-3">
-      <div className="row d-flex align-items-center">
-        {!sameData && (
-          <>
-            <div className="col-12 col-md-5">
-              {content === "manpower" ? (
-                <ManPowerList
-                  isLoading={false}
-                  data={previousApprovedData}
-                  langEn={langEn}
-                  isTabContent={true}
-                  title={LABEL.CURRENT_MANPOWER}
-                />
-              ) : content === "equipments" ? (
-                <EquipmentsList
-                  data={previousApprovedData?.data || []}
-                  inventoryData={previousApprovedData?.inventoryData || []}
-                  langEn={langEn}
-                  isTabContent={true}
-                  title={LABEL.CURRENT_INVENTORY}
-                />
-              ) : content === "abbreviation" ? (
-                <AbbreviationList
-                  data={previousApprovedData || []}
-                  langEn={langEn}
-                  isTabContent={true}
-                  title={LABEL.CURRENT_ABBREVIATION}
-                />
-              ) : null}
-            </div>
-            <div className="col-12 col-md-2 d-none d-md-block">
-              <span className="d-flex justify-content-center">
-                <Icon
-                  icon="arrow_right_alt"
-                  variants="outlined"
-                  color="info"
-                  size={60}
-                />
-              </span>
-            </div>
-            <div className="col-12 d-block d-md-none px-20">
+      <div className="d-flex flex-wrap flex-md-nowrap align-items-center px-md-10">
+        {/* {!sameData && ( */}
+        <>
+          <div className="w-100">
+            {content === "manpower" ? (
+              <ManPowerList
+                isLoading={false}
+                data={previousApprovedData}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_MANPOWER}
+              />
+            ) : content === "equipments" ? (
+              <EquipmentsList
+                data={previousApprovedData?.data || []}
+                inventoryData={previousApprovedData?.inventoryData || []}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_INVENTORY}
+              />
+            ) : content === "abbreviation" ? (
+              <AbbreviationList
+                data={previousApprovedData || []}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_ABBREVIATION}
+              />
+            ) : null}
+          </div>
+          <div className="d-none d-md-block px-5">
+            <span className="d-flex justify-content-center">
               <Icon
-                icon="arrow_downward_alt"
+                icon="arrow_right_alt"
                 variants="outlined"
                 color="info"
                 size={60}
-                className="mx-20"
               />
-            </div>
-          </>
-        )}
-        <div className="col-12 col-md-5">
+            </span>
+          </div>
+          <div className="d-block d-md-none px-20">
+            <Icon
+              icon="arrow_downward_alt"
+              variants="outlined"
+              color="info"
+              size={60}
+              className="mx-20"
+            />
+          </div>
+        </>
+        {/* )} */}
+        <div className="w-100">
           {content === "manpower" ? (
             <ManPowerList
               isLoading={false}
