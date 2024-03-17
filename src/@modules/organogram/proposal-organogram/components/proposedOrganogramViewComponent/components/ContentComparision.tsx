@@ -20,22 +20,22 @@ const ContentComparision = ({
   content,
 }: IForm) => {
   const [previousApprovedData, setPreviousApprovedData] = useState<any>();
-  const [sameData, setSameData] = useState<boolean>(true);
+  // const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
-  const handleAlphabeticSorting = (sortData, sortKey) => {
-    sortData?.length > 0 &&
-      sortData?.sort(function (a, b) {
-        if (a?.[sortKey] < b?.[sortKey]) {
-          return -1;
-        }
-        if (a?.[sortKey] > b?.[sortKey]) {
-          return 1;
-        }
-        return 0;
-      });
-    return sortData;
-  };
+  // const handleAlphabeticSorting = (sortData, sortKey) => {
+  //   sortData?.length > 0 &&
+  //     sortData?.sort(function (a, b) {
+  //       if (a?.[sortKey] < b?.[sortKey]) {
+  //         return -1;
+  //       }
+  //       if (a?.[sortKey] > b?.[sortKey]) {
+  //         return 1;
+  //       }
+  //       return 0;
+  //     });
+  //   return sortData;
+  // };
 
   useEffect(() => {
     if (previousOrganogramId)
@@ -45,16 +45,6 @@ const ContentComparision = ({
           SERVICE.abbreviationByOrganogramId(previousOrganogramId).then(
             (resp) => {
               setPreviousApprovedData(resp?.body);
-              setSameData(
-                JSON.stringify(
-                  handleAlphabeticSorting(resp?.body, "shortForm")
-                  // resp?.body
-                ) ===
-                  JSON.stringify(
-                    handleAlphabeticSorting(proposedData, "shortForm")
-                    // proposedData
-                  )
-              );
             }
           );
           break;
@@ -69,12 +59,6 @@ const ContentComparision = ({
                   data: resp1?.body,
                   inventoryData: resp?.body,
                 });
-                setSameData(
-                  JSON.stringify({
-                    data: resp1?.body,
-                    inventoryData: resp?.body,
-                  }) === JSON.stringify(proposedData)
-                );
               }
             );
           });
@@ -84,15 +68,10 @@ const ContentComparision = ({
           // Approved Manpower Data
           SERVICE.manpowerSummaryById(previousOrganogramId).then((resp) => {
             setPreviousApprovedData(resp?.body);
-            // setSameData(
-            //   JSON.stringify(resp?.body) === JSON.stringify(proposedData)
-            // );
           });
           break;
       }
   }, [previousOrganogramId]);
-
-  console.log(proposedData);
 
   return (
     <div className=" card border p-3">
