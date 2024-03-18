@@ -158,13 +158,12 @@ const ContentComparision = ({
               />
             </span>
           </div>
-          <div className="d-block d-md-none px-20">
+          <div className="d-block d-md-none w-100 text-center">
             <Icon
-              icon="arrow_downward_alt"
+              icon="arrow_downward"
               variants="outlined"
               color="info"
-              size={60}
-              className="mx-20"
+              size={40}
             />
           </div>
         </>
