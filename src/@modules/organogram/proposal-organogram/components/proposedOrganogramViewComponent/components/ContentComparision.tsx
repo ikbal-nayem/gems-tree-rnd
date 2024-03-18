@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
 import AbbreviationList from "./AbbreviationList";
 import ActivitiesList from "./ActivitesList";
+import AllocationOfBusinessList from "./AllocationOfBusinessList";
 import AttachedOrgList from "./AttachedOrgList";
 import EquipmentsList from "./EquipmentsList";
 import ManPowerList from "./ManPowerList";
@@ -44,8 +45,17 @@ const ContentComparision = ({
           break;
 
         case "task_builder_main_activity":
-          // Approved Main Acitivities and Business of Allocation Data
+          // Approved Main Acitivities Data
           SERVICE.mainActivityByOrganogramId(previousOrganogramId)
+            .then((resp) => {
+              setPreviousApprovedData(resp?.body);
+            })
+            .catch((e) => toast.error(e?.message));
+          break;
+
+        case "task_builder_boa":
+          // Approved Business of Allocation Data
+          SERVICE.businessOfAllocationByOrganogramId(previousOrganogramId)
             .then((resp) => {
               setPreviousApprovedData(resp?.body);
             })
@@ -108,12 +118,11 @@ const ContentComparision = ({
                 title={LABEL.CURRENT_MAIN_ACTIVITY}
               />
             ) : content === "task_builder_boa" ? (
-              <EquipmentsList
-                data={previousApprovedData?.data || []}
-                inventoryData={previousApprovedData?.inventoryData || []}
+              <AllocationOfBusinessList
+                data={previousApprovedData || []}
                 langEn={langEn}
                 isTabContent={true}
-                title={LABEL.CURRENT_INVENTORY}
+                title={LABEL.CURRENT_BUSINESS_OF_ALLOCATION}
               />
             ) : content === "equipments" ? (
               <EquipmentsList
@@ -175,6 +184,13 @@ const ContentComparision = ({
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_MAIN_ACTIVITY}
+            />
+          ) : content === "task_builder_boa" ? (
+            <AllocationOfBusinessList
+              data={proposedData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_BUSINESS_OF_ALLOCATION}
             />
           ) : content === "equipments" ? (
             <EquipmentsList

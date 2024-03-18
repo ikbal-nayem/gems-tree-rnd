@@ -56,6 +56,8 @@ export const LABEL = {
   PROPOSED_MANPOWER: "প্রস্তাবিত জনবল",
   CURRENT_MAIN_ACTIVITY: "বর্তমান প্রধান কার্যাবলি",
   PROPOSED_MAIN_ACTIVITY: "প্রস্তাবিত প্রধান কার্যাবলি",
+  CURRENT_BUSINESS_OF_ALLOCATION: "বর্তমান কর্মবন্টন",
+  PROPOSED_BUSINESS_OF_ALLOCATION: "প্রস্তাবিত কর্মবন্টন",
   SUM_OF_MANPOWER: "জনবল",
   CURRENT_INVENTORY: "বর্তমান যানবাহন, অফিস সরঞ্জাম ও বিবিধ",
   PROPOSED_INVENTORY: "প্রস্তাবিত যানবাহন, অফিস সরঞ্জাম ও বিবিধ",

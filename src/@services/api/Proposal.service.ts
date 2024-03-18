@@ -63,6 +63,11 @@ export const ProposalService = {
       await axiosIns.get(
         OMS_SERVICE + "main-activity/get-by-organogram-id/" + id
       ),
+
+    businessOfAllocationByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "business-allocation/get-by-organogram-id/" + id
+      ),
   },
 
   // ======================= SAVE API =================================

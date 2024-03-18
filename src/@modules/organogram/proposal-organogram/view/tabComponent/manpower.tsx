@@ -14,11 +14,10 @@ import {
   IObject,
   generateRowNumBn,
   isObjectNull,
-  notNullOrUndefined,
 } from "@gems/utils";
+import { ProposalService } from "@services/api/Proposal.service";
 import { FC, useEffect, useState } from "react";
 import MpBlock from "./manpowerBlock";
-import { ProposalService } from "@services/api/Proposal.service";
 
 type TableProps = {
   dataList: any[];
@@ -48,7 +47,6 @@ const Manpower: FC<TableProps> = ({
     ProposalService.FETCH.nodeWiseManpowerById(previousOrganogramId)
       .then((resp) => {
         setPreviousApprovedNodeWiseManpowerList(resp?.body);
-        console.log("PreviousApprovedNodeWiseManpowerList", resp?.body);
       })
       .catch((e) => toast.error(e?.message));
   }, [previousOrganogramId]);
@@ -60,7 +58,6 @@ const Manpower: FC<TableProps> = ({
       <Table columns={columns}>
         {dataList?.length ? (
           dataList?.map((node, idx) => {
-
             previousSameNode = null;
             newNode = true;
 
@@ -83,7 +80,7 @@ const Manpower: FC<TableProps> = ({
                     (isEnamCommittee ? node?.nodeTitleEn : node?.nodeTitleBn) ||
                     "-"
                   }
-                  tagText={newNode ? "নতুন" : null} 
+                  tagText={newNode ? "নতুন" : null}
                   tagColor="info"
                 />
                 <TableCell>

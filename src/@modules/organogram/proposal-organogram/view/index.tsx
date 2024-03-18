@@ -132,11 +132,12 @@ const ProposedOrganogramView = () => {
             className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-4 border-top-0"
             aria-labelledby="listOfProposal"
           >
-            {subjects?.map((p) => {
+            {subjects?.map((p, idx) => {
               return (
                 <li
                   className="dropdown-item text-hover-primary rounded-pill py-2 my-4 mx-1 fs-5 cursor-pointer w-150px"
                   onClick={() => onProposalChange(p?.metaKey)}
+                  key={idx}
                 >
                   {p.titleBn}
                 </li>
@@ -153,8 +154,8 @@ const ProposedOrganogramView = () => {
       {isLoading && <ContentPreloader />}
       {!isLoading && !isObjectNull(organogramData) && (
         <div className="mt-3">
-          {sortBy(tabs)?.map((t) => (
-            <TabBlock index={t?.displayOrder} activeIndex={activeTab}>
+          {sortBy(tabs)?.map((t, idx) => (
+            <TabBlock index={t?.displayOrder} activeIndex={activeTab} key={idx}>
               {t?.key === TAB_KEY.ORGANOGRAM ? (
                 <ProposedOrganogramViewComponent
                   organogramData={organogramData}
