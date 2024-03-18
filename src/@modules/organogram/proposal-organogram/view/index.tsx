@@ -8,7 +8,6 @@ import ProposedOrganogramViewComponent from "../components/proposedOrganogramVie
 import ContentComparision from "../components/proposedOrganogramViewComponent/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
 import Manpower from "./tabComponent/manpower";
-import { TaskBuilder } from "./tabComponent/taskBuilder";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -172,7 +171,16 @@ const ProposedOrganogramView = () => {
                   isEnamCommittee={false}
                 />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
-                <TaskBuilder />
+                <ContentComparision
+                  previousOrganogramId={previousOrganogramId}
+                  proposedData={{
+                    mainActivityData:
+                      organogramData?.mainActivitiesDtoList || [],
+                    businessOfAllocationData:
+                      organogramData?.businessAllocationDtoList || [],
+                  }}
+                  content="task_builder"
+                />
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
                 <ContentComparision
                   previousOrganogramId={previousOrganogramId}

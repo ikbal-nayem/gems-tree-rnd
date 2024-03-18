@@ -11,7 +11,12 @@ interface IForm {
   previousOrganogramId: any;
   proposedData: any;
   langEn?: boolean;
-  content: "manpower" | "equipments" | "abbreviation" | "attached_org";
+  content:
+    | "manpower"
+    | "task_builder"
+    | "equipments"
+    | "abbreviation"
+    | "attached_org";
 }
 
 const ContentComparision = ({
