@@ -299,7 +299,7 @@ const NodeCreateUpdateForm = ({
         {isNotEnamCommittee && (
           <div className="col-md-5 col-12">
             <Input
-              label="বাংলা নাম(শাখা/সেল/অধিশাখা/অনুবিভাগ)"
+              label="বাংলা নাম (শাখা/সেল/অধিশাখা/অনুবিভাগ)"
               placeholder="বাংলা নাম লিখুন"
               isRequired
               noMargin

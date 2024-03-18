@@ -299,7 +299,7 @@ const NodeForm = ({
             {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
                 <Input
-                  label="বাংলা নাম"
+                  label="বাংলা নাম (শাখা/সেল/অধিশাখা/অনুবিভাগ)"
                   placeholder="বাংলা নাম লিখুন"
                   isRequired
                   noMargin
@@ -319,7 +319,7 @@ const NodeForm = ({
             )}
             <div className={isNotEnamCommittee ? "col-md-6 col-12" : "col-12"}>
               <Input
-                label="ইংরেজি নাম"
+                label="ইংরেজি নাম (শাখা/সেল/অধিশাখা/অনুবিভাগ)"
                 placeholder="নাম ইংরেজিতে লিখুন"
                 isRequired={!isNotEnamCommittee}
                 noMargin
