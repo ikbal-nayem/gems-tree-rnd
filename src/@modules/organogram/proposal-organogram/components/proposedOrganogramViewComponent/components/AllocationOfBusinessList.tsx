@@ -1,23 +1,29 @@
+import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
-import "../style.scss";
 import { numOfNewLines } from "utility/utils";
-import TextBlock from "@components/TextBlock";
+import "../style.scss";
 
-interface IAllocationOfBusinessForm {
+interface IAllocationOfBusinessList {
   data: any;
   langEn: boolean;
+  isTabContent?: boolean;
+  title?: string;
 }
 
-const AllocationOfBusinessForm = ({
+const AllocationOfBusinessList = ({
   data,
   langEn,
-}: IAllocationOfBusinessForm) => {
+  isTabContent,
+  title,
+}: IAllocationOfBusinessList) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABEL.ALLOCATION_OF_BUSINESS}</h4>
+        <h4 className={title ? "m-0 text-info" : "m-0"}>
+          {isTabContent && title ? title : LABEL.ALLOCATION_OF_BUSINESS}
+        </h4>
       </div>
       <Separator className="mt-1 mb-1" />
       {data?.length > 0 && (
@@ -45,4 +51,4 @@ const AllocationOfBusinessForm = ({
   );
 };
 
-export default AllocationOfBusinessForm;
+export default AllocationOfBusinessList;

@@ -53,9 +53,15 @@ export const ProposalService = {
       await axiosIns.get(
         OMS_SERVICE + "miscellaneous-point/get-by-organogram-id/" + id
       ),
+
     abbreviationByOrganogramId: async (id: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE + "abbreviation/get-by-organogram-id/" + id
+      ),
+
+    mainActivityByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "main-activity/get-by-organogram-id/" + id
       ),
   },
 

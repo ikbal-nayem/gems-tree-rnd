@@ -3,6 +3,7 @@ import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
 import AbbreviationList from "./AbbreviationList";
+import ActivitiesList from "./ActivitesList";
 import AttachedOrgList from "./AttachedOrgList";
 import EquipmentsList from "./EquipmentsList";
 import ManPowerList from "./ManPowerList";
@@ -44,7 +45,7 @@ const ContentComparision = ({
 
         case "task_builder_main_activity":
           // Approved Main Acitivities and Business of Allocation Data
-          SERVICE.abbreviationByOrganogramId(previousOrganogramId)
+          SERVICE.mainActivityByOrganogramId(previousOrganogramId)
             .then((resp) => {
               setPreviousApprovedData(resp?.body);
             })
@@ -100,12 +101,11 @@ const ContentComparision = ({
                 title={LABEL.CURRENT_MANPOWER}
               />
             ) : content === "task_builder_main_activity" ? (
-              <EquipmentsList
-                data={previousApprovedData?.data || []}
-                inventoryData={previousApprovedData?.inventoryData || []}
+              <ActivitiesList
+                data={previousApprovedData || []}
                 langEn={langEn}
                 isTabContent={true}
-                title={LABEL.CURRENT_INVENTORY}
+                title={LABEL.CURRENT_MAIN_ACTIVITY}
               />
             ) : content === "task_builder_boa" ? (
               <EquipmentsList
@@ -168,6 +168,13 @@ const ContentComparision = ({
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_MANPOWER}
+            />
+          ) : content === "task_builder_main_activity" ? (
+            <ActivitiesList
+              data={proposedData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_MAIN_ACTIVITY}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
