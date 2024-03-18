@@ -13,7 +13,8 @@ interface IForm {
   langEn?: boolean;
   content:
     | "manpower"
-    | "task_builder"
+    | "task_builder_main_activity"
+    | "task_builder_boa"
     | "equipments"
     | "abbreviation"
     | "attached_org";
@@ -29,20 +30,6 @@ const ContentComparision = ({
   // const [sameData, setSameData] = useState<boolean>(true);
   const SERVICE = ProposalService.FETCH;
 
-  // const handleAlphabeticSorting = (sortData, sortKey) => {
-  //   sortData?.length > 0 &&
-  //     sortData?.sort(function (a, b) {
-  //       if (a?.[sortKey] < b?.[sortKey]) {
-  //         return -1;
-  //       }
-  //       if (a?.[sortKey] > b?.[sortKey]) {
-  //         return 1;
-  //       }
-  //       return 0;
-  //     });
-  //   return sortData;
-  // };
-
   useEffect(() => {
     if (previousOrganogramId)
       switch (content) {
@@ -54,6 +41,16 @@ const ContentComparision = ({
             })
             .catch((e) => toast.error(e?.message));
           break;
+
+        case "task_builder_main_activity":
+          // Approved Main Acitivities and Business of Allocation Data
+          SERVICE.abbreviationByOrganogramId(previousOrganogramId)
+            .then((resp) => {
+              setPreviousApprovedData(resp?.body);
+            })
+            .catch((e) => toast.error(e?.message));
+          break;
+
         case "attached_org":
           // Approved Attached Organization Data
           SERVICE.attachedOrganizationById(previousOrganogramId)
@@ -62,6 +59,7 @@ const ContentComparision = ({
             })
             .catch((e) => toast.error(e?.message));
           break;
+
         case "equipments":
           // Approved Inventory Data
           SERVICE.inventoryByOrganogramId(previousOrganogramId).then((resp) => {
@@ -74,8 +72,8 @@ const ContentComparision = ({
               }
             );
           });
-
           break;
+
         case "manpower":
           // Approved Manpower Data
           SERVICE.manpowerSummaryById(previousOrganogramId)
@@ -100,6 +98,22 @@ const ContentComparision = ({
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_MANPOWER}
+              />
+            ) : content === "task_builder_main_activity" ? (
+              <EquipmentsList
+                data={previousApprovedData?.data || []}
+                inventoryData={previousApprovedData?.inventoryData || []}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_INVENTORY}
+              />
+            ) : content === "task_builder_boa" ? (
+              <EquipmentsList
+                data={previousApprovedData?.data || []}
+                inventoryData={previousApprovedData?.inventoryData || []}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_INVENTORY}
               />
             ) : content === "equipments" ? (
               <EquipmentsList

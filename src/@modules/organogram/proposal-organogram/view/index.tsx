@@ -171,16 +171,22 @@ const ProposedOrganogramView = () => {
                   isEnamCommittee={false}
                 />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
-                <ContentComparision
-                  previousOrganogramId={previousOrganogramId}
-                  proposedData={{
-                    mainActivityData:
-                      organogramData?.mainActivitiesDtoList || [],
-                    businessOfAllocationData:
-                      organogramData?.businessAllocationDtoList || [],
-                  }}
-                  content="task_builder"
-                />
+                <>
+                  <ContentComparision
+                    previousOrganogramId={previousOrganogramId}
+                    proposedData={organogramData?.mainActivitiesDtoList || []}
+                    content="task_builder_main_activity"
+                  />
+                  <div className="mt-3">
+                    <ContentComparision
+                      previousOrganogramId={previousOrganogramId}
+                      proposedData={
+                        organogramData?.businessAllocationDtoList || []
+                      }
+                      content="task_builder_boa"
+                    />
+                  </div>
+                </>
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
                 <ContentComparision
                   previousOrganogramId={previousOrganogramId}
