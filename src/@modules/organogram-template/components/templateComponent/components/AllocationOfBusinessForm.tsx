@@ -32,7 +32,7 @@ const AllocationOfBusinessForm = ({
       <Separator className="mt-1 mb-2" />
       <div>
         {fields.map((f, idx) => {
-          const label = "বরাদ্দ";
+          const label = "কর্মসমূহ";
           const labelBn = label + " (বাংলা)";
           const labelEn = label + " (ইংরেজি)";
           return (
