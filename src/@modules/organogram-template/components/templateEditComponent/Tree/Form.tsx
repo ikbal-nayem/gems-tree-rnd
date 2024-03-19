@@ -293,7 +293,7 @@ const NodeForm = ({
           <div className="row border rounded p-2 my-1 bg-gray-100">
             <div className="col-md-6 col-12">
               <Input
-                label="বাংলা নাম"
+                label="বাংলা নাম (শাখা/সেল/অধিশাখা/অনুবিভাগ)"
                 placeholder="বাংলা নাম লিখুন"
                 isRequired
                 noMargin
@@ -312,7 +312,7 @@ const NodeForm = ({
             </div>
             <div className={"col-md-6 col-12"}>
               <Input
-                label="ইংরেজি নাম"
+                label="ইংরেজি নাম (শাখা/সেল/অধিশাখা/অনুবিভাগ)"
                 placeholder="নাম ইংরেজিতে লিখুন"
                 noMargin
                 registerProperty={{

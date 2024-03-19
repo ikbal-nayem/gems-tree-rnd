@@ -1,3 +1,5 @@
+import Drawer from "@components/Drawer";
+import { LABELS } from "@constants/common.constant";
 import {
   Button,
   DrawerBody,
@@ -17,8 +19,6 @@ import {
 } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { LABELS } from "@constants/common.constant";
-import Drawer from "@components/Drawer";
 
 interface IForm {
   isOpen?: boolean;
@@ -119,8 +119,8 @@ const FormCreate = ({
                     {!isEnamCommittee && (
                       <div className="col-xl-6 col-12">
                         <Textarea
-                          label={idx < 1 ? "বরাদ্দ (বাংলা)" : ""}
-                          placeholder="বরাদ্দ বাংলায় লিখুন"
+                          label={idx < 1 ? "কর্মসমূহ (বাংলা)" : ""}
+                          placeholder="কর্মসমূহ বাংলায় লিখুন"
                           isRequired
                           noMargin
                           registerProperty={{
@@ -154,8 +154,8 @@ const FormCreate = ({
                       }
                     >
                       <Textarea
-                        label={idx < 1 ? "বরাদ্দ (ইংরেজি)" : ""}
-                        placeholder="বরাদ্দ ইংরেজিতে লিখুন"
+                        label={idx < 1 ? "কর্মসমূহ (ইংরেজি)" : ""}
+                        placeholder="কর্মসমূহ ইংরেজিতে লিখুন"
                         isRequired={isEnamCommittee}
                         noMargin
                         registerProperty={{
