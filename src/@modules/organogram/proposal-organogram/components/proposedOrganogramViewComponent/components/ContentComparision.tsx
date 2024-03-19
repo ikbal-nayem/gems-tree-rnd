@@ -153,7 +153,7 @@ const ContentComparision = ({
               <Icon
                 icon="arrow_right_alt"
                 variants="outlined"
-                color="info"
+                color="primary"
                 size={60}
               />
             </span>
@@ -162,7 +162,7 @@ const ContentComparision = ({
             <Icon
               icon="arrow_downward"
               variants="outlined"
-              color="info"
+              color="primary"
               size={40}
             />
           </div>
