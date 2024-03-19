@@ -42,8 +42,22 @@ const EquipmentsForm = ({
                   {item?.itemList.map((d, idx) => {
                     return (
                       <li key={idx}>
-                        {langEn ? d?.quantity : numEnToBn(d?.quantity)} x{" "}
-                        {langEn ? d?.itemTitleEn : d?.itemTitleBn}{" "}
+                        <span
+                          className={
+                            isTabContent
+                              ? d?.isModified
+                                ? "text-underline-color-purple"
+                                : d?.isAddition
+                                ? "text-decoration-underline"
+                                : d?.isDeleted
+                                ? "text-line-through-color-red"
+                                : ""
+                              : ""
+                          }
+                        >
+                          {langEn ? d?.quantity : numEnToBn(d?.quantity)} x{" "}
+                          {langEn ? d?.itemTitleEn : d?.itemTitleBn}{" "}
+                        </span>
                       </li>
                     );
                   })}
@@ -71,9 +85,23 @@ const EquipmentsForm = ({
             data?.map((item, i) => {
               return (
                 <li key={i}>
-                  {langEn
-                    ? item?.titleEn || COMMON_LABELS.NOT_ASSIGN
-                    : item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                  <span
+                    className={
+                      isTabContent
+                        ? item?.isModified
+                          ? "text-underline-color-purple"
+                          : item?.isAddition
+                          ? "text-decoration-underline"
+                          : item?.isDeleted
+                          ? "text-line-through-color-red"
+                          : ""
+                        : ""
+                    }
+                  >
+                    {langEn
+                      ? item?.titleEn || COMMON_LABELS.NOT_ASSIGN
+                      : item?.titleBn || COMMON_LABELS.NOT_ASSIGN}
+                  </span>
                 </li>
               );
             })}
