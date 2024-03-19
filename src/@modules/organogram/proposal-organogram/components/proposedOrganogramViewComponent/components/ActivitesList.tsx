@@ -33,9 +33,9 @@ const ActivitiesList = ({
                   className={
                     isTabContent
                       ? item?.isModified
-                        ? "text-underline-color-purple"
+                        ? "text-underline-color-yellow"
                         : item?.isAddition
-                        ? "text-decoration-underline"
+                        ? "text-underline-color-black"
                         : item?.isDeleted
                         ? "text-line-through-color-red"
                         : ""

@@ -9,7 +9,18 @@ const MpBlock = ({ nodeData, isEnamCommittee, color }) => {
         {list?.length > 0 ? (
           list?.map((mp, i) => {
             return (
-              <div className="col-12 col-lg-12 " key={i}>
+              <div
+                className={`col-12 col-lg-12 ${
+                  mp?.isModified
+                    ? "text-underline-color-yellow"
+                    : mp?.isAddition
+                    ? "text-underline-color-black"
+                    : mp?.isDeleted
+                    ? "text-line-through-color-red"
+                    : ""
+                }`}
+                key={i}
+              >
                 {mp?.postTitleBn || mp?.postTitleEn || mp?.manpower ? (
                   <p className="mb-0">
                     {numEnToBn(mp?.manpower + " " || 0)} x{" "}

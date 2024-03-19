@@ -6,9 +6,16 @@
   padding: 0 !important;
 }
 
-.text-underline-color-purple {
+.text-underline-color-yellow {
   text-decoration: underline;
-  text-decoration-color: purple;
+  text-decoration-color: yellow;
+  text-decoration-thickness: 2px;
+}
+
+.text-underline-color-black {
+  text-decoration: underline;
+  text-decoration-color: black;
+  text-decoration-thickness: 2px;
 }
 
 .text-line-through-color-red {

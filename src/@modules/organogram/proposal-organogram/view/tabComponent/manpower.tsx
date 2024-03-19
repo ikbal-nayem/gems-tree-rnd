@@ -37,10 +37,10 @@ const Manpower: FC<TableProps> = ({
 
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
-    { title: "পদবি/স্তর", width: 145 },
-    { title: "পদের নাম ও সংখ্যা", width: 145, align: "center" },
-    { title: "প্রস্তাবিত পদের নাম ও সংখ্যা", width: 145, align: "center" },
-    { title: COMMON_LABELS.ACTION, width: 145, align: "center" },
+    { title: "পদবি/স্তর", minWidth: 100 },
+    { title: "পদের নাম ও সংখ্যা", minWidth: 150, align: "center" },
+    { title: "প্রস্তাবিত পদের নাম ও সংখ্যা", minWidth: 150, align: "center" },
+    { title: COMMON_LABELS.ACTION, align: "center" },
   ];
 
   useEffect(() => {
@@ -87,14 +87,14 @@ const Manpower: FC<TableProps> = ({
                   <MpBlock
                     nodeData={previousSameNode}
                     isEnamCommittee={isEnamCommittee}
-                    color="light"
+                    color=""
                   />
                 </TableCell>
                 <TableCell>
                   <MpBlock
                     nodeData={node}
                     isEnamCommittee={isEnamCommittee}
-                    color="secondary"
+                    color=""
                   />
                 </TableCell>
                 <TableCell textAlign="end" verticalAlign="middle">

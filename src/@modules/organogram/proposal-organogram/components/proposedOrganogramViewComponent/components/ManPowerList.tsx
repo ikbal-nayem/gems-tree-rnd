@@ -39,7 +39,7 @@ const ManPowerList: FC<TableProps> = ({
     <>
       <div className="card border p-3">
         <div className="d-flex justify-content-between">
-          <h4 className={title ? "m-0 text-info" : "m-0"}>
+          <h4 className={title ? "m-0 text-primary" : "m-0"}>
             {isTabContent && title ? title : LOCAL_LABEL.SUM_OF_MANPOWER}
           </h4>
         </div>
@@ -67,13 +67,37 @@ const ManPowerList: FC<TableProps> = ({
                           {(langEn ? slNo++ : numEnToBn(slNo++)) + "."}
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </TableCell>
-                        <TableCell className="remove-padding">
+                        <TableCell
+                          className={`remove-padding ${
+                            isTabContent
+                              ? itr?.isModified
+                                ? "text-underline-color-purple"
+                                : itr?.isAddition
+                                ? "text-decoration-underline"
+                                : itr?.isDeleted
+                                ? "text-line-through-color-red"
+                                : ""
+                              : ""
+                          }`}
+                        >
                           <p className="mb-0 fs-7">
                             {(langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
                               COMMON_LABEL.NOT_ASSIGN}
                           </p>
                         </TableCell>
-                        <TableCell className="remove-padding">
+                        <TableCell
+                          className={`remove-padding ${
+                            isTabContent
+                              ? itr?.isModified
+                                ? "text-underline-color-yellow"
+                                : itr?.isAddition
+                                ? "text-underline-color-black"
+                                : itr?.isDeleted
+                                ? "text-line-through-color-red"
+                                : ""
+                              : ""
+                          }`}
+                        >
                           <div className="d-flex justify-content-end fs-7">
                             {langEn
                               ? itr?.manpower

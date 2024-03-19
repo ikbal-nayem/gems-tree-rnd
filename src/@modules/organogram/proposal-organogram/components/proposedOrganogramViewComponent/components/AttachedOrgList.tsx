@@ -51,9 +51,9 @@ const AttachedOrgList = ({
                             className={
                               isTabContent
                                 ? d?.isModified
-                                  ? "text-underline-color-purple"
+                                  ? "text-underline-color-yellow"
                                   : d?.isAddition
-                                  ? "text-decoration-underline"
+                                  ? "text-underline-color-black"
                                   : d?.isDeleted
                                   ? "text-line-through-color-red"
                                   : ""
