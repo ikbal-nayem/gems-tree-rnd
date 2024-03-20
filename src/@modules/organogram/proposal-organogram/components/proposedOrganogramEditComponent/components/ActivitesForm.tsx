@@ -12,18 +12,34 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
     register,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = formProps;
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: "mainActivitiesDtoList",
   });
+
+  const checkFieldIsDeleted = (field) => {
+    return field?.isDeleted ? true : false;
+  };
+
+  console.log(watch("mainActivitiesDtoList"));
+
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABELS.BN.MAIN_ACTIVITIES}</h4>
-        <IconButton iconName="add" color="primary" onClick={() => append("")} />
+        <IconButton
+          iconName="add"
+          color="primary"
+          onClick={() =>
+            append({
+              isAddition: true,
+            })
+          }
+        />
       </div>
       <Separator className="mt-1 mb-2" />
       <div>
@@ -34,65 +50,73 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
           return (
             <div
               key={idx}
-              className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100"
+              className="d-flex align-items-top gap-3 mt-1 border rounded px-3 my-1 bg-gray-100"
             >
-              <div className={idx < 1 ? "mt-8" : "mt-2"}>
-                <Label> {numEnToBn(idx + 1) + "।"} </Label>
-              </div>
-              <div className="row w-100">
-                <div className="col-xl-6 col-12">
-                  <Input
-                    label={idx < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
-                    isRequired
-                    noMargin
-                    registerProperty={{
-                      ...register(
-                        `mainActivitiesDtoList.${idx}.mainActivityBn`,
-                        {
-                          required: " ",
-                          onChange: (e) => {
-                            if (notNullOrUndefined(e.target.value)) {
-                              setValue(
-                                `mainActivitiesDtoList.${idx}.displayOrder`,
-                                idx + 1
-                              );
-                            }
-                          },
-                        }
-                      ),
-                    }}
-                    isError={
-                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityBn
-                    }
-                  />
+              <div
+                className={`d-flex align-items-top w-100 ${
+                  checkFieldIsDeleted(f)
+                    ? "disabledDiv border border-danger rounded p-1"
+                    : ""
+                }`}
+              >
+                <div className={idx < 1 ? "mt-8" : "mt-2"}>
+                  <Label> {numEnToBn(idx + 1) + "।"} </Label>
                 </div>
-                {/* )} */}
-                <div className={"col-xl-6 col-12 mt-1 mt-xl-0"}>
-                  <Input
-                    label={idx < 1 ? labelEn : ""}
-                    placeholder={labelEn + " লিখুন"}
-                    noMargin
-                    registerProperty={{
-                      ...register(
-                        `mainActivitiesDtoList.${idx}.mainActivityEn`,
-                        {
-                          onChange: (e) => {
-                            if (notNullOrUndefined(e.target.value)) {
-                              setValue(
-                                `mainActivitiesDtoList.${idx}.displayOrder`,
-                                idx + 1
-                              );
-                            }
-                          },
-                          validate: enCheck,
-                        }
-                      ),
-                    }}
-                    isError={
-                      !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityEn
-                    }
-                  />
+                <div className="row w-100">
+                  <div className="col-xl-6 col-12">
+                    <Input
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      isRequired
+                      noMargin
+                      registerProperty={{
+                        ...register(
+                          `mainActivitiesDtoList.${idx}.mainActivityBn`,
+                          {
+                            required: " ",
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `mainActivitiesDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                            },
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityBn
+                      }
+                    />
+                  </div>
+                  {/* )} */}
+                  <div className={"col-xl-6 col-12 mt-1 mt-xl-0"}>
+                    <Input
+                      label={idx < 1 ? labelEn : ""}
+                      placeholder={labelEn + " লিখুন"}
+                      noMargin
+                      registerProperty={{
+                        ...register(
+                          `mainActivitiesDtoList.${idx}.mainActivityEn`,
+                          {
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `mainActivitiesDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                            },
+                            validate: enCheck,
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.mainActivitiesDtoList?.[idx]?.mainActivityEn
+                      }
+                    />
+                  </div>
                 </div>
               </div>
               <div className={idx < 1 ? "mt-6" : ""}>
