@@ -60,11 +60,15 @@ const OrganizationTemplateTree = ({
 
   const download = useRef();
   const onDownload = () => {
-    onCapturePDF();
+    onCapturePDF("pdf");
   };
 
   const onPrint = () => {
-    onCapturePDF(true);
+    onCapturePDF("print");
+  };
+
+  const onImageDownload = () => {
+    onCapturePDF("image-download");
   };
 
   return (
@@ -95,6 +99,21 @@ const OrganizationTemplateTree = ({
         isOpen={formOpen}
         onClose={onFormClose}
       />
+
+      {/* =========================  IMAGE DOWNLOAD BUTTON ========================== */}
+
+      {organogramView && (
+        <div className="position-absolute" style={{ top: 0, right: 175 }}>
+          <IconButton
+            iconName="add_a_photo"
+            color="info"
+            variant="fill"
+            onClick={onImageDownload}
+            isDisabled={!isDownloadButton || isPDFLoading}
+          />
+        </div>
+      )}
+
       {/* =========================  PRINT BUTTON ========================== */}
 
       {organogramView && (
@@ -104,7 +123,7 @@ const OrganizationTemplateTree = ({
             color="info"
             variant="fill"
             onClick={onPrint}
-            isDisabled={!isDownloadButton}
+            isDisabled={!isDownloadButton || isPDFLoading}
           />
         </div>
       )}

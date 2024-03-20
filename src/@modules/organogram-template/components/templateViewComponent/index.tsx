@@ -179,7 +179,21 @@ const TemplateViewComponent = ({
       .finally(() => setApproveLoading(false));
   };
 
-  const captureAndConvertToPDF = async (isPrint = false) => {
+  const downloadImage = (blob, fileName) => {
+    const fakeLink: any = window.document.createElement("a");
+    fakeLink.style = "display:none;";
+    fakeLink.download = fileName;
+
+    fakeLink.href = blob;
+
+    document.body.appendChild(fakeLink);
+    fakeLink.click();
+    document.body.removeChild(fakeLink);
+
+    fakeLink.remove();
+  };
+
+  const captureAndConvertToPDF = async (downloadType) => {
     setPDFLoading(true);
     // Get references to the HTML elements you want to capture
     const elementsToCapture = document.getElementsByClassName("pdfGenarator");
@@ -216,6 +230,10 @@ const TemplateViewComponent = ({
       if (i > 0) pdf.addPage();
       // Convert the canvas to an image and add it to the PDF
       const imageData = canvas.toDataURL("image/png");
+      if (i === 1 && downloadType === "image-download") {
+        downloadImage(imageData, "Organogram With Data");
+        break;
+      }
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
@@ -235,13 +253,15 @@ const TemplateViewComponent = ({
     }
 
     // For open direct print
-    if (isPrint) {
+    if (downloadType === "print") {
       pdf.autoPrint();
       window.open(pdf.output("bloburl"), "_blank");
     }
 
     // Save or display the PDF
-    else pdf.save("Organogram With Data.pdf");
+    if (downloadType === "pdf") {
+      pdf.save("Organogram With Data.pdf");
+    }
     setPDFLoading(false);
   };
 
@@ -384,7 +404,7 @@ const TemplateViewComponent = ({
         />
         <div
           className="position-absolute"
-          style={{ top: 10, right: organogramOrganizationView ? 175 : 125 }}
+          style={{ top: 10, right: organogramOrganizationView ? 225 : 125 }}
         >
           <IconButton
             iconName="fullscreen"
