@@ -106,6 +106,8 @@ const NodeForm = ({
     name: "manpowerList",
   });
 
+  const [isNodeModified, setIsNodeModified] = useState<boolean>(false);
+
   const postPayload = {
     meta: {
       page: 0,
@@ -118,6 +120,7 @@ const NodeForm = ({
   const [titleList, setTitleList] = useState<IObject[]>([]);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
+    setIsNodeModified(true);
     if (!notNullOrUndefined(val)) return;
     let suggestedValue;
     if (fieldLang === "en") {
@@ -217,6 +220,24 @@ const NodeForm = ({
     }
   };
 
+  const onManpowerModified = (field, index, item, fieldName) => {
+    if (!isObjectNull(updateData)) {
+      let itemUpdateObject = updateData?.manpowerList?.[index];
+      if (itemUpdateObject?.isAddition) return;
+      else if (
+        !(
+          JSON.stringify(itemUpdateObject?.[fieldName]) === JSON.stringify(item)
+        )
+      ) {
+        manpowerListUpdate(index, {
+          ...field,
+          [fieldName]: item,
+          isModified: true,
+        });
+      }
+    }
+  };
+
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
     if (notNullOrUndefined(opt)) {
@@ -245,13 +266,16 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
+    if (data?.isAddition === false) {
+      data = { ...data, isModified: isNodeModified };
+    }
     if (isObjectNull(updateData)) {
       data = {
         ...data,
         isAddition: true,
       };
     }
-
+    // console.log("da", data);
     onSubmit(data);
   };
 
@@ -481,7 +505,10 @@ const NodeForm = ({
                         getOptionLabel={(op) => op?.nameBn}
                         getOptionValue={(op) => op?.id}
                         name={`manpowerList.${index}.postDTO`}
-                        onChange={(t) => onPostChange(index, t)}
+                        onChange={(t) => {
+                          onPostChange(index, t);
+                          onManpowerModified(field, index, t, "postDTO");
+                        }}
                         loadOptions={getAsyncPostList}
                         isError={!!errors?.manpowerList?.[index]?.postDTO}
                         errorMessage={
@@ -506,6 +533,7 @@ const NodeForm = ({
                             `manpowerList.${index}.gradeOrder`,
                             t?.displayOrder
                           );
+                          onManpowerModified(field, index, t, "gradeDTO");
                         }}
                         noMargin
                         isError={!!errors?.manpowerList?.[index]?.gradeDTO}
@@ -523,12 +551,13 @@ const NodeForm = ({
                         getOptionValue={(op) => op?.metaKey}
                         defaultValue={cadreObj}
                         name={`manpowerList.${index}.serviceTypeDto`}
-                        onChange={(t) =>
+                        onChange={(t) => {
                           setValue(
                             `manpowerList.${index}.serviceTypeKey`,
                             t?.metaKey
-                          )
-                        }
+                          );
+                          onManpowerModified(field, index, t, "serviceTypeDto");
+                        }}
                         noMargin
                         isError={
                           !!errors?.manpowerList?.[index]?.serviceTypeDto
@@ -547,6 +576,13 @@ const NodeForm = ({
                               required: "জনবল সংখ্যা লিখুন",
                               setValueAs: (v) => numBnToEn(v),
                               validate: manpowerNumberCheck,
+                              onChange: (t) =>
+                                onManpowerModified(
+                                  field,
+                                  index,
+                                  t,
+                                  "numberOfEmployee"
+                                ),
                             }
                           ),
                         }}
@@ -575,6 +611,8 @@ const NodeForm = ({
                         registerProperty={{
                           ...register(`manpowerList.${index}.postType`, {
                             required: " ",
+                            onChange: (t) =>
+                              onManpowerModified(field, index, t, "postType"),
                           }),
                         }}
                         isError={!!errors?.manpowerList?.[index]?.postType}
@@ -600,6 +638,12 @@ const NodeForm = ({
                                 e.target.checked
                                   ? setIsHeadIndex(index)
                                   : setIsHeadIndex(null);
+                                onManpowerModified(
+                                  field,
+                                  index,
+                                  e.target.checked,
+                                  "isHead"
+                                );
                               },
                             }),
                           }}
