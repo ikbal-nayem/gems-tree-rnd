@@ -38,18 +38,18 @@ const Manpower: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
     { title: "পদবি/স্তর", minWidth: 100 },
-    { title: "পদের নাম ও সংখ্যা", minWidth: 150, align: "center" },
-    { title: "প্রস্তাবিত পদের নাম ও সংখ্যা", minWidth: 150, align: "center" },
+    { title: "পদের নাম ও সংখ্যা", minWidth: 150, align: "start" },
+    // { title: "প্রস্তাবিত পদের নাম ও সংখ্যা", minWidth: 150, align: "center" },
     { title: COMMON_LABELS.ACTION, align: "center" },
   ];
 
-  useEffect(() => {
-    ProposalService.FETCH.nodeWiseManpowerById(previousOrganogramId)
-      .then((resp) => {
-        setPreviousApprovedNodeWiseManpowerList(resp?.body);
-      })
-      .catch((e) => toast.error(e?.message));
-  }, [previousOrganogramId]);
+  // useEffect(() => {
+  //   ProposalService.FETCH.nodeWiseManpowerById(previousOrganogramId)
+  //     .then((resp) => {
+  //       setPreviousApprovedNodeWiseManpowerList(resp?.body);
+  //     })
+  //     .catch((e) => toast.error(e?.message));
+  // }, [previousOrganogramId]);
 
   let previousSameNode = null,
     newNode = true;
@@ -58,15 +58,15 @@ const Manpower: FC<TableProps> = ({
       <Table columns={columns}>
         {dataList?.length ? (
           dataList?.map((node, idx) => {
-            previousSameNode = null;
-            newNode = true;
+            // previousSameNode = null;
+            // newNode = true;
 
-            previousSameNode = previousApprovedNodeWiseManpowerList.find(
-              (n) =>
-                n?.nodeTitleBn === node?.nodeTitleBn ||
-                n?.nodeTitleEn === node?.nodeTitleEn
-            );
-            newNode = isObjectNull(previousSameNode);
+            // previousSameNode = previousApprovedNodeWiseManpowerList.find(
+            //   (n) =>
+            //     n?.nodeTitleBn === node?.nodeTitleBn ||
+            //     n?.nodeTitleEn === node?.nodeTitleEn
+            // );
+            // newNode = isObjectNull(previousSameNode);
 
             return (
               <TableRow key={idx}>
@@ -80,16 +80,16 @@ const Manpower: FC<TableProps> = ({
                     (isEnamCommittee ? node?.nodeTitleEn : node?.nodeTitleBn) ||
                     "-"
                   }
-                  tagText={newNode ? "নতুন" : null}
+                  tagText={node?.isAddition ? "নতুন" : null}
                   tagColor="info"
                 />
-                <TableCell>
+                {/* <TableCell>
                   <MpBlock
                     nodeData={previousSameNode}
                     isEnamCommittee={isEnamCommittee}
                     color=""
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <MpBlock
                     nodeData={node}

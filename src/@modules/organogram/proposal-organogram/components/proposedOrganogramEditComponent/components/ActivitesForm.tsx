@@ -1,6 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Label, Separator } from "@gems/components";
-import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
@@ -23,6 +23,16 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
 
   const checkFieldIsDeleted = (field) => {
     return field?.isDeleted ? true : false;
+  };
+
+  const handleDelete = (field, index) => {
+    if (index >= 0) {
+      if (!isObjectNull(field) && field?.isAddition) {
+        remove(index);
+      } else {
+        update(index, { ...field, isDeleted: true });
+      }
+    }
   };
 
   console.log(watch("mainActivitiesDtoList"));
@@ -119,7 +129,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                   </div>
                 </div>
               </div>
-              <div className={idx < 1 ? "mt-6" : ""}>
+              {/* <div className={idx < 1 ? "mt-6" : ""}>
                 <IconButton
                   iconName="delete"
                   color="danger"
@@ -129,7 +139,37 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                     remove(idx);
                   }}
                 />
-              </div>
+              </div> */}
+              {!checkFieldIsDeleted(f) && (
+                <div className={idx < 1 ? "mt-6" : ""}>
+                  <IconButton
+                    iconName="delete"
+                    color="danger"
+                    iconSize={15}
+                    rounded={false}
+                    onClick={() => {
+                      handleDelete(f, idx);
+                    }}
+                  />
+                </div>
+              )}
+              {checkFieldIsDeleted(f) && (
+                <div className={idx < 1 ? "mt-6 ms-3" : "mt-1 ms-3"}>
+                  <IconButton
+                    iconName="change_circle"
+                    color="warning"
+                    iconSize={15}
+                    rounded={false}
+                    onClick={() => {
+                      update(idx, {
+                        ...f,
+                        isDeleted: false,
+                      });
+                      // manpowerListRemove(index);
+                    }}
+                  />
+                </div>
+              )}
             </div>
           );
         })}
