@@ -18,7 +18,7 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
       <div
         className={`position rounded ${
           nodeData?.isDeleted ? "text-line-through-color-red " : " "
-        }${nodeData?.isAddition ? "text-decoration-underline" : ""}`}
+        }${nodeData?.isAddition ? "text-underline-color-black" : ""}`}
       >
         <div className="d-flex justify-content-between">
           {/* <IconButton iconName="more_vert" color="warning" iconSize={16}/> */}
@@ -34,7 +34,11 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             </div>
           )}
           <div>
-            <p className="p-1 mb-0 fs-7">
+            <p
+              className={`p-1 mb-0 fs-7 ${
+                nodeData?.isModified ? "text-underline-color-yellow" : ""
+              }`}
+            >
               {nodeData.titleBn
                 ? longLineBreaker(nodeData.titleBn || "", 20)
                 : COMMON_LABELS.NOT_ASSIGN}
@@ -103,7 +107,11 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                           : ""
                       } ${
                         item?.isDeleted ? "text-line-through-color-red " : " "
-                      }${item?.isAddition ? "text-decoration-underline" : ""}`}
+                      }${
+                        item?.isAddition ? "text-underline-color-black" : " "
+                      }${
+                        item?.isModified ? "text-underline-color-yellow" : ""
+                      }`}
                     >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>

@@ -70,6 +70,18 @@
   text-decoration-color: red;
 }
 
+.text-underline-color-yellow {
+  text-decoration: underline;
+  text-decoration-color: yellow;
+  text-decoration-thickness: 2px;
+}
+
+.text-underline-color-black {
+  text-decoration: underline;
+  text-decoration-color: black;
+  text-decoration-thickness: 2px;
+}
+
 .disabledDiv {
   pointer-events: none;
   opacity: 0.7;

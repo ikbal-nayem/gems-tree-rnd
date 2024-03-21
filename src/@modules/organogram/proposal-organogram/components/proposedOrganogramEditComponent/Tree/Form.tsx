@@ -76,6 +76,7 @@ const NodeForm = ({
     setValue,
     getValues,
     control,
+    watch,
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
@@ -223,17 +224,63 @@ const NodeForm = ({
   const onManpowerModified = (field, index, item, fieldName) => {
     if (!isObjectNull(updateData)) {
       let itemUpdateObject = updateData?.manpowerList?.[index];
+      let man = watch("manpowerList");
+
       if (itemUpdateObject?.isAddition) return;
-      else if (
-        !(
-          JSON.stringify(itemUpdateObject?.[fieldName]) === JSON.stringify(item)
-        )
+      console.log("1", typeof itemUpdateObject?.[fieldName]);
+      console.log(
+        "2",
+        (typeof itemUpdateObject?.[fieldName] === "number"
+          ? JSON.stringify(itemUpdateObject?.[fieldName])
+          : itemUpdateObject?.[fieldName]) !== item
+      );
+
+      if (
+        fieldName === "postDTO" ||
+        fieldName === "gradeDTO" ||
+        fieldName === "serviceTypeDto"
       ) {
-        manpowerListUpdate(index, {
-          ...field,
-          [fieldName]: item,
-          isModified: true,
-        });
+        if (itemUpdateObject?.[fieldName]?.id !== item?.id) {
+          man[index] = { ...man[index], isModified: true };
+          setValue("manpowerList", man);
+        } else {
+          man[index] = { ...man[index], isModified: false };
+          setValue("manpowerList", man);
+        }
+      } else if (fieldName === "numberOfEmployee") {
+        if (
+          (typeof itemUpdateObject?.[fieldName] === "number"
+            ? JSON.stringify(itemUpdateObject?.[fieldName])
+            : itemUpdateObject?.[fieldName]) !== item
+        ) {
+          // man[index] = { ...man[index], isModified: true };
+          // setValue("manpowerList", man);
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: true,
+          });
+        } else {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: false,
+          });
+        }
+      } else if (fieldName === "postType" || fieldName === "isHead") {
+        if (itemUpdateObject?.[fieldName] !== item) {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: true,
+          });
+        } else {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: false,
+          });
+        }
       }
     }
   };
@@ -275,7 +322,7 @@ const NodeForm = ({
         isAddition: true,
       };
     }
-    // console.log("da", data);
+    console.log("da", data);
     onSubmit(data);
   };
 
@@ -576,11 +623,11 @@ const NodeForm = ({
                               required: "জনবল সংখ্যা লিখুন",
                               setValueAs: (v) => numBnToEn(v),
                               validate: manpowerNumberCheck,
-                              onChange: (t) =>
+                              onBlur: (t) =>
                                 onManpowerModified(
                                   field,
                                   index,
-                                  t,
+                                  t?.target?.value,
                                   "numberOfEmployee"
                                 ),
                             }
@@ -611,8 +658,13 @@ const NodeForm = ({
                         registerProperty={{
                           ...register(`manpowerList.${index}.postType`, {
                             required: " ",
-                            onChange: (t) =>
-                              onManpowerModified(field, index, t, "postType"),
+                            onBlur: (t) =>
+                              onManpowerModified(
+                                field,
+                                index,
+                                t?.target?.value,
+                                "postType"
+                              ),
                           }),
                         }}
                         isError={!!errors?.manpowerList?.[index]?.postType}
