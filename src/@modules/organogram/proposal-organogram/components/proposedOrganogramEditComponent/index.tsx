@@ -277,6 +277,7 @@ const ProposalOrganogramEditComponent = ({
           <div className="col-md-6">
             <ActivitiesForm
               formProps={formProps}
+              updateData={updateData?.mainActivitiesDtoList || []}
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>

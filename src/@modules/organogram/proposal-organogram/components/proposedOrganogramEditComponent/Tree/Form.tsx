@@ -227,13 +227,6 @@ const NodeForm = ({
       let man = watch("manpowerList");
 
       if (itemUpdateObject?.isAddition) return;
-      console.log("1", typeof itemUpdateObject?.[fieldName]);
-      console.log(
-        "2",
-        (typeof itemUpdateObject?.[fieldName] === "number"
-          ? JSON.stringify(itemUpdateObject?.[fieldName])
-          : itemUpdateObject?.[fieldName]) !== item
-      );
 
       if (
         fieldName === "postDTO" ||
@@ -322,7 +315,7 @@ const NodeForm = ({
         isAddition: true,
       };
     }
-    console.log("da", data);
+    // console.log("da", data);
     onSubmit(data);
   };
 

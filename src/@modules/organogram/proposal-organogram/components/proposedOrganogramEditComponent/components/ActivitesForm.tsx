@@ -1,13 +1,19 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Input, Label, Separator } from "@gems/components";
-import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import {
+  IObject,
+  isObjectNull,
+  notNullOrUndefined,
+  numEnToBn,
+} from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
 interface IActivitiesForm {
   formProps: any;
+  updateData?: IObject[];
 }
-const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
+const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
   const {
     register,
     control,
@@ -35,7 +41,31 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
     }
   };
 
-  console.log(watch("mainActivitiesDtoList"));
+  const onModified = (field, index, item, fieldName) => {
+    if (!isObjectNull(updateData)) {
+      let itemUpdateObject = updateData?.[index];
+
+      if (itemUpdateObject?.isAddition) return;
+      let itemUpdateObjectData =
+        itemUpdateObject?.[fieldName] === undefined
+          ? ""
+          : itemUpdateObject?.[fieldName];
+
+      if (itemUpdateObjectData !== item) {
+        update(index, {
+          ...field,
+          [fieldName]: item,
+          isModified: true,
+        });
+      } else {
+        update(index, {
+          ...field,
+          [fieldName]: item,
+          isModified: false,
+        });
+      }
+    }
+  };
 
   return (
     <div className="card border p-3">
@@ -91,6 +121,12 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                                   idx + 1
                                 );
                               }
+                              onModified(
+                                f,
+                                idx,
+                                e?.target?.value,
+                                "mainActivityBn"
+                              );
                             },
                           }
                         ),
@@ -100,7 +136,6 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                       }
                     />
                   </div>
-                  {/* )} */}
                   <div className={"col-xl-6 col-12 mt-1 mt-xl-0"}>
                     <Input
                       label={idx < 1 ? labelEn : ""}
@@ -117,6 +152,12 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                                   idx + 1
                                 );
                               }
+                              onModified(
+                                f,
+                                idx,
+                                e?.target?.value,
+                                "mainActivityEn"
+                              );
                             },
                             validate: enCheck,
                           }
