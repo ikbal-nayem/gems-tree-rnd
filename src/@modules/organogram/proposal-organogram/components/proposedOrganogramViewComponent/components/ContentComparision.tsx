@@ -1,4 +1,4 @@
-import { Icon, toast } from "@gems/components";
+import { toast } from "@gems/components";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
@@ -44,14 +44,14 @@ const ContentComparision = ({
             .catch((e) => toast.error(e?.message));
           break;
 
-        case "task_builder_main_activity":
-          // Approved Main Acitivities Data
-          SERVICE.mainActivityByOrganogramId(previousOrganogramId)
-            .then((resp) => {
-              setPreviousApprovedData(resp?.body);
-            })
-            .catch((e) => toast.error(e?.message));
-          break;
+        // case "task_builder_main_activity":
+        //   // Approved Main Acitivities Data
+        //   SERVICE.mainActivityByOrganogramId(previousOrganogramId)
+        //     .then((resp) => {
+        //       setPreviousApprovedData(resp?.body);
+        //     })
+        //     .catch((e) => toast.error(e?.message));
+        //   break;
 
         case "task_builder_boa":
           // Approved Business of Allocation Data
@@ -101,7 +101,7 @@ const ContentComparision = ({
       <div className="d-flex flex-wrap flex-md-nowrap align-items-center px-md-10">
         {/* {!sameData && ( */}
         <>
-          <div className="w-100">
+          {/* <div className="w-100">
             {content === "manpower" ? (
               <ManPowerList
                 isLoading={false}
@@ -165,7 +165,7 @@ const ContentComparision = ({
               color="primary"
               size={40}
             />
-          </div>
+          </div> */}
         </>
         {/* )} */}
         <div className="w-100">
