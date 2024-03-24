@@ -35,13 +35,13 @@ const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
       if (!isObjectNull(field) && field?.isAddition) {
         remove(index);
       } else {
-        update(index, { ...field, isDeleted: true });
+        update(index, { ...field, isDeleted: true, isModified: false });
       }
     }
   };
 
   const onModified = (field, index, item, fieldName) => {
-    if (!isObjectNull(updateData)) {
+    if (updateData?.length > 0) {
       let itemUpdateObject = updateData?.[index];
 
       if (itemUpdateObject?.isAddition) return;

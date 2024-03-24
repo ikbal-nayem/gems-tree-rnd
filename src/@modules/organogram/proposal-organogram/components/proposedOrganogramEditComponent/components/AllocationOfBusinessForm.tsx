@@ -38,7 +38,7 @@ const AllocationOfBusinessForm = ({
       if (!isObjectNull(field) && field?.isAddition) {
         remove(index);
       } else {
-        update(index, { ...field, isDeleted: true });
+        update(index, { ...field, isDeleted: true, isModified: false });
       }
     }
   };

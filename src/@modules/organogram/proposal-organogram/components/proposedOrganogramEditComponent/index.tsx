@@ -308,7 +308,10 @@ const ProposalOrganogramEditComponent = ({
             />
           </div>
           <div className="col-md-6 mt-3">
-            <AbbreviationForm formProps={formProps} />
+            <AbbreviationForm
+              formProps={formProps}
+              updateData={updateData?.abbreviationDtoList}
+            />
           </div>
           <div className="col-md-6 mt-3">
             <NotesForm formProps={formProps} />

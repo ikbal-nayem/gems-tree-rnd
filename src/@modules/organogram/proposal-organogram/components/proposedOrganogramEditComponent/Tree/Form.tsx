@@ -216,7 +216,11 @@ const NodeForm = ({
       if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
         manpowerListRemove(index);
       } else {
-        manpowerListUpdate(index, { ...field, isDeleted: true });
+        manpowerListUpdate(index, {
+          ...field,
+          isDeleted: true,
+          isModified: false,
+        });
       }
     }
   };
