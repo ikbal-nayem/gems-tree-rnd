@@ -35,13 +35,10 @@ const AbbreviationForm = ({ formProps, updateData }: IAbbreviationForm) => {
   };
 
   const onModified = (field, index, item, fieldName) => {
-    console.log("dd");
-
     if (updateData?.length > 0) {
       let itemUpdateObject = updateData?.[index];
 
       if (itemUpdateObject?.isAddition) return;
-      console.log("achi");
 
       let itemUpdateObjectData =
         itemUpdateObject?.[fieldName] === undefined
