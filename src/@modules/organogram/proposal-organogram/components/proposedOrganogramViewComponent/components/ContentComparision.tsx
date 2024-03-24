@@ -175,21 +175,21 @@ const ContentComparision = ({
               data={proposedData}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_MANPOWER}
+              title={LABEL.MANPOWER}
             />
           ) : content === "task_builder_main_activity" ? (
             <ActivitiesList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_MAIN_ACTIVITY}
+              title={LABEL.MAIN_ACTIVITY}
             />
           ) : content === "task_builder_boa" ? (
             <AllocationOfBusinessList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_BUSINESS_OF_ALLOCATION}
+              title={LABEL.BUSINESS_OF_ALLOCATION}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
@@ -197,21 +197,21 @@ const ContentComparision = ({
               inventoryData={proposedData?.inventoryData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_INVENTORY}
+              title={LABEL.INVENTORY}
             />
           ) : content === "abbreviation" ? (
             <AbbreviationList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_ABBREVIATION}
+              title={LABEL.ABBREVIATION}
             />
           ) : content === "attached_org" ? (
             <AttachedOrgList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_ATTACHED_ORGANIZATION}
+              title={LABEL.ATTACHED_ORGANIZATION}
             />
           ) : null}
         </div>
