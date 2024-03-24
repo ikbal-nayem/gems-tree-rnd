@@ -121,6 +121,12 @@ const AllocationOfBusinessForm = ({
                                   idx + 1
                                 );
                               }
+                              onModified(
+                                f,
+                                idx,
+                                e?.target?.value,
+                                "businessOfAllocationBn"
+                              );
                             },
                             required: " ",
                             // validate: bnCheck,
@@ -187,6 +193,12 @@ const AllocationOfBusinessForm = ({
                                   idx + 1
                                 );
                               }
+                              onModified(
+                                f,
+                                idx,
+                                e?.target?.value,
+                                "businessOfAllocationEn"
+                              );
                             },
                             // validate: enCheck,
                           }
