@@ -284,6 +284,7 @@ const ProposalOrganogramEditComponent = ({
           <div className="col-md-6 mt-md-0 mt-3">
             <AllocationOfBusinessForm
               formProps={formProps}
+              updateData={updateData?.businessAllocationDtoList || []}
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>

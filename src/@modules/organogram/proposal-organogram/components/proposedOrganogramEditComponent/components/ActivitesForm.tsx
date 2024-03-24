@@ -18,7 +18,6 @@ const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
     register,
     control,
     setValue,
-    watch,
     formState: { errors },
   } = formProps;
 
@@ -102,7 +101,7 @@ const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
                 <div className={idx < 1 ? "mt-8" : "mt-2"}>
                   <Label> {numEnToBn(idx + 1) + "।"} </Label>
                 </div>
-                <div className="row w-100">
+                <div className="ps-2 row w-100">
                   <div className="col-xl-6 col-12">
                     <Input
                       label={idx < 1 ? labelBn : ""}
@@ -170,17 +169,6 @@ const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
                   </div>
                 </div>
               </div>
-              {/* <div className={idx < 1 ? "mt-6" : ""}>
-                <IconButton
-                  iconName="delete"
-                  color="danger"
-                  iconSize={15}
-                  rounded={false}
-                  onClick={() => {
-                    remove(idx);
-                  }}
-                />
-              </div> */}
               {!checkFieldIsDeleted(f) && (
                 <div className={idx < 1 ? "mt-6" : ""}>
                   <IconButton
