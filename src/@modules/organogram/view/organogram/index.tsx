@@ -10,24 +10,18 @@ import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 
 interface ITab {
-  templateData: IObject;
-  // setIsLatestVersion: (d) => void;
+  organogramData: IObject;
   organogramId: string;
   isPreviousVerison: boolean;
-  // isLatestVersion: boolean;
   setOrganogramId: (id: string) => void;
-  isOrgangramTab: boolean;
 }
 
 const OrganogramTab = ({
   organogramId,
   setOrganogramId,
   isPreviousVerison,
-  templateData,
-  isOrgangramTab,
-}: // isLatestVersion,
-// setIsLatestVersion,
-ITab) => {
+  organogramData,
+}: ITab) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
@@ -75,14 +69,14 @@ ITab) => {
   };
 
   useEffect(() => {
-    if (templateData?.organization?.id) {
+    if (organogramData?.organization?.id) {
       getParentOrganization();
     }
-  }, [templateData]);
+  }, [organogramData]);
 
   const getParentOrganization = () => {
     setIsLoading(true);
-    OMSService.getOrganizationParentByOrgId(templateData?.organization?.id)
+    OMSService.getOrganizationParentByOrgId(organogramData?.organization?.id)
       .then((resp) => {
         setParentOrganizationData(resp?.body);
       })
@@ -150,15 +144,14 @@ ITab) => {
         </div>
       )}
       {isLoading && <ContentPreloader />}
-      {!isLoading && !isObjectNull(templateData) && (
+      {!isLoading && !isObjectNull(organogramData) && (
         <div>
           <TemplateViewComponent
-            updateData={templateData}
+            updateData={organogramData}
             inventoryData={inventoryData}
             manpowerData={manpowerData}
             attachedOrganizationData={attachOrgData}
             organogramView={true}
-            isPreviousVerison={isPreviousVerison}
             parentOrganizationData={parentOrganizationData}
             isBeginningVersion={isBeginningVersion}
             organogramId={organogramId}

@@ -1,7 +1,7 @@
-import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import { Button, Icon, IconButton } from "@gems/components";
-import { CoreService } from "../../../../../@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../@services/api/Core.service";
 import MyNode from "./my-node";
 import NodeDetails from "./node-details";
 
@@ -13,8 +13,6 @@ const OrganizationTemplateTree = ({
   headerData,
   isPDFLoading,
   organogramView = false,
-  isPreviousVerison = false,
-  isOrgangramTab = false,
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -81,8 +79,6 @@ const OrganizationTemplateTree = ({
             langEn={langEn}
             nodeData={nodeData}
             postList={postList}
-            isPreviousVerison={isPreviousVerison}
-            isOrgangramTab={isOrgangramTab}
             organogramView={organogramView}
             onView={onView}
           />

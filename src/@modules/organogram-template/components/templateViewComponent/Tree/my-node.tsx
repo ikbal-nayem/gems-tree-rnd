@@ -5,7 +5,7 @@ import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, postList, onView, isPreviousVerison }) => {
+const MyNode = ({ langEn, nodeData, postList, onView }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -19,22 +19,8 @@ const MyNode = ({ langEn, nodeData, postList, onView, isPreviousVerison }) => {
     manPower = numEnToBn(manPower);
   }
 
-  let deletedClass =
-    isPreviousVerison !== null
-      ? isPreviousVerison && nodeData?.isDeleted
-        ? "text-line-through-color-red"
-        : ""
-      : nodeData?.isDeleted
-      ? "text-line-through-color-red"
-      : "";
-  let additionClass =
-    isPreviousVerison !== null
-      ? isPreviousVerison && nodeData?.isAddition
-        ? "text-decoration-underline"
-        : ""
-      : nodeData?.isAddition
-      ? "text-decoration-underline"
-      : "";
+  let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
+  let additionClass = nodeData?.isAddition ? "text-decoration-underline" : "";
 
   return (
     <div className={`position rounded border border-gray-400 border-1`}>
@@ -77,22 +63,12 @@ const MyNode = ({ langEn, nodeData, postList, onView, isPreviousVerison }) => {
       >
         {nodeData?.manpowerList?.length > 0 &&
           nodeData?.manpowerList?.map((item, i) => {
-            let itemDeletedClass =
-              isPreviousVerison !== null
-                ? isPreviousVerison && item?.isDeleted
-                  ? "text-line-through-color-red"
-                  : ""
-                : item?.isDeleted
-                ? "text-line-through-color-red"
-                : "";
-            let itemAdditionClass =
-              isPreviousVerison !== null
-                ? isPreviousVerison && nodeData?.isAddition
-                  ? "text-decoration-underline"
-                  : ""
-                : nodeData?.isAddition
-                ? "text-decoration-underline"
-                : "";
+            let itemDeletedClass = item?.isDeleted
+              ? "text-line-through-color-red"
+              : "";
+            let itemAdditionClass = nodeData?.isAddition
+              ? "text-decoration-underline"
+              : "";
 
             let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
             mp = langEn ? mp : numEnToBn(mp);
