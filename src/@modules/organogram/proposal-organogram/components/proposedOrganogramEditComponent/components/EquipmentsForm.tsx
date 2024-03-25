@@ -54,6 +54,7 @@ const EquipmentsForm = ({
     fields: miscellaneousPointDtoListFields,
     append: miscellaneousPointDtoListAppend,
     remove: miscellaneousPointDtoListRemove,
+    update: miscellaneousPointDtoListUpdate,
   } = useFieldArray({
     control,
     name: "miscellaneousPointDtoList",
@@ -169,6 +170,46 @@ const EquipmentsForm = ({
             isModified: false,
           });
         }
+      }
+    }
+  };
+
+  const handleMiscellaneousPointDelete = (field, index) => {
+    if (index >= 0) {
+      if (!isObjectNull(field) && field?.isAddition) {
+        miscellaneousPointDtoListRemove(index);
+      } else {
+        miscellaneousPointDtoListUpdate(index, {
+          ...field,
+          isDeleted: true,
+          isModified: false,
+        });
+      }
+    }
+  };
+
+  const onMiscellaneousPointModified = (field, index, item, fieldName) => {
+    if (updateMiscellaneousPointData?.length > 0) {
+      let itemUpdateObject = updateMiscellaneousPointData?.[index];
+
+      if (itemUpdateObject?.isAddition || field?.isAddition) return;
+      let itemUpdateObjectData =
+        itemUpdateObject?.[fieldName] === undefined
+          ? ""
+          : itemUpdateObject?.[fieldName];
+
+      if (itemUpdateObjectData !== item) {
+        miscellaneousPointDtoListUpdate(index, {
+          ...field,
+          [fieldName]: item,
+          isModified: true,
+        });
+      } else {
+        miscellaneousPointDtoListUpdate(index, {
+          ...field,
+          [fieldName]: item,
+          isModified: false,
+        });
       }
     }
   };
@@ -314,7 +355,11 @@ const EquipmentsForm = ({
         <IconButton
           iconName="add"
           color="primary"
-          onClick={() => miscellaneousPointDtoListAppend("")}
+          onClick={() =>
+            miscellaneousPointDtoListAppend({
+              isAddition: true,
+            })
+          }
         />
       </div>
       <Separator className="mt-1 mb-2" />
@@ -328,78 +373,124 @@ const EquipmentsForm = ({
               className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100"
               key={idx}
             >
-              <div className={idx < 1 ? "mt-8" : "mt-2"}>
-                <Label> {numEnToBn(idx + 1) + "।"} </Label>
-              </div>
-              <div className="row w-100">
-                <div className="col-xl-6 col-12">
-                  <Input
-                    label={idx < 1 ? labelBn : ""}
-                    placeholder={labelBn + " লিখুন"}
-                    noMargin
-                    isRequired={idx < 1}
-                    registerProperty={{
-                      ...register(`miscellaneousPointDtoList.${idx}.titleBn`, {
-                        required: " ",
-                        onChange: (e) => {
-                          if (notNullOrUndefined(e.target.value)) {
-                            setValue(
-                              `miscellaneousPointDtoList.${idx}.displayOrder`,
-                              idx + 1
-                            );
+              <div
+                className={`d-flex align-items-top w-100 ${
+                  checkFieldIsDeleted(f)
+                    ? "disabledDiv border border-danger rounded p-1"
+                    : ""
+                }`}
+              >
+                <div className={idx < 1 ? "mt-8" : "mt-2"}>
+                  <Label> {numEnToBn(idx + 1) + "।"} </Label>
+                </div>
+                <div className="row w-100">
+                  <div className="col-xl-6 col-12">
+                    <Input
+                      label={idx < 1 ? labelBn : ""}
+                      placeholder={labelBn + " লিখুন"}
+                      noMargin
+                      isRequired={idx < 1}
+                      registerProperty={{
+                        ...register(
+                          `miscellaneousPointDtoList.${idx}.titleBn`,
+                          {
+                            required: " ",
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `miscellaneousPointDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                              onMiscellaneousPointModified(
+                                f,
+                                idx,
+                                e?.target?.value,
+                                "titleBn"
+                              );
+                            },
                           }
-                        },
-                      }),
+                        ),
+                      }}
+                      isError={
+                        !!errors?.miscellaneousPointDtoList?.[idx]?.titleBn
+                      }
+                      errorMessage={
+                        errors?.miscellaneousPointDtoList?.[idx]?.titleBn
+                          ?.message as string
+                      }
+                    />
+                  </div>
+                  <div className={"col-xl-6 col-12 mt-1 mt-xl-0"}>
+                    <Input
+                      label={idx < 1 ? labelEn : ""}
+                      placeholder={labelEn + " লিখুন"}
+                      autoFocus
+                      noMargin
+                      registerProperty={{
+                        ...register(
+                          `miscellaneousPointDtoList.${idx}.titleEn`,
+                          {
+                            onChange: (e) => {
+                              if (notNullOrUndefined(e.target.value)) {
+                                setValue(
+                                  `miscellaneousPointDtoList.${idx}.displayOrder`,
+                                  idx + 1
+                                );
+                              }
+                              onMiscellaneousPointModified(
+                                f,
+                                idx,
+                                e?.target?.value,
+                                "titleEn"
+                              );
+                            },
+                            validate: enCheck,
+                          }
+                        ),
+                      }}
+                      isError={
+                        !!errors?.miscellaneousPointDtoList?.[idx]?.titleEn
+                      }
+                      errorMessage={
+                        errors?.miscellaneousPointDtoList?.[idx]?.titleEn
+                          ?.message as string
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {!checkFieldIsDeleted(f) && (
+                <div className={idx < 1 ? "mt-6" : ""}>
+                  <IconButton
+                    iconName="delete"
+                    color="danger"
+                    iconSize={15}
+                    rounded={false}
+                    onClick={() => {
+                      handleMiscellaneousPointDelete(f, idx);
                     }}
-                    isError={
-                      !!errors?.miscellaneousPointDtoList?.[idx]?.titleBn
-                    }
-                    errorMessage={
-                      errors?.miscellaneousPointDtoList?.[idx]?.titleBn
-                        ?.message as string
-                    }
                   />
                 </div>
-                <div className={"col-xl-6 col-12 mt-1 mt-xl-0"}>
-                  <Input
-                    label={idx < 1 ? labelEn : ""}
-                    placeholder={labelEn + " লিখুন"}
-                    autoFocus
-                    noMargin
-                    registerProperty={{
-                      ...register(`miscellaneousPointDtoList.${idx}.titleEn`, {
-                        onChange: (e) => {
-                          if (notNullOrUndefined(e.target.value)) {
-                            setValue(
-                              `miscellaneousPointDtoList.${idx}.displayOrder`,
-                              idx + 1
-                            );
-                          }
-                        },
-                        validate: enCheck,
-                      }),
+              )}
+              {checkFieldIsDeleted(f) && (
+                <div className={idx < 1 ? "mt-6 ms-3" : "mt-1 ms-3"}>
+                  <IconButton
+                    iconName="change_circle"
+                    color="warning"
+                    iconSize={15}
+                    rounded={false}
+                    onClick={() => {
+                      miscellaneousPointDtoListUpdate(idx, {
+                        ...f,
+                        isDeleted: false,
+                      });
+                      // manpowerListRemove(index);
                     }}
-                    isError={
-                      !!errors?.miscellaneousPointDtoList?.[idx]?.titleEn
-                    }
-                    errorMessage={
-                      errors?.miscellaneousPointDtoList?.[idx]?.titleEn
-                        ?.message as string
-                    }
                   />
                 </div>
-              </div>
-              <div className={idx < 1 ? "mt-6" : ""}>
-                <IconButton
-                  iconName="delete"
-                  color="danger"
-                  iconSize={15}
-                  rounded={false}
-                  onClick={() => {
-                    miscellaneousPointDtoListRemove(idx);
-                  }}
-                />
-              </div>
+              )}
             </div>
           );
         })}
