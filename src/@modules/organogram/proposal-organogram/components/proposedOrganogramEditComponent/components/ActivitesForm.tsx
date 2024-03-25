@@ -44,7 +44,7 @@ const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
     if (updateData?.length > 0) {
       let itemUpdateObject = updateData?.[index];
 
-      if (itemUpdateObject?.isAddition) return;
+      if (itemUpdateObject?.isAddition || field?.isAddition) return;
       let itemUpdateObjectData =
         itemUpdateObject?.[fieldName] === undefined
           ? ""

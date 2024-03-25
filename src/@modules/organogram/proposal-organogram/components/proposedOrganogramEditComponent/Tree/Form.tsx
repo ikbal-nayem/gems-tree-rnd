@@ -230,7 +230,7 @@ const NodeForm = ({
       let itemUpdateObject = updateData?.manpowerList?.[index];
       let man = watch("manpowerList");
 
-      if (itemUpdateObject?.isAddition) return;
+      if (itemUpdateObject?.isAddition || field?.isAddition) return;
 
       if (
         fieldName === "postDTO" ||

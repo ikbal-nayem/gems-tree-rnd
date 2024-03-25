@@ -139,44 +139,24 @@ const EquipmentsForm = ({
   const onInventoryModified = (field, index, item, fieldName) => {
     if (updateInventoryData?.length > 0) {
       let itemUpdateObject = updateInventoryData?.[index];
-      let man = watch("manpowerList");
+      let inventoryList = inventoryDtoList;
 
-      if (itemUpdateObject?.isAddition) return;
+      if (itemUpdateObject?.isAddition || field?.isAddition) return;
 
-      if (
-        fieldName === "postDTO" ||
-        fieldName === "gradeDTO" ||
-        fieldName === "serviceTypeDto"
-      ) {
+      if (fieldName === "type" || fieldName === "item") {
         if (itemUpdateObject?.[fieldName]?.id !== item?.id) {
-          man[index] = { ...man[index], isModified: true };
-          setValue("manpowerList", man);
+          inventoryList[index] = { ...inventoryList[index], isModified: true };
+          setValue("inventoryDtoList", inventoryList);
         } else {
-          man[index] = { ...man[index], isModified: false };
-          setValue("manpowerList", man);
+          inventoryList[index] = { ...inventoryList[index], isModified: false };
+          setValue("inventoryDtoList", inventoryList);
         }
-      } else if (fieldName === "numberOfEmployee") {
+      } else {
         if (
           (typeof itemUpdateObject?.[fieldName] === "number"
             ? JSON.stringify(itemUpdateObject?.[fieldName])
             : itemUpdateObject?.[fieldName]) !== item
         ) {
-          // man[index] = { ...man[index], isModified: true };
-          // setValue("manpowerList", man);
-          inventoryDtoListUpdate(index, {
-            ...field,
-            [fieldName]: item,
-            isModified: true,
-          });
-        } else {
-          inventoryDtoListUpdate(index, {
-            ...field,
-            [fieldName]: item,
-            isModified: false,
-          });
-        }
-      } else if (fieldName === "postType" || fieldName === "isHead") {
-        if (itemUpdateObject?.[fieldName] !== item) {
           inventoryDtoListUpdate(index, {
             ...field,
             [fieldName]: item,
@@ -280,7 +260,12 @@ const EquipmentsForm = ({
                       ...register(`inventoryDtoList.${idx}.quantity`, {
                         required: "সংখ্যা লিখুন",
                         onBlur: (e) => {
-                          onInventoryModified(f, idx, e, "quantity");
+                          onInventoryModified(
+                            f,
+                            idx,
+                            e?.target?.value,
+                            "quantity"
+                          );
                         },
                       }),
                     }}
