@@ -1,5 +1,5 @@
-import { Button, toast } from "@gems/components";
-import { IObject } from "@gems/utils";
+import { Button, ContentPreloader, toast } from "@gems/components";
+import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -8,7 +8,8 @@ import OrganogramTab from "./organogram";
 
 const OrganogramView = () => {
   const [searchParam] = useSearchParams();
-  const [templateData, setTemplateData] = useState<IObject>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [organogramData, setOrganogramData] = useState<IObject>({});
   const [organizationId, setOrganizationId] = useState<string>();
   const [organogramId, setOrganogramId] = useState<string>(
     searchParam.get("id") || ""
@@ -16,17 +17,33 @@ const OrganogramView = () => {
   const [isPreviousVerison, setIsPreviousVersion] = useState<boolean>(false);
   const [isOrgangramTab, setIsOrgangramTab] = useState<boolean>(true);
   useEffect(() => {
-    getTemplateDetailsDetailsById();
-  }, [organogramId]);
+    if (isOrgangramTab) {
+      getOrganogramDetailsById();
+    } else getOrganogramVersionDetailsById();
+  }, [organogramId, isOrgangramTab]);
 
-  const getTemplateDetailsDetailsById = () => {
-    OMSService.getOrganogramDetailsByOrganogramId(organogramId)
+  const getOrganogramDetailsById = () => {
+    setIsLoading(true);
+    OMSService.getOrganogramWithOutDeletionAdditionByOrganogramId(organogramId)
       .then((resp) => {
-        setTemplateData(resp?.body);
+        setOrganogramData(resp?.body);
         if (resp?.body?.organization?.id)
           setOrganizationId(resp?.body?.organization?.id);
       })
-      .catch((e) => toast.error(e?.message));
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getOrganogramVersionDetailsById = () => {
+    setIsLoading(true);
+    OMSService.getOrganogramDetailsByOrganogramId(organogramId)
+      .then((resp) => {
+        setOrganogramData(resp?.body);
+        if (resp?.body?.organization?.id)
+          setOrganizationId(resp?.body?.organization?.id);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -83,13 +100,15 @@ const OrganogramView = () => {
         )}
       </div>
       <div className="mt-3">
-        <OrganogramTab
-          templateData={templateData}
-          isPreviousVerison={isPreviousVerison}
-          isOrgangramTab={isOrgangramTab}
-          organogramId={organogramId}
-          setOrganogramId={setOrganogramId}
-        />
+        {isLoading && <ContentPreloader />}
+        {!isLoading && !isObjectNull(organogramData) && (
+          <OrganogramTab
+            organogramData={organogramData}
+            isPreviousVerison={isPreviousVerison}
+            organogramId={organogramId}
+            setOrganogramId={setOrganogramId}
+          />
+        )}
       </div>
     </div>
   );

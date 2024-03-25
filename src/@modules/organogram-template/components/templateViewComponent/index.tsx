@@ -62,7 +62,6 @@ const TemplateViewComponent = ({
   attachedOrganizationData,
   parentOrganizationData,
   organogramView = false,
-  isPreviousVerison = null,
   organogramId,
   isBeginningVersion = false,
   stateOrganizationData,
@@ -392,7 +391,6 @@ const TemplateViewComponent = ({
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
           organogramView={organogramOrganizationView}
-          isPreviousVerison={isPreviousVerison}
           headerData={{
             titleName: titleName || null,
             versionName: versionName || null,
