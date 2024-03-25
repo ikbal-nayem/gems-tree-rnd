@@ -226,7 +226,7 @@ const NodeForm = ({
   };
 
   const onManpowerModified = (field, index, item, fieldName) => {
-    if (!isObjectNull(updateData)) {
+    if (updateData?.length > 0) {
       let itemUpdateObject = updateData?.manpowerList?.[index];
       let man = watch("manpowerList");
 
