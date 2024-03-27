@@ -31,17 +31,31 @@ const AllocationOfBusinessList = ({
           {data?.map((item, i) => {
             return (
               <li key={i}>
-                {langEn ? (
-                  numOfNewLines(item?.businessOfAllocationEn) < 1 ? (
-                    item?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN
+                <div
+                  className={
+                    isTabContent
+                      ? item?.isModified
+                        ? "text-underline-color-yellow"
+                        : item?.isAddition
+                        ? "text-underline-color-black"
+                        : item?.isDeleted
+                        ? "text-line-through-color-red"
+                        : ""
+                      : ""
+                  }
+                >
+                  {langEn ? (
+                    numOfNewLines(item?.businessOfAllocationEn) < 1 ? (
+                      item?.businessOfAllocationEn || COMMON_LABELS.NOT_ASSIGN
+                    ) : (
+                      <TextBlock value={item?.businessOfAllocationEn} />
+                    )
+                  ) : numOfNewLines(item?.businessOfAllocationBn) < 1 ? (
+                    item?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN
                   ) : (
-                    <TextBlock value={item?.businessOfAllocationEn} />
-                  )
-                ) : numOfNewLines(item?.businessOfAllocationBn) < 1 ? (
-                  item?.businessOfAllocationBn || COMMON_LABELS.NOT_ASSIGN
-                ) : (
-                  <TextBlock value={item?.businessOfAllocationBn} />
-                )}
+                    <TextBlock value={item?.businessOfAllocationBn} />
+                  )}
+                </div>
               </li>
             );
           })}

@@ -76,6 +76,7 @@ const NodeForm = ({
     setValue,
     getValues,
     control,
+    watch,
     formState: { errors },
   } = useForm<any>({
     defaultValues: {
@@ -106,6 +107,8 @@ const NodeForm = ({
     name: "manpowerList",
   });
 
+  const [isNodeModified, setIsNodeModified] = useState<boolean>(false);
+
   const postPayload = {
     meta: {
       page: 0,
@@ -118,6 +121,7 @@ const NodeForm = ({
   const [titleList, setTitleList] = useState<IObject[]>([]);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
+    setIsNodeModified(true);
     if (!notNullOrUndefined(val)) return;
     let suggestedValue;
     if (fieldLang === "en") {
@@ -212,7 +216,68 @@ const NodeForm = ({
       if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
         manpowerListRemove(index);
       } else {
-        manpowerListUpdate(index, { ...field, isDeleted: true });
+        manpowerListUpdate(index, {
+          ...field,
+          isDeleted: true,
+          isModified: false,
+        });
+      }
+    }
+  };
+
+  const onManpowerModified = (field, index, item, fieldName) => {
+    if (updateData?.length > 0) {
+      let itemUpdateObject = updateData?.manpowerList?.[index];
+      let man = watch("manpowerList");
+
+      if (itemUpdateObject?.isAddition || field?.isAddition) return;
+
+      if (
+        fieldName === "postDTO" ||
+        fieldName === "gradeDTO" ||
+        fieldName === "serviceTypeDto"
+      ) {
+        if (itemUpdateObject?.[fieldName]?.id !== item?.id) {
+          man[index] = { ...man[index], isModified: true };
+          setValue("manpowerList", man);
+        } else {
+          man[index] = { ...man[index], isModified: false };
+          setValue("manpowerList", man);
+        }
+      } else if (fieldName === "numberOfEmployee") {
+        if (
+          (typeof itemUpdateObject?.[fieldName] === "number"
+            ? JSON.stringify(itemUpdateObject?.[fieldName])
+            : itemUpdateObject?.[fieldName]) !== item
+        ) {
+          // man[index] = { ...man[index], isModified: true };
+          // setValue("manpowerList", man);
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: true,
+          });
+        } else {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: false,
+          });
+        }
+      } else if (fieldName === "postType" || fieldName === "isHead") {
+        if (itemUpdateObject?.[fieldName] !== item) {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: true,
+          });
+        } else {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: false,
+          });
+        }
       }
     }
   };
@@ -245,13 +310,16 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
+    if (data?.isAddition === false) {
+      data = { ...data, isModified: isNodeModified };
+    }
     if (isObjectNull(updateData)) {
       data = {
         ...data,
         isAddition: true,
       };
     }
-
+    // console.log("da", data);
     onSubmit(data);
   };
 
@@ -481,7 +549,10 @@ const NodeForm = ({
                         getOptionLabel={(op) => op?.nameBn}
                         getOptionValue={(op) => op?.id}
                         name={`manpowerList.${index}.postDTO`}
-                        onChange={(t) => onPostChange(index, t)}
+                        onChange={(t) => {
+                          onPostChange(index, t);
+                          onManpowerModified(field, index, t, "postDTO");
+                        }}
                         loadOptions={getAsyncPostList}
                         isError={!!errors?.manpowerList?.[index]?.postDTO}
                         errorMessage={
@@ -506,6 +577,7 @@ const NodeForm = ({
                             `manpowerList.${index}.gradeOrder`,
                             t?.displayOrder
                           );
+                          onManpowerModified(field, index, t, "gradeDTO");
                         }}
                         noMargin
                         isError={!!errors?.manpowerList?.[index]?.gradeDTO}
@@ -523,12 +595,13 @@ const NodeForm = ({
                         getOptionValue={(op) => op?.metaKey}
                         defaultValue={cadreObj}
                         name={`manpowerList.${index}.serviceTypeDto`}
-                        onChange={(t) =>
+                        onChange={(t) => {
                           setValue(
                             `manpowerList.${index}.serviceTypeKey`,
                             t?.metaKey
-                          )
-                        }
+                          );
+                          onManpowerModified(field, index, t, "serviceTypeDto");
+                        }}
                         noMargin
                         isError={
                           !!errors?.manpowerList?.[index]?.serviceTypeDto
@@ -547,6 +620,13 @@ const NodeForm = ({
                               required: "জনবল সংখ্যা লিখুন",
                               setValueAs: (v) => numBnToEn(v),
                               validate: manpowerNumberCheck,
+                              onBlur: (t) =>
+                                onManpowerModified(
+                                  field,
+                                  index,
+                                  t?.target?.value,
+                                  "numberOfEmployee"
+                                ),
                             }
                           ),
                         }}
@@ -575,6 +655,13 @@ const NodeForm = ({
                         registerProperty={{
                           ...register(`manpowerList.${index}.postType`, {
                             required: " ",
+                            onBlur: (t) =>
+                              onManpowerModified(
+                                field,
+                                index,
+                                t?.target?.value,
+                                "postType"
+                              ),
                           }),
                         }}
                         isError={!!errors?.manpowerList?.[index]?.postType}
@@ -600,6 +687,12 @@ const NodeForm = ({
                                 e.target.checked
                                   ? setIsHeadIndex(index)
                                   : setIsHeadIndex(null);
+                                onManpowerModified(
+                                  field,
+                                  index,
+                                  e.target.checked,
+                                  "isHead"
+                                );
                               },
                             }),
                           }}

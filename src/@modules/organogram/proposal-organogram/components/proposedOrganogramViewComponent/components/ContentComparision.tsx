@@ -1,4 +1,4 @@
-import { Icon, toast } from "@gems/components";
+import { toast } from "@gems/components";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
@@ -44,14 +44,14 @@ const ContentComparision = ({
             .catch((e) => toast.error(e?.message));
           break;
 
-        case "task_builder_main_activity":
-          // Approved Main Acitivities Data
-          SERVICE.mainActivityByOrganogramId(previousOrganogramId)
-            .then((resp) => {
-              setPreviousApprovedData(resp?.body);
-            })
-            .catch((e) => toast.error(e?.message));
-          break;
+        // case "task_builder_main_activity":
+        //   // Approved Main Acitivities Data
+        //   SERVICE.mainActivityByOrganogramId(previousOrganogramId)
+        //     .then((resp) => {
+        //       setPreviousApprovedData(resp?.body);
+        //     })
+        //     .catch((e) => toast.error(e?.message));
+        //   break;
 
         case "task_builder_boa":
           // Approved Business of Allocation Data
@@ -101,7 +101,7 @@ const ContentComparision = ({
       <div className="d-flex flex-wrap flex-md-nowrap align-items-center px-md-10">
         {/* {!sameData && ( */}
         <>
-          <div className="w-100">
+          {/* <div className="w-100">
             {content === "manpower" ? (
               <ManPowerList
                 isLoading={false}
@@ -165,7 +165,7 @@ const ContentComparision = ({
               color="primary"
               size={40}
             />
-          </div>
+          </div> */}
         </>
         {/* )} */}
         <div className="w-100">
@@ -175,21 +175,21 @@ const ContentComparision = ({
               data={proposedData}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_MANPOWER}
+              title={LABEL.MANPOWER}
             />
           ) : content === "task_builder_main_activity" ? (
             <ActivitiesList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_MAIN_ACTIVITY}
+              title={LABEL.MAIN_ACTIVITY}
             />
           ) : content === "task_builder_boa" ? (
             <AllocationOfBusinessList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_BUSINESS_OF_ALLOCATION}
+              title={LABEL.BUSINESS_OF_ALLOCATION}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
@@ -197,21 +197,21 @@ const ContentComparision = ({
               inventoryData={proposedData?.inventoryData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_INVENTORY}
+              title={LABEL.INVENTORY}
             />
           ) : content === "abbreviation" ? (
             <AbbreviationList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_ABBREVIATION}
+              title={LABEL.ABBREVIATION}
             />
           ) : content === "attached_org" ? (
             <AttachedOrgList
               data={proposedData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_ATTACHED_ORGANIZATION}
+              title={LABEL.ATTACHED_ORGANIZATION}
             />
           ) : null}
         </div>

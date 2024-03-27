@@ -277,18 +277,24 @@ const ProposalOrganogramEditComponent = ({
           <div className="col-md-6">
             <ActivitiesForm
               formProps={formProps}
+              updateData={updateData?.mainActivitiesDtoList || []}
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
           <div className="col-md-6 mt-md-0 mt-3">
             <AllocationOfBusinessForm
               formProps={formProps}
+              updateData={updateData?.businessAllocationDtoList || []}
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
           <div className="col-12 mt-3">
             <EquipmentsForm
               formProps={formProps}
+              updateInventoryData={updateData?.inventoryDtoList || []}
+              updateMiscellaneousPointData={
+                updateData?.miscellaneousPointDtoList || []
+              }
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
@@ -306,7 +312,10 @@ const ProposalOrganogramEditComponent = ({
             />
           </div>
           <div className="col-md-6 mt-3">
-            <AbbreviationForm formProps={formProps} />
+            <AbbreviationForm
+              formProps={formProps}
+              updateData={updateData?.abbreviationDtoList}
+            />
           </div>
           <div className="col-md-6 mt-3">
             <NotesForm formProps={formProps} />
