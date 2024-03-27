@@ -1,4 +1,4 @@
-import { toast } from "@gems/components";
+import { Icon, toast } from "@gems/components";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
@@ -96,30 +96,44 @@ const ContentComparision = ({
       }
   }, [previousOrganogramId]);
 
+  let proposeData =
+    proposedData?.length > 0
+      ? proposedData?.filter(
+          (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
+        )
+      : proposedData;
+
+  let currentData =
+    proposedData?.length > 0
+      ? proposedData?.filter(
+          (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
+        )
+      : proposedData;
+
   return (
     <div className=" card border p-3">
       <div className="d-flex flex-wrap flex-md-nowrap align-items-center px-md-10">
         {/* {!sameData && ( */}
         <>
-          {/* <div className="w-100">
+          <div className="w-100">
             {content === "manpower" ? (
               <ManPowerList
                 isLoading={false}
-                data={previousApprovedData}
+                data={proposedData}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_MANPOWER}
               />
             ) : content === "task_builder_main_activity" ? (
               <ActivitiesList
-                data={previousApprovedData || []}
+                data={currentData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_MAIN_ACTIVITY}
               />
             ) : content === "task_builder_boa" ? (
               <AllocationOfBusinessList
-                data={previousApprovedData || []}
+                data={currentData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_BUSINESS_OF_ALLOCATION}
@@ -165,7 +179,7 @@ const ContentComparision = ({
               color="primary"
               size={40}
             />
-          </div> */}
+          </div>
         </>
         {/* )} */}
         <div className="w-100">
@@ -179,36 +193,36 @@ const ContentComparision = ({
             />
           ) : content === "task_builder_main_activity" ? (
             <ActivitiesList
-              data={proposedData || []}
+              data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.MAIN_ACTIVITY}
             />
           ) : content === "task_builder_boa" ? (
             <AllocationOfBusinessList
-              data={proposedData || []}
+              data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.BUSINESS_OF_ALLOCATION}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
-              data={proposedData?.data || []}
-              inventoryData={proposedData?.inventoryData || []}
+              data={proposeData?.data || []}
+              inventoryData={proposeData?.inventoryData || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.INVENTORY}
             />
           ) : content === "abbreviation" ? (
             <AbbreviationList
-              data={proposedData || []}
+              data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.ABBREVIATION}
             />
           ) : content === "attached_org" ? (
             <AttachedOrgList
-              data={proposedData || []}
+              data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.ATTACHED_ORGANIZATION}
