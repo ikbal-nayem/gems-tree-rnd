@@ -97,18 +97,38 @@ const ContentComparision = ({
   }, [previousOrganogramId]);
 
   let proposeData =
-    proposedData?.length > 0
+    content === "equipments"
+      ? {
+          data: proposedData?.data?.filter(
+            (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
+          ),
+          inventoryData: proposedData?.inventoryData?.filter(
+            (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
+          ),
+        }
+      : proposedData?.length > 0
       ? proposedData?.filter(
           (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
         )
       : proposedData;
 
   let currentData =
-    proposedData?.length > 0
+    content === "equipments"
+      ? {
+          data: proposedData?.data?.filter(
+            (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
+          ),
+          inventoryData: proposedData?.inventoryData?.filter(
+            (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
+          ),
+        }
+      : proposedData?.length > 0
       ? proposedData?.filter(
           (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
         )
       : proposedData;
+
+  console.log(proposedData);
 
   return (
     <div className=" card border p-3">
@@ -140,8 +160,8 @@ const ContentComparision = ({
               />
             ) : content === "equipments" ? (
               <EquipmentsList
-                data={previousApprovedData?.data || []}
-                inventoryData={previousApprovedData?.inventoryData || []}
+                data={currentData?.data || []}
+                inventoryData={currentData?.inventoryData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_INVENTORY}
@@ -189,21 +209,21 @@ const ContentComparision = ({
               data={proposedData}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.MANPOWER}
+              title={LABEL.PROPOSED_MANPOWER}
             />
           ) : content === "task_builder_main_activity" ? (
             <ActivitiesList
               data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.MAIN_ACTIVITY}
+              title={LABEL.PROPOSED_MAIN_ACTIVITY}
             />
           ) : content === "task_builder_boa" ? (
             <AllocationOfBusinessList
               data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.BUSINESS_OF_ALLOCATION}
+              title={LABEL.PROPOSED_BUSINESS_OF_ALLOCATION}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
@@ -211,21 +231,21 @@ const ContentComparision = ({
               inventoryData={proposeData?.inventoryData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.INVENTORY}
+              title={LABEL.PROPOSED_INVENTORY}
             />
           ) : content === "abbreviation" ? (
             <AbbreviationList
               data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.ABBREVIATION}
+              title={LABEL.PROPOSED_ABBREVIATION}
             />
           ) : content === "attached_org" ? (
             <AttachedOrgList
               data={proposeData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.ATTACHED_ORGANIZATION}
+              title={LABEL.PROPOSED_ATTACHED_ORGANIZATION}
             />
           ) : null}
         </div>
