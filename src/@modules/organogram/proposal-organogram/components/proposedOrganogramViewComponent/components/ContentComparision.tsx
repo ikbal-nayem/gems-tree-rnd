@@ -10,8 +10,7 @@ import EquipmentsList from "./EquipmentsList";
 import ManPowerList from "./ManPowerList";
 
 interface IForm {
-  previousOrganogramId: any;
-  proposedData: any;
+  data: any;
   langEn?: boolean;
   content:
     | "manpower"
@@ -22,125 +21,50 @@ interface IForm {
     | "attached_org";
 }
 
-const ContentComparision = ({
-  previousOrganogramId,
-  proposedData,
-  langEn,
-  content,
-}: IForm) => {
-  const [previousApprovedData, setPreviousApprovedData] = useState<any>();
-  // const [sameData, setSameData] = useState<boolean>(true);
-  const SERVICE = ProposalService.FETCH;
-
-  useEffect(() => {
-    if (previousOrganogramId)
-      switch (content) {
-        case "abbreviation":
-          // Approved abbreviation Data
-          SERVICE.abbreviationByOrganogramId(previousOrganogramId)
-            .then((resp) => {
-              setPreviousApprovedData(resp?.body);
-            })
-            .catch((e) => toast.error(e?.message));
-          break;
-
-        // case "task_builder_main_activity":
-        //   // Approved Main Acitivities Data
-        //   SERVICE.mainActivityByOrganogramId(previousOrganogramId)
-        //     .then((resp) => {
-        //       setPreviousApprovedData(resp?.body);
-        //     })
-        //     .catch((e) => toast.error(e?.message));
-        //   break;
-
-        case "task_builder_boa":
-          // Approved Business of Allocation Data
-          SERVICE.businessOfAllocationByOrganogramId(previousOrganogramId)
-            .then((resp) => {
-              setPreviousApprovedData(resp?.body);
-            })
-            .catch((e) => toast.error(e?.message));
-          break;
-
-        case "attached_org":
-          // Approved Attached Organization Data
-          SERVICE.attachedOrganizationById(previousOrganogramId)
-            .then((resp) => {
-              setPreviousApprovedData(resp?.body);
-            })
-            .catch((e) => toast.error(e?.message));
-          break;
-
-        case "equipments":
-          // Approved Inventory Data
-          SERVICE.inventoryByOrganogramId(previousOrganogramId).then((resp) => {
-            SERVICE.miscellaneousPointByOrganogramId(previousOrganogramId).then(
-              (resp1) => {
-                setPreviousApprovedData({
-                  data: resp1?.body,
-                  inventoryData: resp?.body,
-                });
-              }
-            );
-          });
-          break;
-
-        case "manpower":
-          // Approved Manpower Data
-          SERVICE.manpowerSummaryById(previousOrganogramId)
-            .then((resp) => {
-              setPreviousApprovedData(resp?.body);
-            })
-            .catch((e) => toast.error(e?.message));
-          break;
-      }
-  }, [previousOrganogramId]);
-
+const ContentComparision = ({ data, langEn, content }: IForm) => {
   let proposeData =
     content === "equipments"
       ? {
-          data: proposedData?.data?.filter(
+          data: data?.data?.filter(
             (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
           ),
           inventoryData:
-            proposedData?.inventoryData?.length > 0 &&
-            proposedData?.inventoryData?.map((test) => {
+            data?.inventoryData?.length > 0 &&
+            data?.inventoryData?.map((inData) => {
               return {
-                ...test,
-                itemList: test?.itemList?.filter(
+                ...inData,
+                itemList: inData?.itemList?.filter(
                   (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
                 ),
               };
             }),
         }
-      : proposedData?.length > 0
-      ? proposedData?.filter(
-          (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
-        )
-      : proposedData;
+      : data?.length > 0
+      ? data?.filter((pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified)
+      : data;
 
   let currentData =
     content === "equipments"
       ? {
-          data: proposedData?.data?.filter(
+          data: data?.data?.filter(
             (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
           ),
           inventoryData:
-            proposedData?.inventoryData?.length > 0 &&
-            proposedData?.inventoryData?.map((test) => {
+            data?.inventoryData?.length > 0 &&
+            data?.inventoryData?.map((inData) => {
               return {
-                ...test,
-                itemList: test?.itemList?.filter(
+                ...inData,
+                itemList: inData?.itemList?.filter(
                   (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
                 ),
               };
             }),
         }
-      : proposedData?.length > 0
-      ? proposedData?.filter(
+      : data?.length > 0
+      ? data?.filter(
           (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
         )
-      : proposedData;
+      : data;
 
   return (
     <div className=" card border p-3">
@@ -151,7 +75,7 @@ const ContentComparision = ({
             {content === "manpower" ? (
               <ManPowerList
                 isLoading={false}
-                data={proposedData}
+                data={data}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_MANPOWER}
@@ -180,14 +104,14 @@ const ContentComparision = ({
               />
             ) : content === "abbreviation" ? (
               <AbbreviationList
-                data={previousApprovedData || []}
+                data={currentData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_ABBREVIATION}
               />
             ) : content === "attached_org" ? (
               <AttachedOrgList
-                data={previousApprovedData || []}
+                data={currentData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_ATTACHED_ORGANIZATION}
@@ -218,7 +142,7 @@ const ContentComparision = ({
           {content === "manpower" ? (
             <ManPowerList
               isLoading={false}
-              data={proposedData}
+              data={data}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_MANPOWER}

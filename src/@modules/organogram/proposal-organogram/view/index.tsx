@@ -174,30 +174,21 @@ const ProposedOrganogramView = () => {
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <>
                   <ContentComparision
-                    previousOrganogramId={previousOrganogramId}
-                    proposedData={organogramData?.mainActivitiesDtoList || []}
+                    data={organogramData?.mainActivitiesDtoList || []}
                     content="task_builder_main_activity"
                   />
                   <div className="mt-3">
                     <ContentComparision
-                      previousOrganogramId={previousOrganogramId}
-                      proposedData={
-                        organogramData?.businessAllocationDtoList || []
-                      }
+                      data={organogramData?.businessAllocationDtoList || []}
                       content="task_builder_boa"
                     />
                   </div>
                 </>
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
-                <ContentComparision
-                  previousOrganogramId={previousOrganogramId}
-                  proposedData={manpowerData}
-                  content="manpower"
-                />
+                <ContentComparision data={manpowerData} content="manpower" />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision
-                  previousOrganogramId={previousOrganogramId}
-                  proposedData={{
+                  data={{
                     inventoryData: inventoryData,
                     data: organogramData?.miscellaneousPointDtoList,
                   }}
@@ -205,14 +196,12 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.ABBREVIATION ? (
                 <ContentComparision
-                  previousOrganogramId={previousOrganogramId}
-                  proposedData={abbreviationList}
+                  data={organogramData?.abbreviationDtoList || []}
                   content="abbreviation"
                 />
               ) : t?.key === TAB_KEY.ATTACHED_ORGANIZATION ? (
                 <ContentComparision
-                  previousOrganogramId={previousOrganogramId}
-                  proposedData={attachOrgData}
+                  data={attachOrgData}
                   content="attached_org"
                 />
               ) : null}
