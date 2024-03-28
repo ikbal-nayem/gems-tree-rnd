@@ -102,9 +102,16 @@ const ContentComparision = ({
           data: proposedData?.data?.filter(
             (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
           ),
-          inventoryData: proposedData?.inventoryData?.filter(
-            (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
-          ),
+          inventoryData:
+            proposedData?.inventoryData?.length > 0 &&
+            proposedData?.inventoryData?.map((test) => {
+              return {
+                ...test,
+                itemList: test?.itemList?.filter(
+                  (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
+                ),
+              };
+            }),
         }
       : proposedData?.length > 0
       ? proposedData?.filter(
@@ -118,17 +125,22 @@ const ContentComparision = ({
           data: proposedData?.data?.filter(
             (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
           ),
-          inventoryData: proposedData?.inventoryData?.filter(
-            (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
-          ),
+          inventoryData:
+            proposedData?.inventoryData?.length > 0 &&
+            proposedData?.inventoryData?.map((test) => {
+              return {
+                ...test,
+                itemList: test?.itemList?.filter(
+                  (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
+                ),
+              };
+            }),
         }
       : proposedData?.length > 0
       ? proposedData?.filter(
           (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
         )
       : proposedData;
-
-  console.log(proposedData);
 
   return (
     <div className=" card border p-3">
