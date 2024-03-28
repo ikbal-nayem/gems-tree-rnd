@@ -38,11 +38,11 @@ const OrganogramTable: FC<TableProps> = ({
   getDataList,
 }) => {
   let columns: ITableHeadColumn[] = [
-          { title: COMMON_LABELS.SL_NO, width: 50 },
-          { title: LABELS.ORGANIZATION_NAME, width: 250 },
-          { title: LABELS.ORGANOGRAM_DATE, width: 100 },
-          { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
-        ];
+    { title: COMMON_LABELS.SL_NO, width: 50 },
+    { title: LABELS.ORGANIZATION_NAME, width: 250 },
+    { title: LABELS.ORGANOGRAM_DATE, width: 100 },
+    { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
+  ];
 
   const navigate = useNavigate();
   //   const navigateToDetails = (id: string) => {
@@ -74,8 +74,8 @@ const OrganogramTable: FC<TableProps> = ({
               <TableCell
                 text={
                   // item?.isEnamCommittee
-                  //   ? "Enam Committe Report (26/12/1982)" : 
-                   item?.organogramDate
+                  //   ? "Enam Committe Report (26/12/1982)" :
+                  item?.organogramDate
                     ? generateDateFormat(
                         item?.organogramDate,
                         DATE_PATTERN.GOVT_STANDARD
@@ -95,7 +95,7 @@ const OrganogramTable: FC<TableProps> = ({
                   </DropdownItem>
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">হালনাগাদ করুন</h6>
+                    <h6 className="mb-0 ms-3">পরবর্তী অর্গানোগ্রাম তৈরি</h6>
                   </DropdownItem>
                   {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />

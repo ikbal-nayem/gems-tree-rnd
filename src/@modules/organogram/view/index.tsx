@@ -88,7 +88,7 @@ const OrganogramView = () => {
                 isPreviousVerison ? "text-primary text-bold" : ""
               }`}
             >
-              {isPreviousVerison ? "ভার্সন সমূহ" : "পূর্ববর্তী ভার্সন সমূহ"}
+              {isPreviousVerison ? "ভার্সনসমূহ" : "পূর্ববর্তী ভার্সনসমূহ"}
             </span>
           </Button>
         </div>
