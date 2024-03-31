@@ -1,7 +1,8 @@
 export const MENU = {
   BN: {
     TEMPLATE: "অর্গানোগ্রাম টেমপ্লেট",
-    TEMPLATE_CREATE: "নতুন অর্গানোগ্রাম তৈরি",
+    TEMPLATE_CREATE: "টেমপ্লেট তৈরি",
+    EXIST_ORGANOGRAM_CREATE: "বিদ্যমান অর্গানোগ্রাম তৈরি",
     EMPLOYEE_LIST: "কর্মকর্তা/কর্মচারী",
     TEMPLATE_LIST: "টেমপ্লেট থেকে অর্গানোগ্রাম তৈরি",
     PROPOSAL_LIST: "প্রস্তাবসমূহ",
@@ -25,6 +26,7 @@ export const MENU = {
   EN: {
     TEMPLATE: "Organogram Template",
     TEMPLATE_CREATE: "New Organogram Create",
+    EXIST_ORGANOGRAM_CREATE:"Exist Organogram Create",
     EMPLOYEE_LIST: "Employee",
     TEMPLATE_LIST: "Organogram Create From Template",
     PROPOSAL_LIST: "Proposal List",

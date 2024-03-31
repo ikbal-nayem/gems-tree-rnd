@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TemplateComponent from "../components/templateComponent";
 
-const TemplateCreate = () => {
+const ExistOrganogramCreate = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const TemplateCreate = () => {
     OMSService.templateCreate(fd)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST);
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));
@@ -54,9 +54,9 @@ const TemplateCreate = () => {
     <TemplateComponent
       onSubmit={onSubmit}
       isSubmitLoading={isSubmitLoading}
-      isExistOrganogramCreate={false}
+      isExistOrganogramCreate={true}
     />
   );
 };
 
-export default TemplateCreate;
+export default ExistOrganogramCreate;
