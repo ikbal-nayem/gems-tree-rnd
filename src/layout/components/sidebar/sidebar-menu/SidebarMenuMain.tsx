@@ -39,6 +39,12 @@ const menuData = [
         hasBullet: true,
       },
       {
+        routeKey: ROUTE_KEY.OMS_ORG_EXIST_ORGANOGRAM_CREATE,
+        link: ROUTE_L2.ORG_EXIST_ORGANOGRAM_CREATE,
+        title: MENU.BN.EXIST_ORGANOGRAM_CREATE,
+        hasBullet: true,
+      },
+      {
         routeKey: ROUTE_KEY.OMS_ORG_TEMPLATE_LIST,
         link: ROUTE_L2.ORG_TEMPLATE_LIST,
         title: MENU.BN.TEMPLATE_LIST,
