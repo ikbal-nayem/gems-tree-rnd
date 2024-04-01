@@ -399,7 +399,7 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {!isNotEnamCommittee && !isTemplate && (
+          {!isNotEnamCommittee && (draftListRecord || !isTemplate) && (
             <>
               <div className="col-md-6 col-12">
                 <Input
