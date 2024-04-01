@@ -63,7 +63,9 @@ const TemplateComponent = ({
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
   const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
-  const [isTemplate] = useState<boolean>(!isExistOrganogramCreate);
+  const [isTemplate, setIsTemplate] = useState<boolean>(
+    !isExistOrganogramCreate
+  );
 
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
@@ -143,7 +145,7 @@ const TemplateComponent = ({
       });
 
       setIsNotEnamCommittee(!updateData?.isEnamCommittee);
-      // setIsTemplate(updateData?.isTemplate);
+      setIsTemplate(updateData?.isTemplate);
     } else {
       // reset({
       //   isTemplate: true,
@@ -397,12 +399,12 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {!isNotEnamCommittee && (
+          {!isNotEnamCommittee && !isTemplate && (
             <>
               <div className="col-md-6 col-12">
                 <Input
-                  label="অর্গানাইজেশন"
-                  placeholder="অর্গানাইজেশন লিখুন"
+                  label="শিরোনাম-১"
+                  placeholder="শিরোনাম-১ লিখুন"
                   // isRequired={true}
                   defaultValue={
                     isObjectNull(updateData)
@@ -422,8 +424,8 @@ const TemplateComponent = ({
               </div>
               <div className="col-md-6 col-12">
                 <Input
-                  label="অর্গানাইজেশন মিসেলিনিয়াস"
-                  placeholder="অর্গানাইজেশন মিসেলিনিয়াস লিখুন"
+                  label="শিরোনাম-২"
+                  placeholder="শিরোনাম-২ লিখুন"
                   // isRequired={true}
                   defaultValue={
                     !isObjectNull(updateData)

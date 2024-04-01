@@ -31,6 +31,7 @@ const TemplateCreate = () => {
       ...data,
       attachmentDtoList: attachmentDto,
       isTemplate: true,
+      organizationHeader: "Organization",
       status: "NEW",
     };
 

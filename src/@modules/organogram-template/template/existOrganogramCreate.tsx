@@ -30,7 +30,7 @@ const ExistOrganogramCreate = () => {
     let reqPayload = {
       ...data,
       attachmentDtoList: attachmentDto,
-      isTemplate: true,
+      isTemplate: false,
       status: "NEW",
     };
 
