@@ -35,12 +35,14 @@ interface ITemplateComponent {
   updateData?: IObject;
   onSubmit: (data) => void;
   isSubmitLoading: boolean;
+  isExistOrganogramCreate?: boolean;
 }
 
 const TemplateComponent = ({
   updateData,
   onSubmit,
   isSubmitLoading,
+  isExistOrganogramCreate = false,
 }: ITemplateComponent) => {
   const [treeData, setTreeData] = useState<IObject>(
     !isObjectNull(updateData) &&
@@ -53,6 +55,7 @@ const TemplateComponent = ({
           children: [],
         }
   );
+
   const [duplicateTitleBnDitected, setDuplicateTitleBnDitected] =
     useState<boolean>(false);
   const [duplicateTitleEnDitected, setDuplicateTitleEnDitected] =
@@ -60,7 +63,9 @@ const TemplateComponent = ({
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
   const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
-  const [isTemplate, setIsTemplate] = useState<boolean>(false);
+  const [isTemplate, setIsTemplate] = useState<boolean>(
+    !isExistOrganogramCreate
+  );
 
   const [organogramChangeActionList, setOrganogramChangeActionList] = useState<
     IObject[]
@@ -140,7 +145,7 @@ const TemplateComponent = ({
       });
 
       setIsNotEnamCommittee(!updateData?.isEnamCommittee);
-      // setIsTemplate(updateData?.isTemplate);
+      setIsTemplate(updateData?.isTemplate);
     } else {
       // reset({
       //   isTemplate: true,
@@ -274,9 +279,9 @@ const TemplateComponent = ({
     onSubmit(reqPayload);
   };
 
-  const onIsTemplateChange = (checked: boolean) => {
-    setIsTemplate(checked);
-  };
+  // const onIsTemplateChange = (checked: boolean) => {
+  //   setIsTemplate(checked);
+  // };
 
   const onIsEnamCommitteeChange = (checked: boolean) => {
     setIsNotEnamCommittee(!checked);
@@ -320,7 +325,7 @@ const TemplateComponent = ({
       <div className="card col-md-12 border p-3 mb-4">
         {isObjectNull(updateData) && (
           <div className="d-flex justify-content-start gap-6">
-            <Checkbox
+            {/* <Checkbox
               label="টেমপ্লেট ?"
               labelClass="fw-bold fs-2"
               noMargin
@@ -331,7 +336,7 @@ const TemplateComponent = ({
                 }),
               }}
             />
-            <span className="text-primary fs-2 mx-3">|</span>
+            <span className="text-primary fs-2 mx-3">|</span> */}
             <Checkbox
               label={
                 "এনাম কমিটি অনুমোদিত " +
@@ -394,12 +399,12 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {!isNotEnamCommittee && (
+          {!isNotEnamCommittee && !isTemplate && (
             <>
               <div className="col-md-6 col-12">
                 <Input
-                  label="অর্গানাইজেশন"
-                  placeholder="অর্গানাইজেশন লিখুন"
+                  label="শিরোনাম-১"
+                  placeholder="শিরোনাম-১ লিখুন"
                   // isRequired={true}
                   defaultValue={
                     isObjectNull(updateData)
@@ -419,8 +424,8 @@ const TemplateComponent = ({
               </div>
               <div className="col-md-6 col-12">
                 <Input
-                  label="অর্গানাইজেশন মিসেলিনিয়াস"
-                  placeholder="অর্গানাইজেশন মিসেলিনিয়াস লিখুন"
+                  label="শিরোনাম-২"
+                  placeholder="শিরোনাম-২ লিখুন"
                   // isRequired={true}
                   defaultValue={
                     !isObjectNull(updateData)
