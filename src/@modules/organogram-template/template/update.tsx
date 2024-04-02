@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { IObject, isObjectNull } from "@gems/utils";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import TemplateComponent from "../components/templateComponent";
-import { OMSService } from "../../../@services/api/OMS.service";
 import { ContentPreloader, NoData, toast } from "@gems/components";
-import TemplateEditComponent from "../components/templateEditComponent";
+import { IObject, isObjectNull, notNullOrUndefined } from "@gems/utils";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { isNotEmptyList } from "utility/utils";
+import { OMSService } from "../../../@services/api/OMS.service";
+import TemplateComponent from "../components/templateComponent";
+import TemplateEditComponent from "../components/templateEditComponent";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -71,11 +71,28 @@ const TemplateUpdate = () => {
     OMSService.templateUpdate(fd)
       .then((res) => {
         toast.success(res?.message);
-        navigate(
-          isNotEmptyList(templateData?.templateOrganizationsDtoList)
-            ? ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST
-            : ROUTE_L2.ORG_TEMPLATE_LIST
-        );
+        if (isNotEmptyList(templateData?.templateOrganizationsDtoList)) {
+          if (reqPayload?.id) {
+            OMSService.getAttachedOrganizationByTemplateId(reqPayload?.id)
+              .then((resp) => {
+                if (!notNullOrUndefined(resp?.body) || resp?.body?.length < 1) {
+                  toast.warning("কোন প্রতিষ্ঠান সংযুক্ত করা হয় নি ...");
+                  return;
+                }
+                if (resp?.body?.length === 1) {
+                  navigate(
+                    ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + reqPayload?.id,
+                    {
+                      state: resp?.body?.[0],
+                    }
+                  );
+                }
+              })
+              .catch((e) => navigate(ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST));
+          }
+        } else {
+          navigate(ROUTE_L2.ORG_TEMPLATE_LIST);
+        }
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));
