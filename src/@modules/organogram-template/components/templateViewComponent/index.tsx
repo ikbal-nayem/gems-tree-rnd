@@ -217,12 +217,14 @@ const TemplateViewComponent = ({
           clone.querySelector(".allocationBlock").style.paddingBottom = "30px";
           clone.querySelector(".treeTitle").style.overflow = "visible";
           clone.querySelector(".treeTitle").style.height = "fit-content";
+          clone.querySelector(".orgchart").style.transform = "";
+          clone.querySelector(".orgchart").style.paddingBottom = "15px";
+          clone.querySelector(".orgchart").style.minWidth = "100%";
+          // clone.querySelector(".orgchart").style.minWidth = "2140px";
           clone.querySelector(".dataBlock").style.overflow = "auto";
           clone.querySelector(".dataBlock").style.height = "fit-content";
           clone.querySelector(".dataBlock").style.padding = "20px";
           clone.querySelector(".dataBlock").style.paddingBottom = "30px";
-          clone.querySelector(".orgchart").style.paddingBottom = "15px";
-          clone.querySelector(".orgchart").style.minWidth = "2140px";
         },
       });
 
