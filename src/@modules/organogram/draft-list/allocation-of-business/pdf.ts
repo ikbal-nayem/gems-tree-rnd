@@ -1,4 +1,3 @@
-import { COMMON_LABELS } from "@constants/common.constant";
 import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
 
 const columns = [
@@ -7,7 +6,10 @@ const columns = [
   { nameBn: "কর্মবন্টন (ইংরেজি)", key: "businessOfAllocationEn" },
 ];
 
-export const organizationTypePDFContent = (data, orgName): TDocumentDefinitions => {
+export const organizationTypePDFContent = (
+  data,
+  orgName
+): TDocumentDefinitions => {
   return {
     content: [
       { text: orgName + " এর কর্মবন্টনের তালিকা", style: "header" },
@@ -31,9 +33,7 @@ export const organizationTypePDFContent = (data, orgName): TDocumentDefinitions 
                       ];
                     default:
                       return {
-                        text: numEnToBn(
-                          d[col?.key] || "-"
-                        ),
+                        text: numEnToBn(d[col?.key] || "-"),
                         alignment: "start",
                       };
                   }

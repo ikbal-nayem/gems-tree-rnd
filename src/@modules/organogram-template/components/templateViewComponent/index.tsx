@@ -324,7 +324,7 @@ const TemplateViewComponent = ({
               !isObjectNull(updateData?.organizationGroupDto) && (
                 <div className="fs-2 text-center fw-bolder mb-0">
                   <span className="me-1">{LABEL.TEMPLATE_TYPE}: </span>
-                  {updateData?.isEnamCommittee
+                  {updateData?.isEnamCommittee || langEn
                     ? updateData?.organizationGroupDto?.nameEn
                     : updateData?.organizationGroupDto?.nameBn}
                 </div>
