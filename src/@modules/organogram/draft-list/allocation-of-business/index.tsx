@@ -135,12 +135,7 @@ const AllocationOfBusiness = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    let payload = {
-      body: {
-        ids: [deleteData?.id || ""],
-      },
-    };
-    OMSService.DELETE.organogramBusinessAllocation(payload)
+    OMSService.DELETE.organogramBusinessAllocation(deleteData?.id || "")
       .then((res) => {
         toast.success(res?.message);
         getDataList();
