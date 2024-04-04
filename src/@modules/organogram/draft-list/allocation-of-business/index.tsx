@@ -6,29 +6,25 @@ import {
   ContentPreloader,
   DownloadMenu,
   NoData,
-  Pagination,
   toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   DATE_PATTERN,
   IMeta,
-  IObject,
   exportXLSX,
   generateDateFormat,
   generatePDF,
-  notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import DataTable from "./Table";
-import { useAuth } from "@context/Auth";
 import { isNotEmptyList } from "utility/utils";
-import { organizationTypePDFContent } from "./pdf";
-import FormUpdate from "./FormUpdate";
 import FormCreate from "./FormCreate";
+import FormUpdate from "./FormUpdate";
+import DataTable from "./Table";
+import { organizationTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
   page: 0,
@@ -139,12 +135,7 @@ const AllocationOfBusiness = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    let payload = {
-      body: {
-        ids: [deleteData?.id || ""],
-      },
-    };
-    OMSService.DELETE.organogramBusinessAllocation(payload)
+    OMSService.DELETE.organogramBusinessAllocation(deleteData?.id || "")
       .then((res) => {
         toast.success(res?.message);
         getDataList();

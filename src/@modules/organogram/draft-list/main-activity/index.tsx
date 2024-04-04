@@ -99,12 +99,7 @@ const MainActivity = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    let payload = {
-      body: {
-        ids: [deleteData?.id || ""],
-      },
-    };
-    OMSService.DELETE.organogramMainActivity(payload)
+    OMSService.DELETE.organogramMainActivity(deleteData?.id||"")
       .then((res) => {
         toast.success(res?.message);
         getDataList();
