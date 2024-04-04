@@ -211,16 +211,17 @@ const TemplateViewComponent = ({
             (clone.querySelector(".animate__fadeIn").style.animation = "none");
           clone.querySelector(".allocationBlock").style.overflow = "auto";
           clone.querySelector(".allocationBlock").style.height = "fit-content";
+          clone.querySelector(".treeBlock").style.height = "fit-content";
+          // clone.querySelector(".treeBlock .orgchart").style.minWidth = "2140px";
           clone.querySelector(".allocationBlock").style.paddingTop = "20px";
           clone.querySelector(".allocationBlock").style.paddingLeft = "200px";
           clone.querySelector(".allocationBlock").style.paddingRight = "200px";
           clone.querySelector(".allocationBlock").style.paddingBottom = "30px";
           clone.querySelector(".treeTitle").style.overflow = "visible";
           clone.querySelector(".treeTitle").style.height = "fit-content";
-          clone.querySelector(".orgchart").style.transform = "";
+          // clone.querySelector(".orgchart").style.transform = "";
           clone.querySelector(".orgchart").style.paddingBottom = "15px";
-          clone.querySelector(".orgchart").style.minWidth = "100%";
-          // clone.querySelector(".orgchart").style.minWidth = "2140px";
+          // clone.querySelector(".orgchart").style.minWidth = "100%";
           clone.querySelector(".dataBlock").style.overflow = "auto";
           clone.querySelector(".dataBlock").style.height = "fit-content";
           clone.querySelector(".dataBlock").style.padding = "20px";
@@ -385,12 +386,52 @@ const TemplateViewComponent = ({
           langEn={langEn}
         />
       </div>
-      <div className="position-relative border border-secondary mb-3">
+      <div
+        className="treeBlock"
+        style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
+      >
+        <div className="mb-6 text-center">
+          {updateData?.organizationHeader && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeader || null}
+            </p>
+          )}
+          {updateData?.organizationHeaderMsc && (
+            <p className="fs-2 mb-0">
+              {updateData?.organizationHeaderMsc || null}
+            </p>
+          )}
+          <p className="fs-2 mb-0">{orgName || titleName || null}</p>
+          {(orgParentName || orgStateParentName) && (
+            <p className="fs-2 mb-0">
+              {orgParentName || orgStateParentName || null}
+            </p>
+          )}
+          <p className="fs-3 mb-0">{versionName}</p>
+        </div>
         <OrganizationTemplateTree
           treeData={treeData}
           langEn={langEn}
           onCapturePDF={captureAndConvertToPDF}
           pdfClass="pdfGenarator"
+          isPDFLoading={isPDFLoading}
+          organogramView={organogramOrganizationView}
+          headerData={{
+            titleName: titleName || null,
+            versionName: versionName || null,
+            orgName: orgName || null,
+            orgParentName: orgParentName || orgStateParentName || null,
+            organizationHeader: updateData?.organizationHeader || null,
+            organizationHeaderMsc: updateData?.organizationHeaderMsc || null,
+          }}
+        />
+      </div>
+      <div className="position-relative border border-secondary mb-3">
+        <OrganizationTemplateTree
+          treeData={treeData}
+          langEn={langEn}
+          onCapturePDF={captureAndConvertToPDF}
+          pdfClass=""
           isPDFLoading={isPDFLoading}
           organogramView={organogramOrganizationView}
           headerData={{
