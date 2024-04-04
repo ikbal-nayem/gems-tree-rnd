@@ -399,7 +399,7 @@ const TemplateComponent = ({
             </div>
           )}
 
-          {!isNotEnamCommittee && !isTemplate && (
+          {!isNotEnamCommittee && (draftListRecord || !isTemplate) && (
             <>
               <div className="col-md-6 col-12">
                 <Input
@@ -422,7 +422,7 @@ const TemplateComponent = ({
                   // errorMessage={errors?.organizationHeader?.message as string}
                 />
               </div>
-              <div className="col-md-6 col-12">
+              {/* <div className="col-md-6 col-12">
                 <Input
                   label="শিরোনাম-২"
                   placeholder="শিরোনাম-২ লিখুন"
@@ -442,7 +442,7 @@ const TemplateComponent = ({
                   // isError={!!errors?.organizationHeaderMsc}
                   // errorMessage={errors?.organizationHeaderMsc?.message as string}
                 />
-              </div>
+              </div> */}
             </>
           )}
           <div className="col-md-6 col-12" id="orgDateBlock">

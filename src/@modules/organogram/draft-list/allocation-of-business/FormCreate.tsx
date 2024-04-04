@@ -17,7 +17,7 @@ import {
   generateDateFormat,
   numEnToBn,
 } from "@gems/utils";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 interface IForm {
@@ -27,19 +27,6 @@ interface IForm {
   submitLoading?: boolean;
   organogram?: IObject;
 }
-
-const organizationTypeStaticList = [
-  {
-    titleEn: "Type",
-    key: "ORG_CATEGORY_TYPE",
-    titleBn: "ধরণ",
-  },
-  {
-    titleEn: "Group",
-    key: "ORG_CATEGORY_GROUP",
-    titleBn: "গ্রুপ",
-  },
-];
 
 const FormCreate = ({
   isOpen,
@@ -53,13 +40,9 @@ const FormCreate = ({
     register,
     handleSubmit,
     reset,
-    setValue,
-    watch,
     control,
     formState: { errors },
   } = formProps;
-
-  const [orgParentTypeList, setOrgParentTypeList] = useState<IObject[]>([]);
 
   const isEnamCommittee = organogram?.isEnamCommittee;
   const orgName = isEnamCommittee

@@ -86,8 +86,8 @@ const FormUpdate = ({
             {!isEnamCommittee && (
               <div className="col-12 mb-4">
                 <Textarea
-                  label="কার্যক্রম (বাংলা)"
-                  placeholder="কার্যক্রম (বাংলা) লিখুন"
+                  label="কর্মসমূহ (বাংলা)"
+                  placeholder="কর্মসমূহ (বাংলা) লিখুন"
                   isRequired
                   noMargin
                   registerProperty={{
@@ -101,8 +101,8 @@ const FormUpdate = ({
             )}
             <div className="col-12">
               <Textarea
-                label="কার্যক্রম (ইংরেজি)"
-                placeholder="কার্যক্রম (ইংরেজি) লিখুন"
+                label="কর্মসমূহ (ইংরেজি)"
+                placeholder="কর্মসমূহ (ইংরেজি) লিখুন"
                 isRequired={isEnamCommittee}
                 noMargin
                 registerProperty={{
