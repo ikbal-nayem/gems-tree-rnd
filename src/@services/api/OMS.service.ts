@@ -420,16 +420,14 @@ export const OMSService = {
         payload
       ),
 
-    organogramMainActivity: async (payload): Promise<any> =>
-      await axiosIns.put(
-        OMS_SERVICE + "organogram-main-activity/delete-all",
-        payload
+    organogramMainActivity: async (id): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE + "organogram-main-activity/delete-by-id/" + id
       ),
 
-    organogramBusinessAllocation: async (payload): Promise<any> =>
-      await axiosIns.put(
-        OMS_SERVICE + "organogram-business-allocation/delete-all",
-        payload
+    organogramBusinessAllocation: async (id): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE + "organogram-business-allocation/delete-by-id/" + id
       ),
     organogramNodeDeleteById: async (nodeId): Promise<any> =>
       await axiosIns.delete(
