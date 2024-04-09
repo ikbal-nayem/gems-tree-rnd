@@ -75,7 +75,7 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
             {content === "manpower" ? (
               <ManPowerList
                 isLoading={false}
-                data={data}
+                data={data?.currentData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_MANPOWER}
@@ -142,7 +142,7 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
           {content === "manpower" ? (
             <ManPowerList
               isLoading={false}
-              data={data}
+              data={data?.proposedData || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_MANPOWER}

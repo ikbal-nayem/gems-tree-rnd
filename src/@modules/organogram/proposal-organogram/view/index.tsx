@@ -15,6 +15,9 @@ const ProposedOrganogramView = () => {
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [organogramData, setOrganogramData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
+  const [manpowerProSummaryData, setManpowerProSummaryData] = useState<
+    IObject[]
+  >([]);
   const [nodeManpowerList, setNodeManpowerList] = useState<IObject[]>([]);
   const [parentOrgData, setParentOrgData] = useState<IObject>({});
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -29,6 +32,7 @@ const ProposedOrganogramView = () => {
     getManpowerSummaryById();
     getAttachedOrganizationById();
     getNodeWiseManpowerById();
+    getManpowerProposedSummaryById();
   }, [organogramId]);
 
   const handleTabIndex = (idx: number) => {
@@ -66,6 +70,16 @@ const ProposedOrganogramView = () => {
     ProposalService.FETCH.nodeWiseManpowerById(organogramId)
       .then((resp) => {
         setNodeManpowerList(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
+  };
+
+  const getManpowerProposedSummaryById = () => {
+    setIsLoading(true);
+    ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
+      .then((resp) => {
+        setManpowerProSummaryData(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -173,7 +187,13 @@ const ProposedOrganogramView = () => {
                   </div>
                 </>
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
-                <ContentComparision data={manpowerData} content="manpower" />
+                <ContentComparision
+                  data={{
+                    proposedData: manpowerProSummaryData||[],
+                    currentData: [],
+                  }}
+                  content="manpower"
+                />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision
                   data={{
