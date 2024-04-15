@@ -14,7 +14,6 @@ const OrganogramTree = ({
   headerData,
   isPDFLoading,
   organogramView = false,
-  isPreviousVerison=false
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
@@ -62,7 +61,6 @@ const OrganogramTree = ({
             langEn={langEn}
             nodeData={nodeData}
             postList={postList}
-            isPreviousVerison={isPreviousVerison}
             onView={onView}
           />
         )}

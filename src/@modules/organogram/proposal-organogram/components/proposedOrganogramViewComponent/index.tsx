@@ -47,7 +47,6 @@ interface IProposedOrganogramViewComponent {
   parentOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
-  isPreviousVerison?: boolean;
 }
 
 const ProposedOrganogramViewComponent = ({
@@ -57,7 +56,6 @@ const ProposedOrganogramViewComponent = ({
   attachedOrganizationData,
   parentOrganizationData,
   organogramView = false,
-  isPreviousVerison = false,
 }: IProposedOrganogramViewComponent) => {
   const treeData =
     !isObjectNull(organogramData) &&
@@ -278,7 +276,6 @@ const ProposedOrganogramViewComponent = ({
           pdfClass="pdfGenarator"
           isPDFLoading={isPDFLoading}
           organogramView={organogramView}
-          isPreviousVerison={isPreviousVerison}
           headerData={{
             titleName: titleName || null,
             versionName: versionName || null,
