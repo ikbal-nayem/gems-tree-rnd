@@ -15,10 +15,11 @@ const ProposedOrganogramView = () => {
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [organogramData, setOrganogramData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
-  const [manpowerProSummaryData, setManpowerProSummaryData] = useState<
+  const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
+    useState<IObject[]>([]);
+  const [nodeProposedManpowerList, setNodeProposedManpowerList] = useState<
     IObject[]
   >([]);
-  const [nodeManpowerList, setNodeManpowerList] = useState<IObject[]>([]);
   const [parentOrgData, setParentOrgData] = useState<IObject>({});
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
@@ -31,7 +32,7 @@ const ProposedOrganogramView = () => {
     getTemplateInventoryById();
     getManpowerSummaryById();
     getAttachedOrganizationById();
-    getNodeWiseManpowerById();
+    getNodeWiseProposedManpowerById();
     getManpowerProposedSummaryById();
   }, [organogramId]);
 
@@ -65,21 +66,31 @@ const ProposedOrganogramView = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const getNodeWiseManpowerById = () => {
+  const getNodeWiseProposedManpowerById = () => {
     setIsLoading(true);
-    ProposalService.FETCH.nodeWiseManpowerById(organogramId)
+    ProposalService.FETCH.nodeWiseProposedManpowerById(organogramId)
       .then((resp) => {
-        setNodeManpowerList(resp?.body);
+        setNodeProposedManpowerList(resp?.body);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
   };
 
+  // const getManpowerProposedSummaryById = () => {
+  //   setIsLoading(true);
+  //   ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
+  //     .then((resp) => {
+  //       setManpowerProposedSummaryData(resp?.body || []);
+  //     })
+  //     .catch((e) => toast.error(e?.message))
+  //     .finally(() => setIsLoading(false));
+  // };
+
   const getManpowerProposedSummaryById = () => {
     setIsLoading(true);
     ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
       .then((resp) => {
-        setManpowerProSummaryData(resp?.body);
+        setManpowerProposedSummaryData(resp?.body || []);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -168,10 +179,12 @@ const ProposedOrganogramView = () => {
                   parentOrganizationData={parentOrgData}
                 />
               ) : t?.key === TAB_KEY.MANPOWER ? (
-                <Manpower
-                  dataList={nodeManpowerList}
-                  previousOrganogramId={previousOrganogramId}
-                  isEnamCommittee={false}
+                <ContentComparision
+                  data={{
+                    proposedData: nodeProposedManpowerList || [],
+                    currentData: [],
+                  }}
+                  content="manpower"
                 />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <>
@@ -189,10 +202,10 @@ const ProposedOrganogramView = () => {
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
                 <ContentComparision
                   data={{
-                    proposedData: manpowerProSummaryData||[],
+                    proposedData: manpowerProposedSummaryData || [],
                     currentData: [],
                   }}
-                  content="manpower"
+                  content="summary_of_manpower"
                 />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision

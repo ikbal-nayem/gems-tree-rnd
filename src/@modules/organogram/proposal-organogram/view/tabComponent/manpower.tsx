@@ -22,14 +22,9 @@ import MpBlock from "./manpowerBlock";
 type TableProps = {
   dataList: any[];
   isEnamCommittee: boolean;
-  previousOrganogramId: string;
 };
 
-const Manpower: FC<TableProps> = ({
-  dataList,
-  isEnamCommittee,
-  previousOrganogramId,
-}) => {
+const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   const [
     previousApprovedNodeWiseManpowerList,
     setPreviousApprovedNodeWiseManpowerList,

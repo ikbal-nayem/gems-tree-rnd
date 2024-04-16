@@ -1,3 +1,4 @@
+import Manpower from "@modules/organogram/proposal-organogram/view/tabComponent/manpower";
 import { LABEL } from "../local-constants";
 import AbbreviationList from "./AbbreviationList";
 import ActivitiesList from "./ActivitesList";
@@ -13,6 +14,7 @@ interface IForm {
     | "manpower"
     | "task_builder_main_activity"
     | "task_builder_boa"
+    | "summary_of_manpower"
     | "equipments"
     | "abbreviation"
     | "attached_org";
@@ -69,13 +71,7 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
         <>
           <div className="w-100 px-md-1 pb-2 pb-md-0">
             {content === "manpower" ? (
-              <ManPowerList
-                isLoading={false}
-                data={data?.currentData || []}
-                langEn={langEn}
-                isTabContent={true}
-                title={LABEL.CURRENT_MANPOWER}
-              />
+              <Manpower dataList={data} isEnamCommittee={false} />
             ) : content === "task_builder_main_activity" ? (
               <ActivitiesList
                 data={currentData || []}
@@ -89,6 +85,14 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_BUSINESS_OF_ALLOCATION}
+              />
+            ) : content === "summary_of_manpower" ? (
+              <ManPowerList
+                isLoading={false}
+                data={data?.currentData || []}
+                langEn={langEn}
+                isTabContent={true}
+                title={LABEL.CURRENT_MANPOWER}
               />
             ) : content === "equipments" ? (
               <EquipmentsList
@@ -135,13 +139,7 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
         </>
         <div className="w-100 px-md-1">
           {content === "manpower" ? (
-            <ManPowerList
-              isLoading={false}
-              data={data?.proposedData || []}
-              langEn={langEn}
-              isTabContent={true}
-              title={LABEL.PROPOSED_MANPOWER}
-            />
+            <Manpower dataList={data} isEnamCommittee={false} />
           ) : content === "task_builder_main_activity" ? (
             <ActivitiesList
               data={proposeData || []}
@@ -155,6 +153,14 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_BUSINESS_OF_ALLOCATION}
+            />
+          ) : content === "summary_of_manpower" ? (
+            <ManPowerList
+              isLoading={false}
+              data={data?.proposedData || []}
+              langEn={langEn}
+              isTabContent={true}
+              title={LABEL.PROPOSED_MANPOWER}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
