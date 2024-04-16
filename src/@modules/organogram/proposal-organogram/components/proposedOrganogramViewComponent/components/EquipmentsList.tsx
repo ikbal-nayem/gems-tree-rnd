@@ -31,38 +31,42 @@ const EquipmentsForm = ({
         {isNotEmptyList(inventoryData) &&
           inventoryData?.map((item, i) => {
             return (
-              <div className="col-md-6 col-12" key={i}>
-                <span className="fs-5 fw-bold">
-                  {langEn ? i + 1 : numEnToBn(i + 1) + ". "}
-                </span>
-                <u className="fs-5 fw-bold mb-0">
-                  {langEn ? item?.inventoryTypeEn : item?.inventoryTypeBn}
-                </u>
-                <ol type="a">
-                  {item?.itemList.map((d, idx) => {
-                    return (
-                      <li key={idx}>
-                        <span
-                          className={
-                            isTabContent
-                              ? d?.isModified
-                                ? "text-underline-color-yellow"
-                                : d?.isAddition
-                                ? "text-underline-color-black"
-                                : d?.isDeleted
-                                ? "text-line-through-color-red"
-                                : ""
-                              : ""
-                          }
-                        >
-                          {langEn ? d?.quantity : numEnToBn(d?.quantity)} x{" "}
-                          {langEn ? d?.itemTitleEn : d?.itemTitleBn}{" "}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </div>
+              <>
+                {item?.itemList?.length > 0 && (
+                  <div className="col-md-6 col-12" key={i}>
+                    <span className="fs-5 fw-bold">
+                      {langEn ? i + 1 : numEnToBn(i + 1) + ". "}
+                    </span>
+                    <u className="fs-5 fw-bold mb-0">
+                      {langEn ? item?.inventoryTypeEn : item?.inventoryTypeBn}
+                    </u>
+                    <ol type="a">
+                      {item?.itemList.map((d, idx) => {
+                        return (
+                          <li key={idx}>
+                            <span
+                              className={
+                                isTabContent
+                                  ? d?.isModified
+                                    ? "text-underline-color-yellow"
+                                    : d?.isAddition
+                                    ? "text-underline-color-black"
+                                    : d?.isDeleted
+                                    ? "text-line-through-color-red"
+                                    : ""
+                                  : ""
+                              }
+                            >
+                              {langEn ? d?.quantity : numEnToBn(d?.quantity)} x{" "}
+                              {langEn ? d?.itemTitleEn : d?.itemTitleBn}{" "}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                )}
+              </>
             );
           })}
       </div>

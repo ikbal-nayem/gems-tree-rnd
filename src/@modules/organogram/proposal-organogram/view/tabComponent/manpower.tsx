@@ -1,17 +1,13 @@
 import { LABELS } from "@constants/common.constant";
 import {
-  Dropdown,
-  DropdownItem,
   ITableHeadColumn,
-  Icon,
-  NoData,
   Separator,
   Table,
   TableCell,
   TableRow,
 } from "@gems/components";
-import { COMMON_LABELS, IObject, generateRowNumBn } from "@gems/utils";
-import { FC, useState } from "react";
+import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
+import { FC } from "react";
 import MpBlock from "./manpowerBlock";
 
 type TableProps = {
@@ -27,29 +23,14 @@ const Manpower: FC<TableProps> = ({
   isTabContent,
   title,
 }) => {
-  const [
-    previousApprovedNodeWiseManpowerList,
-    setPreviousApprovedNodeWiseManpowerList,
-  ] = useState<IObject[]>([]);
-
   const columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 20, align: "center" },
     { title: "পদবি/স্তর", minWidth: 100 },
     { title: "পদের নাম ও সংখ্যা", minWidth: 150, align: "start" },
     // { title: "প্রস্তাবিত পদের নাম ও সংখ্যা", minWidth: 150, align: "center" },
-    { title: COMMON_LABELS.ACTION, align: "center" },
+    // { title: COMMON_LABELS.ACTION, align: "center" },
   ];
 
-  // useEffect(() => {
-  //   ProposalService.FETCH.nodeWiseManpowerById(previousOrganogramId)
-  //     .then((resp) => {
-  //       setPreviousApprovedNodeWiseManpowerList(resp?.body);
-  //     })
-  //     .catch((e) => toast.error(e?.message));
-  // }, [previousOrganogramId]);
-
-  let previousSameNode = null,
-    newNode = true;
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
@@ -100,7 +81,7 @@ const Manpower: FC<TableProps> = ({
                     color=""
                   />
                 </TableCell>
-                <TableCell textAlign="end" verticalAlign="middle">
+                {/* <TableCell textAlign="end" verticalAlign="middle">
                   <Dropdown
                     btnIcon={true}
                     btnContent={<Icon icon="more_vert" size={20} />}
@@ -115,7 +96,7 @@ const Manpower: FC<TableProps> = ({
                       <h6 className="mb-0 ms-2 text-danger">মুছে ফেলুন</h6>
                     </DropdownItem>
                   </Dropdown>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             );
           })}

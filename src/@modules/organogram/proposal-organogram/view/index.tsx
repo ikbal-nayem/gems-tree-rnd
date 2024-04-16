@@ -7,7 +7,6 @@ import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposedOrganogramViewComponent";
 import ContentComparision from "../components/proposedOrganogramViewComponent/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
-import Manpower from "./tabComponent/manpower";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

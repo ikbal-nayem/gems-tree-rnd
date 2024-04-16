@@ -31,6 +31,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
   >([]);
   const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
     useState<IObject[]>([]);
+
   useEffect(() => {
     if (organogramId && content === "manpower") {
       ProposalService.FETCH.nodeWiseProposedManpowerById(organogramId)
@@ -95,7 +96,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
 
   return (
     <div className=" card border p-3">
-      <div className="d-flex flex-wrap flex-md-nowrap px-md-10">
+      <div className="d-flex flex-wrap flex-md-nowrap">
         <>
           <div className="w-100 px-md-1 pb-2 pb-md-0">
             {content === "manpower" ? (
