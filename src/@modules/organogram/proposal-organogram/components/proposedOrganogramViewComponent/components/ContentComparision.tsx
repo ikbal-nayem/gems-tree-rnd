@@ -1,6 +1,3 @@
-import { Icon, toast } from "@gems/components";
-import { ProposalService } from "@services/api/Proposal.service";
-import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
 import AbbreviationList from "./AbbreviationList";
 import ActivitiesList from "./ActivitesList";
@@ -68,10 +65,9 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
 
   return (
     <div className=" card border p-3">
-      <div className="d-flex flex-wrap flex-md-nowrap align-items-center px-md-10">
-        {/* {!sameData && ( */}
+      <div className="d-flex flex-wrap flex-md-nowrap px-md-10">
         <>
-          <div className="w-100">
+          <div className="w-100 px-md-1 pb-2 pb-md-0">
             {content === "manpower" ? (
               <ManPowerList
                 isLoading={false}
@@ -118,7 +114,7 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
               />
             ) : null}
           </div>
-          <div className="d-none d-md-block px-5">
+          {/* <div className="d-none d-md-block px-5">
             <span className="d-flex justify-content-center">
               <Icon
                 icon="arrow_right_alt"
@@ -135,10 +131,9 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
               color="primary"
               size={40}
             />
-          </div>
+          </div> */}
         </>
-        {/* )} */}
-        <div className="w-100">
+        <div className="w-100 px-md-1">
           {content === "manpower" ? (
             <ManPowerList
               isLoading={false}
