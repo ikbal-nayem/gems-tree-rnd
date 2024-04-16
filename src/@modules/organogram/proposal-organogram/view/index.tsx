@@ -15,11 +15,6 @@ const ProposedOrganogramView = () => {
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [organogramData, setOrganogramData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
-  const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
-    useState<IObject[]>([]);
-  const [nodeProposedManpowerList, setNodeProposedManpowerList] = useState<
-    IObject[]
-  >([]);
   const [parentOrgData, setParentOrgData] = useState<IObject>({});
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
@@ -32,8 +27,6 @@ const ProposedOrganogramView = () => {
     getTemplateInventoryById();
     getManpowerSummaryById();
     getAttachedOrganizationById();
-    getNodeWiseProposedManpowerById();
-    getManpowerProposedSummaryById();
   }, [organogramId]);
 
   const handleTabIndex = (idx: number) => {
@@ -66,16 +59,6 @@ const ProposedOrganogramView = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const getNodeWiseProposedManpowerById = () => {
-    setIsLoading(true);
-    ProposalService.FETCH.nodeWiseProposedManpowerById(organogramId)
-      .then((resp) => {
-        setNodeProposedManpowerList(resp?.body);
-      })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
-  };
-
   // const getManpowerProposedSummaryById = () => {
   //   setIsLoading(true);
   //   ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
@@ -85,16 +68,6 @@ const ProposedOrganogramView = () => {
   //     .catch((e) => toast.error(e?.message))
   //     .finally(() => setIsLoading(false));
   // };
-
-  const getManpowerProposedSummaryById = () => {
-    setIsLoading(true);
-    ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
-      .then((resp) => {
-        setManpowerProposedSummaryData(resp?.body || []);
-      })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
-  };
 
   const getAttachedOrganizationById = () => {
     setIsLoading(true);
@@ -180,11 +153,8 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.MANPOWER ? (
                 <ContentComparision
-                  data={{
-                    proposedData: nodeProposedManpowerList || [],
-                    currentData: [],
-                  }}
                   content="manpower"
+                  organogramId={organogramId}
                 />
               ) : t?.key === TAB_KEY.TASK_BUILDER ? (
                 <>
@@ -201,11 +171,8 @@ const ProposedOrganogramView = () => {
                 </>
               ) : t?.key === TAB_KEY.SUMMARY_OF_MANPOWER ? (
                 <ContentComparision
-                  data={{
-                    proposedData: manpowerProposedSummaryData || [],
-                    currentData: [],
-                  }}
                   content="summary_of_manpower"
+                  organogramId={organogramId}
                 />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision

@@ -1,30 +1,32 @@
+import { LABELS } from "@constants/common.constant";
 import {
   Dropdown,
   DropdownItem,
   ITableHeadColumn,
   Icon,
   NoData,
+  Separator,
   Table,
   TableCell,
   TableRow,
-  toast,
 } from "@gems/components";
-import {
-  COMMON_LABELS,
-  IObject,
-  generateRowNumBn,
-  isObjectNull,
-} from "@gems/utils";
-import { ProposalService } from "@services/api/Proposal.service";
-import { FC, useEffect, useState } from "react";
+import { COMMON_LABELS, IObject, generateRowNumBn } from "@gems/utils";
+import { FC, useState } from "react";
 import MpBlock from "./manpowerBlock";
 
 type TableProps = {
   dataList: any[];
   isEnamCommittee: boolean;
+  isTabContent?: boolean;
+  title?: string;
 };
 
-const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
+const Manpower: FC<TableProps> = ({
+  dataList,
+  isEnamCommittee,
+  isTabContent,
+  title,
+}) => {
   const [
     previousApprovedNodeWiseManpowerList,
     setPreviousApprovedNodeWiseManpowerList,
@@ -49,10 +51,16 @@ const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
   let previousSameNode = null,
     newNode = true;
   return (
-    <div className="card p-5">
-      <Table columns={columns}>
-        {dataList?.length ? (
-          dataList?.map((node, idx) => {
+    <div className="card border p-3">
+      <div className="card-head d-flex justify-content-between align-items-center">
+        <h4 className={title ? "m-0 text-primary" : "m-0"}>
+          {isTabContent && title ? title : LABELS.BN.SUM_OF_MANPOWER}
+        </h4>
+      </div>
+      <Separator className="mt-1 mb-1" />
+      {dataList?.length > 0 && (
+        <Table columns={columns}>
+          {dataList?.map((node, idx) => {
             // previousSameNode = null;
             // newNode = true;
 
@@ -75,8 +83,8 @@ const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
                     (isEnamCommittee ? node?.nodeTitleEn : node?.nodeTitleBn) ||
                     "-"
                   }
-                  tagText={node?.isAddition ? "নতুন" : null}
-                  tagColor="info"
+                  // tagText={node?.isAddition ? "নতুন" : null}
+                  // tagColor="info"
                 />
                 {/* <TableCell>
                   <MpBlock
@@ -110,15 +118,9 @@ const Manpower: FC<TableProps> = ({ dataList, isEnamCommittee }) => {
                 </TableCell>
               </TableRow>
             );
-          })
-        ) : (
-          <TableRow>
-            <TableCell colSpan={3}>
-              <NoData details="কোনো তথ্য পাওয়া যায়নি!" />
-            </TableCell>
-          </TableRow>
-        )}
-      </Table>
+          })}
+        </Table>
+      )}
     </div>
   );
 };

@@ -54,6 +54,8 @@ export const LABEL = {
   GO_DATE: "জিও তারিখ",
   CURRENT_MANPOWER: "বর্তমান জনবল",
   PROPOSED_MANPOWER: "প্রস্তাবিত জনবল",
+  CURRENT_SUMMARY_MANPOWER: "বর্তমান জনবলের সারসংক্ষেপ",
+  PROPOSED_SUMMARY_MANPOWER: "প্রস্তাবিত জনবলের সারসংক্ষেপ",
   CURRENT_MAIN_ACTIVITY: "বর্তমান প্রধান কার্যাবলি",
   PROPOSED_MAIN_ACTIVITY: "প্রস্তাবিত প্রধান কার্যাবলি",
   CURRENT_BUSINESS_OF_ALLOCATION: "বর্তমান কর্মবন্টন",

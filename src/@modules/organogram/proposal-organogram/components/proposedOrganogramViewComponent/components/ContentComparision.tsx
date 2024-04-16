@@ -1,4 +1,8 @@
+import { toast } from "@gems/components";
+import { IObject } from "@gems/utils";
 import Manpower from "@modules/organogram/proposal-organogram/view/tabComponent/manpower";
+import { ProposalService } from "@services/api/Proposal.service";
+import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
 import AbbreviationList from "./AbbreviationList";
 import ActivitiesList from "./ActivitesList";
@@ -8,7 +12,7 @@ import EquipmentsList from "./EquipmentsList";
 import ManPowerList from "./ManPowerList";
 
 interface IForm {
-  data: any;
+  data?: any;
   langEn?: boolean;
   content:
     | "manpower"
@@ -18,9 +22,33 @@ interface IForm {
     | "equipments"
     | "abbreviation"
     | "attached_org";
+  organogramId?: string;
 }
 
-const ContentComparision = ({ data, langEn, content }: IForm) => {
+const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
+  const [nodeProposedManpowerList, setNodeProposedManpowerList] = useState<
+    IObject[]
+  >([]);
+  const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
+    useState<IObject[]>([]);
+  useEffect(() => {
+    if (organogramId && content === "manpower") {
+      ProposalService.FETCH.nodeWiseProposedManpowerById(organogramId)
+        .then((resp) => {
+          setNodeProposedManpowerList(resp?.body);
+        })
+        .catch((e) => toast.error(e?.message));
+    }
+
+    if (organogramId && content === "summary_of_manpower") {
+      ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
+        .then((resp) => {
+          setManpowerProposedSummaryData(resp?.body || []);
+        })
+        .catch((e) => toast.error(e?.message));
+    }
+  }, [organogramId]);
+
   let proposeData =
     content === "equipments"
       ? {
@@ -71,7 +99,12 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
         <>
           <div className="w-100 px-md-1 pb-2 pb-md-0">
             {content === "manpower" ? (
-              <Manpower dataList={data} isEnamCommittee={false} />
+              <Manpower
+                dataList={data?.currentData || []}
+                isEnamCommittee={false}
+                isTabContent={true}
+                title={LABEL.CURRENT_MANPOWER}
+              />
             ) : content === "task_builder_main_activity" ? (
               <ActivitiesList
                 data={currentData || []}
@@ -92,7 +125,7 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
                 data={data?.currentData || []}
                 langEn={langEn}
                 isTabContent={true}
-                title={LABEL.CURRENT_MANPOWER}
+                title={LABEL.CURRENT_SUMMARY_MANPOWER}
               />
             ) : content === "equipments" ? (
               <EquipmentsList
@@ -139,7 +172,12 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
         </>
         <div className="w-100 px-md-1">
           {content === "manpower" ? (
-            <Manpower dataList={data} isEnamCommittee={false} />
+            <Manpower
+              dataList={nodeProposedManpowerList || []}
+              isEnamCommittee={false}
+              isTabContent={true}
+              title={LABEL.PROPOSED_MANPOWER}
+            />
           ) : content === "task_builder_main_activity" ? (
             <ActivitiesList
               data={proposeData || []}
@@ -157,10 +195,10 @@ const ContentComparision = ({ data, langEn, content }: IForm) => {
           ) : content === "summary_of_manpower" ? (
             <ManPowerList
               isLoading={false}
-              data={data?.proposedData || []}
+              data={manpowerProposedSummaryData || []}
               langEn={langEn}
               isTabContent={true}
-              title={LABEL.PROPOSED_MANPOWER}
+              title={LABEL.PROPOSED_SUMMARY_MANPOWER}
             />
           ) : content === "equipments" ? (
             <EquipmentsList
