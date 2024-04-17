@@ -66,7 +66,23 @@ const Manpower: FC<TableProps> = ({
                   }
                   // tagText={node?.isAddition ? "নতুন" : null}
                   // tagColor="info"
-                />
+                >
+                  <span
+                    className={`${
+                      node?.isModified
+                        ? "text-underline-color-yellow"
+                        : node?.isAddition
+                        ? "text-underline-color-black"
+                        : node?.isDeleted
+                        ? "text-line-through-color-red"
+                        : ""
+                    }`}
+                  >
+                    {(isEnamCommittee
+                      ? node?.nodeTitleEn
+                      : node?.nodeTitleBn) || "-"}
+                  </span>
+                </TableCell>
                 {/* <TableCell>
                   <MpBlock
                     nodeData={previousSameNode}
