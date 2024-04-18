@@ -6,7 +6,8 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 #RUN npm install --immutable --immutable-cache
-RUN npm install -g npm@latest
+
+RUN npm install -g npm@latest --immutable --immutable-cache
 
 
 COPY . .
