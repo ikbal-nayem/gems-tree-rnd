@@ -18,6 +18,7 @@ const AttachedOrgList = ({
 }: IAttachedOrgList) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const COMMON_LABEL = langEn ? COMMON_LABELS.EN : COMMON_LABELS;
+  
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
@@ -29,21 +30,22 @@ const AttachedOrgList = ({
       <div className="row">
         {isNotEmptyList(data) &&
           data?.map((item, i) => {
-            const orgType = item?.orgTypeDTO;
-            const orgList = item?.organizationDTOList;
             return (
               <div className="col-md-6 col-12" key={i}>
                 <p
                   className={
-                    "fs-6 fw-bold mb-0" + (orgType ? "" : " fs-3 text-danger")
+                    "fs-6 fw-bold mb-0" +
+                    (item?.orgTypeBn || item?.orgTypeEn
+                      ? ""
+                      : " fs-3 text-danger")
                   }
                 >
-                  {(langEn ? orgType?.titleEn : orgType?.titleBn) ||
+                  {(langEn ? item?.orgTypeEn : item?.orgTypeBn) ||
                     COMMON_LABEL.NOT_ASSIGN}
                 </p>
                 <ol>
-                  {isNotEmptyList(orgList) &&
-                    orgList?.map((d, idx) => {
+                  {isNotEmptyList(item?.organizationDTOList) &&
+                    item?.organizationDTOList?.map((d, idx) => {
                       return (
                         <li key={idx}>
                           {" "}
@@ -61,7 +63,7 @@ const AttachedOrgList = ({
                             }
                           >
                             {" "}
-                            {langEn ? d?.nameEn : d?.nameBn}{" "}
+                            {langEn ? d?.orgNameEn : d?.orgNameBn}{" "}
                           </span>
                         </li>
                       );

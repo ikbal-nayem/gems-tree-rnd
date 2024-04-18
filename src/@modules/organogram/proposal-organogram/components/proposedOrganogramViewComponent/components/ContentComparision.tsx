@@ -29,8 +29,14 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
   const [nodeProposedManpowerList, setNodeProposedManpowerList] = useState<
     IObject[]
   >([]);
+  const [nodePresentManpowerList, setNodePresentManpowerList] = useState<
+    IObject[]
+  >([]);
   const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
     useState<IObject[]>([]);
+  const [manpowerPresentSummaryData, setManpowerPresentSummaryData] = useState<
+    IObject[]
+  >([]);
 
   useEffect(() => {
     if (organogramId && content === "manpower") {
@@ -39,12 +45,24 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
           setNodeProposedManpowerList(resp?.body);
         })
         .catch((e) => toast.error(e?.message));
+
+      ProposalService.FETCH.nodeWisePresentManpowerById(organogramId)
+        .then((resp) => {
+          setNodePresentManpowerList(resp?.body);
+        })
+        .catch((e) => toast.error(e?.message));
     }
 
     if (organogramId && content === "summary_of_manpower") {
       ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
         .then((resp) => {
           setManpowerProposedSummaryData(resp?.body || []);
+        })
+        .catch((e) => toast.error(e?.message));
+
+      ProposalService.FETCH.manpowerPresentSummaryById(organogramId)
+        .then((resp) => {
+          setManpowerPresentSummaryData(resp?.body || []);
         })
         .catch((e) => toast.error(e?.message));
     }
@@ -101,7 +119,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
           <div className="w-100 px-md-1 pb-2 pb-md-0">
             {content === "manpower" ? (
               <Manpower
-                dataList={data?.currentData || []}
+                dataList={nodePresentManpowerList || []}
                 isEnamCommittee={false}
                 isTabContent={true}
                 title={LABEL.CURRENT_MANPOWER}
@@ -123,7 +141,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             ) : content === "summary_of_manpower" ? (
               <ManPowerList
                 isLoading={false}
-                data={data?.currentData || []}
+                data={manpowerPresentSummaryData || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_SUMMARY_MANPOWER}
@@ -145,7 +163,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
               />
             ) : content === "attached_org" ? (
               <AttachedOrgList
-                data={currentData || []}
+                data={currentData?.attachedOrganization || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_ATTACHED_ORGANIZATION}
