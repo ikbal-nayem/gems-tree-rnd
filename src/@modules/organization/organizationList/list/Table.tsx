@@ -72,13 +72,13 @@ const OrgTable: FC<OrgTableProps> = ({
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i, meta)} />
               <TableCell
-                text={data?.nameBn || COMMON_LABELS.NO_DATE}
+                text={data?.nameBn || "-"}
                 subText={
                   <>
                     <div>{data?.nameEn}</div>
                     <div>
                       {/* স্থান:&nbsp; */}
-                      {data?.locationChainNameBn || COMMON_LABELS.NO_DATE}
+                      {data?.locationChainNameBn || "-"}
                     </div>
                   </>
                 }
@@ -90,17 +90,17 @@ const OrgTable: FC<OrgTableProps> = ({
                 tagColor={"info"}
               />
               <TableCell
-                text={data?.orgLevelBn || COMMON_LABELS.NO_DATE}
+                text={data?.orgLevelBn || "-"}
                 subText={data?.orgTypeBn}
               />
               <TableCell
-                text={data?.orgCategoryTypeBn || COMMON_LABELS.NO_DATE}
+                text={data?.orgCategoryTypeBn || "-"}
               />
               <TableCell
-                text={data?.orgCategoryGroupBn || COMMON_LABELS.NO_DATE}
+                text={data?.orgCategoryGroupBn || "-"}
               />
               <TableCell
-                text={data?.parentOrgNameBn || COMMON_LABELS.NO_DATE}
+                text={data?.parentOrgNameBn || "-"}
                 subText={data?.parentOrgNameEn}
               />
               <TableCell
@@ -110,7 +110,7 @@ const OrgTable: FC<OrgTableProps> = ({
                         data?.organogramDate,
                         "%dd% %MM%, %yyyy%"
                       )
-                    : COMMON_LABELS.NO_DATE
+                    : "-"
                 }
               />
               <TableCell textAlign="center">

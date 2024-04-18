@@ -403,8 +403,8 @@ const TemplateComponent = ({
             <>
               <div className="col-md-6 col-12">
                 <Input
-                  label="শিরোনাম-১"
-                  placeholder="শিরোনাম-১ লিখুন"
+                  label="শিরোনাম"
+                  placeholder="শিরোনাম লিখুন"
                   // isRequired={true}
                   defaultValue={
                     isObjectNull(updateData)
