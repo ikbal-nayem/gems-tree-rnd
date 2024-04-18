@@ -1,16 +1,15 @@
 ### STAGE 1: Build ###
-FROM node:20-alpine as build
+FROM node:18-alpine as build
+
 RUN apk add git
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-#RUN npm install --immutable --immutable-cache
-#RUN npm install -g typescript
-RUN npm install -g npm@latest
+COPY package.json yarn.lock ./
+RUN yarn install --immutable --immutable-cache
 
 COPY . .
-RUN npm run build:dev
+RUN yarn build:dev
 
 ### STAGE 2: Run ###
 FROM nginx
