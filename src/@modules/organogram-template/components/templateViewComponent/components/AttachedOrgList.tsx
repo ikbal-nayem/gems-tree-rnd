@@ -20,23 +20,26 @@ const AttachedOrgList = ({ data, langEn }: IAttachedOrgList) => {
       <div className="row">
         {isNotEmptyList(data) &&
           data?.map((item, i) => {
-            const orgType = item?.orgTypeDTO;
-            const orgList = item?.organizationDTOList;
             return (
               <div className="col-md-6 col-12" key={i}>
                 <p
                   className={
-                    "fs-6 fw-bold mb-0" + (orgType ? "" : " fs-3 text-danger")
+                    "fs-6 fw-bold mb-0" +
+                    (item?.orgTypeBn || item?.orgTypeEn
+                      ? ""
+                      : " fs-3 text-danger")
                   }
                 >
-                  {(langEn ? orgType?.titleEn : orgType?.titleBn) ||
+                  {(langEn ? item?.orgTypeEn : item?.orgTypeBn) ||
                     COMMON_LABEL.NOT_ASSIGN}
                 </p>
                 <ol>
-                  {isNotEmptyList(orgList) &&
-                    orgList?.map((d, idx) => {
+                  {isNotEmptyList(item?.organizationDTOList) &&
+                    item?.organizationDTOList?.map((d, idx) => {
                       return (
-                        <li key={idx}>{langEn ? d?.nameEn : d?.nameBn}</li>
+                        <li key={idx}>
+                          {langEn ? d?.orgNameEn : d?.orgNameBn}
+                        </li>
                       );
                     })}
                 </ol>
