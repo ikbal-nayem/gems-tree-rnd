@@ -52,23 +52,18 @@ const DataTable: FC<DataTableProps> = ({
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
               <TableCell
-                text={
-                  (isEnamCommittee ? data?.titleEn : data?.titleBn) ||
-                  COMMON_LABELS.NO_DATE
-                }
+                text={(isEnamCommittee ? data?.titleEn : data?.titleBn) || "-"}
               />
               <TableCell
                 text={
                   (isEnamCommittee
                     ? data?.parentNodeDto?.titleEn
-                    : data?.parentNodeDto?.titleBn) || COMMON_LABELS.NO_DATE
+                    : data?.parentNodeDto?.titleBn) || "-"
                 }
               />
-              <TableCell
-                text={numEnToBn(data?.nodeManpower) || COMMON_LABELS.NO_DATE}
-              />
-              {/* <TableCell text={data?.parentDTO?.nameBn || COMMON_LABELS.NO_DATE}/> */}
-              {/* <TableCell text={data?.code || COMMON_LABELS.NO_DATE} /> */}
+              <TableCell text={numEnToBn(data?.nodeManpower) || "-"} />
+              {/* <TableCell text={data?.parentDTO?.nameBn || "-"}/> */}
+              {/* <TableCell text={data?.code || "-"} /> */}
               <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}

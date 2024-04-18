@@ -34,8 +34,7 @@ export const organizationTypePDFContent = (
                     case "parentNode":
                       return [
                         {
-                          text:
-                            d?.parentNodeDto?.titleBn || COMMON_LABELS.NO_DATE,
+                          text: d?.parentNodeDto?.titleBn || "-",
                         },
                       ];
                     default:

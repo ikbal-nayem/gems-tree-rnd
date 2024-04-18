@@ -2,7 +2,7 @@ import { LABELS } from "@constants/common.constant";
 import { Autocomplete, Separator } from "@gems/components";
 import { IObject, notNullOrUndefined } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { deFocusById } from "utility/utils";
 interface IOrganizations {
   formProps: any;
@@ -22,27 +22,18 @@ const Organizations = ({
     control,
     formState: { errors },
   } = formProps;
-  const [organizationList, setOrganizationList] = useState<IObject[]>([]);
-  const [allOrganizationsCache, setAllOrganizationsCache] = useState<IObject[]>(
-    []
-  );
   const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
     []
   );
-  const getOrgList = () => {
-    const payload = {
-      meta: {
-        page: 0,
-        limit: 1000,
-        sort: [{ order: "asc", field: "serialNo" }],
-      },
-      body: { searchKey: "" },
-    };
-    OMSService.getOrganizationList(payload).then((resp) => {
-      setOrganizationList(resp?.body);
-      setAllOrganizationsCache(resp?.body); // Caching all_Orgs
-    });
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "", organizationCategoryId: null },
   };
+  const orgPayload = useRef(payload);
 
   const getOrgGroupList = () => {
     OMSService.FETCH.organizationGroupList().then((resp) =>
@@ -50,7 +41,6 @@ const Organizations = ({
     );
   };
   useEffect(() => {
-    getOrgList();
     getOrgGroupList();
   }, []);
 
@@ -60,20 +50,33 @@ const Organizations = ({
 
   const onOrgGroupChange = (OrgGroup) => {
     if (!isTemplate) {
+      orgPayload.current.body = {
+        ...orgPayload.current.body,
+        organizationCategoryId: OrgGroup?.id || null,
+      };
       if (notNullOrUndefined(OrgGroup)) {
         setOrgGroupTriggered(true);
-        OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
-          setOrganizationList(resp?.body)
-        );
-      } else setOrganizationList(allOrganizationsCache);
+
+        // OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
+        //   setOrganizationList(resp?.body)
+        // );
+      }
     }
   };
 
   if (watch("organizationGroupDto")) {
     deFocusById("organizationBlock");
-    // setNotOrganizationData(false);
-    // alert(watch("organizationGroup")?.orgTypeBn);
   }
+
+  const getAsyncOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey,
+    };
+    OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body)
+    );
+  }, []);
 
   return (
     <div className="card border p-3" id="organizationBlock">
@@ -101,7 +104,7 @@ const Organizations = ({
         </div>
         {!isTemplate && (
           <div className="col-md-6">
-            <Autocomplete
+            {/* <Autocomplete
               label="প্রতিষ্ঠান"
               placeholder="প্রতিষ্ঠান বাছাই করুন"
               name="templateOrganizationsDto"
@@ -113,6 +116,22 @@ const Organizations = ({
               getOptionLabel={(op) => op.nameBn}
               getOptionValue={(op) => op?.id}
               onChange={() => setOrgTriggered(true)}
+              isError={!!errors?.templateOrganizationsDto}
+              errorMessage={errors?.templateOrganizationsDto?.message as string}
+            /> */}
+            <Autocomplete
+              label="প্রতিষ্ঠান"
+              placeholder="প্রতিষ্ঠান বাছাই করুন"
+              isRequired="প্রতিষ্ঠান বাছাই করুন"
+              isAsync
+              // isMulti
+              control={control}
+              noMargin
+              getOptionLabel={(op) => op.nameBn}
+              getOptionValue={(op) => op?.id}
+              name="templateOrganizationsDto"
+              onChange={() => setOrgTriggered(true)}
+              loadOptions={getAsyncOranizationList}
               isError={!!errors?.templateOrganizationsDto}
               errorMessage={errors?.templateOrganizationsDto?.message as string}
             />
