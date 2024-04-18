@@ -5,8 +5,8 @@ RUN apk add git
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-#RUN npm install --immutable --immutable-cache
-RUN npm install -g typescript
+RUN npm install --immutable --immutable-cache
+#RUN npm install -g typescript
 
 COPY . .
 RUN npm run build:dev
