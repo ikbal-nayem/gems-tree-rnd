@@ -163,7 +163,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
               />
             ) : content === "attached_org" ? (
               <AttachedOrgList
-                data={currentData || []}
+                data={currentData?.attachedOrganization || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_ATTACHED_ORGANIZATION}
