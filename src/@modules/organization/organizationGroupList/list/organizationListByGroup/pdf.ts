@@ -35,7 +35,7 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
                     case "nameBn":
                       return [
                         {
-                          text: d[col?.key] || COMMON_LABELS.NO_DATE,
+                          text: d[col?.key] || "-",
                           alignment: "center",
                         },
                         {
@@ -46,7 +46,7 @@ export const organizationPDFContent = (data): TDocumentDefinitions => {
 
                     default:
                       return {
-                        text: numEnToBn(d[col?.key] || COMMON_LABELS.NO_DATE),
+                        text: numEnToBn(d[col?.key] || "-"),
                         alignment: "center",
                       };
                   }
