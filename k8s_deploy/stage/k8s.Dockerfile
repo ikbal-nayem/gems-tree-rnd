@@ -5,7 +5,9 @@ RUN apk add git
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install --immutable --immutable-cache
+#RUN npm install --immutable --immutable-cache
+RUN npm install -g npm@latest
+
 
 COPY . .
 RUN npm run build:dev
