@@ -202,7 +202,7 @@ const MainActivity = () => {
                         state?.proposedDate,
                         DATE_PATTERN.GOVT_STANDARD
                       )
-                    : COMMON_LABELS.NO_DATE}
+                    : "-"}
                 </div>
               </div>
               <div className="col-12 col-md-1 text-end">
