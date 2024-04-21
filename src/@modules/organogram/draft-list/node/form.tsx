@@ -67,6 +67,7 @@ const NodeCreateUpdateForm = ({
     handleSubmit,
     reset,
     setValue,
+    watch,
     getValues,
     control,
     formState: { errors },
@@ -251,6 +252,10 @@ const NodeCreateUpdateForm = ({
       }
       if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
     }
+  };
+
+  const onAlternatePostChange = (index, opt) => {
+    setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
   };
 
   const getAsyncPostList = useCallback((searchKey, callback) => {
@@ -523,6 +528,31 @@ const NodeCreateUpdateForm = ({
                     errors?.manpowerList?.[index]?.postDTO?.message as string
                   }
                 />
+                {watch(`manpowerList.${index}.isHead`) && (
+                  <Autocomplete
+                    label={index < 1 ? "বিকল্প পদবি" : ""}
+                    placeholder="বিকল্প পদবি বাছাই করুন"
+                    // isRequired
+                    isAsync
+                    // isMulti
+                    control={control}
+                    noMargin
+                    getOptionLabel={(op) =>
+                      isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                    }
+                    getOptionValue={(op) => op?.id}
+                    name={`manpowerList.${index}.alternativePostDTO`}
+                    onChange={(t) => onAlternatePostChange(index, t)}
+                    loadOptions={getAsyncPostList}
+                    isError={
+                      !!errors?.manpowerList?.[index]?.alternativePostDTO
+                    }
+                    errorMessage={
+                      errors?.manpowerList?.[index]?.alternativePostDTO
+                        ?.message as string
+                    }
+                  />
+                )}
               </div>
 
               <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
@@ -530,6 +560,7 @@ const NodeCreateUpdateForm = ({
                   label={index < 1 ? "গ্রেড" : ""}
                   placeholder="বাছাই করুন"
                   control={control}
+                  isRequired
                   options={gradeList || []}
                   getOptionLabel={(op) =>
                     isNotEnamCommittee ? op?.nameBn : op?.nameEn
@@ -611,8 +642,7 @@ const NodeCreateUpdateForm = ({
 
               <div
                 className={
-                  "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
-                  (index < 1 ? "mt-5" : "my-0")
+                  "col-md-6 col-xl-1 px-1 " + (index < 1 ? "mt-8" : "mt-2")
                 }
               >
                 {isHeadIndex === null || isHeadIndex === index ? (
@@ -624,9 +654,19 @@ const NodeCreateUpdateForm = ({
                     registerProperty={{
                       ...register(`manpowerList.${index}.isHead`, {
                         onChange: (e) => {
-                          e.target.checked
-                            ? setIsHeadIndex(index)
-                            : setIsHeadIndex(null);
+                          if (e.target.checked) {
+                            setIsHeadIndex(index);
+                          } else {
+                            setIsHeadIndex(null);
+                            setValue(
+                              `manpowerList.${index}.alternativePostDTO`,
+                              null
+                            );
+                            setValue(
+                              `manpowerList.${index}.alternativePostId`,
+                              null
+                            );
+                          }
                         },
                       }),
                     }}
