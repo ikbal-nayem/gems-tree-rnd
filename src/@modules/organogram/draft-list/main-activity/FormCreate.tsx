@@ -15,6 +15,7 @@ import {
   IObject,
   enCheck,
   generateDateFormat,
+  notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ interface IForm {
   onClose: () => void;
   updateData?: any;
   submitLoading?: boolean;
+  listData?: any;
   organogram?: IObject;
 }
 
@@ -34,6 +36,7 @@ const FormCreate = ({
   onClose,
   onSubmit,
   submitLoading,
+  listData,
   organogram,
 }: IForm) => {
   const {
@@ -56,8 +59,16 @@ const FormCreate = ({
   });
 
   useEffect(() => {
+    remove();
     if (isOpen && fields?.length < 1) append("");
   }, [isOpen]);
+
+  const displayOrderValue =
+    listData?.length > 0
+      ? listData[listData?.length - 1]?.displayOrder
+        ? listData[listData?.length - 1]?.displayOrder
+        : 0
+      : 0;
 
   return (
     <Drawer
@@ -110,14 +121,14 @@ const FormCreate = ({
                               `mainActivityRequestList.${idx}.mainActivityBn`,
                               {
                                 required: true,
-                                // onChange: (e) => {
-                                //   if (notNullOrUndefined(e.target.value)) {
-                                //     setValue(
-                                //       `mainActivityRequestList.${idx}.displayOrder`,
-                                //       idx + 1
-                                //     );
-                                //   }
-                                // },
+                                onChange: (e) => {
+                                  if (notNullOrUndefined(e.target.value)) {
+                                    setValue(
+                                      `mainActivityRequestList.${idx}.displayOrder`,
+                                      displayOrderValue + idx + 1
+                                    );
+                                  }
+                                },
                               }
                             ),
                           }}
@@ -144,21 +155,22 @@ const FormCreate = ({
                           ...register(
                             `mainActivityRequestList.${idx}.mainActivityEn`,
                             {
-                              // onChange: (e) => {
-                              //   if (notNullOrUndefined(e.target.value)) {
-                              //     setValue(
-                              //       `mainActivityRequestList.${idx}.displayOrder`,
-                              //       idx + 1
-                              //     );
-                              //   }
-                              // },
+                              onChange: (e) => {
+                                if (notNullOrUndefined(e.target.value)) {
+                                  setValue(
+                                    `mainActivityRequestList.${idx}.displayOrder`,
+                                    displayOrderValue + idx + 1
+                                  );
+                                }
+                              },
                               required: isEnamCommittee,
                               validate: enCheck,
                             }
                           ),
                         }}
                         isError={
-                          !!errors?.mainActivityRequestList?.[idx]?.mainActivityEn
+                          !!errors?.mainActivityRequestList?.[idx]
+                            ?.mainActivityEn
                         }
                       />
                     </div>
