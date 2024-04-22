@@ -9,13 +9,7 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
-import {
-  COMMON_LABELS,
-  IMeta,
-  IObject,
-  generateDateFormat,
-  generateRowNumBn,
-} from "@gems/utils";
+import { COMMON_LABELS, IMeta, IObject, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +20,7 @@ const columns: ITableHeadColumn[] = [
   { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
   { title: "প্রতিষ্ঠানের গ্রুপ", minWidth: 100 },
   { title: "প্রতিষ্ঠানের অভিভাবক", minWidth: 150 },
-  { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
+  // { title: "অর্গানোগ্রাম তারিখ", minWidth: 100 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 10, align: "center" },
   { title: COMMON_LABELS.ACTION },
 ];
@@ -93,17 +87,13 @@ const OrgTable: FC<OrgTableProps> = ({
                 text={data?.orgLevelBn || "-"}
                 subText={data?.orgTypeBn}
               />
-              <TableCell
-                text={data?.orgCategoryTypeBn || "-"}
-              />
-              <TableCell
-                text={data?.orgCategoryGroupBn || "-"}
-              />
+              <TableCell text={data?.orgCategoryTypeBn || "-"} />
+              <TableCell text={data?.orgCategoryGroupBn || "-"} />
               <TableCell
                 text={data?.parentOrgNameBn || "-"}
                 subText={data?.parentOrgNameEn}
               />
-              <TableCell
+              {/* <TableCell
                 text={
                   data?.organogramDate
                     ? generateDateFormat(
@@ -112,7 +102,7 @@ const OrgTable: FC<OrgTableProps> = ({
                       )
                     : "-"
                 }
-              />
+              /> */}
               <TableCell textAlign="center">
                 {data?.isActive ? (
                   <Icon icon="done" color="success" size={20} />

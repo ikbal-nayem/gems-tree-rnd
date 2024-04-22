@@ -2,7 +2,6 @@ import {
   Autocomplete,
   Button,
   Checkbox,
-  DateInput,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -312,11 +311,11 @@ const OrgForm = ({
               errorMessage={errors?.remarks?.message as string}
             />
 
-            <DateInput
+            {/* <DateInput
               label="অর্গানোগ্রাম তারিখ"
               control={control}
               name="organogramDate"
-            />
+            /> */}
 
             <div className="col-12 col-md-6">
               <Checkbox
