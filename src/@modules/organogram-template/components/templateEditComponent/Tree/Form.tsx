@@ -524,6 +524,7 @@ const NodeForm = ({
                         label={index < 1 ? "গ্রেড" : ""}
                         placeholder="বাছাই করুন"
                         control={control}
+                        isClearable={false}
                         isRequired
                         options={gradeList || []}
                         getOptionLabel={(op) => op?.nameBn}
@@ -546,6 +547,7 @@ const NodeForm = ({
                         label={index < 1 ? "সার্ভিসের ধরণ" : ""}
                         placeholder="বাছাই করুন"
                         isRequired={true}
+                        isClearable={false}
                         control={control}
                         options={serviceList || []}
                         getOptionLabel={(op) => op?.titleBn}

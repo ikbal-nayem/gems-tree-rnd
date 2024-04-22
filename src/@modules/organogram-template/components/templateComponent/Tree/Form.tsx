@@ -552,6 +552,7 @@ const NodeForm = ({
                       placeholder="বাছাই করুন"
                       control={control}
                       isRequired
+                      isClearable={false}
                       options={gradeList || []}
                       getOptionLabel={(op) =>
                         isNotEnamCommittee ? op?.nameBn : op?.nameEn
@@ -575,6 +576,7 @@ const NodeForm = ({
                       label={index < 1 ? "সার্ভিসের ধরণ" : ""}
                       placeholder="বাছাই করুন"
                       isRequired={true}
+                      isClearable={false}
                       control={control}
                       options={serviceList || []}
                       getOptionLabel={(op) =>

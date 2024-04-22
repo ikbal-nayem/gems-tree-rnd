@@ -562,6 +562,7 @@ const NodeCreateUpdateForm = ({
                   control={control}
                   isRequired
                   options={gradeList || []}
+                  isClearable={false}
                   getOptionLabel={(op) =>
                     isNotEnamCommittee ? op?.nameBn : op?.nameEn
                   }
@@ -585,6 +586,7 @@ const NodeCreateUpdateForm = ({
                   placeholder="বাছাই করুন"
                   isRequired={true}
                   control={control}
+                  isClearable={false}
                   options={serviceList || []}
                   getOptionLabel={(op) =>
                     isNotEnamCommittee ? op?.titleBn : op?.titleEn
