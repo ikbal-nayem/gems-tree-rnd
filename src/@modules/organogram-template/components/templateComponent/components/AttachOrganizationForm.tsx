@@ -12,7 +12,6 @@ const AttachOrganizationForm = ({
   isNotEnamCommittee,
 }: IAttachOrganizationForm) => {
   const {
-    register,
     control,
     formState: { errors },
   } = formProps;
@@ -43,9 +42,7 @@ const AttachOrganizationForm = ({
       </div>
       <Separator className="mt-1 mb-2" />
       <Autocomplete
-        // label="প্রতিষ্ঠান"
         placeholder="সংযুক্ত অফিসসমূহ বাছাই করুন"
-        // isRequired="সংযুক্ত অফিসসমূহ বাছাই করুন"
         isAsync
         isMulti
         control={control}
@@ -53,7 +50,6 @@ const AttachOrganizationForm = ({
         getOptionLabel={(op) => (isNotEnamCommittee ? op.nameBn : op?.nameEn)}
         getOptionValue={(op) => op?.id}
         name="attachedOrganizationDtoList"
-        // onChange={() => setOrgTriggered(true)}
         loadOptions={getAsyncOranizationList}
         isError={!!errors?.templateOrganizationsDto}
         errorMessage={errors?.templateOrganizationsDto?.message as string}
