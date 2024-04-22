@@ -20,8 +20,6 @@ const MyNode = ({
       return a.gradeOrder > b.gradeOrder ? 1 : -1;
     });
 
-  console.log(nodeData);
-
   return (
     <div>
       <div
