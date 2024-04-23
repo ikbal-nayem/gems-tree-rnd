@@ -10,8 +10,8 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 import { FC, Fragment, useState } from "react";
-import { LOCAL_LABELS } from "./labels";
 import MPListChanges from "./MPListChanges";
+import { LOCAL_LABELS } from "./labels";
 
 type TableProps = {
   data: any;
@@ -89,8 +89,19 @@ const ManPowerList: FC<TableProps> = ({
                         </TableCell>
                         <TableCell className="remove-padding">
                           <p className="mb-0 fs-7">
-                            {(langEn ? itr?.postTitleEn : itr?.postTitleBn) ||
-                              COMMON_LABEL.NOT_ASSIGN}
+                            {(langEn
+                              ? itr?.postTitleEn +
+                                `${
+                                  itr?.altPostTitleEn
+                                    ? " / " + itr?.altPostTitleEn
+                                    : ""
+                                }`
+                              : itr?.postTitleBn +
+                                `${
+                                  itr?.altPostTitleBn
+                                    ? " / " + itr?.altPostTitleBn
+                                    : ""
+                                }`) || COMMON_LABEL.NOT_ASSIGN}
                           </p>
                         </TableCell>
                         <TableCell className="remove-padding">

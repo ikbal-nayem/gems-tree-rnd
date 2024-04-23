@@ -139,10 +139,10 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     <Input
                       label={idx < 1 ? labelGONoEn : ""}
                       placeholder={labelGONoEn + " লিখুন"}
-                      isRequired={!isNotEnamCommittee}
+                      // isRequired={!isNotEnamCommittee}
                       registerProperty={{
                         ...register(`attachmentDtoList.${idx}.goNoEn`, {
-                          required: !isNotEnamCommittee,
+                          // required: !isNotEnamCommittee,
                           validate: enCheck,
                         }),
                       }}
@@ -156,10 +156,10 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                       <Input
                         label={idx < 1 ? labelGONoBn : ""}
                         placeholder={labelGONoBn + " লিখুন"}
-                        isRequired
+                        // isRequired
                         registerProperty={{
                           ...register(`attachmentDtoList.${idx}.goNoBn`, {
-                            required: " ",
+                            // required: " ",
                             setValueAs: (v) => numEnToBn(v),
                           }),
                         }}
@@ -175,7 +175,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                 <div className="col-xl-3 col-12">
                   <DateInput
                     label={idx < 1 ? labelGODate : ""}
-                    isRequired={" "}
+                    // isRequired={" "}
                     name={`attachmentDtoList.${idx}.goDate`}
                     control={control}
                     isError={!!errors?.attachmentDtoList?.[idx]?.goDate}

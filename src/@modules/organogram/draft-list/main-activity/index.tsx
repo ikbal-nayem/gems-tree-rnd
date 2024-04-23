@@ -99,7 +99,7 @@ const MainActivity = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    OMSService.DELETE.organogramMainActivity(deleteData?.id||"")
+    OMSService.DELETE.organogramMainActivity(deleteData?.id || "")
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -237,6 +237,7 @@ const MainActivity = () => {
           isOpen={isFormCreateOpen}
           onClose={onDrawerClose}
           onSubmit={onSubmit}
+          listData={listData}
           submitLoading={isSubmitLoading}
           organogram={organogram}
         />

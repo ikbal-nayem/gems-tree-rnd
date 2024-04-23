@@ -1,7 +1,7 @@
 import { Icon } from "@gems/components";
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
-import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
@@ -113,9 +113,19 @@ const MyNode = ({
                 ? postList?.find((d) => d?.id === item?.postId)
                 : null;
 
+              const alternatePost = postExists
+                ? postList?.find((d) => d?.id === item?.alternativePostId)
+                : null;
+
               const postName = isNotEnamCommittee
                 ? post?.nameBn || COMMON_LABELS.NOT_ASSIGN
                 : post?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
+
+              const alternatePostName = !isObjectNull(alternatePost)
+                ? isNotEnamCommittee
+                  ? alternatePost?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                  : alternatePost?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN
+                : null;
 
               return (
                 <div key={i}>
@@ -135,7 +145,9 @@ const MyNode = ({
                     >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
-                      <p className="mb-0 fs-7 ms-1">{postName}</p>
+                      <p className="mb-0 fs-7 ms-1">{`${postName}${
+                        alternatePostName ? " / " + alternatePostName : ""
+                      }`}</p>
                     </div>
                   ) : null}
                 </div>

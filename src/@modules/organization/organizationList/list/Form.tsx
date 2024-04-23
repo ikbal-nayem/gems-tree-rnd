@@ -2,11 +2,11 @@ import {
   Autocomplete,
   Button,
   Checkbox,
-  DateInput,
   Drawer,
   DrawerBody,
   DrawerFooter,
   Input,
+  Textarea,
   toast,
 } from "@gems/components";
 import {
@@ -16,7 +16,7 @@ import {
   makeFormData,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import LocationWorkSpaceComponent from "./LocationWorkSpaceComponent";
 
@@ -54,6 +54,15 @@ const OrgForm = ({
   const orgTypeGovtObject = options?.institutionTypes?.find(
     (d) => d?.metaKey === "INSTITUTION_TYPE_GOVERNMENT"
   );
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "" },
+  };
+  const orgPayload = useRef(payload);
 
   useEffect(() => {
     if (!isObjectNull(updateData)) {
@@ -121,6 +130,16 @@ const OrgForm = ({
       onOrganizationTypeChange(watch("organizationTypeDTO"));
     }
   };
+
+  const getAsyncPreviousOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey ? searchKey?.trim() : "",
+    };
+    OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body || [])
+    );
+  }, []);
 
   return (
     <Drawer
@@ -257,11 +276,46 @@ const OrgForm = ({
               />
             </div>
 
-            <DateInput
+            <Autocomplete
+              label="পূর্ববর্তী প্রতিষ্ঠান"
+              placeholder="পূর্ববর্তী প্রতিষ্ঠান বাছাই করুন"
+              isAsync
+              // isMulti
+              control={control}
+              // noMargin
+              getOptionLabel={(op) => op.nameBn}
+              getOptionValue={(op) => op?.id}
+              name="prevOrganization"
+              onChange={(e) => setValue("prevOrganizationId", e?.id)}
+              loadOptions={getAsyncPreviousOranizationList}
+              isError={!!errors?.templateOrganizationsDto}
+              errorMessage={errors?.templateOrganizationsDto?.message as string}
+            />
+
+            <Input
+              label="কোড"
+              placeholder="কোড লিখুন"
+              registerProperty={{
+                ...register("code"),
+              }}
+            />
+
+            <Textarea
+              label="মন্তব্য"
+              placeholder="মন্তব্য লিখুন"
+              maxLength={500}
+              registerProperty={{
+                ...register("remarks"),
+              }}
+              isError={!!errors?.remarks}
+              errorMessage={errors?.remarks?.message as string}
+            />
+
+            {/* <DateInput
               label="অর্গানোগ্রাম তারিখ"
               control={control}
               name="organogramDate"
-            />
+            /> */}
 
             <div className="col-12 col-md-6">
               <Checkbox
