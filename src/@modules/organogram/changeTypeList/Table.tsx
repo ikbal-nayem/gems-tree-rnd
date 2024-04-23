@@ -40,12 +40,9 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.nameBn || "-"} />
-              <TableCell text={data?.nameEn || "-"} />
-              <TableCell
-                text={numEnToBn(data?.code) || "-"}
-                textAlign="center"
-              />
+              <TableCell text={data?.titleBN || "-"} />
+              <TableCell text={data?.titleEN || "-"} />
+              <TableCell text={data?.code || "-"} textAlign="center" />
               <TableCell isActive={data?.isActive} />
               <TableCell textAlign="end">
                 <Dropdown

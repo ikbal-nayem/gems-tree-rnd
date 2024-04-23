@@ -60,13 +60,13 @@ const Form = ({
                 label="নাম (ইংরেজি)"
                 placeholder="নাম (ইংরেজি) লিখুন"
                 registerProperty={{
-                  ...register("nameEn", {
+                  ...register("titleEN", {
                     required: "নাম (ইংরেজি) লিখুন",
                   }),
                 }}
                 isRequired
-                isError={!!errors?.nameEn}
-                errorMessage={errors?.nameEn?.message as string}
+                isError={!!errors?.titleEN}
+                errorMessage={errors?.titleEN?.message as string}
               />
             </div>
             <div className="col-12">
@@ -74,13 +74,13 @@ const Form = ({
                 label="নাম (বাংলা)"
                 placeholder="নাম (বাংলা) লিখুন"
                 registerProperty={{
-                  ...register("nameBn", {
+                  ...register("titleBN", {
                     required: "নাম (বাংলা) লিখুন",
                   }),
                 }}
                 isRequired
-                isError={!!errors?.nameBn}
-                errorMessage={errors?.nameBn?.message as string}
+                isError={!!errors?.titleBN}
+                errorMessage={errors?.titleBN?.message as string}
               />
             </div>
 
