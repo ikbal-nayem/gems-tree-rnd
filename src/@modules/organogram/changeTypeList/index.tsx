@@ -5,16 +5,40 @@ import {
   ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
+  Input,
   NoData,
+  Pagination,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, exportXLSX, generatePDF, numEnToBn } from "@gems/utils";
+import {
+  COMMON_LABELS,
+  IMeta,
+  exportXLSX,
+  generatePDF,
+  numEnToBn,
+  searchParamsToObject,
+  topProgress,
+  useDebounce,
+} from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
+import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { isNotEmptyList } from "utility/utils";
 import Form from "./Form";
 import DataTable from "./Table";
 import { organogramChangeTypePDFContent } from "./pdf";
+
+const initMeta: IMeta = {
+  page: 0,
+  limit: 10,
+  sort: [
+    {
+      field: "createdOn",
+      order: "desc",
+    },
+  ],
+};
 
 const ChangeType = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -26,21 +50,52 @@ const ChangeType = () => {
   const [listData, setListData] = useState<any>([]);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
+  const [respMeta, setRespMeta] = useState<any>(initMeta);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState<string>(
+    searchParams.get("searchKey") || ""
+  );
+  const params: any = searchParamsToObject(searchParams);
+  const searchKey = useDebounce(search, 500);
+
+  useEffect(() => {
+    if (searchKey) params.searchKey = searchKey;
+    else delete params.searchKey;
+    setSearchParams({ ...params });
+    // eslint-disable-next-line
+  }, [searchKey]);
 
   useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, []);
+  }, [searchParams]);
 
   const getDataList = (reqMeta = null) => {
-    OMSService.FETCH.organizationTypeList()
+    const payload = {
+      meta: searchKey
+        ? reqMeta
+          ? { ...reqMeta }
+          : { ...respMeta, page: 0 }
+        : reqMeta || respMeta,
+      body: {
+        searchKey: searchKey || null,
+      },
+    };
+
+    const reqData = { ...payload, body: payload?.body };
+    ProposalService.FETCH.organogramChangeTypeList(reqData)
       .then((res) => {
         setListData(res?.body || []);
+        setRespMeta(
+          res?.meta ? { ...res?.meta } : { limit: respMeta?.limit, page: 0 }
+        );
       })
       .catch((err) => toast.error(err?.message))
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .finally(() => setIsLoading(false));
+  };
+
+  const onPageChanged = (metaParams: IMeta) => {
+    getDataList({ ...metaParams });
   };
 
   const onDrawerClose = () => {
@@ -90,16 +145,14 @@ const ChangeType = () => {
       ? {
           ...data,
           id: updateData?.id || "",
-          orgCategoryType: "ORG_CATEGORY_TYPE",
         }
       : {
           ...data,
-          orgCategoryType: "ORG_CATEGORY_TYPE",
         };
 
     const service = isUpdate
-      ? OMSService.UPDATE.organizationType
-      : OMSService.SAVE.organizationType;
+      ? ProposalService.UPDATE.organogramChangeType
+      : ProposalService.SAVE.organogramChangeType;
     service(data)
       .then((res) => {
         toast.success(res?.message);
@@ -113,9 +166,31 @@ const ChangeType = () => {
   };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
-    downloadtype === "pdf"
-      ? generatePDF(organogramChangeTypePDFContent(listData))
-      : exportXLSX(exportData(listData || []), "প্রতিষ্ঠানের ধরণের তালিকা");
+    topProgress.show();
+    const payload = {
+      meta: {
+        page: 0,
+        limit: respMeta.totalRecords,
+        sort: [
+          {
+            order: "desc",
+            field: "createdOn",
+          },
+        ],
+      },
+      body: {
+        searchKey: searchKey || null,
+      },
+    };
+
+    ProposalService.FETCH.organogramChangeTypeList(payload)
+      .then((res) =>
+        downloadtype === "pdf"
+          ? generatePDF(organogramChangeTypePDFContent(res?.body))
+          : exportXLSX(exportData(res?.body || []), "Organization Type list")
+      )
+      .catch((err) => toast.error(err?.message))
+      .finally(() => topProgress.hide());
   };
 
   const exportData = (data: any[]) =>
@@ -136,14 +211,27 @@ const ChangeType = () => {
           যুক্ত করুন
         </Button>
       </PageToolbarRight>
+
       <div className="card p-5">
+        <div className="d-flex gap-3 mb-3">
+          <Input
+            type="search"
+            noMargin
+            placeholder="অনুসন্ধান করুন ... "
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <DownloadMenu
+            fnDownloadExcel={() => downloadFile("excel")}
+            fnDownloadPDF={() => downloadFile("pdf")}
+          />
+        </div>
         {isNotEmptyList(listData) && (
           <div className="d-flex justify-content-between gap-3 mb-6">
-            <h5 className="mt-3">মোট : {numEnToBn(listData?.length)} টি</h5>
-            <DownloadMenu
-              fnDownloadExcel={() => downloadFile("excel")}
-              fnDownloadPDF={() => downloadFile("pdf")}
-            />
+            <h5 className="mt-3">
+              মোট : {numEnToBn(respMeta?.totalRecords)} টি
+            </h5>
           </div>
         )}
 
@@ -155,15 +243,15 @@ const ChangeType = () => {
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
           >
-            {/* <Pagination
+            <Pagination
               meta={respMeta}
               pageNeighbours={2}
               onPageChanged={onPageChanged}
-            /> */}
+            />
           </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠানের ধরণের তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো পরিবর্তনের ধরণের তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 
