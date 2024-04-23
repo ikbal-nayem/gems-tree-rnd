@@ -6,7 +6,6 @@ import {
   DrawerFooter,
   Input,
 } from "@gems/components";
-import { COMMON_INSTRUCTION, numBnToEn } from "@gems/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 

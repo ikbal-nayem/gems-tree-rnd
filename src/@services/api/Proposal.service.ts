@@ -153,6 +153,7 @@ export const ProposalService = {
       await axiosIns.delete(
         OMS_SERVICE + "/organogram-proposal/delete-by-id/" + id
       ),
+
     organogramChangeType: async (payload): Promise<any> =>
       await axiosIns.put(
         OMS_SERVICE + "organogram-change-action-type/delete-all",
