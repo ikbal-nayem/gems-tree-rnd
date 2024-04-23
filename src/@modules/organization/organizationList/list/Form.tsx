@@ -134,7 +134,7 @@ const OrgForm = ({
   const getAsyncPreviousOranizationList = useCallback((searchKey, callback) => {
     orgPayload.current.body = {
       ...orgPayload.current.body,
-      searchKey: searchKey,
+      searchKey: searchKey ? searchKey?.trim() : "",
     };
     OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
       callback(resp?.body || [])
