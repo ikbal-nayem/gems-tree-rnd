@@ -8,7 +8,8 @@ export const ROUTE_L1 = {
 };
 export const ROUTE_L2 = {
   ORG_TEMPLATE_CREATE: ROUTE_L1.ORG_TEMPLATE + "/create",
-  ORG_EXIST_ORGANOGRAM_CREATE: ROUTE_L1.ORG_TEMPLATE + "/exist-organogram-create",
+  ORG_EXIST_ORGANOGRAM_CREATE:
+    ROUTE_L1.ORG_TEMPLATE + "/exist-organogram-create",
   ORG_TEMPLATE_UPDATE: ROUTE_L1.ORG_TEMPLATE + "/update",
   ORG_TEMPLATE_VIEW: ROUTE_L1.ORG_TEMPLATE + "/view",
   ORG_TEMPLATE_LIST: ROUTE_L1.ORG_TEMPLATE + "/list",
@@ -48,4 +49,6 @@ export const ROUTE_L2 = {
     ROUTE_L1.OMS_ORGANOGRAM + "/proposal-main-activity",
   OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS:
     ROUTE_L1.OMS_ORGANOGRAM + "/proposal-allocation-of-business",
+  OMS_ORGANOGRAM_CHANGE_TYPE_LIST:
+    ROUTE_L1.OMS_ORGANOGRAM + "/change-type-list",
 };

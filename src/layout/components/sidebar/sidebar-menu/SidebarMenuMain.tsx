@@ -80,6 +80,12 @@ const menuData = [
         title: MENU.BN.PROPOSAL_LIST,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
+        title: MENU.BN.ORGANOGRAM_CHANGE_TYPE,
+        hasBullet: true,
+      },
     ],
   },
   {
