@@ -1,7 +1,7 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
@@ -88,7 +88,15 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                 ? postList?.find((d) => d?.id === item?.postId)
                 : null;
 
+              const alternatePost = postExists
+                ? postList?.find((d) => d?.id === item?.alternativePostId)
+                : null;
+
               const postName = post?.nameBn || COMMON_LABELS.NOT_ASSIGN;
+
+              const alternatePostName = !isObjectNull(alternatePost)
+                ? alternatePost?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                : null;
 
               return (
                 <div key={i}>
@@ -109,7 +117,12 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">
-                        {longLineBreaker(postName, 17)}
+                        {longLineBreaker(
+                          `${postName}${
+                            alternatePostName ? " / " + alternatePostName : ""
+                          }`,
+                          17
+                        )}
                       </p>
                     </div>
                   ) : null}

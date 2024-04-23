@@ -26,6 +26,7 @@ import { enCheck } from "../../../../utility/checkValidation";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
+import AttachOrganizationForm from "./components/AttachOrganizationForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
@@ -137,6 +138,14 @@ const TemplateComponent = ({
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
+        attachedOrganizationDtoList:
+          updateData?.attachedOrganizationDtoList?.length > 0
+            ? updateData?.attachedOrganizationDtoList?.map((d) => {
+                if (!isObjectNull(d?.organizationDTO)) {
+                  return d?.organizationDTO;
+                }
+              })
+            : [],
         inventoryDtoList: updateData?.inventoryDtoList,
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
@@ -508,6 +517,12 @@ const TemplateComponent = ({
           </div>
           <div className="col-12 mt-3">
             <EquipmentsForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
+          </div>
+          <div className="col-12 mt-3">
+            <AttachOrganizationForm
               formProps={formProps}
               isNotEnamCommittee={isNotEnamCommittee}
             />

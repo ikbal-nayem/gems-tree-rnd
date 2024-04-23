@@ -15,6 +15,7 @@ import {
   IObject,
   enCheck,
   generateDateFormat,
+  notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
 import { useEffect } from "react";
@@ -25,6 +26,7 @@ interface IForm {
   onSubmit: (data) => void;
   onClose: () => void;
   submitLoading?: boolean;
+  listData?: any;
   organogram?: IObject;
 }
 
@@ -33,13 +35,14 @@ const FormCreate = ({
   onClose,
   onSubmit,
   submitLoading,
+  listData,
   organogram,
 }: IForm) => {
   const formProps = useForm();
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     control,
     formState: { errors },
   } = formProps;
@@ -56,9 +59,16 @@ const FormCreate = ({
   });
 
   useEffect(() => {
-    reset({});
+    remove();
     if (isOpen && fields?.length < 1) append("");
   }, [isOpen]);
+
+  const displayOrderValue =
+    listData?.length > 0
+      ? listData[listData?.length - 1]?.displayOrder
+        ? listData[listData?.length - 1]?.displayOrder
+        : 0
+      : 0;
 
   return (
     <Drawer
@@ -111,14 +121,14 @@ const FormCreate = ({
                               `businessAllocationList.${idx}.businessOfAllocationBn`,
                               {
                                 required: true,
-                                // onChange: (e) => {
-                                //   if (notNullOrUndefined(e.target.value)) {
-                                //     setValue(
-                                //       `businessAllocationList.${idx}.displayOrder`,
-                                //       idx + 1
-                                //     );
-                                //   }
-                                // },
+                                onChange: (e) => {
+                                  if (notNullOrUndefined(e.target.value)) {
+                                    setValue(
+                                      `businessAllocationList.${idx}.displayOrder`,
+                                      displayOrderValue + idx + 1
+                                    );
+                                  }
+                                },
                               }
                             ),
                           }}
@@ -145,14 +155,14 @@ const FormCreate = ({
                           ...register(
                             `businessAllocationList.${idx}.businessOfAllocationEn`,
                             {
-                              // onChange: (e) => {
-                              //   if (notNullOrUndefined(e.target.value)) {
-                              //     setValue(
-                              //       `businessAllocationList.${idx}.displayOrder`,
-                              //       idx + 1
-                              //     );
-                              //   }
-                              // },
+                              onChange: (e) => {
+                                if (notNullOrUndefined(e.target.value)) {
+                                  setValue(
+                                    `businessAllocationList.${idx}.displayOrder`,
+                                    displayOrderValue + idx + 1
+                                  );
+                                }
+                              },
                               required: isEnamCommittee,
                               validate: enCheck,
                             }

@@ -529,15 +529,15 @@ const TemplateViewComponent = ({
             )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
-            {(orgName ||
+            {/* {(orgName ||
               orgParentName ||
               orgStateParentName ||
-              organogramView) && (
+              organogramView) && ( */}
               <AttachedOrgList
                 data={attachedOrganizationData?.attachedOrganization || []}
                 langEn={langEn}
               />
-            )}
+            {/* )} */}
             <AbbreviationList
               data={updateData?.abbreviationDtoList || []}
               langEn={langEn}
@@ -605,14 +605,14 @@ const TemplateViewComponent = ({
             orgParentName ||
             orgStateParentName ||
             organogramView) && ( */}
-          {organogramView && (
+          {/* {organogramView && ( */}
             <div className="mt-3">
               <AttachedOrgList
                 data={attachedOrganizationData?.attachedOrganization || []}
                 langEn={langEn}
               />
             </div>
-          )}
+          {/* )} */}
         </div>
         <div className="col-md-6">
           <div className="mt-md-0 mt-3">

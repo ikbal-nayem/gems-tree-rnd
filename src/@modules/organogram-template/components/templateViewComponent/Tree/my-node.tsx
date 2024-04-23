@@ -78,6 +78,10 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
               ? postList?.find((d) => d?.id === item?.postId)
               : null;
 
+            const alternatePost = postExists
+              ? postList?.find((d) => d?.id === item?.alternativePostId)
+              : null;
+
             const postName = !isObjectNull(post)
               ? langEn
                 ? post?.nameEn
@@ -85,6 +89,12 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
               : langEn
               ? COMMON_LABELS.EN.NOT_ASSIGN
               : COMMON_LABELS.NOT_ASSIGN;
+
+            const alternatePostName = !isObjectNull(alternatePost)
+              ? langEn
+                ? alternatePost?.nameEn || COMMON_LABELS.NOT_ASSIGN
+                : alternatePost?.nameBn || COMMON_LABELS.EN.NOT_ASSIGN
+              : null;
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postId ? (
@@ -118,7 +128,12 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                         deletedClass || itemDeletedClass
                       } ${additionClass || itemAdditionClass}`}
                     >
-                      {longLineBreaker(postName, 17)}
+                      {longLineBreaker(
+                        `${postName}${
+                          alternatePostName ? " / " + alternatePostName : ""
+                        }`,
+                        17
+                      )}
                     </p>
                   </div>
                 ) : null}

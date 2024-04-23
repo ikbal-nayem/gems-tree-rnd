@@ -241,6 +241,7 @@ const AllocationOfBusiness = () => {
           isOpen={isFormCreateOpen}
           onClose={onDrawerClose}
           onSubmit={onSubmit}
+          listData={listData}
           submitLoading={isSubmitLoading}
           organogram={organogram}
         />
