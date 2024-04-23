@@ -1,12 +1,11 @@
 import { COMMON_LABELS } from "@constants/common.constant";
 import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
-import { pdfCellAlign } from "utility/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
-  { nameBn: "নাম (বাংলা)", key: "nameBn" },
-  { nameBn: "নাম (ইংরেজি)", key: "nameEn" },
-  { nameBn: "প্রতিষ্ঠানের লেভেল", key: "orgTypeLevel" },
+  { nameBn: "নাম (বাংলা)", key: "titleBN" },
+  { nameBn: "নাম (ইংরেজি)", key: "titleEN" },
+  { nameBn: "কোড", key: "code" },
   { nameBn: "সক্রিয়", key: "isActive" },
 ];
 
@@ -34,9 +33,7 @@ export const organogramChangeTypePDFContent = (data): TDocumentDefinitions => {
                       ];
                     default:
                       return {
-                        text: numEnToBn(
-                          d[col?.key] || COMMON_LABELS.NOT_ASSIGN
-                        ),
+                        text: d[col?.key] || COMMON_LABELS.NOT_ASSIGN,
                         alignment: "center",
                       };
                   }

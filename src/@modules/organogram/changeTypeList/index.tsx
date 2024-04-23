@@ -20,7 +20,6 @@ import {
   topProgress,
   useDebounce,
 } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -125,7 +124,7 @@ const ChangeType = () => {
         ids: [deleteData?.id || ""],
       },
     };
-    OMSService.DELETE.organizationType(payload)
+    ProposalService.DELETE.organogramChangeType(payload)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -187,7 +186,10 @@ const ChangeType = () => {
       .then((res) =>
         downloadtype === "pdf"
           ? generatePDF(organogramChangeTypePDFContent(res?.body))
-          : exportXLSX(exportData(res?.body || []), "Organization Type list")
+          : exportXLSX(
+              exportData(res?.body || []),
+              "Organogram change type list"
+            )
       )
       .catch((err) => toast.error(err?.message))
       .finally(() => topProgress.hide());
@@ -196,9 +198,9 @@ const ChangeType = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "নাম (বাংলা)": d?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-      "নাম (ইংরেজি)": d?.nameEn || COMMON_LABELS.NOT_ASSIGN,
-      লেভেল: numEnToBn(d?.orgTypeLevel) || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (বাংলা)": d?.titleBN || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.titleEN || COMMON_LABELS.NOT_ASSIGN,
+      কোড: d?.code || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়:
         (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
     }));
