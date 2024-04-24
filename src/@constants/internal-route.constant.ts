@@ -51,4 +51,5 @@ export const ROUTE_L2 = {
     ROUTE_L1.OMS_ORGANOGRAM + "/proposal-allocation-of-business",
   OMS_ORGANOGRAM_CHANGE_TYPE_LIST:
     ROUTE_L1.OMS_ORGANOGRAM + "/change-type-list",
+  OMS_ORGANOGRAM_CHECKLIST: ROUTE_L1.OMS_ORGANOGRAM + "/checklist",
 };

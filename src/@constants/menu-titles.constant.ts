@@ -23,6 +23,7 @@ export const MENU = {
     NODE_LIST: "পদবি/স্তরের তালিকা",
 
     ORGANOGRAM_CHANGE_TYPE: "পরিবর্তনের ধরণ",
+    ORGANOGRAM_CHECKLIST: "চেকলিস্ট",
   },
 
   EN: {
@@ -49,5 +50,6 @@ export const MENU = {
     NODE_LIST: "Node List",
 
     ORGANOGRAM_CHANGE_TYPE: "Change Type",
+    ORGANOGRAM_CHECKLIST: "Checklist",
   },
 };

@@ -86,6 +86,12 @@ const menuData = [
         title: MENU.BN.ORGANOGRAM_CHANGE_TYPE,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANOGRAM_CHECKLIST,
+        link: ROUTE_L2.OMS_ORGANOGRAM_CHECKLIST,
+        title: MENU.BN.ORGANOGRAM_CHECKLIST,
+        hasBullet: true,
+      },
     ],
   },
   {
