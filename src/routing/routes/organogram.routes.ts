@@ -37,6 +37,11 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
     element: lazy(() => import("@modules/organogram/changeTypeList")),
   },
+  {
+    link: ROUTE_L2.OMS_ORGANOGRAM_CHECKLIST,
+    routeKey: ROUTE_KEY.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
+    element: lazy(() => import("@modules/organogram/checkList")),
+  },
 ];
 
 let permissionRouteList = getPermittedRouteList(routeList);
