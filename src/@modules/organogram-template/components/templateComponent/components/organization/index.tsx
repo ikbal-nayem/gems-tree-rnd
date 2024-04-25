@@ -45,10 +45,6 @@ const Organizations = ({
     getOrgGroupList();
   }, []);
 
-  useEffect(() => {
-    onOrgGroupChange(watch("organizationGroupDto"));
-  }, [watch("organizationGroupDto")]);
-
   const onOrgGroupChange = (OrgGroup) => {
     if (!isTemplate) {
       setValue("templateOrganizationsDto", null);
