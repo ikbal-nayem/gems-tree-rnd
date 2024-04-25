@@ -4,7 +4,6 @@ import {
   Button,
   ConfirmationModal,
   ContentPreloader,
-  DownloadMenu,
   Input,
   NoData,
   Pagination,
@@ -65,6 +64,27 @@ const CheckList = () => {
     setSearchParams({ ...params });
     // eslint-disable-next-line
   }, [searchKey]);
+
+  useEffect(() => {
+    const payload = {
+      meta: {
+        page: 0,
+        limit: 100,
+        sort: [
+          {
+            field: "createdOn",
+            order: "desc",
+          },
+        ],
+      },
+      body: {},
+    };
+    ProposalService.FETCH.organogramChangeTypeList(payload)
+      .then((res) => {
+        setChangeTypeList(res?.body || []);
+      })
+      .catch((err) => toast.error(err?.message));
+  }, []);
 
   useEffect(() => {
     getDataList();

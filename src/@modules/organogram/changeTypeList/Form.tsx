@@ -35,7 +35,6 @@ const Form = ({
     if (Object.keys(updateData).length > 0) {
       reset({
         ...updateData,
-        type: updateData?.metaTypeEn,
       });
     } else {
       reset({ isActive: true });
