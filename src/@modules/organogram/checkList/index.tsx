@@ -24,8 +24,9 @@ import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { isNotEmptyList } from "utility/utils";
-import Form from "./Form";
+import CreateForm from "./CreateForm";
 import DataTable from "./Table";
+import UpdateForm from "./UpdateForm";
 import { organogramChangeTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
@@ -40,7 +41,8 @@ const initMeta: IMeta = {
 };
 
 const CheckList = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState<boolean>(false);
+  const [isUpdateDrawerOpen, setIsUpdateDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
@@ -119,8 +121,12 @@ const CheckList = () => {
     getDataList({ ...metaParams });
   };
 
-  const onDrawerClose = () => {
-    setIsDrawerOpen(false);
+  const onCreateDrawerClose = () => {
+    setIsCreateDrawerOpen(false);
+  };
+
+  const onUpdateDrawerClose = () => {
+    setIsUpdateDrawerOpen(false);
     setIsUpdate(false);
     setUpdateData({});
   };
@@ -128,7 +134,7 @@ const CheckList = () => {
   const handleUpdate = (data: any) => {
     setIsUpdate(true);
     setUpdateData(data);
-    setIsDrawerOpen(true);
+    setIsUpdateDrawerOpen(true);
   };
 
   const handleDelete = (data: any) => {
@@ -178,7 +184,7 @@ const CheckList = () => {
       .then((res) => {
         toast.success(res?.message);
         getDataList();
-        setIsDrawerOpen(false);
+        setIsUpdateDrawerOpen(false);
         setIsUpdate(false);
         setUpdateData({});
       })
@@ -231,7 +237,7 @@ const CheckList = () => {
     <>
       <PageTitle>{MENU.BN.ORGANOGRAM_CHECKLIST}</PageTitle>
       <PageToolbarRight>
-        <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
+        <Button color="primary" onClick={() => setIsCreateDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
       </PageToolbarRight>
@@ -282,9 +288,16 @@ const CheckList = () => {
         {/* ============================================================ TABLE ENDS ============================================================ */}
 
         {/* =========================================================== Form STARTS ============================================================ */}
-        <Form
-          isOpen={isDrawerOpen}
-          onClose={onDrawerClose}
+        <CreateForm
+          isOpen={isCreateDrawerOpen}
+          onClose={onCreateDrawerClose}
+          changeTypeList={changeTypeList}
+          onSubmit={onSubmit}
+          submitLoading={isSubmitLoading}
+        />
+        <UpdateForm
+          isOpen={isUpdateDrawerOpen}
+          onClose={onUpdateDrawerClose}
           changeTypeList={changeTypeList}
           updateData={updateData}
           onSubmit={onSubmit}

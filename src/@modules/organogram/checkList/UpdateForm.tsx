@@ -12,7 +12,7 @@ import { IObject, numBnToEn, numEnToBn } from "@gems/utils";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-interface IChangeTypeForm {
+interface IChecklistUpdateForm {
   isOpen?: boolean;
   onSubmit: (data) => void;
   onClose: () => void;
@@ -21,14 +21,14 @@ interface IChangeTypeForm {
   submitLoading?: boolean;
 }
 
-const Form = ({
+const UpdateForm = ({
   isOpen,
   onClose,
   onSubmit,
   updateData,
   changeTypeList,
   submitLoading,
-}: IChangeTypeForm) => {
+}: IChecklistUpdateForm) => {
   const {
     register,
     handleSubmit,
@@ -239,4 +239,4 @@ const Form = ({
     </Drawer>
   );
 };
-export default Form;
+export default UpdateForm;
