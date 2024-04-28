@@ -129,6 +129,8 @@ const TemplateComponent = ({
         titleEn: updateData?.titleEn,
         organizationHeader: updateData?.organizationHeader,
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
+        parentOrgNameBn: updateData?.parentOrgNameBn,
+        parentOrgNameEn: updateData?.parentOrgNameEn,
         organogramDate: updateData?.organogramDate,
         organizationGroupDto: updateData?.organizationGroupDto,
         templateOrganizationsDto:
@@ -448,6 +450,7 @@ const TemplateComponent = ({
               </div> */}
             </>
           )}
+
           <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
@@ -459,6 +462,7 @@ const TemplateComponent = ({
               isError={!!errors?.organogramDate}
             />
           </div>
+
           {isNotEnamCommittee &&
             updateData?.organogramChangeActionDtoList?.length > 0 && (
               <div className="col-md-6 col-12">
@@ -479,6 +483,42 @@ const TemplateComponent = ({
               </div>
             )}
         </div>
+        {(!isTemplate ||
+          updateData?.parentOrgNameBn ||
+          updateData?.parentOrgNameEn) && (
+          <>
+            {isNotEnamCommittee && (
+              <div className="col-md-6">
+                <Input
+                  label="অভিভাবকের প্রতিষ্ঠানের নাম (বাংলা)"
+                  placeholder="অভিভাবকের প্রতিষ্ঠানের নাম (বাংলা) লিখুন"
+                  isRequired={isNotEnamCommittee}
+                  registerProperty={{
+                    ...register("parentOrgNameBn", {
+                      required: isNotEnamCommittee,
+                    }),
+                  }}
+                  isError={!!errors?.parentOrgNameBn}
+                  errorMessage={errors?.parentOrgNameBn?.message as string}
+                />
+              </div>
+            )}
+            <div className="col-md-6">
+              <Input
+                label="অভিভাবকের প্রতিষ্ঠানের নাম (ইংরেজি)"
+                placeholder="অভিভাবকের প্রতিষ্ঠানের নাম লিখুন (ইংরেজি)"
+                isRequired={!isNotEnamCommittee}
+                registerProperty={{
+                  ...register("parentOrgNameEn", {
+                    required: !isNotEnamCommittee,
+                  }),
+                }}
+                isError={!!errors?.parentOrgNameEn}
+                errorMessage={errors?.parentOrgNameEn?.message as string}
+              />
+            </div>
+          </>
+        )}
       </div>
       <div className="mb-4">
         <Organizations

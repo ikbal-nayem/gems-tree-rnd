@@ -46,7 +46,7 @@ interface ITemplateViewComponent {
   inventoryData?: IObject[];
   manpowerData?: IObject;
   attachedOrganizationData?: IObject;
-  parentOrganizationData?: IObject;
+  // parentOrganizationData?: IObject;
   isSubmitLoading?: boolean;
   organogramView?: boolean;
   isPreviousVerison?: boolean;
@@ -60,7 +60,7 @@ const TemplateViewComponent = ({
   inventoryData,
   manpowerData,
   attachedOrganizationData,
-  parentOrganizationData,
+  // parentOrganizationData,
   organogramView = false,
   organogramId,
   isBeginningVersion = false,
@@ -278,8 +278,8 @@ const TemplateViewComponent = ({
     ? stateOrganizationData?.parentNameEN
     : stateOrganizationData?.parentNameBN;
   let orgParentName = langEn
-    ? parentOrganizationData?.nameEn
-    : parentOrganizationData?.nameBn;
+    ? updateData?.parentOrgNameEn
+    : updateData?.parentOrgNameBn;
 
   let titleName =
     (organogramView
@@ -533,10 +533,10 @@ const TemplateViewComponent = ({
               orgParentName ||
               orgStateParentName ||
               organogramView) && ( */}
-              <AttachedOrgList
-                data={attachedOrganizationData?.attachedOrganization || []}
-                langEn={langEn}
-              />
+            <AttachedOrgList
+              data={attachedOrganizationData?.attachedOrganization || []}
+              langEn={langEn}
+            />
             {/* )} */}
             <AbbreviationList
               data={updateData?.abbreviationDtoList || []}
@@ -606,12 +606,12 @@ const TemplateViewComponent = ({
             orgStateParentName ||
             organogramView) && ( */}
           {/* {organogramView && ( */}
-            <div className="mt-3">
-              <AttachedOrgList
-                data={attachedOrganizationData?.attachedOrganization || []}
-                langEn={langEn}
-              />
-            </div>
+          <div className="mt-3">
+            <AttachedOrgList
+              data={attachedOrganizationData?.attachedOrganization || []}
+              langEn={langEn}
+            />
+          </div>
           {/* )} */}
         </div>
         <div className="col-md-6">
