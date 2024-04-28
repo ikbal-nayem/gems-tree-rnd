@@ -41,9 +41,9 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.changeType || "-"} />
-              <TableCell text={data?.titleBN || "-"} />
-              <TableCell text={data?.titleEN || "-"} />
+              <TableCell text={data?.organogramChangeTypeDto?.titleBN || "-"} />
+              <TableCell text={data?.titleBn || "-"} />
+              <TableCell text={data?.titleEn || "-"} />
               {/* <TableCell isActive={data?.isActive} /> */}
               <TableCell textAlign="end">
                 <Dropdown

@@ -49,7 +49,6 @@ const CheckList = () => {
   const [deleteData, setDeleteData] = useState<any>();
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [listData, setListData] = useState<any>([]);
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<any>({});
   const [changeTypeList, setChangeTypeList] = useState<IObject[]>([]);
   const [respMeta, setRespMeta] = useState<any>(initMeta);
@@ -105,8 +104,8 @@ const CheckList = () => {
       },
     };
 
-    const reqData = { ...payload, body: payload?.body };
-    ProposalService.FETCH.organogramChangeTypeList(reqData)
+    // const reqData = { ...payload, body: payload?.body };
+    ProposalService.FETCH.organogramChecklist(payload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -127,13 +126,11 @@ const CheckList = () => {
 
   const onUpdateDrawerClose = () => {
     setIsUpdateDrawerOpen(false);
-    setIsUpdate(false);
     setUpdateData({});
   };
 
   const handleUpdate = (data: any) => {
-    setIsUpdate(true);
-    setUpdateData(data);
+    setUpdateData(data || {});
     setIsUpdateDrawerOpen(true);
   };
 
@@ -152,7 +149,7 @@ const CheckList = () => {
         ids: [deleteData?.id || ""],
       },
     };
-    ProposalService.DELETE.organogramChangeType(payload)
+    ProposalService.DELETE.organogramChecklist(payload)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -165,27 +162,40 @@ const CheckList = () => {
       });
   };
 
-  const onSubmit = (data) => {
+  const onCreateSubmit = (data) => {
     setIsSubmitLoading(true);
 
-    data = isUpdate
-      ? {
-          ...data,
-          id: updateData?.id || "",
-        }
-      : {
-          ...data,
-        };
+    let reqData = data?.checklist?.map((d) => {
+      return {
+        ...d,
+        organogramChangeTypeDto: data?.organogramChangeTypeDto,
+        organogramChangeTypeId: data?.organogramChangeTypeId,
+      };
+    });
 
-    const service = isUpdate
-      ? ProposalService.UPDATE.organogramChangeType
-      : ProposalService.SAVE.organogramChangeType;
-    service(data)
+    ProposalService.SAVE.organogramChecklist(reqData)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setIsCreateDrawerOpen(false);
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
+  };
+
+  const onUpdateSubmit = (data) => {
+    setIsSubmitLoading(true);
+
+    data = {
+      ...data,
+      id: updateData?.id || "",
+    };
+
+    ProposalService.UPDATE.organogramChecklist(data)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
         setIsUpdateDrawerOpen(false);
-        setIsUpdate(false);
         setUpdateData({});
       })
       .catch((error) => toast.error(error?.message))
@@ -292,7 +302,7 @@ const CheckList = () => {
           isOpen={isCreateDrawerOpen}
           onClose={onCreateDrawerClose}
           changeTypeList={changeTypeList}
-          onSubmit={onSubmit}
+          onSubmit={onCreateSubmit}
           submitLoading={isSubmitLoading}
         />
         <UpdateForm
@@ -300,7 +310,7 @@ const CheckList = () => {
           onClose={onUpdateDrawerClose}
           changeTypeList={changeTypeList}
           updateData={updateData}
-          onSubmit={onSubmit}
+          onSubmit={onUpdateSubmit}
           submitLoading={isSubmitLoading}
         />
         {/* =========================================================== FORM ENDS============================================================ */}
@@ -312,7 +322,7 @@ const CheckList = () => {
         isSubmitting={isDeleteLoading}
         onConfirmLabel={"মুছে ফেলুন"}
       >
-        আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+        আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
       </ConfirmationModal>
     </>
   );
