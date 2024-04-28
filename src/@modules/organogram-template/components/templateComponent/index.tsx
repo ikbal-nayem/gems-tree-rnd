@@ -139,13 +139,7 @@ const TemplateComponent = ({
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
         attachedOrganizationDtoList:
-          updateData?.attachedOrganizationDtoList?.length > 0
-            ? updateData?.attachedOrganizationDtoList?.map((d) => {
-                if (!isObjectNull(d?.organizationDTO)) {
-                  return d?.organizationDTO;
-                }
-              })
-            : [],
+          updateData?.attachedOrganizationDtoList || [],
         inventoryDtoList: updateData?.inventoryDtoList,
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
@@ -274,7 +268,7 @@ const TemplateComponent = ({
       titleEn: getValues("titleEn"),
       organizationHeader: getValues("organizationHeader"),
       organizationHeaderMsc: getValues("organizationHeaderMsc"),
-      organizationGroupId: data?.organizationGroupDto?.id,
+      organizationGroupId: data?.organizationGroupDto?.id || null,
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
         ? {
