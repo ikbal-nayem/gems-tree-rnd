@@ -20,6 +20,7 @@ const Organizations = ({
   const {
     watch,
     control,
+    setValue,
     formState: { errors },
   } = formProps;
   const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
@@ -44,12 +45,9 @@ const Organizations = ({
     getOrgGroupList();
   }, []);
 
-  useEffect(() => {
-    onOrgGroupChange(watch("organizationGroupDto"));
-  }, [watch("organizationGroupDto")]);
-
   const onOrgGroupChange = (OrgGroup) => {
     if (!isTemplate) {
+      setValue("templateOrganizationsDto", null);
       orgPayload.current.body = {
         ...orgPayload.current.body,
         organizationCategoryId: OrgGroup?.id || null,

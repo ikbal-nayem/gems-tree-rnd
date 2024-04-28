@@ -24,7 +24,11 @@ const GroupOrganization = (item, i, langEn) => {
       <ol>
         {isNotEmptyList(item?.organizationDTOList) &&
           item?.organizationDTOList?.map((d, idx) => {
-            return <li key={idx}>{langEn ? d?.orgNameEn : d?.orgNameBn}</li>;
+            return (
+              <li key={idx}>
+                {langEn ? d?.organizationNameEn : d?.organizationNameBn}
+              </li>
+            );
           })}
       </ol>
     </div>

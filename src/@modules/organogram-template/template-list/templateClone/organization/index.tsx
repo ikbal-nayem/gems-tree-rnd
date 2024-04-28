@@ -1,7 +1,7 @@
 import { Autocomplete } from "@gems/components";
-import { IObject, notNullOrUndefined } from "@gems/utils";
+import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useCallback, useRef } from "react";
 interface IOrganizations {
   formProps: any;
   organizationGroupList?: IObject[];
@@ -13,38 +13,37 @@ const Organizations = ({
 }: IOrganizations) => {
   const {
     control,
+    setValue,
     formState: { errors },
   } = formProps;
-  const [organizationList, setOrganizationList] = useState<IObject[]>([]);
-  const [allOrganizationsCache, setAllOrganizationsCache] = useState<IObject[]>(
-    []
-  );
-  const getOrgList = () => {
-    const payload = {
-      meta: {
-        page: 0,
-        limit: 1000,
-        sort: [{ order: "asc", field: "serialNo" }],
-      },
-      body: { searchKey: "" },
-    };
-    OMSService.getOrganizationList(payload).then((resp) => {
-      setOrganizationList(resp?.body);
-      setAllOrganizationsCache(resp?.body); // Caching all_Orgs
-    });
-  };
 
-  useEffect(() => {
-    getOrgList();
-  }, []);
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "", organizationCategoryId: null },
+  };
+  const orgPayload = useRef(payload);
 
   const onOrgGroupChange = (OrgGroup) => {
-    if (notNullOrUndefined(OrgGroup)) {
-      OMSService.FETCH.organizationsByGroupId(OrgGroup?.id).then((resp) =>
-        setOrganizationList(resp?.body)
-      );
-    } else setOrganizationList(allOrganizationsCache);
+    setValue("organization", null);
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      organizationCategoryId: OrgGroup?.id || null,
+    };
   };
+
+  const getAsyncOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey ? searchKey?.trim() : "",
+    };
+    OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body)
+    );
+  }, []);
 
   return (
     <div className="row">
@@ -69,13 +68,14 @@ const Organizations = ({
           label="প্রতিষ্ঠান"
           placeholder="প্রতিষ্ঠান বাছাই করুন"
           name="organization"
-          options={organizationList}
+          isAsync
           noMargin
           isRequired="প্রতিষ্ঠান বাছাই করুন"
           control={control}
           // autoFocus
           getOptionLabel={(op) => op.nameBn}
           getOptionValue={(op) => op?.id}
+          loadOptions={getAsyncOranizationList}
           isError={!!errors?.organization}
           errorMessage={errors?.organization?.message as string}
         />

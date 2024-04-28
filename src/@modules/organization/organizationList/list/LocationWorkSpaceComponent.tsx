@@ -5,13 +5,14 @@ import {
   Modal,
   ModalFooter,
   Pagination,
+  Tag,
 } from "@gems/components";
 import { IMeta, IObject, useDebounce } from "@gems/utils";
+import { CoreService } from "@services/api/Core.service";
 import clsx from "clsx";
 import { FC, useEffect, useRef, useState } from "react";
 import { ModalBody } from "react-bootstrap";
 import { Controller } from "react-hook-form";
-import { CoreService } from "@services/api/Core.service";
 
 const initPayload = {
   meta: {
@@ -139,7 +140,10 @@ const LocationWorkSpaceComponent: FC<LocationWorkSpaceComponentProps> = ({
                 })}
                 onClick={() => onSelect(ws)}
               >
-                <span className="fs-5">{ws?.titleBn}</span>
+                <span className="fs-5">
+                  {ws?.titleBn}{" "}
+                  <Tag title={ws?.typeTitleBn} className="ms-2" size="sm" />
+                </span>
               </div>
             ))}
           </div>
