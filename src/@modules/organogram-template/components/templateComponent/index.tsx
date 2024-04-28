@@ -486,7 +486,7 @@ const TemplateComponent = ({
         {(!isTemplate ||
           updateData?.parentOrgNameBn ||
           updateData?.parentOrgNameEn) && (
-          <>
+          <div className="row">
             {isNotEnamCommittee && (
               <div className="col-md-6">
                 <Input
@@ -517,7 +517,7 @@ const TemplateComponent = ({
                 errorMessage={errors?.parentOrgNameEn?.message as string}
               />
             </div>
-          </>
+          </div>
         )}
       </div>
       <div className="mb-4">
