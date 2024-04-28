@@ -100,6 +100,9 @@ export const ProposalService = {
         OMS_SERVICE + "organogram-change-action-type/get-list",
         payload
       ),
+
+    organogramChecklist: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "org-check-list/get-list", payload),
   },
 
   // ======================= SAVE API =================================
@@ -113,6 +116,9 @@ export const ProposalService = {
         OMS_SERVICE + "organogram-change-action-type/create",
         payload
       ),
+
+    organogramChecklist: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "org-check-list/save", payload),
   },
 
   // ======================= UPDATE API =================================
@@ -144,6 +150,9 @@ export const ProposalService = {
         OMS_SERVICE + "organogram-change-action-type/update",
         payload
       ),
+
+    organogramChecklist: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "org-check-list/update", payload),
   },
 
   // ======================= DELETE API =================================
@@ -159,5 +168,8 @@ export const ProposalService = {
         OMS_SERVICE + "organogram-change-action-type/delete-all",
         payload
       ),
+
+    organogramChecklist: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "org-check-list/delete-all", payload),
   },
 };

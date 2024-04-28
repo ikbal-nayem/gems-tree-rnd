@@ -34,11 +34,7 @@ const CreateForm = ({
     control,
     reset,
     formState: { errors },
-  } = useForm<any>({
-    defaultValues: {
-      checklist: [{}],
-    },
-  });
+  } = useForm();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -46,9 +42,12 @@ const CreateForm = ({
   });
 
   useEffect(() => {
-    remove();
-    reset({});
-  }, [reset]);
+    if (isOpen) {
+      remove();
+      reset({});
+      append({});
+    }
+  }, [isOpen]);
 
   return (
     <Drawer
@@ -69,14 +68,14 @@ const CreateForm = ({
                 placeholder="পরিবর্তনের ধরণ বাছাই করুন"
                 isRequired="পরিবর্তনের ধরণ বাছাই করুন"
                 options={changeTypeList || []}
-                name="organogramChangeTypeDTO"
+                name="organogramChangeTypeDto"
                 getOptionLabel={(op) => op.titleBN}
                 getOptionValue={(op) => op.id}
                 onChange={(op) => setValue("organogramChangeTypeId", op?.id)}
                 control={control}
-                isError={!!errors?.organogramChangeTypeDTO}
+                isError={!!errors?.organogramChangeTypeDto}
                 errorMessage={
-                  errors?.organogramChangeTypeDTO?.message as string
+                  errors?.organogramChangeTypeDto?.message as string
                 }
               />
             </div>
@@ -94,15 +93,15 @@ const CreateForm = ({
                       label={idx < 1 ? "নাম (বাংলা)" : ""}
                       placeholder="নাম (বাংলা) লিখুন"
                       registerProperty={{
-                        ...register(`checklist.${idx}.titleBN`, {
+                        ...register(`checklist.${idx}.titleBn`, {
                           required: "নাম (বাংলা) লিখুন",
                         }),
                       }}
                       isRequired
                       noMargin
-                      isError={!!errors?.checklist?.[idx]?.titleBN}
+                      isError={!!errors?.checklist?.[idx]?.titleBn}
                       errorMessage={
-                        errors?.checklist?.[idx]?.titleBN?.message as string
+                        errors?.checklist?.[idx]?.titleBn?.message as string
                       }
                     />
                   </div>
@@ -112,14 +111,14 @@ const CreateForm = ({
                       placeholder="নাম (ইংরেজি) লিখুন"
                       noMargin
                       registerProperty={{
-                        ...register(`checklist.${idx}.titleEN`, {
+                        ...register(`checklist.${idx}.titleEn`, {
                           // required: "নাম (ইংরেজি) লিখুন",
                         }),
                       }}
                       // isRequired
-                      isError={!!errors?.checklist?.[idx]?.titleEN}
+                      isError={!!errors?.checklist?.[idx]?.titleEn}
                       errorMessage={
-                        errors?.checklist?.[idx]?.titleEN?.message as string
+                        errors?.checklist?.[idx]?.titleEn?.message as string
                       }
                     />
                   </div>
@@ -131,7 +130,7 @@ const CreateForm = ({
                       noMargin
                       min={1}
                       registerProperty={{
-                        ...register("orgTypeLevel", {
+                        ...register(`checklist.${idx}.slNo`, {
                           required: "ক্রমিক নম্বর লিখুন",
                           setValueAs: (v) => numBnToEn(v),
                           // maxLength: {
@@ -141,8 +140,10 @@ const CreateForm = ({
                         }),
                       }}
                       isRequired
-                      isError={!!errors?.orgTypeLevel}
-                      errorMessage={errors?.orgTypeLevel?.message as string}
+                      isError={!!errors?.checklist?.[idx]?.slNo}
+                      errorMessage={
+                        errors?.checklist?.[idx]?.slNo?.message as string
+                      }
                     />
                   </div>
                   <div className="col-md-6 col-xl-2 px-1 pb-1 pb-md-0">
@@ -153,7 +154,7 @@ const CreateForm = ({
                       noMargin
                       min={1}
                       registerProperty={{
-                        ...register("orgTypeLevel", {
+                        ...register(`checklist.${idx}.subSl`, {
                           required: "উপ ক্রমিক নম্বর লিখুন",
                           setValueAs: (v) => numBnToEn(v),
                           // maxLength: {
@@ -163,8 +164,10 @@ const CreateForm = ({
                         }),
                       }}
                       isRequired
-                      isError={!!errors?.orgTypeLevel}
-                      errorMessage={errors?.orgTypeLevel?.message as string}
+                      isError={!!errors?.checklist?.[idx]?.subSl}
+                      errorMessage={
+                        errors?.checklist?.[idx]?.subSl?.message as string
+                      }
                     />
                   </div>
                 </div>
@@ -203,7 +206,7 @@ const CreateForm = ({
               বন্ধ করুন
             </Button>
             <Button color="primary" type="submit" isLoading={submitLoading}>
-              "সংরক্ষণ"
+              সংরক্ষণ করুন
             </Button>
           </div>
         </DrawerFooter>
