@@ -221,6 +221,7 @@ const AllocationOfBusiness = () => {
             data={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
+            isEnamCommittee={organogram?.isEnamCommittee}
           >
             {/* <Pagination
               meta={respMeta}

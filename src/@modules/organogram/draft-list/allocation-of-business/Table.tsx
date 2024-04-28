@@ -1,30 +1,29 @@
 import {
   Dropdown,
   DropdownItem,
-  // Dropdown,
-  // DropdownItem,
-  ITableHeadColumn,
   Icon,
   // Icon,
   Table,
   TableCell,
+  TableHead,
   TableRow,
 } from "@gems/components";
 import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
-const columns: ITableHeadColumn[] = [
-  { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  { title: "কর্মবন্টন (বাংলা)", minWidth: 400 },
-  { title: "কর্মবন্টন (ইংরেজি)", minWidth: 400 },
-  { title: COMMON_LABELS.ACTION, align: "end" },
-];
+// const columns: ITableHeadColumn[] = [
+//   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
+//   { title: "কর্মবন্টন (বাংলা)", minWidth: 400 },
+//   { title: "কর্মবন্টন (ইংরেজি)", minWidth: 400 },
+//   { title: COMMON_LABELS.ACTION, align: "end" },
+// ];
 
 type TableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
+  isEnamCommittee: boolean;
 };
 
 const DataTable: FC<TableProps> = ({
@@ -32,16 +31,33 @@ const DataTable: FC<TableProps> = ({
   data = [],
   handleUpdate,
   handleDelete,
+  isEnamCommittee,
 }) => {
   if (!data?.length) return;
   return (
     <>
-      <Table columns={columns}>
+      <Table>
+        <TableHead>
+          <TableCell text={COMMON_LABELS.SL_NO} minWidth={50} head />
+          {!isEnamCommittee && (
+            <TableCell text={"কর্মবন্টন (বাংলা)"} minWidth={400} head />
+          )}
+          <TableCell text={"কর্মবন্টন (ইংরেজি)"} minWidth={400} head />
+          <TableCell
+            text={COMMON_LABELS.ACTION}
+            minWidth={50}
+            textAlign="end"
+            head
+          />
+        </TableHead>
+
         {data?.map((data, i) => {
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.businessOfAllocationBn || "-"} />
+              {!isEnamCommittee && (
+                <TableCell text={data?.businessOfAllocationBn || "-"} />
+              )}
               <TableCell text={data?.businessOfAllocationEn || "-"} />
               <TableCell textAlign="end">
                 <Dropdown
