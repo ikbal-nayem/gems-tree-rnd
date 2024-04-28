@@ -247,7 +247,7 @@ const PostConfig = () => {
       পদবি: d?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       প্রতিষ্ঠান: d?.organization?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       গ্রেড: d?.gradeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN,
-      "সার্ভিস/ক্যাডারের ধরণ":
+      "সার্ভিস/ক্যাডারের ধরন":
         d?.serviceTypeDto?.titleBn || COMMON_LABELS.NOT_ASSIGN,
       "অর্গানোগ্রাম ভার্সন":
         d?.organogramVersionDto?.titleBn || COMMON_LABELS.NOT_ASSIGN,

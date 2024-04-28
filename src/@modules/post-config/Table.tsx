@@ -21,7 +21,7 @@ const columns: ITableHeadColumn[] = [
   { title: "পদবি", minWidth: 100 },
   { title: "প্রতিষ্ঠান", minWidth: 100 },
   { title: "অর্গানোগ্রাম তারিখ", minWidth: 75 },
-  { title: "সার্ভিসের ধরণ", minWidth: 75 },
+  { title: "সার্ভিসের ধরন", minWidth: 75 },
   //   { title: "সার্ভিস/ক্যাডারের নাম", minWidth: 75 },
   { title: "গ্রেড", minWidth: 75 },
   { title: COMMON_LABELS.ACTION, align: "end" },

@@ -14,7 +14,7 @@ export const MENU = {
     POST_CONFIG: "পদবি কনফিগারেশন",
     ORANIZATION: "প্রতিষ্ঠান",
     ORANIZATION_LIST: "প্রতিষ্ঠানের তালিকা",
-    ORANIZATION_TYPE: "প্রতিষ্ঠানের ধরণ",
+    ORANIZATION_TYPE: "প্রতিষ্ঠানের ধরন",
     ORGANIZATION_GROUP: "প্রতিষ্ঠানের গ্রুপ",
     ORANIZATION_GROUP_LIST: "প্রতিষ্ঠানের গ্রুপের তালিকা",
     ORANIZATION_GROUP_TREE: "প্রতিষ্ঠানের গ্রুপের ট্রি",

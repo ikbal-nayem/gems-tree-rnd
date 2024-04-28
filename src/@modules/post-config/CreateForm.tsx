@@ -180,8 +180,8 @@ errorMessage={errors?.organization?.message as string}
 
                     <div className="col-md-4">
                       <Autocomplete
-                        label={index < 1 ? "সার্ভিসের ধরণ" : ""}
-                        placeholder="সার্ভিসের ধরণ বাছাই করুন"
+                        label={index < 1 ? "সার্ভিসের ধরন" : ""}
+                        placeholder="সার্ভিসের ধরন বাছাই করুন"
                         isRequired=" "
                         control={control}
                         options={options?.serviceList || []}

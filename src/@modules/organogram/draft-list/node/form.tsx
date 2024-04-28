@@ -582,7 +582,7 @@ const NodeCreateUpdateForm = ({
 
               <div className="col-md-6 col-xl-2 px-1">
                 <Autocomplete
-                  label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                  label={index < 1 ? "সার্ভিসের ধরন" : ""}
                   placeholder="বাছাই করুন"
                   isRequired={true}
                   control={control}
@@ -625,7 +625,7 @@ const NodeCreateUpdateForm = ({
 
               <div className="col-md-6 col-xl-2 col-xxl-1 px-1">
                 <Select
-                  label={index < 1 ? "পদের ধরণ" : ""}
+                  label={index < 1 ? "পদের ধরন" : ""}
                   options={postTypeList || []}
                   noMargin
                   placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}

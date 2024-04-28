@@ -135,7 +135,7 @@ const OrgListByGroup = () => {
       "প্রতিষ্ঠানের নাম": d?.nameBn || "-",
       স্থান: d?.locationChainNameBn || "-",
       "প্রতিষ্ঠানের পর্যায়": d?.orgLevelBn || "-",
-      "প্রতিষ্ঠানের ধরণ": d?.orgCategoryTypeBn || "-",
+      "প্রতিষ্ঠানের ধরন": d?.orgCategoryTypeBn || "-",
       "প্রতিষ্ঠানের গ্রুপ": d?.orgCategoryGroupBn || "-",
       "প্রতিষ্ঠানের অভিভাবক": d?.parentOrgNameBn || "-",
     }));

@@ -20,7 +20,7 @@ import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  // { title: "ধরণ (বাংলা)", minWidth: 100 },
+  // { title: "ধরন (বাংলা)", minWidth: 100 },
   { title: "পদবি/স্তর", minWidth: 100 },
   { title: "অভিভাবক", minWidth: 100 },
   { title: "জনবল", minWidth: 75 },

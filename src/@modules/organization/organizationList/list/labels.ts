@@ -5,8 +5,8 @@ export const LABELS = {
 
 		nameBn: "নাম (বাংলা)",
 		nameEn: "নাম (ইংরেজি)",
-		officeType: "প্রতিষ্ঠানের ধরণ",
-		orgType: "সংস্থার ধরণ",
+		officeType: "প্রতিষ্ঠানের ধরন",
+		orgType: "সংস্থার ধরন",
 		
 	},
 

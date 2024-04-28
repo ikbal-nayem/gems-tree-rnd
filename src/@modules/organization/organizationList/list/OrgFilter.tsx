@@ -76,8 +76,8 @@ const OrgFilter = ({ onFilterDone, options }) => {
               control={control}
             />
             <Autocomplete
-              label="প্রতিষ্ঠানের ধরণ"
-              placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+              label="প্রতিষ্ঠানের ধরন"
+              placeholder="প্রতিষ্ঠানের ধরন বাছাই করুন"
               options={options?.organizationTypes || []}
               name="organizationTypeDTO"
               getOptionLabel={(op) => op.nameBn}
@@ -90,7 +90,7 @@ const OrgFilter = ({ onFilterDone, options }) => {
                 <Autocomplete
                   label="প্রতিষ্ঠানের গ্রুপ"
                   placeholder="প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
-                  // isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                  // isRequired="প্রতিষ্ঠানের ধরন বাছাই করুন"
                   options={orgGroupList || []}
                   name="organizationGroupDTO"
                   getOptionLabel={(op) => op.nameBn}

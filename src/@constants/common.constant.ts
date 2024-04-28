@@ -105,7 +105,7 @@ export const LABELS = {
     TEMPLATE_TITLE_EN: "শিরোনাম (ইংরেজি)",
     ORGANOGRAM_DATE: "অর্গানোগ্রাম তারিখ",
     TEMPLATE_NAME: "টেমপ্লেটের নাম",
-    TEMPLATE_TYPE: "টেমপ্লেটের ধরণ",
+    TEMPLATE_TYPE: "টেমপ্লেটের ধরন",
 
     MAIN_ACTIVITIES: "প্রধান কার্যাবলি",
     EQUIPMENTS: "পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদন",

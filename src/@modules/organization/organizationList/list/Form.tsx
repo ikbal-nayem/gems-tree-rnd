@@ -170,9 +170,9 @@ const OrgForm = ({
             </div>
             <div className="col-12">
               <Autocomplete
-                label="প্রতিষ্ঠানের ধরণ"
-                placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
-                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                label="প্রতিষ্ঠানের ধরন"
+                placeholder="প্রতিষ্ঠানের ধরন বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের ধরন বাছাই করুন"
                 options={options?.organizationTypes || []}
                 name="organizationTypeDTO"
                 getOptionLabel={(op) => op.nameBn}

@@ -217,7 +217,7 @@ const List = () => {
       "ক্রমিক নং": i + 1,
       "নাম (বাংলা)": d?.nameBn || "-",
       "নাম (ইংরেজি)": d?.nameEn || "-",
-      "প্রতিষ্ঠানের ধরণ": d?.parent?.nameBn || "-",
+      "প্রতিষ্ঠানের ধরন": d?.parent?.nameBn || "-",
       "গ্রুপ অভিভাবক": d?.parentGroup?.nameBn || "-",
       "অভিভাবক প্রতিষ্ঠান": d?.parentOrganization?.nameBn || "-",
       সক্রিয়: (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || "-",
@@ -236,7 +236,7 @@ const List = () => {
           <div className="d-flex gap-3">
             <span className="w-25">
               <Autocomplete
-                placeholder="সংস্থার ধরণ বাছাই করুন"
+                placeholder="সংস্থার ধরন বাছাই করুন"
                 options={orgTypeList || []}
                 name="organizationTypeDTO"
                 getOptionLabel={(op) => op.nameBn}

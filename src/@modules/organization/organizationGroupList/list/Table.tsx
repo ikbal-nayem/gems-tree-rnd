@@ -18,7 +18,7 @@ const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
   { title: "নাম (বাংলা)", minWidth: 100 },
   { title: "নাম (ইংরেজি)", minWidth: 100 },
-  { title: "প্রতিষ্ঠানের ধরণ", minWidth: 100 },
+  { title: "প্রতিষ্ঠানের ধরন", minWidth: 100 },
   { title: "গ্রুপ অভিভাবক", minWidth: 100 },
   { title: "অভিভাবক প্রতিষ্ঠান", minWidth: 125 },
   { title: "প্রদর্শন ক্রম", minWidth: 75 },

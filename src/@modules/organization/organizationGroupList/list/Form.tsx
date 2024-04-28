@@ -100,9 +100,9 @@ const Form = ({
           <div className="row">
             <div className="col-12">
               <Autocomplete
-                label="প্রতিষ্ঠানের ধরণ"
+                label="প্রতিষ্ঠানের ধরন"
                 placeholder="বাছাই করুন"
-                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের ধরন বাছাই করুন"
                 options={orgTypeList || []}
                 name="parent"
                 getOptionLabel={(op) => op.nameBn}

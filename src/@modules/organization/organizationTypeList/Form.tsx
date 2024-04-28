@@ -45,7 +45,7 @@ const Form = ({
 
   return (
     <Drawer
-      title={`প্রতিষ্ঠানের ধরণ ${
+      title={`প্রতিষ্ঠানের ধরন ${
         Object.keys(updateData)?.length > 0 ? "হালনাগাদ" : "সংরক্ষণ"
       } করুন`}
       isOpen={isOpen}

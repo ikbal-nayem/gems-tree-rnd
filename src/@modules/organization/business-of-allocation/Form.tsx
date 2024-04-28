@@ -29,7 +29,7 @@ const organizationTypeStaticList = [
   {
     titleEn: "Type",
     key: "ORG_CATEGORY_TYPE",
-    titleBn: "ধরণ",
+    titleBn: "ধরন",
   },
   {
     titleEn: "Group",
@@ -90,7 +90,7 @@ const Form = ({
         <DrawerBody>
           <div className="row">
             {/* <Select
-              label={"প্রতিষ্ঠানের ধরণ"}
+              label={"প্রতিষ্ঠানের ধরন"}
               options={organizationTypeStaticList || []}
               placeholder={"বাছাই করুন"}
               isRequired
@@ -109,9 +109,9 @@ const Form = ({
             {/* {watch("orgCategoryType") === "ORG_CATEGORY_GROUP" && (
               <div className="col-12">
                 <Autocomplete
-                  label="প্রতিষ্ঠানের অভিভাবকের ধরণ"
+                  label="প্রতিষ্ঠানের অভিভাবকের ধরন"
                   placeholder="বাছাই করুন"
-                  isRequired="প্রতিষ্ঠানের অভিভাবকের ধরণ বাছাই করুন"
+                  isRequired="প্রতিষ্ঠানের অভিভাবকের ধরন বাছাই করুন"
                   options={orgParentTypeList || []}
                   name="parentDTO"
                   getOptionLabel={(op) => op.nameBn}
