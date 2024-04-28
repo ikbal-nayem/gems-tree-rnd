@@ -94,6 +94,12 @@ export const ProposalService = {
       await axiosIns.get(
         OMS_SERVICE + "business-allocation/get-by-organogram-id/" + id
       ),
+
+    organogramChangeTypeList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-change-action-type/get-list",
+        payload
+      ),
   },
 
   // ======================= SAVE API =================================
@@ -101,6 +107,12 @@ export const ProposalService = {
   SAVE: {
     // orgPostConfig: async (payload): Promise<any> =>
     //   await axiosIns.post(OMS_SERVICE + "org-post/save", payload),
+
+    organogramChangeType: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organogram-change-action-type/create",
+        payload
+      ),
   },
 
   // ======================= UPDATE API =================================
@@ -126,6 +138,12 @@ export const ProposalService = {
         OMS_SERVICE + "organogram-template/update-proposed-organogram-by-id",
         payload
       ),
+
+    organogramChangeType: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-change-action-type/update",
+        payload
+      ),
   },
 
   // ======================= DELETE API =================================
@@ -134,6 +152,12 @@ export const ProposalService = {
     proposedOrganogramByID: async (id: string): Promise<any> =>
       await axiosIns.delete(
         OMS_SERVICE + "/organogram-proposal/delete-by-id/" + id
+      ),
+
+    organogramChangeType: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "organogram-change-action-type/delete-all",
+        payload
       ),
   },
 };
