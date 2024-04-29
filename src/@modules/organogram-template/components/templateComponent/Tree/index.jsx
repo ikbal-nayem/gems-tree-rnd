@@ -207,6 +207,10 @@ const OrganizationTemplateTree = ({
   treeData,
   setTreeData,
   isNotEnamCommittee,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
@@ -290,6 +294,8 @@ const OrganizationTemplateTree = ({
     } else {
       ad = editNode(treeData, updateNodeData.current, formData);
     }
+
+    console.log("data", ad);
     setTreeData(ad);
     onFormClose();
   };
@@ -342,6 +348,10 @@ const OrganizationTemplateTree = ({
                 (nodeData?.id || nodeData?.nodeId)
               }
               isNotEnamCommittee={isNotEnamCommittee}
+              maxNodeCode={maxNodeCode}
+              setMaxNodeCode={setMaxNodeCode}
+              maxManpowerCode={maxManpowerCode}
+              setMaxManpowerCode={setMaxManpowerCode}
             />
           )}
           // draggable={true}
@@ -358,6 +368,10 @@ const OrganizationTemplateTree = ({
           onClose={onFormClose}
           onSubmit={onSubmit}
           isNotEnamCommittee={isNotEnamCommittee}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
         />
       </div>
       <ConfirmationModal

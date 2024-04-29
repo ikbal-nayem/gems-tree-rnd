@@ -40,6 +40,10 @@ interface INodeForm {
   serviceList: IObject[];
   cadreObj: IObject;
   isNotEnamCommittee: boolean;
+  maxNodeCode: number;
+  setMaxNodeCode: (code: number) => void;
+  maxManpowerCode: number;
+  setMaxManpowerCode: (code: number) => void;
 }
 
 const postTypeList = [
@@ -71,6 +75,10 @@ const NodeForm = ({
   updateData,
   defaultDisplayOrder,
   isNotEnamCommittee,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
 }: INodeForm) => {
   const {
     register,
@@ -182,6 +190,7 @@ const NodeForm = ({
               isNewManpower: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
+              code: maxManpowerCode,
             },
           ],
         };
@@ -197,6 +206,7 @@ const NodeForm = ({
             isNewManpower: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
+            code: maxManpowerCode,
           },
         ],
         postFunctionalityList: [],
@@ -266,6 +276,7 @@ const NodeForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
+    data.code = data.code || maxNodeCode;
     onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
   };
 
@@ -478,13 +489,15 @@ const NodeForm = ({
                   iconName="add"
                   color="success"
                   rounded={false}
-                  onClick={() =>
+                  onClick={() => {
                     manpowerListAppend({
                       isNewManpower: true,
                       serviceTypeDto: cadreObj,
                       serviceTypeKey: cadreObj?.metaKey,
-                    })
-                  }
+                      code: maxManpowerCode + 1,
+                    });
+                    setMaxManpowerCode(maxManpowerCode + 1);
+                  }}
                 />
               </div>
             </div>

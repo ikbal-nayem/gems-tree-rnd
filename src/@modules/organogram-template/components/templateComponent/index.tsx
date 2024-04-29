@@ -63,6 +63,8 @@ const TemplateComponent = ({
     useState<boolean>(false);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
+  const [maxNodeCode, setMaxNodeCode] = useState<number>(1);
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(1);
   const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
   const [isTemplate, setIsTemplate] = useState<boolean>(
     !isExistOrganogramCreate
@@ -268,6 +270,8 @@ const TemplateComponent = ({
       ...data,
       titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
+      maxNodeCode: maxNodeCode,
+      maxManpowerCode: maxManpowerCode,
       organizationHeader: getValues("organizationHeader"),
       organizationHeaderMsc: getValues("organizationHeaderMsc"),
       organizationGroupId: data?.organizationGroupDto?.id || null,
@@ -533,6 +537,10 @@ const TemplateComponent = ({
           treeData={treeData}
           setTreeData={setTreeData}
           isNotEnamCommittee={isNotEnamCommittee}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
