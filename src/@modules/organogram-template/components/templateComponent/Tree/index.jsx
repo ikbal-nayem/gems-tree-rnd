@@ -295,7 +295,6 @@ const OrganizationTemplateTree = ({
       ad = editNode(treeData, updateNodeData.current, formData);
     }
 
-    console.log("data", ad);
     setTreeData(ad);
     onFormClose();
   };
