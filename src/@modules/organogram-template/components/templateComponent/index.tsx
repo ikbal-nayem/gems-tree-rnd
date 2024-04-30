@@ -153,6 +153,9 @@ const TemplateComponent = ({
 
       setIsNotEnamCommittee(!updateData?.isEnamCommittee);
       setIsTemplate(updateData?.isTemplate);
+      if (updateData?.maxNodeCode) setMaxNodeCode(updateData?.maxNodeCode);
+      if (updateData?.maxManpowerCode)
+        setMaxManpowerCode(updateData?.maxManpowerCode);
     } else {
       // reset({
       //   isTemplate: true,

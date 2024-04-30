@@ -111,6 +111,9 @@ const TemplateEditComponent = ({
         organogramNoteDto: updateData?.organogramNoteDto,
         templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
       });
+      if (updateData?.maxNodeCode) setMaxNodeCode(updateData?.maxNodeCode);
+      if (updateData?.maxManpowerCode)
+        setMaxManpowerCode(updateData?.maxManpowerCode);
     }
   }, [updateData]);
 
