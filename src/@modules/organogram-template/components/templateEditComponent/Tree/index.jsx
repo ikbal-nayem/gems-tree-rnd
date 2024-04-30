@@ -1,8 +1,8 @@
-import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import { ConfirmationModal } from "@gems/components";
 import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
-import { CoreService } from "../../../../../@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../@services/api/Core.service";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
 
@@ -250,7 +250,14 @@ const reOrder = (parent, formData, mode, direction) => {
     : parent;
 };
 
-const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
+const OrganizationTemplateTree = ({
+  treeData,
+  setTreeData,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
+}) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
   const selectedNode = useRef(null);
@@ -385,6 +392,11 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
               }
             />
           )}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
+
           // draggable={true}
           // zoom={true}
         />
@@ -398,6 +410,10 @@ const OrganizationTemplateTree = ({ treeData, setTreeData }) => {
           defaultDisplayOrder={displayOrder}
           onClose={onFormClose}
           onSubmit={onSubmit}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
         />
       </div>
       <ConfirmationModal

@@ -5,7 +5,16 @@ import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
+const MyNode = ({
+  nodeData,
+  treeDispatch,
+  postList,
+  firstNode,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
+}) => {
   isNotEmptyList(nodeData?.manpowerList) &&
     nodeData?.manpowerList.sort((a, b) => {
       if (!notNullOrUndefined(a.gradeOrder)) return 1;
@@ -47,7 +56,11 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                 icon="add_circle"
                 size={20}
                 color="success"
-                onClick={() => treeDispatch("ADD", nodeData)}
+                onClick={() => {
+                  treeDispatch("ADD", nodeData);
+                  setMaxNodeCode(maxNodeCode + 1);
+                  setMaxManpowerCode(maxManpowerCode + 1);
+                }}
                 hoverTitle={"পরবর্তী স্তরে নতুন নোড যোগ করুন"}
               />
               {!firstNode && (

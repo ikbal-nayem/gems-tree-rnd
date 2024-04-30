@@ -38,6 +38,10 @@ interface INodeForm {
   gradeList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
+  maxNodeCode: number;
+  setMaxNodeCode: (code: number) => void;
+  maxManpowerCode: number;
+  setMaxManpowerCode: (code: number) => void;
 }
 
 const postTypeList = [
@@ -68,6 +72,10 @@ const NodeForm = ({
   onSubmit,
   updateData,
   defaultDisplayOrder,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
 }: INodeForm) => {
   const {
     register,
@@ -175,6 +183,7 @@ const NodeForm = ({
               isAddition: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
+              code: maxManpowerCode,
             },
           ],
         };
@@ -190,6 +199,7 @@ const NodeForm = ({
             isAddition: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
+            code: maxManpowerCode,
           },
         ],
         postFunctionalityList: [],
@@ -257,6 +267,7 @@ const NodeForm = ({
       };
     }
 
+    data.code = data.code || maxNodeCode;
     onSubmit(data);
   };
 
@@ -453,7 +464,9 @@ const NodeForm = ({
                       isAddition: true,
                       serviceTypeDto: cadreObj,
                       serviceTypeKey: cadreObj?.metaKey,
+                      code: maxManpowerCode + 1,
                     });
+                    setMaxManpowerCode(maxManpowerCode + 1);
                   }}
                 />
               </div>

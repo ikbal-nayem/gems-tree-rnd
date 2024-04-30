@@ -47,6 +47,9 @@ const TemplateEditComponent = ({
     IObject[]
   >([]);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
+  const [maxNodeCode, setMaxNodeCode] = useState<number>(1);
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(1);
+
   // const isNotEnamCommittee = true;
   const formProps = useForm<any>({
     defaultValues: {
@@ -159,7 +162,9 @@ const TemplateEditComponent = ({
       ...data,
       titleBn: getValues("titleBn") || null,
       titleEn: getValues("titleEn") || null,
-      organizationHeader:  getValues("organizationHeader") || "",
+      maxNodeCode: maxNodeCode,
+      maxManpowerCode: maxManpowerCode,
+      organizationHeader: getValues("organizationHeader") || "",
       organizationHeaderMsc: getValues("organizationHeaderMsc") || "",
       organizationStructureDto: treeData,
       organogramNoteDto: data?.organogramNoteDto?.note
@@ -176,7 +181,7 @@ const TemplateEditComponent = ({
 
   return (
     <div>
-       <div
+      <div
         className="position-fixed z-index-1"
         style={{ right: "20px", top: "73px" }}
       >
@@ -269,6 +274,10 @@ const TemplateEditComponent = ({
         <OrganizationTemplateTree
           treeData={treeData}
           setTreeData={setTreeData}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
           // isNotEnamCommittee={isNotEnamCommittee}
         />
       </div>
