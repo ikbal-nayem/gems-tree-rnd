@@ -95,7 +95,7 @@ const OrganogramTable: FC<TableProps> = ({
                   </DropdownItem>
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">পরবর্তী অর্গানোগ্রাম তৈরি</h6>
+                    <h6 className="mb-0 ms-3">পরবর্তী ভার্সন তৈরি</h6>
                   </DropdownItem>
                   {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />
