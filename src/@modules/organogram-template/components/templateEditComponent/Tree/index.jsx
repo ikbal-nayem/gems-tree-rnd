@@ -390,12 +390,12 @@ const OrganizationTemplateTree = ({
                 (treeData?.id || treeData?.nodeId) ===
                 (nodeData?.id || nodeData?.nodeId)
               }
+              maxNodeCode={maxNodeCode}
+              setMaxNodeCode={setMaxNodeCode}
+              maxManpowerCode={maxManpowerCode}
+              setMaxManpowerCode={setMaxManpowerCode}
             />
           )}
-          maxNodeCode={maxNodeCode}
-          setMaxNodeCode={setMaxNodeCode}
-          maxManpowerCode={maxManpowerCode}
-          setMaxManpowerCode={setMaxManpowerCode}
 
           // draggable={true}
           // zoom={true}
