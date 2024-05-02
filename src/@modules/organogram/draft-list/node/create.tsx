@@ -9,6 +9,10 @@ const CreateNode = () => {
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(
+    state?.maxManpowerCode + 1 || 1
+  );
+
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
@@ -18,11 +22,20 @@ const CreateNode = () => {
       organizationOrganogramId: state?.id || null,
       organizationId: state?.orgId || null,
       organogramDate: state?.organogramDate || null,
+      code: state?.maxNodeCode ? state?.maxNodeCode + 1 : 1,
+      maxNodeCode: state?.maxNodeCode ? state?.maxNodeCode + 1 : 1,
+      maxManpowerCode: maxManpowerCode,
     };
     OMSService.SAVE.organogramSingleNodeCreate(reqData)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, { state: state });
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, {
+          state: {
+            ...state,
+            maxNodeCode: state?.maxNodeCode ? state?.maxNodeCode + 1 : 1,
+            maxManpowerCode: maxManpowerCode,
+          },
+        });
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsLoading(false));
@@ -34,6 +47,8 @@ const CreateNode = () => {
         isNotEnamCommittee={!state?.isEnamCommittee}
         organogramData={state}
         isLoading={isLoading}
+        maxManpowerCode={maxManpowerCode}
+        setMaxManpowerCode={setMaxManpowerCode}
       />
     </div>
   );

@@ -35,6 +35,8 @@ interface INodeCreateUpdateForm {
   organogramData?: IObject;
   isNotEnamCommittee: boolean;
   isLoading?: boolean;
+  maxManpowerCode?: number;
+  setMaxManpowerCode?: (d) => void;
 }
 
 const postTypeList = [
@@ -61,6 +63,8 @@ const NodeCreateUpdateForm = ({
   organogramData,
   isNotEnamCommittee,
   isLoading,
+  maxManpowerCode,
+  setMaxManpowerCode,
 }: INodeCreateUpdateForm) => {
   const {
     register,
@@ -181,6 +185,7 @@ const NodeCreateUpdateForm = ({
               isNewManpower: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
+              code: maxManpowerCode,
             },
           ],
         };
@@ -196,6 +201,7 @@ const NodeCreateUpdateForm = ({
             isNewManpower: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
+            code: maxManpowerCode,
           },
         ],
         postFunctionalityList: [],
@@ -488,13 +494,15 @@ const NodeCreateUpdateForm = ({
               iconName="add"
               color="success"
               rounded={false}
-              onClick={() =>
+              onClick={() => {
                 manpowerListAppend({
                   isNewManpower: true,
                   serviceTypeDto: cadreObj,
                   serviceTypeKey: cadreObj?.metaKey,
-                })
-              }
+                  code: maxManpowerCode + 1,
+                });
+                setMaxManpowerCode(maxManpowerCode + 1);
+              }}
             />
           </div>
         </div>

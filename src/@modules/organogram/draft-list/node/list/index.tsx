@@ -170,7 +170,7 @@ const OrganogramNodeList = () => {
           : d?.parentNodeDto?.titleBn) || COMMON_LABELS.NOT_ASSIGN,
       জনবল: numEnToBn(d?.nodeManpower) || COMMON_LABELS.NOT_ASSIGN,
     }));
-    
+
   return (
     <>
       <PageTitle>
