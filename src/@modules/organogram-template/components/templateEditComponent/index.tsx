@@ -104,6 +104,8 @@ const TemplateEditComponent = ({
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
+        attachedOrganizationDtoList:
+          updateData?.attachedOrganizationDtoList || [],
         inventoryDtoList: updateData?.inventoryDtoList,
         organization: updateData?.organization,
         organogramChangeActionDtoList:
