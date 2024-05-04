@@ -3,7 +3,6 @@ import { IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { NewProposalMenu } from "../components/NewProposalMenu";
 import OrganogramTab from "./organogram";
 
 const OrganogramView = () => {
@@ -92,12 +91,12 @@ const OrganogramView = () => {
             </span>
           </Button>
         </div>
-        {!isPreviousVerison && (
+        {/* {!isPreviousVerison && (
           <NewProposalMenu
             organogramId={organogramId}
             organizationId={organizationId}
           />
-        )}
+        )} */}
       </div>
       <div className="mt-3">
         {isLoading && <ContentPreloader />}

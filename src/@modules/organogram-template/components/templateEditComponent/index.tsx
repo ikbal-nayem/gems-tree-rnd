@@ -16,6 +16,7 @@ import { focusById } from "utility/utils";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
+import AttachOrganizationForm from "./components/AttachOrganizationForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
@@ -311,6 +312,12 @@ const TemplateEditComponent = ({
               setNotOrganizationData={setNotOrganizationData}
             />
           </div> */}
+          <div className="col-12 mt-3">
+            <AttachOrganizationForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
+          </div>
           <div className="col-12 mt-3">
             <AttachmentForm
               formProps={formProps}
