@@ -129,15 +129,15 @@ const NodeForm = ({
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
     if (!notNullOrUndefined(val)) return;
     let suggestedValue;
-    if (fieldLang === "en") {
-      suggestedValue = titleList?.find((obj) => obj?.titleEn === val);
-      if (notNullOrUndefined(suggestedValue))
-        setValue("titleBn", suggestedValue?.titleBn);
-    } else {
-      suggestedValue = titleList?.find((obj) => obj?.titleBn === val);
-      if (notNullOrUndefined(suggestedValue))
-        setValue("titleEn", suggestedValue?.titleEn);
-    }
+    // if (fieldLang === "en") {
+    //   suggestedValue = titleList?.find((obj) => obj?.titleEn === val);
+    //   if (notNullOrUndefined(suggestedValue))
+    //     setValue("titleBn", suggestedValue?.titleBn);
+    // } else {
+    suggestedValue = titleList?.find((obj) => obj?.titleBn === val);
+    if (notNullOrUndefined(suggestedValue))
+      setValue("titleEn", suggestedValue?.titleEn);
+    // }
   };
 
   useEffect(() => {

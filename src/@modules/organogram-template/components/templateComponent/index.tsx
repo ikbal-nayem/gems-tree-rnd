@@ -490,19 +490,17 @@ const TemplateComponent = ({
               </div>
             )}
         </div>
-        {(!isTemplate ||
-          updateData?.parentOrgNameBn ||
-          updateData?.parentOrgNameEn) && (
+        {(!isTemplate || !isObjectNull(updateData)) && (
           <div className="row">
             {isNotEnamCommittee && (
               <div className="col-md-6">
                 <Input
                   label="অভিভাবকের প্রতিষ্ঠানের নাম (বাংলা)"
                   placeholder="অভিভাবকের প্রতিষ্ঠানের নাম (বাংলা) লিখুন"
-                  isRequired={isNotEnamCommittee}
+                  // isRequired={isNotEnamCommittee}
                   registerProperty={{
                     ...register("parentOrgNameBn", {
-                      required: isNotEnamCommittee,
+                      // required: isNotEnamCommittee,
                     }),
                   }}
                   isError={!!errors?.parentOrgNameBn}
@@ -514,10 +512,10 @@ const TemplateComponent = ({
               <Input
                 label="অভিভাবকের প্রতিষ্ঠানের নাম (ইংরেজি)"
                 placeholder="অভিভাবকের প্রতিষ্ঠানের নাম লিখুন (ইংরেজি)"
-                isRequired={!isNotEnamCommittee}
+                // isRequired={!isNotEnamCommittee}
                 registerProperty={{
                   ...register("parentOrgNameEn", {
-                    required: !isNotEnamCommittee,
+                    // required: !isNotEnamCommittee,
                   }),
                 }}
                 isError={!!errors?.parentOrgNameEn}

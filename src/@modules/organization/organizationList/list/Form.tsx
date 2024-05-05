@@ -77,6 +77,7 @@ const OrgForm = ({
       reset({
         isActive: true,
         isTrainingOffice: false,
+        isEnamCommittee: false,
         officeTypeDTO: orgTypeGovtObject,
         officeType: orgTypeGovtObject?.metaKey,
       });
@@ -136,7 +137,7 @@ const OrgForm = ({
       ...orgPayload.current.body,
       searchKey: searchKey ? searchKey?.trim() : "",
     };
-    OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
+    OMSService.getPreviousOrganizationList(orgPayload?.current).then((resp) =>
       callback(resp?.body || [])
     );
   }, []);
@@ -336,6 +337,14 @@ const OrgForm = ({
                         e.target.checked ? "TRAINING" : ""
                       ),
                   }),
+                }}
+              />
+            </div>
+            <div className="col-12">
+              <Checkbox
+                label="এনাম কমিটি"
+                registerProperty={{
+                  ...register("isEnamCommittee"),
                 }}
               />
             </div>
