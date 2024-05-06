@@ -20,7 +20,8 @@ export const CoreService = {
     await axiosIns.get(CORE_SERVICE + "grade/get"),
 
   getPostList: async (payload = initPayload): Promise<any> =>
-    await axiosIns.post(CORE_SERVICE + "post/get-list", payload),
+    await axiosIns.post(CORE_SERVICE + "post/custom/enum/get-list", payload),
+
   getLocationBySearch: async (payload): Promise<any> =>
     await axiosIns.post(CORE_SERVICE + "locations/search", payload),
 };

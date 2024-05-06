@@ -149,7 +149,15 @@ const OrganogramTable: FC<TableProps> = ({
               <TableCell
                 text={
                   item?.isEnamCommittee
-                    ? "Enam Committe Report (26/12/1982)"
+                    ? `Enam Committee Report (${
+                        item?.organogramDate
+                          ? generateDateFormat(
+                              item?.organogramDate,
+                              DATE_PATTERN.GOVT_STANDARD,
+                              "en"
+                            )
+                          : ""
+                      })`
                     : item?.organogramDate
                     ? generateDateFormat(
                         item?.organogramDate,

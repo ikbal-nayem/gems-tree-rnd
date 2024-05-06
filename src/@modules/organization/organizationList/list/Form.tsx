@@ -281,13 +281,13 @@ const OrgForm = ({
               label="পূর্ববর্তী প্রতিষ্ঠান"
               placeholder="পূর্ববর্তী প্রতিষ্ঠান বাছাই করুন"
               isAsync
-              // isMulti
+              isMulti
               control={control}
               // noMargin
               getOptionLabel={(op) => op.nameBn}
               getOptionValue={(op) => op?.id}
-              name="prevOrganization"
-              onChange={(e) => setValue("prevOrganizationId", e?.id)}
+              name="prevOrganizationList"
+              // onChange={(e) => setValue("prevOrganizationId", e?.id)}
               loadOptions={getAsyncPreviousOranizationList}
               isError={!!errors?.templateOrganizationsDto}
               errorMessage={errors?.templateOrganizationsDto?.message as string}

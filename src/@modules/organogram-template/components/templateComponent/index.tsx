@@ -220,8 +220,8 @@ const TemplateComponent = ({
   const templateOrganizationsDtoSimplifier = (organization) => {
     return {
       organizationId: organization?.id,
-      OrganizationNameBn: organization?.nameBn,
-      OrganizationNameEn: organization?.nameEn,
+      organizationNameBn: organization?.nameBn,
+      organizationNameEn: organization?.nameEn,
     };
   };
 
