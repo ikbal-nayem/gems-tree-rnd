@@ -129,6 +129,8 @@ const TemplateComponent = ({
         isTemplate: updateData?.isTemplate,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        isInventoryOthers: updateData?.isInventoryOthers || false,
+        inventoryOthersObject: updateData?.inventoryOthersObject || "",
         organizationHeader: updateData?.organizationHeader,
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
         parentOrgNameBn: updateData?.parentOrgNameBn,
@@ -157,10 +159,11 @@ const TemplateComponent = ({
       if (updateData?.maxManpowerCode)
         setMaxManpowerCode(updateData?.maxManpowerCode);
     } else {
-      // reset({
-      //   isTemplate: true,
-      //   isEnamCommittee: true,
-      // });
+      reset({
+        isInventoryOthers: false,
+        // isTemplate: true,
+        // isEnamCommittee: true,
+      });
     }
   }, [updateData]);
 

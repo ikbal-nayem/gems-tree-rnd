@@ -22,6 +22,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
     register,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = formProps;
 
@@ -87,8 +88,14 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                   <Input
                     label={idx < 1 ? labelEn : ""}
                     placeholder={labelEn + " লিখুন"}
+                    isRequired={
+                      watch("attachmentDtoList")?.[idx]?.titleBn ? false : true
+                    }
                     registerProperty={{
                       ...register(`attachmentDtoList.${idx}.titleEn`, {
+                        required: watch("attachmentDtoList")?.[idx]?.titleBn
+                          ? false
+                          : labelEn + " / " + labelBn + " লিখুন",
                         onChange: (e) => {
                           onTitleChange(e.target.value, idx, "en");
                         },
@@ -108,8 +115,16 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                     <Input
                       label={idx < 1 ? labelBn : ""}
                       placeholder={labelBn + " লিখুন"}
+                      isRequired={
+                        watch("attachmentDtoList")?.[idx]?.titleEn
+                          ? false
+                          : true
+                      }
                       registerProperty={{
                         ...register(`attachmentDtoList.${idx}.titleBn`, {
+                          required: watch("attachmentDtoList")?.[idx]?.titleEn
+                            ? false
+                            : labelEn + " / " + labelBn + " লিখুন",
                           onChange: (e) =>
                             onTitleChange(e.target.value, idx, "bn"),
                         }),
@@ -160,7 +175,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                 <div className="col-xl-3 col-12">
                   <DateInput
                     label={idx < 1 ? labelGODate : ""}
-                    isRequired={" "}
+                    // isRequired={" "}
                     name={`attachmentDtoList.${idx}.goDate`}
                     control={control}
                     isError={!!errors?.attachmentDtoList?.[idx]?.goDate}

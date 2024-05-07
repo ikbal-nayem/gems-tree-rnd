@@ -526,6 +526,10 @@ const TemplateViewComponent = ({
             )}
             <EquipmentsList
               data={updateData?.miscellaneousPointDtoList || []}
+              othersData={{
+                isInventoryOthers: updateData?.isInventoryOthers,
+                inventoryOthersObject: updateData?.inventoryOthersObject || "",
+              }}
               inventoryData={inventoryData || []}
               langEn={langEn}
             />
@@ -572,6 +576,10 @@ const TemplateViewComponent = ({
           <div className="mt-3">
             <EquipmentsList
               data={updateData?.miscellaneousPointDtoList || []}
+              othersData={{
+                isInventoryOthers: updateData?.isInventoryOthers,
+                inventoryOthersObject: updateData?.inventoryOthersObject || "",
+              }}
               inventoryData={inventoryData || []}
               langEn={langEn}
             />

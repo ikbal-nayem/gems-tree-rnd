@@ -1,12 +1,14 @@
 import { LABELS } from "@constants/common.constant";
 import {
   Autocomplete,
+  Checkbox,
   IconButton,
   Input,
   Label,
   Separator,
   toast,
 } from "@gems/components";
+import { TextEditor } from "@gems/editor";
 import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
@@ -109,95 +111,120 @@ const EquipmentsForm = ({ formProps }: IForm) => {
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABELS.BN.EQUIPMENTS}</h4>
-        <IconButton
-          iconName="add"
-          color="primary"
-          onClick={() => inventoryDtoListAppend("")}
-        />
+        <div className="d-flex">
+          <h4 className="m-0 me-2">{LABELS.BN.EQUIPMENTS}</h4>
+          <Checkbox
+            noMargin
+            label="অন্যান্য"
+            registerProperty={{
+              ...register(`isInventoryOthers`),
+            }}
+          />
+        </div>
+        {!watch("isInventoryOthers") && (
+          <IconButton
+            iconName="add"
+            color="primary"
+            onClick={() => inventoryDtoListAppend("")}
+          />
+        )}
       </div>
       <Separator className="mt-1 mb-2" />
-      <div>
-        {inventoryDtoListFields.map((f, idx) => (
-          <div
-            className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100 pb-3 pb-xl-0"
-            key={idx}
-          >
-            <div className={idx < 1 ? "mt-8" : "mt-2"}>
-              <Label> {numEnToBn(idx + 1) + "।"} </Label>
-            </div>
-            <div className="row w-100">
-              <div className="col-md-4">
-                <Autocomplete
-                  label={idx < 1 ? "টাইপ" : ""}
-                  placeholder="টাইপ বাছাই করুন"
-                  control={control}
-                  options={inventoryTypeList || []}
-                  noMargin
-                  getOptionLabel={(op) => op?.inventoryTypeBn}
-                  getOptionValue={(op) => op?.id}
-                  name={`inventoryDtoList.${idx}.type`}
-                  onChange={(e) => onInventoryTypeChange(e, idx)}
-                  isRequired
-                  isError={!!errors?.inventoryDtoList?.[idx]?.type}
-                  errorMessage={
-                    errors?.inventoryDtoList?.[idx]?.type?.message as string
-                  }
-                />
+      {watch("isInventoryOthers") ? (
+        <div>
+          <TextEditor
+            name="inventoryOthersObject"
+            // label=""
+            // minHeight={400}
+            placeholder={`পরিবহন, অফিস সরঞ্জাম লিখুন...`}
+            isRequired
+            control={control}
+            isError={!!errors?.inventoryOthersObject}
+            errorMessage={errors?.inventoryOthersObject?.message as string}
+          />
+        </div>
+      ) : (
+        <div>
+          {inventoryDtoListFields.map((f, idx) => (
+            <div
+              className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100 pb-3 pb-xl-0"
+              key={idx}
+            >
+              <div className={idx < 1 ? "mt-8" : "mt-2"}>
+                <Label> {numEnToBn(idx + 1) + "।"} </Label>
               </div>
-              <div className="col-md-4 mt-1 mt-xl-0">
-                <Autocomplete
-                  label={idx < 1 ? "সরঞ্জামাদি" : ""}
-                  placeholder="সরঞ্জামাদি বাছাই করুন"
-                  control={control}
-                  options={inventoryItemList?.[idx] || []}
-                  noMargin
-                  getOptionLabel={(op) => op?.itemTitleBn}
-                  getOptionValue={(op) => op?.id}
-                  name={`inventoryDtoList.${idx}.item`}
-                  key={watch(`inventoryDtoList.${idx}.item`)}
-                  isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
-                  onChange={(obj) => {
-                    onInventoryChange(obj, idx);
+              <div className="row w-100">
+                <div className="col-md-4">
+                  <Autocomplete
+                    label={idx < 1 ? "টাইপ" : ""}
+                    placeholder="টাইপ বাছাই করুন"
+                    control={control}
+                    options={inventoryTypeList || []}
+                    noMargin
+                    getOptionLabel={(op) => op?.inventoryTypeBn}
+                    getOptionValue={(op) => op?.id}
+                    name={`inventoryDtoList.${idx}.type`}
+                    onChange={(e) => onInventoryTypeChange(e, idx)}
+                    isRequired
+                    isError={!!errors?.inventoryDtoList?.[idx]?.type}
+                    errorMessage={
+                      errors?.inventoryDtoList?.[idx]?.type?.message as string
+                    }
+                  />
+                </div>
+                <div className="col-md-4 mt-1 mt-xl-0">
+                  <Autocomplete
+                    label={idx < 1 ? "সরঞ্জামাদি" : ""}
+                    placeholder="সরঞ্জামাদি বাছাই করুন"
+                    control={control}
+                    options={inventoryItemList?.[idx] || []}
+                    noMargin
+                    getOptionLabel={(op) => op?.itemTitleBn}
+                    getOptionValue={(op) => op?.id}
+                    name={`inventoryDtoList.${idx}.item`}
+                    key={watch(`inventoryDtoList.${idx}.item`)}
+                    isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
+                    onChange={(obj) => {
+                      onInventoryChange(obj, idx);
+                    }}
+                    isRequired
+                    isError={!!errors?.inventoryDtoList?.[idx]?.item}
+                    errorMessage={
+                      errors?.inventoryDtoList?.[idx]?.item?.message as string
+                    }
+                  />
+                </div>
+                <div className="col-md-4 mt-1 mt-xl-0">
+                  <Input
+                    label={idx < 1 ? "সংখ্যা" : ""}
+                    placeholder="সংখ্যা লিখুন"
+                    noMargin
+                    type="number"
+                    defaultValue={1}
+                    registerProperty={{
+                      ...register(`inventoryDtoList.${idx}.quantity`, {
+                        required: "সংখ্যা লিখুন",
+                      }),
+                    }}
+                    isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
+                  />
+                </div>
+              </div>
+              <div className={idx < 1 ? "mt-6" : ""}>
+                <IconButton
+                  iconName="delete"
+                  color="danger"
+                  // isDisabled={fields.length === 1}
+                  rounded={false}
+                  onClick={() => {
+                    inventoryDtoListRemove(idx);
                   }}
-                  isRequired
-                  isError={!!errors?.inventoryDtoList?.[idx]?.item}
-                  errorMessage={
-                    errors?.inventoryDtoList?.[idx]?.item?.message as string
-                  }
-                />
-              </div>
-              <div className="col-md-4 mt-1 mt-xl-0">
-                <Input
-                  label={idx < 1 ? "সংখ্যা" : ""}
-                  placeholder="সংখ্যা লিখুন"
-                  noMargin
-                  type="number"
-                  defaultValue={1}
-                  registerProperty={{
-                    ...register(`inventoryDtoList.${idx}.quantity`, {
-                      required: "সংখ্যা লিখুন",
-                    }),
-                  }}
-                  isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
                 />
               </div>
             </div>
-            <div className={idx < 1 ? "mt-6" : ""}>
-              <IconButton
-                iconName="delete"
-                color="danger"
-                // isDisabled={fields.length === 1}
-                rounded={false}
-                onClick={() => {
-                  inventoryDtoListRemove(idx);
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-
+          ))}
+        </div>
+      )}
       <Separator className="mt-4 mb-2" />
 
       <div className="card-head d-flex justify-content-between align-items-center">

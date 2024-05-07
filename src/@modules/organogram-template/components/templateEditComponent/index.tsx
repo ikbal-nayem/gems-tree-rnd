@@ -98,6 +98,8 @@ const TemplateEditComponent = ({
       reset({
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        isInventoryOthers: updateData?.isInventoryOthers || false,
+        inventoryOthersObject: updateData?.inventoryOthersObject || "",
         isEnamCommittee: updateData?.isEnamCommittee,
         organogramDate: updateData?.organogramDate,
         abbreviationDtoList: abbreviationist,
