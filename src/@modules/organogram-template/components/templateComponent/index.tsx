@@ -31,6 +31,7 @@ import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
 import Organizations from "./components/organization";
+import SummaryOfManpowerForm from "./components/SummaryOfManpowerForm";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -563,6 +564,12 @@ const TemplateComponent = ({
           </div>
           <div className="col-12 mt-3">
             <EquipmentsForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
+          </div>
+          <div className="col-12 mt-3">
+            <SummaryOfManpowerForm
               formProps={formProps}
               isNotEnamCommittee={isNotEnamCommittee}
             />
