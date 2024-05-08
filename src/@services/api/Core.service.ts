@@ -24,4 +24,16 @@ export const CoreService = {
 
   getLocationBySearch: async (payload): Promise<any> =>
     await axiosIns.post(CORE_SERVICE + "locations/search", payload),
+
+  getCorePostList: async (payload = initPayload): Promise<any> =>
+    await axiosIns.post(CORE_SERVICE + "post/get-list", payload),
+
+  postDelete: async (payload): Promise<any> =>
+    await axiosIns.put(CORE_SERVICE + "post/delete-all", payload),
+
+  postCreate: async (payload): Promise<any> =>
+    await axiosIns.post(CORE_SERVICE + "post/create", payload),
+
+  postUpdate: async (payload): Promise<any> =>
+    await axiosIns.put(CORE_SERVICE + "post/update", payload),
 };

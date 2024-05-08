@@ -95,6 +95,12 @@ const menuData = [
     icon: "manage_accounts",
   },
   {
+    routeKey: ROUTE_KEY.OMS_MASTER_POST,
+    link: ROUTE_L1.OMS_MASTER_POST,
+    title: "পদবি",
+    icon: "manage_accounts",
+  },
+  {
     routeKey: ROUTE_KEY.OMS_ORGANIZATION,
     link: ROUTE_L1.OMS_ORGANIZATION,
     title: MENU.BN.ORANIZATION,

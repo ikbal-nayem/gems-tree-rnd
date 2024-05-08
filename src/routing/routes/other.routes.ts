@@ -15,6 +15,11 @@ let routeList = [
     element: lazy(() => import("@modules/post-config")),
   },
   {
+    link: ROUTE_L1.OMS_MASTER_POST,
+    routeKey: ROUTE_KEY.OMS_MASTER_POST,
+    element: lazy(() => import("@modules/post")),
+  },
+  {
     link: ROUTE_L2.OMS_ORGANIZATION_TYPE,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
     element: lazy(() => import("@modules/organization/organizationTypeList")),
