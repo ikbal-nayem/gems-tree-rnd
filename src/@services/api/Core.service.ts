@@ -35,5 +35,5 @@ export const CoreService = {
     await axiosIns.post(CORE_SERVICE + "post/create", payload),
 
   postUpdate: async (payload): Promise<any> =>
-    await axiosIns.put(CORE_SERVICE + "post/update", payload),
+    await axiosIns.put(CORE_SERVICE + "post/enam/post/update", payload),
 };
