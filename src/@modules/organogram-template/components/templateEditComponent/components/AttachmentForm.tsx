@@ -213,7 +213,7 @@ const AttachmentForm = ({ formProps }: IAttachmentForm) => {
                       errors?.attachmentDtoList?.[idx]?.checkAttachmentFile
                         ?.message as string
                     }
-                    maxSize={1}
+                    maxSize={3}
                     // helpText="পিডিএফ ফাইল নির্বাচন করুন,ফাইলের সর্বোচ্চ সাইজ ১৫ এমবি"
                   />
                 </div>
