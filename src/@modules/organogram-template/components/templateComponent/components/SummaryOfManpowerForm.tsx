@@ -1,7 +1,7 @@
 import { LABELS } from "@constants/common.constant";
 import { IconButton, Separator } from "@gems/components";
 import { TextEditor } from "@gems/editor";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface IForm {
   formProps: any;
@@ -13,12 +13,11 @@ const SummaryOfManpowerForm = ({ formProps, isNotEnamCommittee }: IForm) => {
     control,
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = formProps;
 
-  const [isOpen, setIsOpen] = useState<boolean>(
-    watch("summaryOfManpowerDetails") ? true : false
-  );
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <div className="card border p-3">
@@ -26,14 +25,16 @@ const SummaryOfManpowerForm = ({ formProps, isNotEnamCommittee }: IForm) => {
         <h4 className="m-0 me-2">{LABELS.BN.SUMMARY_MANPOWER}</h4>
 
         <IconButton
-          iconName={isOpen ? "remove" : "add"}
+          iconName={
+            isOpen || watch("summaryOfManpowerDetails") ? "remove" : "add"
+          }
           color="primary"
           isDisabled={!!watch("summaryOfManpowerDetails")}
           onClick={() => setIsOpen(!isOpen)}
         />
       </div>
       <Separator className="mt-1 mb-2" />
-      {isOpen && (
+      {(isOpen || watch("summaryOfManpowerDetails")) && (
         <div>
           <TextEditor
             name="summaryOfManpowerDetails"

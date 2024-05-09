@@ -150,6 +150,7 @@ const TemplateComponent = ({
         inventoryDtoList: updateData?.inventoryDtoList,
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
+        summaryOfManpowerDetails: "<p>sdfsdfsdfsd xs</p><p>csdf.lsdmf</p>",
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
         organogramNoteDto: updateData?.organogramNoteDto,
       });
