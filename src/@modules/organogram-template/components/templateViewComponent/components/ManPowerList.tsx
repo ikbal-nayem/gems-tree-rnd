@@ -8,15 +8,16 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
+import { TextEditorPreview } from "@gems/editor";
 import { COMMON_LABELS, numEnToBn } from "@gems/utils";
 import { FC, Fragment, useState } from "react";
 import MPListChanges from "./MPListChanges";
 import { LOCAL_LABELS } from "./labels";
-import { TextEditorPreview } from "@gems/editor";
 
 type TableProps = {
   data: any;
-  summaryOfManpowerDetails?: string;
+  isSummaryOfManPowerObject?: boolean;
+  summaryOfManPowerObject?: string;
   isLoading: boolean;
   langEn: boolean;
   isBeginningVersion?: boolean;
@@ -32,7 +33,8 @@ const ManPowerList: FC<TableProps> = ({
   isBeginningVersion,
   insideModal,
   organogramId,
-  summaryOfManpowerDetails,
+  summaryOfManPowerObject,
+  isSummaryOfManPowerObject,
   title,
 }) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
@@ -55,21 +57,24 @@ const ManPowerList: FC<TableProps> = ({
           <h4 className={title ? "m-0 text-info" : "m-0"}>
             {title ? title : LABEL.SUM_OF_MANPOWER}
           </h4>
-          {organogramId && !isBeginningVersion && !insideModal && (
-            <Icon
-              icon="swap_horiz"
-              variants="outlined"
-              hoverTitle={LABEL.CHANGES}
-              size={25}
-              className="text-primary text-hover-warning"
-              onClick={() => setIsOpen(true)}
-            />
-          )}
+          {!isSummaryOfManPowerObject &&
+            organogramId &&
+            !isBeginningVersion &&
+            !insideModal && (
+              <Icon
+                icon="swap_horiz"
+                variants="outlined"
+                hoverTitle={LABEL.CHANGES}
+                size={25}
+                className="text-primary text-hover-warning"
+                onClick={() => setIsOpen(true)}
+              />
+            )}
         </div>
 
         <Separator className="mt-1 mb-0" />
-        {summaryOfManpowerDetails ? (
-          <TextEditorPreview html={summaryOfManpowerDetails} />
+        {isSummaryOfManPowerObject ? (
+          <TextEditorPreview html={summaryOfManPowerObject} />
         ) : (
           <>
             {data?.classDtoList?.length ? (

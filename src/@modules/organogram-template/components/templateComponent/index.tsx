@@ -132,6 +132,9 @@ const TemplateComponent = ({
         titleEn: updateData?.titleEn,
         isInventoryOthers: updateData?.isInventoryOthers || false,
         inventoryOthersObject: updateData?.inventoryOthersObject || "",
+        summaryOfManPowerObject: updateData?.summaryOfManPowerObject || "",
+        isSummaryOfManPowerObject:
+          updateData?.isSummaryOfManPowerObject || false,
         organizationHeader: updateData?.organizationHeader,
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
         parentOrgNameBn: updateData?.parentOrgNameBn,

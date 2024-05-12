@@ -20,6 +20,7 @@ import AttachOrganizationForm from "./components/AttachOrganizationForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
+import SummaryOfManpowerForm from "./components/SummaryOfManpowerForm";
 import WorkSpaceComponent from "./components/WorkSpaceComponent";
 
 interface ITemplateEditComponent {
@@ -100,6 +101,9 @@ const TemplateEditComponent = ({
         titleEn: updateData?.titleEn,
         isInventoryOthers: updateData?.isInventoryOthers || false,
         inventoryOthersObject: updateData?.inventoryOthersObject || "",
+        summaryOfManPowerObject: updateData?.summaryOfManPowerObject || "",
+        isSummaryOfManPowerObject:
+          updateData?.isSummaryOfManPowerObject || false,
         isEnamCommittee: updateData?.isEnamCommittee,
         organogramDate: updateData?.organogramDate,
         abbreviationDtoList: abbreviationist,
@@ -307,6 +311,12 @@ const TemplateEditComponent = ({
             <EquipmentsForm
               formProps={formProps}
               // isNotEnamCommittee={isNotEnamCommittee}
+            />
+          </div>
+          <div className="col-12 mt-3">
+            <SummaryOfManpowerForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
           {/* <div className="col-md-6 mt-3">

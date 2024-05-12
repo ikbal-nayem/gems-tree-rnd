@@ -571,9 +571,8 @@ const TemplateViewComponent = ({
           <div className="" style={{ width: "33.33333%" }}>
             <ManPowerList
               isLoading={false}
-              // summaryOfManpowerDetails={
-              //   "<p>sdfsdfsdfsd xs</p><p>csdf.lsdmf</p>"
-              // }
+              isSummaryOfManPowerObject={updateData?.isSummaryOfManPowerObject}
+              summaryOfManPowerObject={updateData?.summaryOfManPowerObject}
               data={manpowerData}
               langEn={langEn}
             />
@@ -658,9 +657,8 @@ const TemplateViewComponent = ({
               isLoading={false}
               data={manpowerData}
               langEn={langEn}
-              // summaryOfManpowerDetails={
-              //   "<p>sdfsdfsdfsd xs</p><p>csdf.lsdmf</p>"
-              // }
+              isSummaryOfManPowerObject={updateData?.isSummaryOfManPowerObject}
+              summaryOfManPowerObject={updateData?.summaryOfManPowerObject}
               isBeginningVersion={isBeginningVersion}
               organogramId={organogramId}
               insideModal={false}
