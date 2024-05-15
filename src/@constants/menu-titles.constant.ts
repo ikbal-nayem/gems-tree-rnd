@@ -21,6 +21,7 @@ export const MENU = {
     MAIN_ACTIVITY_LIST: "প্রধান কার্যাবলির তালিকা",
     ALLOCATION_OF_BUSINESS_LIST: "কর্মবন্টনের তালিকা",
     NODE_LIST: "পদবি/স্তরের তালিকা",
+    ORGANIZATION_BRANCH: "প্রতিষ্ঠানের শাখা",
   },
 
   EN: {
@@ -45,5 +46,6 @@ export const MENU = {
     MAIN_ACTIVITY_LIST: "Main Activity List",
     ALLOCATION_OF_BUSINESS_LIST: "Business of Allocation List",
     NODE_LIST: "Node List",
+    ORGANIZATION_BRANCH: "Organization Branch",
   },
 };
