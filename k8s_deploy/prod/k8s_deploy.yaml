@@ -22,6 +22,11 @@ spec:
         ports:
           - name: $K8S_PORT_NAME
             containerPort: $K8S_CONTAINER_PORT
+        resources:
+          requests:
+            cpu: "250m"
+          limits:
+            cpu: "500m"
       restartPolicy: Always
       imagePullSecrets:
       - name: imagerepo.gems.gov.bd
