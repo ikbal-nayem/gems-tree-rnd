@@ -162,6 +162,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     control={control}
                     options={inventoryTypeList || []}
                     noMargin
+                    filterProps={["inventoryTypeBn", "inventoryTypeEn"]}
                     getOptionLabel={(op) => op?.inventoryTypeBn}
                     getOptionValue={(op) => op?.id}
                     name={`inventoryDtoList.${idx}.type`}
@@ -180,6 +181,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     control={control}
                     options={inventoryItemList?.[idx] || []}
                     noMargin
+                    filterProps={["itemTitleBn", "itemTitleEn"]}
                     getOptionLabel={(op) => op?.itemTitleBn}
                     getOptionValue={(op) => op?.id}
                     name={`inventoryDtoList.${idx}.item`}
@@ -202,6 +204,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                     noMargin
                     type="number"
                     defaultValue={1}
+                    min={0}
                     registerProperty={{
                       ...register(`inventoryDtoList.${idx}.quantity`, {
                         required: "সংখ্যা লিখুন",
