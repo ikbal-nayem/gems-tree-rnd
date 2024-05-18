@@ -212,6 +212,22 @@ const EquipmentsForm = ({ formProps }: IForm) => {
                     isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
                   />
                 </div>
+                <div className="col-md-2 mt-1 mt-xl-0">
+                  <Input
+                    label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
+                    placeholder="প্রদর্শন ক্রম লিখুন"
+                    noMargin
+                    type="number"
+                    defaultValue={idx ? idx + 1 : 1}
+                    min={0}
+                    registerProperty={{
+                      ...register(`inventoryDtoList.${idx}.serialNo`, {
+                        required: "প্রদর্শন ক্রম লিখুন",
+                      }),
+                    }}
+                    isError={!!errors?.inventoryDtoList?.[idx]?.serialNo}
+                  />
+                </div>
               </div>
               <div className={idx < 1 ? "mt-6" : ""}>
                 <IconButton
