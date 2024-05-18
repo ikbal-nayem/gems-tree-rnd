@@ -124,6 +124,12 @@ const menuData = [
         title: MENU.BN.ORGANIZATION_GROUP,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
+        link: ROUTE_L2.OMS_ORGANIZATION_BRANCH,
+        title: MENU.BN.ORGANIZATION_BRANCH,
+        hasBullet: true,
+      },
       // {
       //   routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
       //   link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,

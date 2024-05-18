@@ -29,6 +29,11 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_GROUP,
     element: lazy(() => import("@modules/organization/organizationGroupList")),
   },
+  {
+    link: ROUTE_L2.OMS_ORGANIZATION_BRANCH,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
+    element: lazy(() => import("@modules/organization/organizationBranch")),
+  },
 ];
 
 const permiableRouteList = [

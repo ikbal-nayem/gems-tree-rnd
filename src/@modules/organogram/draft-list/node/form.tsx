@@ -525,7 +525,13 @@ const NodeCreateUpdateForm = ({
                   control={control}
                   noMargin
                   getOptionLabel={(op) =>
-                    isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                    isNotEnamCommittee
+                      ? `${op?.nameBn} ${
+                          op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                        }`
+                      : `${op?.nameEn} ${
+                          op?.nameBn ? "(" + op?.nameBn + ")" : ""
+                        }`
                   }
                   getOptionValue={(op) => op?.id}
                   name={`manpowerList.${index}.postDTO`}

@@ -161,6 +161,7 @@ const EquipmentsForm = ({ formProps }: IForm) => {
                     control={control}
                     options={inventoryTypeList || []}
                     noMargin
+                    filterProps={["inventoryTypeBn", "inventoryTypeEn"]}
                     getOptionLabel={(op) => op?.inventoryTypeBn}
                     getOptionValue={(op) => op?.id}
                     name={`inventoryDtoList.${idx}.type`}
@@ -179,6 +180,7 @@ const EquipmentsForm = ({ formProps }: IForm) => {
                     control={control}
                     options={inventoryItemList?.[idx] || []}
                     noMargin
+                    filterProps={["itemTitleBn", "itemTitleEn"]}
                     getOptionLabel={(op) => op?.itemTitleBn}
                     getOptionValue={(op) => op?.id}
                     name={`inventoryDtoList.${idx}.item`}
@@ -201,12 +203,29 @@ const EquipmentsForm = ({ formProps }: IForm) => {
                     noMargin
                     type="number"
                     defaultValue={1}
+                    min={0}
                     registerProperty={{
                       ...register(`inventoryDtoList.${idx}.quantity`, {
                         required: "সংখ্যা লিখুন",
                       }),
                     }}
                     isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
+                  />
+                </div>
+                <div className="col-md-2 mt-1 mt-xl-0">
+                  <Input
+                    label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
+                    placeholder="প্রদর্শন ক্রম লিখুন"
+                    noMargin
+                    type="number"
+                    defaultValue={idx ? idx + 1 : 1}
+                    min={0}
+                    registerProperty={{
+                      ...register(`inventoryDtoList.${idx}.serialNo`, {
+                        required: "প্রদর্শন ক্রম লিখুন",
+                      }),
+                    }}
+                    isError={!!errors?.inventoryDtoList?.[idx]?.serialNo}
                   />
                 </div>
               </div>

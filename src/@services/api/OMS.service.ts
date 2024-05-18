@@ -339,6 +339,11 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organization/get-sum-organization/" + organizationId
       ),
+    organizationBranchList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-branch/get-org-branch-list",
+        payload
+      ),
   },
 
   SAVE: {
@@ -376,6 +381,9 @@ export const OMSService = {
         OMS_SERVICE + "organogram-business-allocation/save",
         payload
       ),
+
+    organizationBranch: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "organization-branch/create", payload),
   },
 
   UPDATE: {
@@ -444,5 +452,8 @@ export const OMSService = {
           "organogram-structure/delete-organogram-structure-node-by-id/" +
           nodeId
       ),
+    organizationBranchDeleteById: async (id): Promise<any> => {
+      await axiosIns.delete(OMS_SERVICE + "organization-branch/delete/" + id);
+    },
   },
 };
