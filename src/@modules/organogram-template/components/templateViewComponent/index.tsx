@@ -54,6 +54,7 @@ interface ITemplateViewComponent {
   organogramId?: string;
   isBeginningVersion?: boolean;
   stateOrganizationData?: IObject;
+  fromList?: string;
 }
 
 const TemplateViewComponent = ({
@@ -66,6 +67,7 @@ const TemplateViewComponent = ({
   organogramId,
   isBeginningVersion = false,
   stateOrganizationData,
+  fromList,
 }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
@@ -89,6 +91,8 @@ const TemplateViewComponent = ({
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
   const navigate = useNavigate();
+
+  console.log(fromList);
 
   let organogramOrganizationView = stateOrganizationData?.organizationId
     ? true
@@ -703,7 +707,10 @@ const TemplateViewComponent = ({
 
             <ACLWrapper
               visibleToRoles={[ROLES.OMS_TEMPLATE_REVIEW]}
-              visibleCustom={updateData?.status === TEMPLATE_STATUS.IN_REVIEW}
+              visibleCustom={
+                updateData?.status === TEMPLATE_STATUS.IN_REVIEW &&
+                fromList === "inreview"
+              }
             >
               <Button
                 className="rounded-pill fw-bold pe-8"
@@ -725,7 +732,10 @@ const TemplateViewComponent = ({
 
             <ACLWrapper
               visibleToRoles={[ROLES.OMS_TEMPLATE_APPROVE]}
-              visibleCustom={updateData?.status === TEMPLATE_STATUS.IN_APPROVE}
+              visibleCustom={
+                updateData?.status === TEMPLATE_STATUS.IN_APPROVE &&
+                fromList === "inapprove"
+              }
             >
               <Button
                 className="rounded-pill fw-bold pe-8"

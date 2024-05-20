@@ -64,7 +64,7 @@ const OrganogramTable: FC<TableProps> = ({
 
           if (resp?.body?.length === 1) {
             navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
-              state: resp?.body?.[0],
+              state: { organizationData: resp?.body?.[0], fromList: status },
             });
           }
         })
@@ -72,7 +72,7 @@ const OrganogramTable: FC<TableProps> = ({
     }
   };
   let columns: ITableHeadColumn[] =
-    status === "draft"
+    status === "draft" || status === "inreview"
       ? [
           { title: COMMON_LABELS.SL_NO, width: 50 },
           { title: LABELS.ORGANIZATION_NAME, width: 250 },
@@ -167,7 +167,7 @@ const OrganogramTable: FC<TableProps> = ({
                 }
               />
 
-              {status === "draft" && (
+              {(status === "draft" || status === "inreview") && (
                 <TableCell
                   tagText={
                     statusMapper(item?.status) || COMMON_LABELS.NOT_ASSIGN

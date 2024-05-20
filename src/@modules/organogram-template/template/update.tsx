@@ -83,7 +83,7 @@ const TemplateUpdate = () => {
                   navigate(
                     ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + reqPayload?.id,
                     {
-                      state: resp?.body?.[0],
+                      state: { organizationData: resp?.body?.[0] },
                     }
                   );
                 }

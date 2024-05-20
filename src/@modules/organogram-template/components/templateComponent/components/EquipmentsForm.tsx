@@ -328,7 +328,7 @@ const EquipmentsForm = ({ formProps, isNotEnamCommittee }: IForm) => {
                           }
                         },
                         required: !isNotEnamCommittee,
-                        validate: enCheck,
+                        // validate: enCheck,
                       }),
                     }}
                     isError={
