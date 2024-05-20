@@ -85,7 +85,7 @@ const ActivitiesForm = ({ formProps }: IActivitiesForm) => {
                               );
                             }
                           },
-                          validate: enCheck,
+                          // validate: enCheck,
                         }
                       ),
                     }}

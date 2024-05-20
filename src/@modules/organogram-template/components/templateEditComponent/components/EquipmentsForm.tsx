@@ -313,7 +313,7 @@ const EquipmentsForm = ({ formProps }: IForm) => {
                             );
                           }
                         },
-                        validate: enCheck,
+                        // validate: enCheck,
                       }),
                     }}
                     isError={
