@@ -209,7 +209,7 @@ const TemplateViewComponent = ({
 
       // Use html2canvas to capture the element
       const canvas = await html2canvas(element, {
-        scale: 2.5,
+        scale: 3,
         onclone: (clone: any) => {
           clone.querySelector(".animate__fadeIn") &&
             (clone.querySelector(".animate__fadeIn").style.animation = "none");
