@@ -28,6 +28,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
+import NodeClone from "./cloneForm";
 
 const initMeta: IMeta = {
   page: 0,
@@ -50,6 +51,8 @@ const OrganogramNodeList = () => {
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [isNodeCloneOpen, setIsNodeCloneOpen] = useState<boolean>(false);
+  const [cloneNodeId, setCloneNodeId] = useState<string>("");
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [search, setSearch] = useState<string>(
@@ -119,6 +122,13 @@ const OrganogramNodeList = () => {
       state: organogram,
     });
   };
+
+  const handleClone = (id: string) => {
+    setCloneNodeId(id);
+    setIsNodeCloneOpen(true);
+  };
+
+  const onCloneClose = () => setIsNodeCloneOpen(false);
 
   const handleDelete = (data: any) => {
     setIsDeleteModal(true);
@@ -225,6 +235,7 @@ const OrganogramNodeList = () => {
             data={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
+            handleClone={handleClone}
             organogram={organogram}
           >
             <Pagination
@@ -241,6 +252,16 @@ const OrganogramNodeList = () => {
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
       </div>
+      {isNodeCloneOpen && (
+        <NodeClone
+          isOpen={isNodeCloneOpen}
+          cloneNodeId={cloneNodeId}
+          onClose={onCloneClose}
+          isNotEnamCommittee={!organogram?.isEnamCommittee}
+          stateData={state}
+          getDataList={getDataList}
+        />
+      )}
       <ConfirmationModal
         isOpen={isDeleteModal}
         onClose={onCancelDelete}

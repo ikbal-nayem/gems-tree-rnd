@@ -496,7 +496,11 @@ const NodeForm = ({
                         // isMulti
                         control={control}
                         noMargin
-                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionLabel={(op) =>
+                          `${op?.nameBn} ${
+                            op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                          }`
+                        }
                         getOptionValue={(op) => op?.id}
                         name={`manpowerList.${index}.postDTO`}
                         onChange={(t) => onPostChange(index, t)}

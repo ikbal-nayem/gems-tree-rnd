@@ -1,9 +1,9 @@
-import { IObject } from "@gems/utils";
-import ManPowerList from "./ManPowerList";
-import { useEffect, useState } from "react";
 import { LABELS } from "@constants/common.constant";
-import { OMSService } from "@services/api/OMS.service";
 import { Icon, Modal, ModalBody } from "@gems/components";
+import { IObject } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
+import ManPowerList from "./ManPowerList";
 
 interface IForm {
   organogramId: any;
@@ -47,7 +47,7 @@ const MPListChanges = ({
             <ManPowerList
               isLoading={false}
               data={prevManpower}
-              langEn={langEn}
+              langEn={prevManpower?.isEnamCommittee ? true : false}
               insideModal={true}
               title={LABEL.PREV_MANPOWER}
             />
