@@ -41,7 +41,7 @@ const OrganogramTable: FC<TableProps> = ({
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.ORGANIZATION_NAME, width: 250 },
     { title: LABELS.ORGANOGRAM_DATE, width: 100 },
-    { title: LABELS.ORGANOGRAM_APPROVED_DATE, width: 100 },
+    { title: "অনুমোদনের তারিখ", width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 

@@ -16,10 +16,14 @@ import { makeReqBody } from "../_helper";
 
 const filterKeyMapping = {
   approverId: "id",
+  organizationGroupId: "id",
 };
 
 const Filter = ({ onFilter }) => {
   const [useList, setUserList] = useState<IObject[]>([]);
+  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
+    []
+  );
   const {
     control,
     handleSubmit,
@@ -27,6 +31,17 @@ const Filter = ({ onFilter }) => {
     formState: { errors },
   } = useForm();
   const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    getOrgGroupList();
+  }, []);
+
+  const getOrgGroupList = () => {
+    OMSService.FETCH.organizationGroupList().then((resp) =>
+      setOrganizationGroupList(resp?.body)
+    );
+  };
+
   useEffect(() => {
     OMSService.FETCH.approveUserList()
       .then((res) => {
@@ -77,6 +92,17 @@ const Filter = ({ onFilter }) => {
               placeholder="অর্গানোগ্রাম তারিখ"
               control={control}
               name="organogramDate"
+            />
+            <Autocomplete
+              label="প্রতিষ্ঠানের গ্ৰুপ"
+              placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+              name="organizationGroupId"
+              options={organizationGroupList}
+              noMargin
+              control={control}
+              // autoFocus
+              getOptionLabel={(op) => op?.nameBn}
+              getOptionValue={(op) => op?.id}
             />
           </DrawerBody>
           <FilterFooter onClose={onClose} />
