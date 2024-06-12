@@ -16,7 +16,7 @@ import { makeReqBody } from "../_helper";
 
 const filterKeyMapping = {
   approverId: "id",
-  organizationGroupId: "id",
+  categoryGroupId: "id",
 };
 
 const Filter = ({ onFilter }) => {
@@ -96,7 +96,7 @@ const Filter = ({ onFilter }) => {
             <Autocomplete
               label="প্রতিষ্ঠানের গ্ৰুপ"
               placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
-              name="organizationGroupId"
+              name="categoryGroupId"
               options={organizationGroupList}
               noMargin
               control={control}
