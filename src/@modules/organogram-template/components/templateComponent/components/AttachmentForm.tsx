@@ -172,7 +172,7 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     )}
                   </>
                 </div>
-                <div className="col-xl-3 col-12">
+                <div className="col-xl-2 col-12">
                   <DateInput
                     label={idx < 1 ? labelGODate : ""}
                     // isRequired={" "}
@@ -215,6 +215,22 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     }
                     maxSize={3}
                     // helpText="পিডিএফ ফাইল নির্বাচন করুন,ফাইলের সর্বোচ্চ সাইজ ১৫ এমবি"
+                  />
+                </div>
+                <div className="col-xl-1 col-12">
+                  <Input
+                    label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
+                    placeholder="প্রদর্শন ক্রম লিখুন"
+                    // noMargin
+                    type="number"
+                    defaultValue={idx ? idx + 1 : 1}
+                    min={0}
+                    registerProperty={{
+                      ...register(`attachmentDtoList.${idx}.serialNo`, {
+                        required: "প্রদর্শন ক্রম লিখুন",
+                      }),
+                    }}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.serialNo}
                   />
                 </div>
               </div>

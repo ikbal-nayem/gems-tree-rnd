@@ -161,6 +161,10 @@ const NodeForm = ({
                 (postList?.length > 0 &&
                   postList?.find((d) => d?.id === item?.postId)) ||
                 null,
+              alternativePostDTO:
+                (postList?.length > 0 &&
+                  postList?.find((d) => d?.id === item?.alternativePostId)) ||
+                null,
               gradeDTO:
                 (gradeList?.length > 0 &&
                   gradeList?.find((d) => d?.id === item?.gradeId)) ||
