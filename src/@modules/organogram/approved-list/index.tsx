@@ -1,17 +1,19 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { Input, Pagination, toast } from "@gems/components";
+import { ACLWrapper, Input, Pagination, toast } from "@gems/components";
 import {
   IMeta,
   IObject,
+  ROLES,
   numEnToBn,
   searchParamsToObject,
   topProgress,
   useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Filter from "./Filter";
 import OrganogramTable from "./Table";
 
 const initMeta: IMeta = {
@@ -31,12 +33,12 @@ const OrganogramList = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
+  const filterBody = useRef<IObject>({});
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
 
-  
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
@@ -58,12 +60,12 @@ const OrganogramList = () => {
       body: {
         searchKey: searchKey || null,
         isTemplate: 0,
+        ...filterBody.current,
       },
     };
 
     const reqData = { ...payload, body: payload?.body };
 
-   
     topProgress.show();
     setLoading(true);
     OMSService.FETCH.organogramList(reqData)
@@ -80,6 +82,11 @@ const OrganogramList = () => {
         topProgress.hide();
         setLoading(false);
       });
+  };
+
+  const onFilter = (data) => {
+    filterBody.current = data;
+    getDataList();
   };
 
   const onPageChanged = (metaParams: IMeta) => {
@@ -113,7 +120,6 @@ const OrganogramList = () => {
     <>
       <PageTitle> {MENU.BN.APPROVED_ORGANOGRAM_LIST} </PageTitle>
       <div className="card p-4">
-        {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
         <div className="d-flex gap-3 mb-4">
           <Input
@@ -123,6 +129,9 @@ const OrganogramList = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <ACLWrapper visibleToRoles={[ROLES.SUPER_ADMIN]}>
+            <Filter onFilter={onFilter} />
+          </ACLWrapper>
           {/* <ListDownload
             fnDownloadExcel={() =>
               getXLSXStoreList({

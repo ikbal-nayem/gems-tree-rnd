@@ -344,6 +344,10 @@ export const OMSService = {
         OMS_SERVICE + "organization-branch/get-org-branch-list",
         payload
       ),
+    approveUserList: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization-organogram/get-oms-approved-user"
+      ),
   },
 
   SAVE: {
