@@ -9,12 +9,7 @@ import {
   Textarea,
   toast,
 } from "@gems/components";
-import {
-  COMMON_LABELS,
-  IObject,
-  isObjectNull,
-  makeFormData,
-} from "@gems/utils";
+import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -101,32 +96,34 @@ const OrgForm = ({
 
       if (updateValue && !isObjectNull(updateData?.organizationGroupDTO)) {
         onOrganizationGroupChange(updateData?.organizationGroupDTO);
-      } else {
-        OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
-          .then((res) => {
-            setOrgParentList(res?.body || []);
-          })
-          .catch((err) => toast.error(err?.message));
       }
+      // Org Parent list api called only for group change by apv
+      //  else {
+      //   OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
+      //     .then((res) => {
+      //       setOrgParentList(res?.body || []);
+      //     })
+      //     .catch((err) => toast.error(err?.message));
+      // }
     }
   };
 
   const onOrganizationGroupChange = (groupItem: IObject) => {
     if (!isObjectNull(groupItem)) {
       setValue("organizationCategoryId", groupItem?.id);
-      if (
-        groupItem?.nameEn === "Ministry" ||
-        groupItem?.nameEn === "Division"
-      ) {
-        setValue("parent", null);
-        setValue("parentId", null);
-        setOrgParentList([]);
-        OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
-          .then((res) => {
-            setOrgParentList(res?.body || []);
-          })
-          .catch((err) => toast.error(err?.message));
-      }
+      // if (
+      //   groupItem?.nameEn === "Ministry" ||
+      //   groupItem?.nameEn === "Division"
+      // ) {
+      setValue("parent", null);
+      setValue("parentId", null);
+      setOrgParentList([]);
+      OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
+        .then((res) => {
+          setOrgParentList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
+      // }
     } else {
       onOrganizationTypeChange(watch("organizationTypeDTO"));
     }
@@ -216,6 +213,10 @@ const OrgForm = ({
                       setValue("parentId", op?.id ? op?.id : null)
                     }
                     control={control}
+                    helpText={
+                      !watch("organizationGroupDTO") &&
+                      "* প্রতিষ্ঠানের অভিভাবক দেওয়ার জন্য প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
+                    }
                     // isError={!!errors?.parent}
                     // errorMessage={errors?.parent?.message as string}
                   />
