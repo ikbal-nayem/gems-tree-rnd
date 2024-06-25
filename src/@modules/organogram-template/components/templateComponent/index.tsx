@@ -30,8 +30,8 @@ import AttachOrganizationForm from "./components/AttachOrganizationForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
-import Organizations from "./components/organization";
 import SummaryOfManpowerForm from "./components/SummaryOfManpowerForm";
+import Organizations from "./components/organization";
 
 interface ITemplateComponent {
   updateData?: IObject;
@@ -550,6 +550,17 @@ const TemplateComponent = ({
           setMaxNodeCode={setMaxNodeCode}
           maxManpowerCode={maxManpowerCode}
           setMaxManpowerCode={setMaxManpowerCode}
+          isOrganogramUpdate={
+            !isObjectNull(updateData) &&
+            !!updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO?.id
+          }
+          organogramData={{
+            organizationOrganogramId: updateData?.id || "",
+            organizationId:
+              updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO
+                ?.id || "",
+            organogramDate: updateData?.organogramDate || "",
+          }}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">

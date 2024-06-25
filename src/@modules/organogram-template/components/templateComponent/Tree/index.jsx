@@ -1,10 +1,11 @@
-import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
-import { ConfirmationModal } from "@gems/components";
+import { ConfirmationModal, toast } from "@gems/components";
 import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../@services/api/Core.service";
+import { OMSService } from "../../../../../@services/api/OMS.service";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
-import { CoreService } from "../../../../../@services/api/Core.service";
 
 const addNode = (nd, parent, templateData) => {
   if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
@@ -211,6 +212,8 @@ const OrganizationTemplateTree = ({
   setMaxNodeCode,
   maxManpowerCode,
   setMaxManpowerCode,
+  isOrganogramUpdate = false,
+  organogramData,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
@@ -287,16 +290,45 @@ const OrganizationTemplateTree = ({
   };
 
   const onSubmit = (formData) => {
-    let ad;
+    // let ad;
     if (isObjectNull(updateNodeData.current)) {
       selectedNode.current = reOrder(selectedNode.current, formData, "add", "");
-      ad = addNode(treeData, selectedNode.current, formData);
-    } else {
-      ad = editNode(treeData, updateNodeData.current, formData);
-    }
 
-    setTreeData(ad);
-    onFormClose();
+      // ad = addNode(treeData, selectedNode.current, formData);
+
+      if (isOrganogramUpdate) {
+        let reqData = {
+          ...formData,
+          ...organogramData,
+          parentNodeDTO: selectedNode.current || {},
+          parentNodeId: selectedNode.current?.id || "",
+          maxNodeCode: maxNodeCode,
+          maxManpowerCode: maxManpowerCode,
+        };
+        OMSService.SAVE.organogramSingleNodeCreate(reqData)
+          .then((res) => {
+            toast.success(res?.message);
+            setTreeData(
+              addNode(treeData, selectedNode.current, {
+                ...formData,
+                id: res?.body || "",
+              })
+            );
+            onFormClose();
+          })
+          .catch((error) => toast.error(error?.message));
+        // .finally(() => onFormClose());
+      } else {
+        setTreeData(addNode(treeData, selectedNode.current, formData));
+        onFormClose();
+      }
+    } else {
+      // ad = editNode(treeData, updateNodeData.current, formData);
+      setTreeData(editNode(treeData, updateNodeData.current, formData));
+      onFormClose();
+    }
+    // setTreeData(ad);
+    // onFormClose();
   };
 
   return (
