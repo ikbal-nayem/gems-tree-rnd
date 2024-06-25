@@ -291,6 +291,11 @@ const TemplateEditComponent = ({
           maxManpowerCode={maxManpowerCode}
           setMaxManpowerCode={setMaxManpowerCode}
           // isNotEnamCommittee={isNotEnamCommittee}
+          organogramData={{
+            organizationOrganogramId: updateData?.id || "",
+            organizationId: updateData?.organization?.id || "",
+            organogramDate: updateData?.organogramDate || "",
+          }}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
