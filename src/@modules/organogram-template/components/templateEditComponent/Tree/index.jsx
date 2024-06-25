@@ -359,9 +359,22 @@ const OrganizationTemplateTree = ({
         })
         .catch((error) => toast.error(error?.message));
     } else {
+      let reqData = {
+        ...formData,
+        ...organogramData,
+        code: formData?.code || maxNodeCode ? maxNodeCode + 1 : 1,
+        maxNodeCode: maxNodeCode,
+        maxManpowerCode: maxManpowerCode,
+      };
+      OMSService.UPDATE.organogramSingleNodeById(formData?.id, reqData)
+        .then((res) => {
+          toast.success(res?.message);
+          setTreeData(editNode(treeData, updateNodeData.current, formData));
+          onFormClose();
+        })
+        .catch((error) => toast.error(error?.message));
+      // .finally(() => onFormClose());
       // ad = editNode(treeData, updateNodeData.current, formData);
-      setTreeData(editNode(treeData, updateNodeData.current, formData));
-      onFormClose();
     }
     // setTreeData(ad);
     // onFormClose();
