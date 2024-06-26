@@ -224,6 +224,7 @@ const OrganizationTemplateTree = ({
   const [gradeList, setGradeList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
   const postPayload = {
@@ -275,11 +276,28 @@ const OrganizationTemplateTree = ({
   };
 
   const onCancelDelete = () => {
+    setDeleteData(null);
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
-    setIsDeleteModal(false);
+    if (isOrganogramUpdate) {
+      setIsDeleteLoading(true);
+      OMSService.DELETE.organogramNodeWithChildById(deleteData?.id || "")
+        .then((res) => {
+          toast.success(res?.message);
+          setTreeData(
+            deleteNode(treeData, deleteData?.id || deleteData?.nodeId)
+          );
+          setDeleteData(null);
+          setIsDeleteModal(false);
+        })
+        .catch((err) => toast.error(err?.message))
+        .finally(() => setIsDeleteLoading(false));
+    } else {
+      setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
+      setDeleteData(null);
+      setIsDeleteModal(false);
+    }
   };
 
   const onFormClose = () => {
@@ -425,6 +443,7 @@ const OrganizationTemplateTree = ({
       </div>
       <ConfirmationModal
         isOpen={isDeleteModal}
+        isSubmitting={isDeleteLoading}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
         onConfirmLabel={"মুছে ফেলুন"}
