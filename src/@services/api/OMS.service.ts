@@ -426,6 +426,18 @@ export const OMSService = {
           "organization-category/update-org-parent-by-category-grouping-id/" +
           groupId
       ),
+
+    undoOrganogramNodeWithChildById: async (
+      nodeId: string,
+      organogramId: string
+    ): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE +
+          "organogram-template/undo-frompreserved-organogram-structure-by-id/" +
+          nodeId +
+          "/" +
+          organogramId
+      ),
   },
 
   DELETE: {
@@ -450,12 +462,33 @@ export const OMSService = {
       await axiosIns.delete(
         OMS_SERVICE + "organogram-business-allocation/delete-by-id/" + id
       ),
+
     organogramNodeDeleteById: async (nodeId): Promise<any> =>
       await axiosIns.delete(
         OMS_SERVICE +
           "organogram-structure/delete-organogram-structure-node-by-id/" +
           nodeId
       ),
+
+    organogramNodeWithChildById: async (nodeId): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE +
+          "organogram-template/delete-organogram-structure-by-id/" +
+          nodeId
+      ),
+
+    clonedOrganogramNodeWithChildById: async (
+      nodeId,
+      organogramId
+    ): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE +
+          "organogram-template/delete-clone-frompreserved-organogram-structure-by-id/" +
+          nodeId +
+          "/" +
+          organogramId
+      ),
+
     organizationBranchDeleteById: async (id): Promise<any> => {
       await axiosIns.delete(OMS_SERVICE + "organization-branch/delete/" + id);
     },

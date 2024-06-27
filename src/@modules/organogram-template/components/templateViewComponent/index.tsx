@@ -242,7 +242,7 @@ const TemplateViewComponent = ({
         break;
       }
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const pdfHeight = pdf.internal.pageSize.getHeight() - 15;
 
       const imageWidth = canvas.width;
       const imageHeight = canvas.height;
