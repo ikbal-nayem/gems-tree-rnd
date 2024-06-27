@@ -269,6 +269,7 @@ const OrganizationTemplateTree = ({
   const [gradeList, setGradeList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
   const postPayload = {
@@ -310,7 +311,18 @@ const OrganizationTemplateTree = ({
         setDeleteData(data);
         break;
       case "REMOVE_UNDO":
-        setTreeData(undoDeleteNode(treeData, data));
+        // setTreeData(undoDeleteNode(treeData, data));
+
+        OMSService.UPDATE.undoOrganogramNodeWithChildById(
+          data?.id || "",
+          organogramData?.organizationOrganogramId || ""
+        )
+          .then((res) => {
+            toast.success(res?.message);
+            // setTreeData(undoDeleteNode(treeData, data));
+            setTreeData(res?.body || {});
+          })
+          .catch((err) => toast.error(err?.message));
         break;
 
       default:
@@ -319,11 +331,27 @@ const OrganizationTemplateTree = ({
   };
 
   const onCancelDelete = () => {
+    setDeleteData(null);
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData));
-    setIsDeleteModal(false);
+    setIsDeleteLoading(true);
+    OMSService.DELETE.clonedOrganogramNodeWithChildById(
+      deleteData?.id || "",
+      organogramData?.organizationOrganogramId || ""
+    )
+      .then((res) => {
+        toast.success(res?.message);
+        // setTreeData(deleteNode(treeData, deleteData));
+        setTreeData(res?.body || {});
+        setDeleteData(null);
+        setIsDeleteModal(false);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => setIsDeleteLoading(false));
+
+    // setTreeData(deleteNode(treeData, deleteData));
+    // setIsDeleteModal(false);
   };
 
   const onFormClose = () => {
@@ -455,6 +483,7 @@ const OrganizationTemplateTree = ({
       </div>
       <ConfirmationModal
         isOpen={isDeleteModal}
+        isSubmitting={isDeleteLoading}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
         onConfirmLabel={"মুছে ফেলুন"}

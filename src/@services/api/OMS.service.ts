@@ -427,11 +427,16 @@ export const OMSService = {
           groupId
       ),
 
-    undoOrganogramNodeWithChildById: async (nodeId: string): Promise<any> =>
+    undoOrganogramNodeWithChildById: async (
+      nodeId: string,
+      organogramId: string
+    ): Promise<any> =>
       await axiosIns.put(
         OMS_SERVICE +
           "organogram-template/undo-frompreserved-organogram-structure-by-id/" +
-          nodeId
+          nodeId +
+          "/" +
+          organogramId
       ),
   },
 
