@@ -222,6 +222,7 @@ const OrganizationTemplateTree = ({
 
   const [postList, setPostList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
+  const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -242,6 +243,9 @@ const OrganizationTemplateTree = ({
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
+    );
+    CoreService.getByMetaTypeList(META_TYPE.CLASS).then((resp) =>
+      setClassList(resp.body || [])
     );
   }, []);
 
@@ -428,6 +432,7 @@ const OrganizationTemplateTree = ({
           isOpen={formOpen}
           postList={postList}
           gradeList={gradeList}
+          classList={classList}
           serviceList={serviceList}
           cadreObj={cadreObj}
           updateData={updateNodeData.current}

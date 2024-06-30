@@ -167,10 +167,13 @@ const NodeForm = ({
                 (postList?.length > 0 &&
                   postList?.find((d) => d?.id === item?.postId)) ||
                 null,
-              alternativePostDTO:
-                (postList?.length > 0 &&
-                  postList?.find((d) => d?.id === item?.alternativePostId)) ||
-                null,
+              // alternativePostDTO:
+              //   (postList?.length > 0 &&
+              //     postList?.find((d) => d?.id === item?.alternativePostId)) ||
+              //   null,
+              isAlternativePost:
+                item?.alternativePostListDTO?.length > 0 ? true : false,
+
               gradeDTO:
                 (gradeList?.length > 0 &&
                   gradeList?.find((d) => d?.id === item?.gradeId)) ||
@@ -267,9 +270,9 @@ const NodeForm = ({
     }
   };
 
-  const onAlternatePostChange = (index, opt) => {
-    setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
-  };
+  // const onAlternatePostChange = (index, opt) => {
+  //   setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
+  // };
 
   const getAsyncPostList = useCallback((searchKey, callback) => {
     postPayload.body = { searchKey };
@@ -551,13 +554,13 @@ const NodeForm = ({
                             {
                               onChange: (e) => {
                                 setValue(
-                                  `manpowerList.${index}.alternativePostDTO`,
+                                  `manpowerList.${index}.alternativePostListDTO`,
                                   null
                                 );
-                                setValue(
-                                  `manpowerList.${index}.alternativePostId`,
-                                  null
-                                );
+                                // setValue(
+                                //   `manpowerList.${index}.alternativePostId`,
+                                //   null
+                                // );
                               },
                             }
                           ),
@@ -584,14 +587,15 @@ const NodeForm = ({
                               }`
                         }
                         getOptionValue={(op) => op?.id}
-                        name={`manpowerList.${index}.alternativePostDTO`}
-                        onChange={(t) => onAlternatePostChange(index, t)}
+                        name={`manpowerList.${index}.alternativePostListDTO`}
+                        // onChange={(t) => onAlternatePostChange(index, t)}
                         loadOptions={getAsyncPostList}
                         isError={
-                          !!errors?.manpowerList?.[index]?.alternativePostDTO
+                          !!errors?.manpowerList?.[index]
+                            ?.alternativePostListDTO
                         }
                         errorMessage={
-                          errors?.manpowerList?.[index]?.alternativePostDTO
+                          errors?.manpowerList?.[index]?.alternativePostListDTO
                             ?.message as string
                         }
                       />
@@ -619,6 +623,18 @@ const NodeForm = ({
                               `manpowerList.${index}.gradeOrder`,
                               t?.displayOrder
                             );
+                            setValue(
+                              `manpowerList.${index}.classKeyDto`,
+                              classList.find(
+                                (d) => d?.metaKey === t?.classMetaKey
+                              )
+                            );
+                            setValue(
+                              `manpowerList.${index}.classKey`,
+                              classList.find(
+                                (d) => d?.metaKey === t?.classMetaKey
+                              )?.metaKey
+                            );
                           }}
                           noMargin
                           isError={!!errors?.manpowerList?.[index]?.gradeDTO}
@@ -636,7 +652,7 @@ const NodeForm = ({
                             isNotEnamCommittee ? op?.titleBn : op?.titleEn
                           }
                           getOptionValue={(op) => op?.metaKey}
-                          name={`manpowerList.${index}.classDTO`}
+                          name={`manpowerList.${index}.classKeyDto`}
                           onChange={(t) => {
                             setValue(
                               `manpowerList.${index}.classKey`,
@@ -644,7 +660,7 @@ const NodeForm = ({
                             );
                           }}
                           noMargin
-                          isError={!!errors?.manpowerList?.[index]?.classDTO}
+                          isError={!!errors?.manpowerList?.[index]?.classKeyDto}
                         />
                       </div>
                     </div>
