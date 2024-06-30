@@ -37,6 +37,7 @@ interface INodeForm {
   defaultDisplayOrder?: number;
   postList: IObject[];
   gradeList: IObject[];
+  classList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
   isNotEnamCommittee: boolean;
@@ -68,6 +69,7 @@ const NodeForm = ({
   isOpen,
   postList,
   gradeList,
+  classList,
   serviceList,
   cadreObj,
   onClose,
@@ -510,7 +512,7 @@ const NodeForm = ({
                   <Label> {numEnToBn(index + 1) + "।"} </Label>
                 </div>
                 <div className="row w-100">
-                  <div className="col-md-6 col-xl-4 px-1">
+                  <div className="col-xl-4 px-1">
                     <Autocomplete
                       label={index < 1 ? "পদবি" : ""}
                       placeholder="বাছাই করুন"
@@ -538,17 +540,48 @@ const NodeForm = ({
                           ?.message as string
                       }
                     />
-                    {watch(`manpowerList.${index}.isHead`) && (
+                    <div className="my-1">
+                      <Checkbox
+                        noMargin
+                        label={"বিকল্প পদবি"}
+                        // label='প্রধান ?'
+                        registerProperty={{
+                          ...register(
+                            `manpowerList.${index}.isAlternativePost`,
+                            {
+                              onChange: (e) => {
+                                setValue(
+                                  `manpowerList.${index}.alternativePostDTO`,
+                                  null
+                                );
+                                setValue(
+                                  `manpowerList.${index}.alternativePostId`,
+                                  null
+                                );
+                              },
+                            }
+                          ),
+                        }}
+                      />
+                    </div>
+
+                    {watch(`manpowerList.${index}.isAlternativePost`) && (
                       <Autocomplete
-                        label={index < 1 ? "বিকল্প পদবি" : ""}
+                        // label={index < 1 ? "বিকল্প পদবি" : ""}
                         placeholder="বিকল্প পদবি বাছাই করুন"
                         // isRequired
                         isAsync
-                        // isMulti
+                        isMulti
                         control={control}
                         noMargin
                         getOptionLabel={(op) =>
-                          isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                          isNotEnamCommittee
+                            ? `${op?.nameBn} ${
+                                op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                              }`
+                            : `${op?.nameEn} ${
+                                op?.nameBn ? "(" + op?.nameBn + ")" : ""
+                              }`
                         }
                         getOptionValue={(op) => op?.id}
                         name={`manpowerList.${index}.alternativePostDTO`}
@@ -565,29 +598,56 @@ const NodeForm = ({
                     )}
                   </div>
 
-                  <div className="col-md-6 col-xl-3 px-1">
-                    <Autocomplete
-                      label={index < 1 ? "গ্রেড" : ""}
-                      placeholder="বাছাই করুন"
-                      control={control}
-                      isRequired
-                      isClearable={false}
-                      options={gradeList || []}
-                      getOptionLabel={(op) =>
-                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
-                      }
-                      getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.gradeDTO`}
-                      onChange={(t) => {
-                        setValue(`manpowerList.${index}.gradeId`, t?.id);
-                        setValue(
-                          `manpowerList.${index}.gradeOrder`,
-                          t?.displayOrder
-                        );
-                      }}
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                    />
+                  <div className="col-xl-3 ps-0 pe-1">
+                    <div className="d-flex">
+                      <div className="w-50 me-1">
+                        <Autocomplete
+                          label={index < 1 ? "গ্রেড" : ""}
+                          placeholder="বাছাই করুন"
+                          control={control}
+                          isRequired
+                          isClearable={false}
+                          options={gradeList || []}
+                          getOptionLabel={(op) =>
+                            isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                          }
+                          getOptionValue={(op) => op?.id}
+                          name={`manpowerList.${index}.gradeDTO`}
+                          onChange={(t) => {
+                            setValue(`manpowerList.${index}.gradeId`, t?.id);
+                            setValue(
+                              `manpowerList.${index}.gradeOrder`,
+                              t?.displayOrder
+                            );
+                          }}
+                          noMargin
+                          isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                        />
+                      </div>
+                      <div className="w-50">
+                        <Autocomplete
+                          label={index < 1 ? "শ্রেণি" : ""}
+                          placeholder="বাছাই করুন"
+                          control={control}
+                          // isRequired
+                          isClearable={false}
+                          options={classList || []}
+                          getOptionLabel={(op) =>
+                            isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                          }
+                          getOptionValue={(op) => op?.metaKey}
+                          name={`manpowerList.${index}.classDTO`}
+                          onChange={(t) => {
+                            setValue(
+                              `manpowerList.${index}.classKey`,
+                              t?.metaKey
+                            );
+                          }}
+                          noMargin
+                          isError={!!errors?.manpowerList?.[index]?.classDTO}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="col-md-6 col-xl-2 px-1">
@@ -675,14 +735,6 @@ const NodeForm = ({
                                 setIsHeadIndex(index);
                               } else {
                                 setIsHeadIndex(null);
-                                setValue(
-                                  `manpowerList.${index}.alternativePostDTO`,
-                                  null
-                                );
-                                setValue(
-                                  `manpowerList.${index}.alternativePostId`,
-                                  null
-                                );
                               }
                             },
                           }),
