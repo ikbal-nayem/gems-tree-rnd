@@ -158,27 +158,23 @@ const NodeForm = ({
 
             return {
               ...item,
-              postDTO:
-                (postList?.length > 0 &&
-                  postList?.find((d) => d?.id === item?.postId)) ||
-                null,
-              // alternativePostDTO:
+              // postDTO:
               //   (postList?.length > 0 &&
-              //     postList?.find((d) => d?.id === item?.alternativePostId)) ||
+              //     postList?.find((d) => d?.id === item?.postId)) ||
               //   null,
               isAlternativePost:
                 item?.alternativePostListDTO?.length > 0 ? true : false,
 
-              gradeDTO:
-                (gradeList?.length > 0 &&
-                  gradeList?.find((d) => d?.id === item?.gradeId)) ||
-                null,
-              serviceTypeDto:
-                (serviceList?.length > 0 &&
-                  serviceList?.find(
-                    (d) => d?.metaKey === item?.serviceTypeKey
-                  )) ||
-                null,
+              // gradeDTO:
+              //   (gradeList?.length > 0 &&
+              //     gradeList?.find((d) => d?.id === item?.gradeId)) ||
+              //   null,
+              // serviceTypeDto:
+              //   (serviceList?.length > 0 &&
+              //     serviceList?.find(
+              //       (d) => d?.metaKey === item?.serviceTypeKey
+              //     )) ||
+              //   null,
             };
           }),
         };

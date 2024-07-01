@@ -1,19 +1,13 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import {
-  IObject,
-  isObjectNull,
-  notNullOrUndefined,
-  numEnToBn,
-} from "@gems/utils";
+import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
 const MyNode = ({
   nodeData,
   treeDispatch,
-  postList,
   firstNode,
   maxNodeCode,
   setMaxNodeCode,
@@ -100,13 +94,9 @@ const MyNode = ({
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = numEnToBn(mp);
-              const postExists = isNotEmptyList(postList) && item?.postId;
 
-              const post = postExists
-                ? postList?.find((d) => d?.id === item?.postId)
-                : null;
-
-              const postName = post?.nameBn || COMMON_LABELS.NOT_ASSIGN;
+              const postName =
+                item?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN;
 
               return (
                 <div key={i}>
