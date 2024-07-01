@@ -114,10 +114,20 @@ const MyNode = ({ langEn, nodeData, onView }) => {
                     >
                       x
                     </p>
-                    <p
+                    <span
                       className={`ms-1 mb-0 fs-8 ${
                         deletedClass || itemDeletedClass
                       } ${additionClass || itemAdditionClass}`}
+                      // For grade tooltip
+                      // data-bs-toggle="tooltip"
+                      // data-bs-placement="right"
+                      // title={
+                      //   langEn
+                      //     ? "Grade: " + item?.gradeDTO?.nameEn ||
+                      //       COMMON_LABELS.EN.NOT_ASSIGN
+                      //     : "গ্রেড: " + item?.gradeDTO?.nameBn ||
+                      //       COMMON_LABELS.NOT_ASSIGN
+                      // }
                     >
                       {longLineBreaker(postName, 17)}
                       {item?.alternativePostListDTO?.length > 0
@@ -137,7 +147,7 @@ const MyNode = ({ langEn, nodeData, onView }) => {
                           : "",
                         17
                       )} */}
-                    </p>
+                    </span>
                   </div>
                 ) : null}
               </div>
