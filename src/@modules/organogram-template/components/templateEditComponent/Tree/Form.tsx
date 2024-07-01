@@ -767,6 +767,24 @@ const NodeForm = ({
                 )}
               </div>
             ))}
+            <div className="d-flex justify-content-center mt-4 mb-12">
+              <IconButton
+                iconName="add"
+                color="success"
+                className="w-50 rounded-pill"
+                rounded={false}
+                onClick={() => {
+                  manpowerListAppend({
+                    isNewManpower: true,
+                    isAddition: true,
+                    serviceTypeDto: cadreObj,
+                    serviceTypeKey: cadreObj?.metaKey,
+                    code: maxManpowerCode + 1,
+                  });
+                  setMaxManpowerCode(maxManpowerCode + 1);
+                }}
+              />
+            </div>
           </div>
           <div className="mt-6">
             <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
