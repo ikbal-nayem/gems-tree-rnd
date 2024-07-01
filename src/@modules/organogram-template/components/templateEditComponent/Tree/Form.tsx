@@ -259,9 +259,9 @@ const NodeForm = ({
     setValue(`manpowerList.${index}.postId`, opt?.id);
   };
 
-  const onAlternatePostChange = (index, opt) => {
-    setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
-  };
+  // const onAlternatePostChange = (index, opt) => {
+  //   setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
+  // };
 
   const getAsyncPostList = useCallback((searchKey, callback) => {
     postPayload.body = { searchKey };
@@ -771,7 +771,7 @@ const NodeForm = ({
               <IconButton
                 iconName="add"
                 color="success"
-                className="w-50 rounded-pill"
+                className="w-25 rounded-pill"
                 rounded={false}
                 onClick={() => {
                   manpowerListAppend({

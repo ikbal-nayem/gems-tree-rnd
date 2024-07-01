@@ -776,7 +776,7 @@ const NodeForm = ({
               <IconButton
                 iconName="add"
                 color="success"
-                className="w-50 rounded-pill"
+                className="w-25 rounded-pill"
                 rounded={false}
                 onClick={() => {
                   manpowerListAppend({

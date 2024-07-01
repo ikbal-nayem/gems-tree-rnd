@@ -106,6 +106,7 @@ const NodeCreateUpdateForm = ({
   const [titleList, setTitleList] = useState<IObject[]>([]);
   const [postList, setPostList] = useState<IObject[]>([]);
   const [gradeList, setGradeList] = useState<IObject[]>([]);
+  const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState<IObject[]>([]);
   const [parentNodeList, setParentNodeList] = useState<IObject[]>([]);
 
@@ -125,6 +126,9 @@ const NodeCreateUpdateForm = ({
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
+    );
+    CoreService.getByMetaTypeList(META_TYPE.CLASS).then((resp) =>
+      setClassList(resp.body || [])
     );
     getParentNodeList();
   }, []);
@@ -174,6 +178,8 @@ const NodeCreateUpdateForm = ({
 
             return {
               ...item,
+              isAlternativePost:
+                item?.alternativePostListDTO?.length > 0 ? true : false,
             };
           }),
         };
@@ -241,28 +247,29 @@ const NodeCreateUpdateForm = ({
 
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
-    if (notNullOrUndefined(opt)) {
-      let noDuplicate = true;
-      const mpList = getValues("manpowerList") || [];
-      if (mpList.length > 1) {
-        for (let i = 0; i < mpList.length; i++) {
-          if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
-            noDuplicate = false;
-            toast.error(
-              "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
-            );
-            setValue(`manpowerList.${index}.postDTO`, null);
-            break;
-          }
-        }
-      }
-      if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
-    }
+    // if (notNullOrUndefined(opt)) {
+    //   let noDuplicate = true;
+    //   const mpList = getValues("manpowerList") || [];
+    //   if (mpList.length > 1) {
+    //     for (let i = 0; i < mpList.length; i++) {
+    //       if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
+    //         noDuplicate = false;
+    //         toast.error(
+    //           "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
+    //         );
+    //         setValue(`manpowerList.${index}.postDTO`, null);
+    //         break;
+    //       }
+    //     }
+    //   }
+    //   if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
+    // }
+    setValue(`manpowerList.${index}.postId`, opt?.id);
   };
 
-  const onAlternatePostChange = (index, opt) => {
-    setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
-  };
+  // const onAlternatePostChange = (index, opt) => {
+  //   setValue(`manpowerList.${index}.alternativePostId`, opt?.id || null);
+  // };
 
   const getAsyncPostList = useCallback((searchKey, callback) => {
     postPayload.body = { searchKey };
@@ -542,27 +549,55 @@ const NodeCreateUpdateForm = ({
                     errors?.manpowerList?.[index]?.postDTO?.message as string
                   }
                 />
-                {watch(`manpowerList.${index}.isHead`) && (
+                <div className="my-1">
+                  <Checkbox
+                    noMargin
+                    label={"বিকল্প পদবি"}
+                    // label='প্রধান ?'
+                    registerProperty={{
+                      ...register(`manpowerList.${index}.isAlternativePost`, {
+                        onChange: (e) => {
+                          setValue(
+                            `manpowerList.${index}.alternativePostListDTO`,
+                            null
+                          );
+                          // setValue(
+                          //   `manpowerList.${index}.alternativePostId`,
+                          //   null
+                          // );
+                        },
+                      }),
+                    }}
+                  />
+                </div>
+
+                {watch(`manpowerList.${index}.isAlternativePost`) && (
                   <Autocomplete
-                    label={index < 1 ? "বিকল্প পদবি" : ""}
+                    // label={index < 1 ? "বিকল্প পদবি" : ""}
                     placeholder="বিকল্প পদবি বাছাই করুন"
                     // isRequired
                     isAsync
-                    // isMulti
+                    isMulti
                     control={control}
                     noMargin
                     getOptionLabel={(op) =>
-                      isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                      isNotEnamCommittee
+                        ? `${op?.nameBn} ${
+                            op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                          }`
+                        : `${op?.nameEn} ${
+                            op?.nameBn ? "(" + op?.nameBn + ")" : ""
+                          }`
                     }
                     getOptionValue={(op) => op?.id}
-                    name={`manpowerList.${index}.alternativePostDTO`}
-                    onChange={(t) => onAlternatePostChange(index, t)}
+                    name={`manpowerList.${index}.alternativePostListDTO`}
+                    // onChange={(t) => onAlternatePostChange(index, t)}
                     loadOptions={getAsyncPostList}
                     isError={
-                      !!errors?.manpowerList?.[index]?.alternativePostDTO
+                      !!errors?.manpowerList?.[index]?.alternativePostListDTO
                     }
                     errorMessage={
-                      errors?.manpowerList?.[index]?.alternativePostDTO
+                      errors?.manpowerList?.[index]?.alternativePostListDTO
                         ?.message as string
                     }
                   />
@@ -570,28 +605,61 @@ const NodeCreateUpdateForm = ({
               </div>
 
               <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
-                <Autocomplete
-                  label={index < 1 ? "গ্রেড" : ""}
-                  placeholder="বাছাই করুন"
-                  control={control}
-                  isRequired
-                  options={gradeList || []}
-                  isClearable={false}
-                  getOptionLabel={(op) =>
-                    isNotEnamCommittee ? op?.nameBn : op?.nameEn
-                  }
-                  getOptionValue={(op) => op?.id}
-                  name={`manpowerList.${index}.gradeDTO`}
-                  onChange={(t) => {
-                    setValue(`manpowerList.${index}.gradeId`, t?.id);
-                    setValue(
-                      `manpowerList.${index}.gradeOrder`,
-                      t?.displayOrder
-                    );
-                  }}
-                  noMargin
-                  isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                />
+                <div className="d-flex">
+                  <div className="w-50 me-1">
+                    <Autocomplete
+                      label={index < 1 ? "গ্রেড" : ""}
+                      placeholder="বাছাই করুন"
+                      control={control}
+                      isRequired
+                      isClearable={false}
+                      options={gradeList || []}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                      }
+                      getOptionValue={(op) => op?.id}
+                      name={`manpowerList.${index}.gradeDTO`}
+                      onChange={(t) => {
+                        setValue(`manpowerList.${index}.gradeId`, t?.id);
+                        setValue(
+                          `manpowerList.${index}.gradeOrder`,
+                          t?.displayOrder
+                        );
+                        setValue(
+                          `manpowerList.${index}.classKeyDto`,
+                          classList.find((d) => d?.metaKey === t?.classMetaKey)
+                        );
+                        setValue(
+                          `manpowerList.${index}.classKey`,
+                          classList.find((d) => d?.metaKey === t?.classMetaKey)
+                            ?.metaKey
+                        );
+                      }}
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                    />
+                  </div>
+                  <div className="w-50">
+                    <Autocomplete
+                      label={index < 1 ? "শ্রেণি" : ""}
+                      placeholder="বাছাই করুন"
+                      control={control}
+                      // isRequired
+                      isClearable={false}
+                      options={classList || []}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                      }
+                      getOptionValue={(op) => op?.metaKey}
+                      name={`manpowerList.${index}.classKeyDto`}
+                      onChange={(t) => {
+                        setValue(`manpowerList.${index}.classKey`, t?.metaKey);
+                      }}
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.classKeyDto}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="col-md-6 col-xl-2 px-1">
@@ -674,14 +742,6 @@ const NodeCreateUpdateForm = ({
                             setIsHeadIndex(index);
                           } else {
                             setIsHeadIndex(null);
-                            setValue(
-                              `manpowerList.${index}.alternativePostDTO`,
-                              null
-                            );
-                            setValue(
-                              `manpowerList.${index}.alternativePostId`,
-                              null
-                            );
                           }
                         },
                       }),
@@ -703,6 +763,23 @@ const NodeCreateUpdateForm = ({
             </div>
           </div>
         ))}
+        <div className="d-flex justify-content-center mt-4 mb-12">
+          <IconButton
+            iconName="add"
+            color="success"
+            className="w-25 rounded-pill"
+            rounded={false}
+            onClick={() => {
+              manpowerListAppend({
+                isNewManpower: true,
+                serviceTypeDto: cadreObj,
+                serviceTypeKey: cadreObj?.metaKey,
+                code: maxManpowerCode + 1,
+              });
+              setMaxManpowerCode(maxManpowerCode + 1);
+            }}
+          />
+        </div>
       </div>
       <div className="mt-6">
         <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
