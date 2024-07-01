@@ -413,7 +413,6 @@ const OrganizationTemplateTree = ({
             <MyNode
               nodeData={nodeData}
               treeDispatch={treeDispatch}
-              postList={postList}
               firstNode={
                 (treeData?.id || treeData?.nodeId) ===
                 (nodeData?.id || nodeData?.nodeId)

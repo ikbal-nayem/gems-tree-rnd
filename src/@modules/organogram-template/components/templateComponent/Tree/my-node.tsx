@@ -8,7 +8,6 @@ import "./my-node.css";
 const MyNode = ({
   nodeData,
   treeDispatch,
-  postList,
   firstNode,
   isNotEnamCommittee,
   maxNodeCode,
@@ -115,15 +114,10 @@ const MyNode = ({
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
-              const postExists = isNotEmptyList(postList) && item?.postId;
-
-              const post = postExists
-                ? postList?.find((d) => d?.id === item?.postId)
-                : null;
 
               const postName = isNotEnamCommittee
-                ? post?.nameBn || COMMON_LABELS.NOT_ASSIGN
-                : post?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
+                ? item?.postDTO?.post?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                : item?.postDTO?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
 
               return (
                 <div key={i}>
