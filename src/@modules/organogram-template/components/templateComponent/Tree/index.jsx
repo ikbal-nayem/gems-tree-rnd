@@ -244,7 +244,7 @@ const OrganizationTemplateTree = ({
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
     );
-    CoreService.getByMetaTypeList(META_TYPE.CLASS).then((resp) =>
+    CoreService.getByMetaTypeList("CLASS").then((resp) =>
       setClassList(resp.body || [])
     );
   }, []);
