@@ -11,6 +11,7 @@ import {
   Table,
   TableCell,
   TableRow,
+  useApp,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -26,8 +27,8 @@ import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
 // import OrganizationReport from "./organizatioReport";
-import TemplateClone from "./templateClone";
 import { useAuth } from "@context/Auth";
+import TemplateClone from "./templateClone";
 
 type TableProps = {
   children: ReactNode;
@@ -52,6 +53,7 @@ const TemplateTable: FC<TableProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onClose = () => setIsOpen(false);
   const { currentUser } = useAuth();
+  const { userRoles } = useApp();
   // const [templateId, setTemplateId] = useState<string>("");
   // const [isReportOpen, setReportOpen] = useState<boolean>(false);
   // const [attachedOrgList, setAttachedOrgList] = useState<IObject[]>([]);
@@ -128,7 +130,7 @@ const TemplateTable: FC<TableProps> = ({
             let visibleCustomPermission =
               (item?.status === TEMPLATE_STATUS.NEW &&
                 item?.createdBy === currentUser?.id) ||
-              currentUser?.roles?.some((d) => d?.roleCode === ROLES.OMS_ADMIN);
+              userRoles?.some((d) => d?.roleCode === ROLES.OMS_ADMIN);
             return (
               <TableRow key={idx}>
                 <TableCell

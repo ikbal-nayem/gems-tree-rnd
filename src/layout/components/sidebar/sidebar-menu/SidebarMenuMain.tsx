@@ -4,6 +4,7 @@ import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { useAuth } from "@context/Auth";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
+import { useApp } from "@gems/components";
 
 const menuData = [
   // {
@@ -175,16 +176,15 @@ const ParentNode = ({ item }) => {
 };
 
 const PermissionMenus = ({ data = menuData }) => {
-  const { currentUser } = useAuth();
+  const { userPermissions } = useApp();
   return (
     <>
       {data?.length > 0 &&
         data?.map((item, i) => {
           if (
-            currentUser &&
-            Object.keys(currentUser?.userPermissionDTO)?.length > 0 &&
-            currentUser?.userPermissionDTO?.sitemapList?.length > 0 &&
-            currentUser?.userPermissionDTO?.sitemapList?.find(
+            Object.keys(userPermissions)?.length > 0 &&
+            userPermissions?.sitemapList?.length > 0 &&
+            userPermissions?.sitemapList?.find(
               (d) => d?.routeKey === item?.routeKey
             )
           )
@@ -194,7 +194,7 @@ const PermissionMenus = ({ data = menuData }) => {
                 item={{
                   ...item,
                   title:
-                    currentUser?.userPermissionDTO?.sitemapList?.find(
+                    userPermissions?.sitemapList?.find(
                       (d) => d?.routeKey === item?.routeKey
                     )?.nameBn || item?.title,
                 }}
