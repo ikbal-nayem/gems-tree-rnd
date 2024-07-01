@@ -7,10 +7,10 @@ import {
   notNullOrUndefined,
   numEnToBn,
 } from "@gems/utils";
-import { isNotEmptyList, longLineBreaker } from "utility/utils";
+import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, postList, onView }) => {
+const MyNode = ({ langEn, nodeData, onView }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -77,16 +77,11 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
 
             let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
             mp = langEn ? mp : numEnToBn(mp);
-            const postExists = isNotEmptyList(postList) && item?.postId;
 
-            const post = postExists
-              ? postList?.find((d) => d?.id === item?.postId)
-              : null;
-
-            const postName = !isObjectNull(post)
+            const postName = !isObjectNull(item?.postDTO)
               ? langEn
-                ? post?.nameEn
-                : post?.nameBn
+                ? item?.postDTO?.nameEn
+                : item?.postDTO?.nameBn
               : langEn
               ? COMMON_LABELS.EN.NOT_ASSIGN
               : COMMON_LABELS.NOT_ASSIGN;

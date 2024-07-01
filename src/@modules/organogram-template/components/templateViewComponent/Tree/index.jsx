@@ -78,7 +78,6 @@ const OrganizationTemplateTree = ({
           <MyNode
             langEn={langEn}
             nodeData={nodeData}
-            postList={postList}
             organogramView={organogramView}
             onView={onView}
           />
