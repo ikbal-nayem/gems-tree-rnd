@@ -11,7 +11,6 @@ import {
   ModalFooter,
   Select,
   Textarea,
-  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -36,6 +35,7 @@ interface INodeForm {
   defaultDisplayOrder?: number;
   postList: IObject[];
   gradeList: IObject[];
+  classList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
   maxNodeCode: number;
@@ -66,6 +66,7 @@ const NodeForm = ({
   isOpen,
   postList,
   gradeList,
+  classList,
   serviceList,
   cadreObj,
   onClose,
@@ -161,10 +162,13 @@ const NodeForm = ({
                 (postList?.length > 0 &&
                   postList?.find((d) => d?.id === item?.postId)) ||
                 null,
-              alternativePostDTO:
-                (postList?.length > 0 &&
-                  postList?.find((d) => d?.id === item?.alternativePostId)) ||
-                null,
+              // alternativePostDTO:
+              //   (postList?.length > 0 &&
+              //     postList?.find((d) => d?.id === item?.alternativePostId)) ||
+              //   null,
+              isAlternativePost:
+                item?.alternativePostListDTO?.length > 0 ? true : false,
+
               gradeDTO:
                 (gradeList?.length > 0 &&
                   gradeList?.find((d) => d?.id === item?.gradeId)) ||
@@ -234,23 +238,25 @@ const NodeForm = ({
 
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
-    if (notNullOrUndefined(opt)) {
-      let noDuplicate = true;
-      const mpList = getValues("manpowerList") || [];
-      if (mpList.length > 1) {
-        for (let i = 0; i < mpList.length; i++) {
-          if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
-            noDuplicate = false;
-            toast.error(
-              "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
-            );
-            setValue(`manpowerList.${index}.postDTO`, null);
-            break;
-          }
-        }
-      }
-      if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
-    }
+    // if (notNullOrUndefined(opt)) {
+    //   let noDuplicate = true;
+    //   const mpList = getValues("manpowerList") || [];
+    //   if (mpList.length > 1) {
+    //     for (let i = 0; i < mpList.length; i++) {
+    //       if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
+    //         noDuplicate = false;
+    //         toast.error(
+    //           "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
+    //         );
+    //         setValue(`manpowerList.${index}.postDTO`, null);
+    //         break;
+    //       }
+    //     }
+    //   }
+    //   if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
+    // }
+
+    setValue(`manpowerList.${index}.postId`, opt?.id);
   };
 
   const onAlternatePostChange = (index, opt) => {
@@ -491,7 +497,7 @@ const NodeForm = ({
                     <Label> {numEnToBn(index + 1) + "।"} </Label>
                   </div>
                   <div className="row w-100">
-                    <div className="col-md-6 col-xl-4 px-1">
+                    <div className="col-xl-4 px-1">
                       <Autocomplete
                         label={index < 1 ? "পদবি" : ""}
                         placeholder="বাছাই করুন"
@@ -515,52 +521,121 @@ const NodeForm = ({
                             ?.message as string
                         }
                       />
-                      {watch(`manpowerList.${index}.isHead`) && (
+                      <div className="my-1">
+                        <Checkbox
+                          noMargin
+                          label={"বিকল্প পদবি"}
+                          // label='প্রধান ?'
+                          registerProperty={{
+                            ...register(
+                              `manpowerList.${index}.isAlternativePost`,
+                              {
+                                onChange: (e) => {
+                                  setValue(
+                                    `manpowerList.${index}.alternativePostListDTO`,
+                                    null
+                                  );
+                                  // setValue(
+                                  //   `manpowerList.${index}.alternativePostId`,
+                                  //   null
+                                  // );
+                                },
+                              }
+                            ),
+                          }}
+                        />
+                      </div>
+
+                      {watch(`manpowerList.${index}.isAlternativePost`) && (
                         <Autocomplete
-                          label={index < 1 ? "বিকল্প পদবি" : ""}
+                          // label={index < 1 ? "বিকল্প পদবি" : ""}
                           placeholder="বিকল্প পদবি বাছাই করুন"
                           // isRequired
                           isAsync
-                          // isMulti
+                          isMulti
                           control={control}
                           noMargin
-                          getOptionLabel={(op) => op?.nameBn}
+                          getOptionLabel={(op) =>
+                            `${op?.nameBn} ${
+                              op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                            }`
+                          }
                           getOptionValue={(op) => op?.id}
-                          name={`manpowerList.${index}.alternativePostDTO`}
-                          onChange={(t) => onAlternatePostChange(index, t)}
+                          name={`manpowerList.${index}.alternativePostListDTO`}
+                          // onChange={(t) => onAlternatePostChange(index, t)}
                           loadOptions={getAsyncPostList}
                           isError={
-                            !!errors?.manpowerList?.[index]?.alternativePostDTO
+                            !!errors?.manpowerList?.[index]
+                              ?.alternativePostListDTO
                           }
                           errorMessage={
-                            errors?.manpowerList?.[index]?.alternativePostDTO
-                              ?.message as string
+                            errors?.manpowerList?.[index]
+                              ?.alternativePostListDTO?.message as string
                           }
                         />
                       )}
                     </div>
 
-                    <div className="col-md-6 col-xl-3 px-1">
-                      <Autocomplete
-                        label={index < 1 ? "গ্রেড" : ""}
-                        placeholder="বাছাই করুন"
-                        control={control}
-                        isClearable={false}
-                        isRequired
-                        options={gradeList || []}
-                        getOptionLabel={(op) => op?.nameBn}
-                        getOptionValue={(op) => op?.id}
-                        name={`manpowerList.${index}.gradeDTO`}
-                        onChange={(t) => {
-                          setValue(`manpowerList.${index}.gradeId`, t?.id);
-                          setValue(
-                            `manpowerList.${index}.gradeOrder`,
-                            t?.displayOrder
-                          );
-                        }}
-                        noMargin
-                        isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                      />
+                    <div className="col-xl-3 ps-0 pe-1">
+                      <div className="d-flex">
+                        <div className="w-50 me-1">
+                          <Autocomplete
+                            label={index < 1 ? "গ্রেড" : ""}
+                            placeholder="বাছাই করুন"
+                            control={control}
+                            isRequired
+                            isClearable={false}
+                            options={gradeList || []}
+                            getOptionLabel={(op) => op?.nameBn}
+                            getOptionValue={(op) => op?.id}
+                            name={`manpowerList.${index}.gradeDTO`}
+                            onChange={(t) => {
+                              setValue(`manpowerList.${index}.gradeId`, t?.id);
+                              setValue(
+                                `manpowerList.${index}.gradeOrder`,
+                                t?.displayOrder
+                              );
+                              setValue(
+                                `manpowerList.${index}.classKeyDto`,
+                                classList.find(
+                                  (d) => d?.metaKey === t?.classMetaKey
+                                )
+                              );
+                              setValue(
+                                `manpowerList.${index}.classKey`,
+                                classList.find(
+                                  (d) => d?.metaKey === t?.classMetaKey
+                                )?.metaKey
+                              );
+                            }}
+                            noMargin
+                            isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                          />
+                        </div>
+                        <div className="w-50">
+                          <Autocomplete
+                            label={index < 1 ? "শ্রেণি" : ""}
+                            placeholder="বাছাই করুন"
+                            control={control}
+                            // isRequired
+                            isClearable={false}
+                            options={classList || []}
+                            getOptionLabel={(op) => op?.titleBn}
+                            getOptionValue={(op) => op?.metaKey}
+                            name={`manpowerList.${index}.classKeyDto`}
+                            onChange={(t) => {
+                              setValue(
+                                `manpowerList.${index}.classKey`,
+                                t?.metaKey
+                              );
+                            }}
+                            noMargin
+                            isError={
+                              !!errors?.manpowerList?.[index]?.classKeyDto
+                            }
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-md-6 col-xl-2 px-1">
@@ -653,14 +728,6 @@ const NodeForm = ({
                                   setIsHeadIndex(index);
                                 } else {
                                   setIsHeadIndex(null);
-                                  setValue(
-                                    `manpowerList.${index}.alternativePostDTO`,
-                                    null
-                                  );
-                                  setValue(
-                                    `manpowerList.${index}.alternativePostId`,
-                                    null
-                                  );
                                 }
                               },
                             }),
