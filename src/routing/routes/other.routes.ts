@@ -34,6 +34,11 @@ let routeList = [
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
     element: lazy(() => import("@modules/organization/organizationBranch")),
   },
+  {
+    link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
+    routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
+    element: lazy(() => import("@modules/configuration/organogram-approver")),
+  },
 ];
 
 const permiableRouteList = [

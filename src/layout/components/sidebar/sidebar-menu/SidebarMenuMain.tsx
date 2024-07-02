@@ -1,10 +1,9 @@
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 import { MENU } from "@constants/menu-titles.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
-import { useAuth } from "@context/Auth";
+import { useApp } from "@gems/components";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
-import { useApp } from "@gems/components";
 
 const menuData = [
   // {
@@ -149,6 +148,20 @@ const menuData = [
       //   title: MENU.BN.NODE_LIST,
       //   hasBullet: true,
       // },
+    ],
+  },
+  {
+    routeKey: ROUTE_KEY.OMS_CONFIGURATION,
+    link: ROUTE_L1.OMS_CONFIGURATION,
+    title: MENU.BN.CONFIGURATION,
+    icon: "manage_accounts",
+    childrens: [
+      {
+        routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
+        link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
+        title: MENU.BN.ORGANOGRAM_APPROVER,
+        hasBullet: true,
+      },
     ],
   },
 ];
