@@ -64,7 +64,11 @@ const OrganogramTable: FC<TableProps> = ({
 
           if (resp?.body?.length === 1) {
             navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
-              state: { organizationData: resp?.body?.[0], fromList: status },
+              state: {
+                organizationData: resp?.body?.[0],
+                fromList: status,
+                isFormDraft: status === "draft" ? true : false,
+              },
             });
           }
         })
