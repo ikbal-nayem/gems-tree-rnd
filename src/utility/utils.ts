@@ -189,13 +189,6 @@ export const arryEnToBn = (enArray, step: number = 1): any[] => {
   return arry;
 };
 
-export const checkTabPermission = (key: string) => {
-  let isHide = userInfo?.userPermissionDTO?.sitemapList?.some(
-    (d) => d?.routeKey === key
-  );
-  return !isHide;
-};
-
 export const pdfCellAlign = (data: any) => {
   return notNullOrUndefined(data) ? "start" : "center";
 };
