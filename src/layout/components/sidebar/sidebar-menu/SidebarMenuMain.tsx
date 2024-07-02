@@ -89,12 +89,12 @@ const menuData = [
     title: MENU.BN.EMPLOYEE_LIST,
     icon: "groups",
   },
-  {
-    routeKey: ROUTE_KEY.OMS_POST_CONFIG,
-    link: ROUTE_L1.OMS_POST_CONFIG,
-    title: MENU.BN.POST_CONFIG,
-    icon: "manage_accounts",
-  },
+  // {
+  //   routeKey: ROUTE_KEY.OMS_POST_CONFIG,
+  //   link: ROUTE_L1.OMS_POST_CONFIG,
+  //   title: MENU.BN.POST_CONFIG,
+  //   icon: "manage_accounts",
+  // },
   {
     routeKey: ROUTE_KEY.OMS_MASTER_POST,
     link: ROUTE_L1.OMS_MASTER_POST,
