@@ -4,27 +4,18 @@ import {
   Button,
   ConfirmationModal,
   ContentPreloader,
-  DownloadMenu,
   Input,
   NoData,
   Pagination,
   toast,
 } from "@gems/components";
-import {
-  IMeta,
-  exportXLSX,
-  generatePDF,
-  numEnToBn,
-  topProgress,
-  useDebounce,
-} from "@gems/utils";
+import { IMeta, numEnToBn, useDebounce } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import Form from "./Form";
 import DataTable from "./Table";
-import { organizationTypePDFContent } from "./pdf";
 
 const initMeta: IMeta = {
   page: 0,
@@ -85,7 +76,7 @@ const List = () => {
   }, [searchParams]);
 
   const getDataList = (reqMeta = null) => {
-    OMSService.FETCH.organizationBranchList(payloadOf("ui", reqMeta))
+    OMSService.FETCH.organogramApproverList(payloadOf("ui", reqMeta))
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -124,7 +115,7 @@ const List = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    OMSService.DELETE.organizationBranchDeleteById(deleteData?.id)
+    OMSService.DELETE.organogramApprover([deleteData?.id])
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -149,8 +140,8 @@ const List = () => {
     // console.log("Group Data: ", data);
 
     const service = isUpdate
-      ? OMSService.UPDATE.organizationType
-      : OMSService.SAVE.organizationType;
+      ? OMSService.UPDATE.organogramApprover
+      : OMSService.SAVE.organogramApprover;
     service(data)
       .then((res) => {
         toast.success(res?.message);
@@ -257,7 +248,8 @@ const List = () => {
         isSubmitting={isDeleteLoading}
         onConfirmLabel={"মুছে ফেলুন"}
       >
-        আপনি কি আসলেই <b>{deleteData?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+        আপনি কি আসলেই ব্যবহারকারী
+        <b> {deleteData?.userDTO?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
       </ConfirmationModal>
     </>
   );

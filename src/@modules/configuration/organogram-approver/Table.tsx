@@ -6,12 +6,9 @@ import {
   Table,
   TableCell,
   TableRow,
-  toast,
 } from "@gems/components";
-import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
-import { OMSService } from "@services/api/OMS.service";
+import { COMMON_LABELS, IObject, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
@@ -42,8 +39,16 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.organizationNameBn || "-"} />
-              <TableCell text={data?.organizationNameEn || "-"} />
+              <TableCell text={data?.userDTO?.nameBn || "-"} />
+              <TableCell>
+                {`${
+                  data?.organizationDtoList?.length > 0
+                    ? data?.organizationDtoList?.map(
+                        (item: IObject) => item?.nameBn
+                      )
+                    : "-"
+                }`}
+              </TableCell>
               <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}

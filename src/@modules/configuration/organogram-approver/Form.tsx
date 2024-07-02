@@ -88,7 +88,8 @@ const Form = ({
                 options={useList || []}
                 getOptionLabel={(op) => op.nameBn}
                 getOptionValue={(op) => op?.id}
-                name="approver"
+                onChange={(op) => setValue("userId", op?.id)}
+                name="userDTO"
                 control={control}
               />
               <Autocomplete
@@ -97,8 +98,7 @@ const Form = ({
                 loadOptions={searchOrgList}
                 getOptionLabel={(op) => op.nameBn}
                 getOptionValue={(op) => op?.id}
-                onChange={(op) => setValue("organizationId", op?.id)}
-                name="organization"
+                name="organizationDtoList"
                 control={control}
                 isMulti
                 isAsync
