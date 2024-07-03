@@ -1,20 +1,16 @@
-import { META_TYPE } from "@constants/common.constant";
 import { MENU } from "@constants/menu-titles.constant";
 import {
   Autocomplete,
   Button,
-  Checkbox,
   Drawer,
   DrawerBody,
   DrawerFooter,
-  toast,
 } from "@gems/components";
 import { IObject } from "@gems/utils";
-import { CoreService } from "@services/api/Core.service";
+import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { searchOrgList } from "./_helper";
-import { OMSService } from "@services/api/OMS.service";
 
 interface IForm {
   isOpen?: boolean;
@@ -33,11 +29,9 @@ const Form = ({
 }: IForm) => {
   const formProps = useForm();
   const {
-    register,
     handleSubmit,
     reset,
     setValue,
-    watch,
     control,
     formState: { errors },
   } = formProps;
@@ -91,6 +85,8 @@ const Form = ({
                 onChange={(op) => setValue("userId", op?.id)}
                 name="userDTO"
                 control={control}
+                isError={!!errors?.userDTO}
+                errorMessage={errors?.userDTO?.message as string}
               />
               <Autocomplete
                 label="প্রতিষ্ঠানসমূহ"
@@ -104,6 +100,8 @@ const Form = ({
                 isAsync
                 isSearchable
                 isRequired="প্রতিষ্ঠান বাছাই করুন"
+                isError={!!errors?.organizationDtoList}
+                errorMessage={errors?.organizationDtoList?.message as string}
               />
             </div>
 

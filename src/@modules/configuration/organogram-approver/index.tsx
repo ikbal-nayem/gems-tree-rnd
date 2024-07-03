@@ -153,25 +153,6 @@ const List = () => {
       .finally(() => setIsSubmitLoading(false));
   };
 
-  // const downloadFile = (downloadtype: "excel" | "pdf") => {
-  //   topProgress.show();
-  //   OMSService.FETCH.organizationBranchList(payloadOf("downloadFile", null))
-  //     .then((res) =>
-  //       downloadtype === "pdf"
-  //         ? generatePDF(organizationTypePDFContent(res?.body))
-  //         : exportXLSX(exportData(res?.body || []), "প্রতিষ্ঠানের শাখার তালিকা")
-  //     )
-  //     .catch((err) => toast.error(err?.message))
-  //     .finally(() => topProgress.hide());
-  // };
-
-  // const exportData = (data: any[]) =>
-  //   data.map((d, i) => ({
-  //     "ক্রমিক নং": i + 1,
-  //     "নাম (বাংলা)": d?.organizationNameBn || "-",
-  //     "নাম (ইংরেজি)": d?.organizationNameEn || "-",
-  //   }));
-
   return (
     <>
       <PageTitle>{MENU.BN.ORGANOGRAM_APPROVER}</PageTitle>
