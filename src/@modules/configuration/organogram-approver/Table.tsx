@@ -41,13 +41,16 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               <TableCell text={data?.userDTO?.nameBn || "-"} />
               <TableCell>
-                {`${
-                  data?.organizationDtoList?.length > 0
-                    ? data?.organizationDtoList?.map(
-                        (item: IObject) => item?.nameBn
-                      )
-                    : "-"
-                }`}
+                {data?.organizationDtoList?.length > 0
+                  ? data?.organizationDtoList?.map(
+                      (item: IObject, index: number) =>
+                        `${item?.nameBn}${
+                          index < data?.organizationDtoList?.length - 1
+                            ? ", "
+                            : ""
+                        }`
+                    )
+                  : "-"}
               </TableCell>
               <TableCell textAlign="end">
                 <Dropdown

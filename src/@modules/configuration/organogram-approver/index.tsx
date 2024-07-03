@@ -4,7 +4,6 @@ import {
   Button,
   ConfirmationModal,
   ContentPreloader,
-  Input,
   NoData,
   Pagination,
   toast,
@@ -183,13 +182,13 @@ const List = () => {
       </PageToolbarRight>
       <div className="card p-5">
         <div className="d-flex gap-3">
-          <Input
+          {/* <Input
             type="search"
             noMargin
             placeholder="অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          />
+          /> */}
           {/* <DownloadMenu
             fnDownloadExcel={() => downloadFile("excel")}
             fnDownloadPDF={() => downloadFile("pdf")}

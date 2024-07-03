@@ -502,6 +502,8 @@ export const OMSService = {
     },
 
     organogramApprover: async (payload): Promise<any> =>
-      await axiosIns.delete(OMS_SERVICE + "orgm-approver/delete", payload),
+      await axiosIns.delete(
+        OMS_SERVICE + "orgm-approver/delete-by-id/" + payload
+      ),
   },
 };
