@@ -1,12 +1,6 @@
 import { Input } from "@components/Input";
 import { LABELS, META_TYPE } from "@constants/common.constant";
-import {
-  DateInput,
-  IconButton,
-  Label,
-  Separator,
-  SingleFile,
-} from "@gems/components";
+import { DateInput, IconButton, Separator, SingleFile } from "@gems/components";
 import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { useEffect, useState } from "react";
@@ -80,10 +74,26 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
               key={idx}
               className="d-flex align-items-top gap-3 mt-3 w-100 border rounded pt-3 px-3 my-2 bg-gray-100 pb-3 pb-xl-0"
             >
-              <div className={idx < 1 ? "mt-8" : "mt-2"}>
+              {/* <div className={idx < 1 ? "mt-8" : "mt-2"}>
                 <Label> {numEnToBn(idx + 1) + "।"} </Label>
-              </div>
+              </div> */}
               <div className="row w-100">
+                <div className="col-xl-1 col-12">
+                  <Input
+                    label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
+                    placeholder="প্রদর্শন ক্রম লিখুন"
+                    // noMargin
+                    type="number"
+                    defaultValue={idx ? idx + 1 : 1}
+                    min={0}
+                    registerProperty={{
+                      ...register(`attachmentDtoList.${idx}.serialNo`, {
+                        required: "প্রদর্শন ক্রম লিখুন",
+                      }),
+                    }}
+                    isError={!!errors?.attachmentDtoList?.[idx]?.serialNo}
+                  />
+                </div>
                 <div className="col-xl-3 col-12">
                   <Input
                     label={idx < 1 ? labelEn : ""}
@@ -215,22 +225,6 @@ const AttachmentForm = ({ formProps, isNotEnamCommittee }: IAttachmentForm) => {
                     }
                     maxSize={3}
                     // helpText="পিডিএফ ফাইল নির্বাচন করুন,ফাইলের সর্বোচ্চ সাইজ ১৫ এমবি"
-                  />
-                </div>
-                <div className="col-xl-1 col-12">
-                  <Input
-                    label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
-                    placeholder="প্রদর্শন ক্রম লিখুন"
-                    // noMargin
-                    type="number"
-                    defaultValue={idx ? idx + 1 : 1}
-                    min={0}
-                    registerProperty={{
-                      ...register(`attachmentDtoList.${idx}.serialNo`, {
-                        required: "প্রদর্শন ক্রম লিখুন",
-                      }),
-                    }}
-                    isError={!!errors?.attachmentDtoList?.[idx]?.serialNo}
                   />
                 </div>
               </div>
