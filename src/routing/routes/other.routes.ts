@@ -1,9 +1,10 @@
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
+import { IAppRoutes } from "@gems/utils";
 import { lazy } from "react";
-import { getPermittedRouteList } from "utility/utils";
+// import { getPermittedRouteList } from "utility/utils";
 
-let routeList = [
+let routeList: IAppRoutes[] = [
   {
     link: ROUTE_L1.OMS_ORG_EMPLOYEE_LIST,
     routeKey: ROUTE_KEY.OMS_ORG_EMPLOYEE_LIST,
@@ -41,25 +42,25 @@ let routeList = [
   },
 ];
 
-const permiableRouteList = [
+const permiableRouteList:IAppRoutes[] = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
-    routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
+    // routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
     element: lazy(() => import("@modules/organization/main-activity")),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
-    routeKey: ROUTE_KEY.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
+    // routeKey: ROUTE_KEY.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
     element: lazy(() => import("@modules/organization/business-of-allocation")),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_NODE_LIST,
-    routeKey: ROUTE_KEY.OMS_ORGANIZATION_NODE_LIST,
+    // routeKey: ROUTE_KEY.OMS_ORGANIZATION_NODE_LIST,
     element: lazy(() => import("@modules/organization/node-list")),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_GROUP_ORG_LIST,
-    routeKey: ROUTE_KEY.OMS_ORGANIZATION_GROUP_ORG_LIST,
+    // routeKey: ROUTE_KEY.OMS_ORGANIZATION_GROUP_ORG_LIST,
     element: lazy(
       () =>
         import(
@@ -69,5 +70,4 @@ const permiableRouteList = [
   },
 ];
 
-export const OtherRoutes =
-  getPermittedRouteList(routeList).concat(permiableRouteList);
+export const OtherRoutes = routeList.concat(permiableRouteList);
