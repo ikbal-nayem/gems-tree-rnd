@@ -1,4 +1,4 @@
-import { numEnToBn } from "./textMapping";
+import { numEnToBn } from "@gems/utils";
 
 export const makeBDLocalTime = (date) =>
 	new Date(new Date(date).toLocaleString("en-US", { timeZone: "Asia/Dhaka" }));

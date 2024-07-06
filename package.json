@@ -7,9 +7,9 @@
     "@casl/react": "^3.1.0",
     "@formatjs/intl-pluralrules": "4.3.3",
     "@formatjs/intl-relativetimeformat": "10.0.1",
-    "@gems/components": "^1.7.1",
-    "@gems/utils": "^1.4.12",
+    "@gems/components": "^1.7.11",
     "@gems/editor": "^1.0.6",
+    "@gems/utils": "^1.5.3",
     "@hookform/resolvers": "^2.9.10",
     "animate.css": "4.1.1",
     "apexcharts": "^3.36.3",
@@ -34,6 +34,7 @@
     "rxjs": "^7.8.0",
     "sass": "1.55.0",
     "stream": "^0.0.2",
+    "uuid": "^10.0.0",
     "yup": "0.32.11"
   },
   "devDependencies": {

@@ -55,6 +55,7 @@ interface ITemplateViewComponent {
   isBeginningVersion?: boolean;
   stateOrganizationData?: IObject;
   fromList?: string;
+  isFormDraft?: boolean;
 }
 
 const TemplateViewComponent = ({
@@ -68,6 +69,7 @@ const TemplateViewComponent = ({
   isBeginningVersion = false,
   stateOrganizationData,
   fromList,
+  isFormDraft,
 }: ITemplateViewComponent) => {
   const treeData =
     !isObjectNull(updateData) &&
@@ -91,8 +93,6 @@ const TemplateViewComponent = ({
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
   const navigate = useNavigate();
-
-  console.log(fromList);
 
   let organogramOrganizationView = stateOrganizationData?.organizationId
     ? true
@@ -343,6 +343,26 @@ const TemplateViewComponent = ({
 
   return (
     <div>
+      {isFormDraft && (
+        <div
+          className="position-fixed z-index-1"
+          style={{ right: "20px", top: "73px" }}
+        >
+          <Button
+            color="primary"
+            onClick={() => {
+              navigate(ROUTE_L2.ORG_TEMPLATE_UPDATE + "?id=" + updateData?.id, {
+                state: {
+                  organizationId: updateData?.organization?.id || null,
+                  draftListRecord: true,
+                },
+              });
+            }}
+          >
+            সম্পাদনা করুন
+          </Button>
+        </div>
+      )}
       <div className="card border p-3 mb-4">
         <div className="d-flex flex-wrap flex-xl-nowrap">
           <div className="w-100">

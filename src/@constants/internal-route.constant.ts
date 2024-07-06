@@ -6,6 +6,7 @@ export const ROUTE_L1 = {
   OMS_POST_CONFIG: "/post-config",
   OMS_MASTER_POST: "/master-post",
   OMS_ORGANIZATION: "/organization",
+  OMS_CONFIGURATION: "/configuration",
 };
 export const ROUTE_L2 = {
   ORG_TEMPLATE_CREATE: ROUTE_L1.ORG_TEMPLATE + "/create",
@@ -37,4 +38,6 @@ export const ROUTE_L2 = {
     ROUTE_L1.OMS_ORGANIZATION + "/business-of-allocation",
   OMS_ORGANIZATION_NODE_LIST: ROUTE_L1.OMS_ORGANIZATION + "/node-list",
   OMS_ORGANIZATION_BRANCH: ROUTE_L1.OMS_ORGANIZATION + "/branch",
+  OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST:
+    ROUTE_L1.OMS_CONFIGURATION + "/organogram-approver-list",
 };

@@ -77,6 +77,7 @@ const TemplateView = () => {
           attachedOrganizationData={attachOrgData}
           stateOrganizationData={state?.organizationData || {}}
           fromList={state?.fromList}
+          isFormDraft={state?.isFormDraft}
         />
       )}
       {!isLoading && isObjectNull(data) && (

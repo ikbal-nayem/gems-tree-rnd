@@ -1,10 +1,10 @@
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
-import { IAppRoutes } from "@interface/common.interface";
 import { lazy } from "react";
 import { OrganogramRoutes } from "./organogram.routes";
 import { TemplateRoutes } from "./template.routes";
 import { OtherRoutes } from "./other.routes";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
+import { IAppRoutes } from "@gems/utils";
 
 export const AppRouteList: IAppRoutes[] = [
   {

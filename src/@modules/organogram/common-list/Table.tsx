@@ -11,6 +11,7 @@ import {
   TableCell,
   TableRow,
   toast,
+  useApp,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -29,7 +30,6 @@ import { statusMapper } from "utility/textMapping";
 import { LABELS } from "./labels";
 // import OrganogramClone from "./organogramClone";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
-import { useAuth } from "@context/Auth";
 import { OMSService } from "@services/api/OMS.service";
 
 type TableProps = {
@@ -51,7 +51,7 @@ const OrganogramTable: FC<TableProps> = ({
   onDelete,
   status,
 }) => {
-  const { currentUser } = useAuth();
+  const { userRoles } = useApp();
 
   const onOrganogramView = (item: IObject) => {
     if (item?.id) {
@@ -64,7 +64,11 @@ const OrganogramTable: FC<TableProps> = ({
 
           if (resp?.body?.length === 1) {
             navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
-              state: { organizationData: resp?.body?.[0], fromList: status },
+              state: {
+                organizationData: resp?.body?.[0],
+                fromList: status,
+                isFormDraft: status === "draft" ? true : false,
+              },
             });
           }
         })
@@ -208,9 +212,7 @@ const OrganogramTable: FC<TableProps> = ({
                     visibleCustom={
                       item?.status === TEMPLATE_STATUS.NEW ||
                       (item?.status === TEMPLATE_STATUS.NEW &&
-                        currentUser?.roles?.some(
-                          (d) => d?.roleCode === ROLES.OMS_ADMIN
-                        ))
+                        userRoles?.some((d) => d?.roleCode === ROLES.OMS_ADMIN))
                     }
                   >
                     <DropdownItem onClick={() => sendTo("node_main_act", item)}>

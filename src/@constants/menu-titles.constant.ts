@@ -22,12 +22,14 @@ export const MENU = {
     ALLOCATION_OF_BUSINESS_LIST: "কর্মবন্টনের তালিকা",
     NODE_LIST: "পদবি/স্তরের তালিকা",
     ORGANIZATION_BRANCH: "প্রতিষ্ঠানের শাখা",
+    CONFIGURATION: "কনফিগারেশন",
+    ORGANOGRAM_APPROVER: "অর্গানোগ্রাম অনুমোদনকারী",
   },
 
   EN: {
     TEMPLATE: "Organogram Template",
     TEMPLATE_CREATE: "New Organogram Create",
-    EXIST_ORGANOGRAM_CREATE:"Exist Organogram Create",
+    EXIST_ORGANOGRAM_CREATE: "Exist Organogram Create",
     EMPLOYEE_LIST: "Employee",
     TEMPLATE_LIST: "Organogram Create From Template",
     PROPOSAL_LIST: "Proposal List",
@@ -47,5 +49,7 @@ export const MENU = {
     ALLOCATION_OF_BUSINESS_LIST: "Business of Allocation List",
     NODE_LIST: "Node List",
     ORGANIZATION_BRANCH: "Organization Branch",
+    CONFIGURATION: "Configuration",
+    ORGANOGRAM_APPROVER: "Organogram Approver",
   },
 };

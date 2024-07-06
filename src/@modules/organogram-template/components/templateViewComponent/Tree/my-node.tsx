@@ -1,11 +1,16 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
-import { isNotEmptyList, longLineBreaker } from "utility/utils";
+import {
+  IObject,
+  isObjectNull,
+  notNullOrUndefined,
+  numEnToBn,
+} from "@gems/utils";
+import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, postList, onView }) => {
+const MyNode = ({ langEn, nodeData, onView }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -72,29 +77,15 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
 
             let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
             mp = langEn ? mp : numEnToBn(mp);
-            const postExists = isNotEmptyList(postList) && item?.postId;
 
-            const post = postExists
-              ? postList?.find((d) => d?.id === item?.postId)
-              : null;
-
-            const alternatePost = postExists
-              ? postList?.find((d) => d?.id === item?.alternativePostId)
-              : null;
-
-            const postName = !isObjectNull(post)
+            const postName = !isObjectNull(item?.postDTO)
               ? langEn
-                ? post?.nameEn
-                : post?.nameBn
+                ? item?.postDTO?.nameEn
+                : item?.postDTO?.nameBn
               : langEn
               ? COMMON_LABELS.EN.NOT_ASSIGN
               : COMMON_LABELS.NOT_ASSIGN;
 
-            const alternatePostName = !isObjectNull(alternatePost)
-              ? langEn
-                ? alternatePost?.nameEn || COMMON_LABELS.NOT_ASSIGN
-                : alternatePost?.nameBn || COMMON_LABELS.EN.NOT_ASSIGN
-              : null;
             return (
               <div key={i}>
                 {item?.numberOfEmployee || item?.postId ? (
@@ -123,18 +114,40 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                     >
                       x
                     </p>
-                    <p
+                    <span
                       className={`ms-1 mb-0 fs-8 ${
                         deletedClass || itemDeletedClass
                       } ${additionClass || itemAdditionClass}`}
+                      // For grade tooltip
+                      // data-bs-toggle="tooltip"
+                      // data-bs-placement="right"
+                      // title={
+                      //   langEn
+                      //     ? "Grade: " + item?.gradeDTO?.nameEn ||
+                      //       COMMON_LABELS.EN.NOT_ASSIGN
+                      //     : "গ্রেড: " + item?.gradeDTO?.nameBn ||
+                      //       COMMON_LABELS.NOT_ASSIGN
+                      // }
                     >
-                      {longLineBreaker(
-                        `${postName}${
-                          alternatePostName ? " / " + alternatePostName : ""
-                        }`,
+                      {longLineBreaker(postName, 17)}
+                      {item?.alternativePostListDTO?.length > 0
+                        ? item?.alternativePostListDTO?.map((ap: IObject) =>
+                            longLineBreaker(
+                              ` / ${langEn ? ap?.nameEn : ap?.nameBn}`,
+                              17
+                            )
+                          )
+                        : ""}
+                      {/* {longLineBreaker(
+                        item?.alternativePostListDTO?.length > 0
+                          ? item?.alternativePostListDTO?.map(
+                              (ap: IObject) =>
+                                ` / ${langEn ? ap?.nameEn : ap?.nameBn}`
+                            )
+                          : "",
                         17
-                      )}
-                    </p>
+                      )} */}
+                    </span>
                   </div>
                 ) : null}
               </div>

@@ -348,6 +348,8 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organization-organogram/get-oms-approved-user"
       ),
+    organogramApproverList: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "orgm-approver/get-list", payload),
   },
 
   SAVE: {
@@ -388,6 +390,9 @@ export const OMSService = {
 
     organizationBranch: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "organization-branch/create", payload),
+
+    organogramApprover: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "orgm-approver/create", payload),
   },
 
   UPDATE: {
@@ -438,6 +443,9 @@ export const OMSService = {
           "/" +
           organogramId
       ),
+
+    organogramApprover: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "orgm-approver/update", payload),
   },
 
   DELETE: {
@@ -492,5 +500,10 @@ export const OMSService = {
     organizationBranchDeleteById: async (id): Promise<any> => {
       await axiosIns.delete(OMS_SERVICE + "organization-branch/delete/" + id);
     },
+
+    organogramApprover: async (payload): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE + "orgm-approver/delete-by-id/" + payload
+      ),
   },
 };
