@@ -435,10 +435,17 @@ const TemplateViewComponent = ({
           )}
           <p className="fs-3 mb-0">{versionName}</p>
         </div>
-        <AllocationOfBusinessList
-          data={updateData?.businessAllocationDtoList || []}
-          langEn={langEn}
-        />
+        {updateData?.businessAllocationDtoList?.length > 0 ? (
+          <AllocationOfBusinessList
+            data={updateData?.businessAllocationDtoList || []}
+            langEn={langEn}
+          />
+        ) : (
+          <ActivitiesList
+            data={updateData?.mainActivitiesDtoList || []}
+            langEn={langEn}
+          />
+        )}
       </div>
       <div
         className="treeBlock"
@@ -564,12 +571,13 @@ const TemplateViewComponent = ({
         </div>
         <div className="d-flex">
           <div className="pe-3" style={{ width: "33.33333%" }}>
-            {updateData?.mainActivitiesDtoList?.length > 0 && (
-              <ActivitiesList
-                data={updateData?.mainActivitiesDtoList || []}
-                langEn={langEn}
-              />
-            )}
+            {updateData?.businessAllocationDtoList?.length > 0 &&
+              updateData?.mainActivitiesDtoList?.length > 0 && (
+                <ActivitiesList
+                  data={updateData?.mainActivitiesDtoList || []}
+                  langEn={langEn}
+                />
+              )}
             <EquipmentsList
               data={updateData?.miscellaneousPointDtoList || []}
               othersData={{
