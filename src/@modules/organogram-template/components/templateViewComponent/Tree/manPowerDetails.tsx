@@ -37,7 +37,7 @@ const ManPowerDetails: FC<TableProps> = ({
     { title: isEn ? "Grade" : "গ্রেড", width: 150 },
     { title: isEn ? "Class" : "শ্রেণি", width: 150 },
     { title: isEn ? "Service Type" : "সার্ভিসের ধরন", width: 150 },
-    { title: isEn ? "No. of Employees" : "জনবল সংখ্যা", width: 200 },
+    { title: isEn ? "No of Employees" : "জনবল সংখ্যা", width: 200 },
     { title: isEn ? "Post Type" : "পদের ধরন", width: 150 },
   ];
 
