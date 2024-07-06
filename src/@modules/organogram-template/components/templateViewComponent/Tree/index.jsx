@@ -4,6 +4,7 @@ import { ChartContainer } from "../../../../../@components/OrgChart/ChartContain
 import { CoreService } from "../../../../../@services/api/Core.service";
 import MyNode from "./my-node";
 import NodeDetails from "./node-details";
+import ManPowerDetails from "./manPowerDetails";
 
 const OrganizationTemplateTree = ({
   treeData,
@@ -16,21 +17,30 @@ const OrganizationTemplateTree = ({
 }) => {
   const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
+  const [manpowerListModalOpen, setManpowerListModalOpen] = useState(false);
   const [isDownloadButton, setIsDownlaodButton] = useState(true);
   const selectedNode = useRef(null);
+  const manPowerTable = useRef(null);
 
   useEffect(() => {
     CoreService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
-  const onView = (data) => {
-    selectedNode.current = data;
-    setFormOpen(true);
+  const onViewOrManPowertableView = (data, type) => {
+    if (type === 'view') {
+      selectedNode.current = data;
+      setFormOpen(true);
+    } else if (type === 'manPower') {
+      manPowerTable.current = data;
+      setManpowerListModalOpen(true);
+    }
   };
 
   const onFormClose = () => {
     selectedNode.current = null;
+    manPowerTable.current = null;
     setFormOpen(false);
+    setManpowerListModalOpen(false);
   };
 
   useEffect(() => {
@@ -39,22 +49,6 @@ const OrganizationTemplateTree = ({
       setIsDownlaodButton(true);
     }, 1500);
   }, []);
-
-  // // Export PDF
-  // const exportPDF = async (canvas, exportFilename) => {
-  //   const canvasWidth = Math.floor(canvas.width);
-  //   const canvasHeight = Math.floor(canvas.height);
-  //   const canW = canvasWidth > canvasHeight ? canvasWidth : canvasHeight;
-  //   const canH = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
-  //   const doc = new jsPDF({
-  //     orientation: canvasWidth > canvasHeight ? "landscape" : "portrait",
-  //     unit: "pt",
-  //     format: [canW, canH],
-  //     compress: true,
-  //   });
-  //   doc.addImage(canvas.toDataURL("image/png", 1.0), "PNG", 0, 0, canW, canH);
-  //   pdfCallRef.current = { ...pdfCallRef.current, doc, exportFilename };
-  // };
 
   const download = useRef();
   const onDownload = () => {
@@ -79,15 +73,16 @@ const OrganizationTemplateTree = ({
             langEn={langEn}
             nodeData={nodeData}
             organogramView={organogramView}
-            onView={onView}
+            onView={(data) => onViewOrManPowertableView(data, 'view')}
+            onManPowertableView={(data) => onViewOrManPowertableView(data, 'manPower')}
           />
         )}
         ref={download}
         headerData={headerData}
-        // exportPDF={exportPDF}
         pan={true}
         zoom={true}
       />
+
       <NodeDetails
         isEn={langEn}
         data={selectedNode.current}
@@ -95,7 +90,12 @@ const OrganizationTemplateTree = ({
         onClose={onFormClose}
       />
 
-      {/* =========================  IMAGE DOWNLOAD BUTTON ========================== */}
+      <ManPowerDetails
+        isEn={langEn}
+        dataList={manPowerTable?.current?.manpowerList || []}
+        isOpen={manpowerListModalOpen}
+        onClose={onFormClose}
+      />
 
       {organogramView && (
         <div className="position-absolute" style={{ top: 0, right: 175 }}>
@@ -109,8 +109,6 @@ const OrganizationTemplateTree = ({
         </div>
       )}
 
-      {/* =========================  PRINT BUTTON ========================== */}
-
       {organogramView && (
         <div className="position-absolute" style={{ top: 0, right: 125 }}>
           <IconButton
@@ -123,7 +121,6 @@ const OrganizationTemplateTree = ({
         </div>
       )}
 
-      {/* =========================  DOWNLOAD BUTTON ========================== */}
       {organogramView && (
         <div className="position-absolute" style={{ top: 0, right: 20 }}>
           <Button

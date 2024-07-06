@@ -13,6 +13,7 @@ export default defineConfig({
 	},
 	base: '/oms',
 	server: {
+		host: true,
 		port: 3305,
 	},
 });
