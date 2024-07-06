@@ -10,7 +10,7 @@ import {
 import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, onView, onManPowertableView }) => {
+const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -43,13 +43,13 @@ const MyNode = ({ langEn, nodeData, onView, onManPowertableView }) => {
                   ? "primary"
                   : "light"
               }
-              onClick={() => onView(nodeData)}
+              onClick={() => onViewOrManPowertableView(nodeData, 'view')}
             />
           </div>
         )}
 
-        <p className={`mb-0 fs-8 cursor-pointer text-start ${deletedClass} ${additionClass}`}
-              onClick={() => onManPowertableView(nodeData)}
+        <p className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start" ${deletedClass} ${additionClass}`}
+              onClick={() => onViewOrManPowertableView(nodeData,"manPower")}
               >
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}

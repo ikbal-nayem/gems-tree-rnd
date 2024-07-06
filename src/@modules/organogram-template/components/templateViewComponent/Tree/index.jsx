@@ -20,25 +20,22 @@ const OrganizationTemplateTree = ({
   const [manpowerListModalOpen, setManpowerListModalOpen] = useState(false);
   const [isDownloadButton, setIsDownlaodButton] = useState(true);
   const selectedNode = useRef(null);
-  const manPowerTable = useRef(null);
 
   useEffect(() => {
     CoreService.getPostList().then((resp) => setPostist(resp.body || []));
   }, []);
 
   const onViewOrManPowertableView = (data, type) => {
+    selectedNode.current = data;
     if (type === 'view') {
-      selectedNode.current = data;
       setFormOpen(true);
-    } else if (type === 'manPower') {
-      manPowerTable.current = data;
+    } else {
       setManpowerListModalOpen(true);
     }
   };
 
   const onFormClose = () => {
     selectedNode.current = null;
-    manPowerTable.current = null;
     setFormOpen(false);
     setManpowerListModalOpen(false);
   };
@@ -73,8 +70,7 @@ const OrganizationTemplateTree = ({
             langEn={langEn}
             nodeData={nodeData}
             organogramView={organogramView}
-            onView={(data) => onViewOrManPowertableView(data, 'view')}
-            onManPowertableView={(data) => onViewOrManPowertableView(data, 'manPower')}
+            onViewOrManPowertableView={onViewOrManPowertableView}
           />
         )}
         ref={download}
@@ -92,7 +88,7 @@ const OrganizationTemplateTree = ({
 
       <ManPowerDetails
         isEn={langEn}
-        dataList={manPowerTable?.current?.manpowerList || []}
+        dataList={selectedNode?.current?.manpowerList || []}
         isOpen={manpowerListModalOpen}
         onClose={onFormClose}
       />
