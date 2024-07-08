@@ -35,7 +35,9 @@ const EquipmentsForm = ({
             inventoryData?.map((item, i) => {
               return (
                 <div className="col-md-6 col-12" key={i}>
-                  <span className="fs-5 fw-bold">{i + 1 + ". "}</span>
+                  <span className="fs-5 fw-bold">
+                    {langEn ? i + 1 + ". " : numEnToBn(i + 1 + ". ")}
+                  </span>
                   <u className="fs-5 fw-bold mb-0">
                     {langEn ? item?.inventoryTypeEn : item?.inventoryTypeBn}
                   </u>
@@ -58,7 +60,17 @@ const EquipmentsForm = ({
       {data?.length > 0 && (
         <>
           <div className="card-head d-flex justify-content-start align-items-center gap-2">
-            <span className="fs-5 fw-bold">3.</span>
+            <span className="fs-5 fw-bold">
+              {langEn
+                ? inventoryData?.length > 2
+                  ? inventoryData?.length + 1 + ". "
+                  : "3. "
+                : numEnToBn(
+                    inventoryData?.length > 2
+                      ? inventoryData?.length + 1 + ". "
+                      : "3. "
+                  )}
+            </span>
             <u className="fs-5 fw-bold m-0">{LABEL.MISCELLANEOUS}</u>
           </div>
           <Separator className="mt-1 mb-2" />
