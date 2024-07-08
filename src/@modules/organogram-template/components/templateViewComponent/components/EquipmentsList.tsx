@@ -1,7 +1,8 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
-import { Separator } from "@gems/components";
+import { Icon, Separator } from "@gems/components";
 import { TextEditorPreview } from "@gems/editor";
 import { IObject, numEnToBn } from "@gems/utils";
+import { useState } from "react";
 import { isNotEmptyList } from "utility/utils";
 
 interface IEquipmentsForm {
@@ -9,6 +10,9 @@ interface IEquipmentsForm {
   inventoryData: IObject[];
   othersData?: IObject;
   langEn: boolean;
+  // isBeginningVersion?: boolean;
+  // organogramId?: string;
+  // insideModal?: boolean;
 }
 
 const EquipmentsForm = ({
@@ -16,15 +20,30 @@ const EquipmentsForm = ({
   inventoryData,
   othersData,
   langEn,
+  // isBeginningVersion,
+  // organogramId,
+  // insideModal,
 }: IEquipmentsForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const testTextEditor =
-    "<p>1.For Ministry &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Testest ok:</p><p>&nbsp; &nbsp; &nbsp; &nbsp; 1.dsfksdjfksdf &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1. jsdhfksdjfosdjkfosdfkjosdijfoisdf</p><p>&nbsp; &nbsp; &nbsp; &nbsp; 2.kjdfnskjdfnjksddsfds &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2. sfjsdjfiosdjf jlskdjflds</p>";
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
         <h4 className="m-0">{LABEL.EQUIPMENTS}</h4>
+        {/* {!othersData?.isInventoryOthers &&
+          organogramId &&
+          !isBeginningVersion &&
+          !insideModal && (
+            <Icon
+              icon="swap_horiz"
+              variants="outlined"
+              hoverTitle={LABEL.CHANGES}
+              size={25}
+              className="text-primary text-hover-warning"
+              onClick={() => setIsOpen(true)}
+            />
+          )} */}
       </div>
       <Separator className="mt-1 mb-1" />
       {othersData?.isInventoryOthers ? (
