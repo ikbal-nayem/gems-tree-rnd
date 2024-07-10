@@ -315,6 +315,11 @@ const TemplateEditComponent = ({
           <div className="col-12 mt-3">
             <EquipmentsForm
               formProps={formProps}
+              updateInventoryData={updateData?.inventoryDtoList || []}
+              updateMiscellaneousPointData={
+                updateData?.miscellaneousPointDtoList || []
+              }
+
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>

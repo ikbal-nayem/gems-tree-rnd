@@ -9,7 +9,12 @@ import {
   toast,
 } from "@gems/components";
 import { TextEditor } from "@gems/editor";
-import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import {
+  IObject,
+  isObjectNull,
+  notNullOrUndefined,
+  numEnToBn,
+} from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
@@ -17,9 +22,15 @@ import { enCheck } from "utility/checkValidation";
 
 interface IForm {
   formProps: any;
+  updateInventoryData?: IObject[];
+  updateMiscellaneousPointData?: IObject[];
 }
 
-const EquipmentsForm = ({ formProps }: IForm) => {
+const EquipmentsForm = ({
+  formProps,
+  updateInventoryData,
+  updateMiscellaneousPointData,
+}: IForm) => {
   const {
     register,
     control,
@@ -44,6 +55,7 @@ const EquipmentsForm = ({ formProps }: IForm) => {
     fields: miscellaneousPointDtoListFields,
     append: miscellaneousPointDtoListAppend,
     remove: miscellaneousPointDtoListRemove,
+    update: inventoryDtoListUpdate,
   } = useFieldArray({
     control,
     name: "miscellaneousPointDtoList",
@@ -125,7 +137,11 @@ const EquipmentsForm = ({ formProps }: IForm) => {
           <IconButton
             iconName="add"
             color="primary"
-            onClick={() => inventoryDtoListAppend("")}
+            onClick={() =>
+              inventoryDtoListAppend({
+                isAddition: true,
+              })
+            }
           />
         )}
       </div>
