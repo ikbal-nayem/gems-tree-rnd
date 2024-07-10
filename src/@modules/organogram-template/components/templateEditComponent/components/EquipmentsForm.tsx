@@ -46,6 +46,7 @@ const EquipmentsForm = ({
     fields: inventoryDtoListFields,
     append: inventoryDtoListAppend,
     remove: inventoryDtoListRemove,
+    update: inventoryDtoListUpdate,
   } = useFieldArray({
     control,
     name: "inventoryDtoList",
@@ -55,7 +56,6 @@ const EquipmentsForm = ({
     fields: miscellaneousPointDtoListFields,
     append: miscellaneousPointDtoListAppend,
     remove: miscellaneousPointDtoListRemove,
-    update: inventoryDtoListUpdate,
   } = useFieldArray({
     control,
     name: "miscellaneousPointDtoList",
@@ -120,6 +120,24 @@ const EquipmentsForm = ({
     } else clearErrors(`inventoryDtoList.[${idx}].item`);
   };
 
+  const checkFieldIsDeleted = (field) => {
+    return field?.isDeleted ? true : false;
+  };
+
+  const handleInventoryDelete = (field, index) => {
+    if (index >= 0) {
+      if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
+        inventoryDtoListRemove(index);
+      } else {
+        inventoryDtoListUpdate(index, {
+          ...field,
+          isDeleted: true,
+          isModified: false,
+        });
+      }
+    }
+  };
+
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
@@ -166,96 +184,121 @@ const EquipmentsForm = ({
               className="d-flex align-items-top gap-3 mt-1 w-100 border rounded px-3 my-1 bg-gray-100 pb-3 pb-xl-0"
               key={idx}
             >
-              <div className={idx < 1 ? "mt-8" : "mt-2"}>
-                <Label> {numEnToBn(idx + 1) + "।"} </Label>
+              <div
+                className={`d-flex align-items-top gap-3 w-100 ${
+                  checkFieldIsDeleted(f)
+                    ? "disabledDiv border border-danger rounded p-1"
+                    : ""
+                }`}
+              >
+                <div className={idx < 1 ? "mt-8" : "mt-2"}>
+                  <Label> {numEnToBn(idx + 1) + "।"} </Label>
+                </div>
+                <div className="row w-100">
+                  <div className="col-md-4">
+                    <Autocomplete
+                      label={idx < 1 ? "টাইপ" : ""}
+                      placeholder="টাইপ বাছাই করুন"
+                      control={control}
+                      options={inventoryTypeList || []}
+                      noMargin
+                      filterProps={["inventoryTypeBn", "inventoryTypeEn"]}
+                      getOptionLabel={(op) => op?.inventoryTypeBn}
+                      getOptionValue={(op) => op?.id}
+                      name={`inventoryDtoList.${idx}.type`}
+                      onChange={(e) => onInventoryTypeChange(e, idx)}
+                      isRequired
+                      isError={!!errors?.inventoryDtoList?.[idx]?.type}
+                      errorMessage={
+                        errors?.inventoryDtoList?.[idx]?.type?.message as string
+                      }
+                    />
+                  </div>
+                  <div className="col-md-4 mt-1 mt-xl-0">
+                    <Autocomplete
+                      label={idx < 1 ? "সরঞ্জামাদি" : ""}
+                      placeholder="সরঞ্জামাদি বাছাই করুন"
+                      control={control}
+                      options={inventoryItemList?.[idx] || []}
+                      noMargin
+                      filterProps={["itemTitleBn", "itemTitleEn"]}
+                      getOptionLabel={(op) => op?.itemTitleBn}
+                      getOptionValue={(op) => op?.id}
+                      name={`inventoryDtoList.${idx}.item`}
+                      key={watch(`inventoryDtoList.${idx}.item`)}
+                      isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
+                      onChange={(obj) => {
+                        onInventoryChange(obj, idx);
+                      }}
+                      isRequired
+                      isError={!!errors?.inventoryDtoList?.[idx]?.item}
+                      errorMessage={
+                        errors?.inventoryDtoList?.[idx]?.item?.message as string
+                      }
+                    />
+                  </div>
+                  <div className="col-md-4 mt-1 mt-xl-0">
+                    <Input
+                      label={idx < 1 ? "সংখ্যা" : ""}
+                      placeholder="সংখ্যা লিখুন"
+                      noMargin
+                      type="number"
+                      defaultValue={1}
+                      min={0}
+                      registerProperty={{
+                        ...register(`inventoryDtoList.${idx}.quantity`, {
+                          required: "সংখ্যা লিখুন",
+                        }),
+                      }}
+                      isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
+                    />
+                  </div>
+                  <div className="col-md-2 mt-1 mt-xl-0">
+                    <Input
+                      label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
+                      placeholder="প্রদর্শন ক্রম লিখুন"
+                      noMargin
+                      type="number"
+                      defaultValue={idx ? idx + 1 : 1}
+                      min={0}
+                      registerProperty={{
+                        ...register(`inventoryDtoList.${idx}.serialNo`, {
+                          required: "প্রদর্শন ক্রম লিখুন",
+                        }),
+                      }}
+                      isError={!!errors?.inventoryDtoList?.[idx]?.serialNo}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="row w-100">
-                <div className="col-md-4">
-                  <Autocomplete
-                    label={idx < 1 ? "টাইপ" : ""}
-                    placeholder="টাইপ বাছাই করুন"
-                    control={control}
-                    options={inventoryTypeList || []}
-                    noMargin
-                    filterProps={["inventoryTypeBn", "inventoryTypeEn"]}
-                    getOptionLabel={(op) => op?.inventoryTypeBn}
-                    getOptionValue={(op) => op?.id}
-                    name={`inventoryDtoList.${idx}.type`}
-                    onChange={(e) => onInventoryTypeChange(e, idx)}
-                    isRequired
-                    isError={!!errors?.inventoryDtoList?.[idx]?.type}
-                    errorMessage={
-                      errors?.inventoryDtoList?.[idx]?.type?.message as string
-                    }
-                  />
-                </div>
-                <div className="col-md-4 mt-1 mt-xl-0">
-                  <Autocomplete
-                    label={idx < 1 ? "সরঞ্জামাদি" : ""}
-                    placeholder="সরঞ্জামাদি বাছাই করুন"
-                    control={control}
-                    options={inventoryItemList?.[idx] || []}
-                    noMargin
-                    filterProps={["itemTitleBn", "itemTitleEn"]}
-                    getOptionLabel={(op) => op?.itemTitleBn}
-                    getOptionValue={(op) => op?.id}
-                    name={`inventoryDtoList.${idx}.item`}
-                    key={watch(`inventoryDtoList.${idx}.item`)}
-                    isDisabled={!watch(`inventoryDtoList.${idx}.type`)}
-                    onChange={(obj) => {
-                      onInventoryChange(obj, idx);
+              {!checkFieldIsDeleted(f) && (
+                <div className={idx < 1 ? "mt-6" : ""}>
+                  <IconButton
+                    iconName="delete"
+                    color="danger"
+                    rounded={false}
+                    onClick={() => {
+                      handleInventoryDelete(f, idx);
                     }}
-                    isRequired
-                    isError={!!errors?.inventoryDtoList?.[idx]?.item}
-                    errorMessage={
-                      errors?.inventoryDtoList?.[idx]?.item?.message as string
-                    }
                   />
                 </div>
-                <div className="col-md-4 mt-1 mt-xl-0">
-                  <Input
-                    label={idx < 1 ? "সংখ্যা" : ""}
-                    placeholder="সংখ্যা লিখুন"
-                    noMargin
-                    type="number"
-                    defaultValue={1}
-                    min={0}
-                    registerProperty={{
-                      ...register(`inventoryDtoList.${idx}.quantity`, {
-                        required: "সংখ্যা লিখুন",
-                      }),
+              )}
+              {checkFieldIsDeleted(f) && (
+                <div className={idx < 1 ? "mt-6 ms-3" : "mt-1 ms-3"}>
+                  <IconButton
+                    iconName="change_circle"
+                    color="warning"
+                    rounded={false}
+                    onClick={() => {
+                      inventoryDtoListUpdate(idx, {
+                        ...f,
+                        isDeleted: false,
+                      });
+                      // manpowerListRemove(index);
                     }}
-                    isError={!!errors?.inventoryDtoList?.[idx]?.quantity}
                   />
                 </div>
-                <div className="col-md-2 mt-1 mt-xl-0">
-                  <Input
-                    label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
-                    placeholder="প্রদর্শন ক্রম লিখুন"
-                    noMargin
-                    type="number"
-                    defaultValue={idx ? idx + 1 : 1}
-                    min={0}
-                    registerProperty={{
-                      ...register(`inventoryDtoList.${idx}.serialNo`, {
-                        required: "প্রদর্শন ক্রম লিখুন",
-                      }),
-                    }}
-                    isError={!!errors?.inventoryDtoList?.[idx]?.serialNo}
-                  />
-                </div>
-              </div>
-              <div className={idx < 1 ? "mt-6" : ""}>
-                <IconButton
-                  iconName="delete"
-                  color="danger"
-                  // isDisabled={fields.length === 1}
-                  rounded={false}
-                  onClick={() => {
-                    inventoryDtoListRemove(idx);
-                  }}
-                />
-              </div>
+              )}
             </div>
           ))}
         </div>
