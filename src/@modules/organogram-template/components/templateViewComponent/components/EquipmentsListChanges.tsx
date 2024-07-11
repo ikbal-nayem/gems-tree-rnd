@@ -20,36 +20,18 @@ const EquipmentsListChanges = ({
   onClose,
   langEn,
 }: IForm) => {
-  const [prevInventoryData, setPrevInventoryData] = useState<IObject[]>();
-  const [prevMiscellaneousData, setPrevMiscellaneousData] =
-    useState<IObject[]>();
+  const [prevEquipmentsData, setPrevEquipmentsData] = useState<IObject>({});
 
   useEffect(() => {
-    if (isOpen && organogramId) {
-      getPreviousInventoryList();
-      // getPreviousMiscellaneousList();
-    }
+    if (isOpen && organogramId)
+      OMSService.FETCH.equipmentsDifferenceByOrganogramId(organogramId).then(
+        (resp) => {
+          setPrevEquipmentsData(resp?.body || []);
+        }
+      );
   }, [organogramId, isOpen]);
 
-  const getPreviousInventoryList = () => {
-    OMSService.FETCH.inventoryDifferenceByOrganogramId(organogramId)
-      .then((resp) => {
-        setPrevInventoryData(resp?.body || []);
-      })
-      .catch((e) => console.log(e?.message));
-  };
-
-  // const getPreviousMiscellaneousList = () => {
-  //   OMSService.FETCH.inventoryDifferenceByOrganogramId(organogramId)
-  //     .then((resp) => {
-  //       setPrevMiscellaneousData(resp?.body || []);
-  //     })
-  //     .catch((e) => console.log(e?.message));
-  // };
-
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
-
-  console.log("latest", currentEquipmentsData?.data);
 
   return (
     <Modal
@@ -63,8 +45,8 @@ const EquipmentsListChanges = ({
         <div className="row">
           <div className="col-5">
             <EquipmentsList
-              data={prevMiscellaneousData || []}
-              inventoryData={prevInventoryData || []}
+              data={prevEquipmentsData?.miscellaneousPointDtoList || []}
+              inventoryData={prevEquipmentsData?.inventoryTypeDtoList || []}
               langEn={langEn}
               title={LABEL.PREV_EQUIPMENTS}
             />
