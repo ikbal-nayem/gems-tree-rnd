@@ -638,9 +638,9 @@ const TemplateViewComponent = ({
               }}
               inventoryData={inventoryData || []}
               langEn={langEn}
-              // isBeginningVersion={isBeginningVersion}
-              // organogramId={organogramId}
-              // insideModal={false}
+              isBeginningVersion={isBeginningVersion}
+              organogramId={organogramId}
+              insideModal={false}
             />
           </div>
           {/* {(!orgName || !orgParentName) && !organogramView && ( */}

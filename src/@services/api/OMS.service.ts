@@ -353,6 +353,11 @@ export const OMSService = {
 
     proposalStatistics: async (): Promise<any> =>
       await axiosIns.get(OMS_SERVICE + "analytic/get-proposal/statistic"),
+
+    inventoryDifferenceByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-template/get-inventory-compare-by/" + id
+      ),
   },
 
   SAVE: {
