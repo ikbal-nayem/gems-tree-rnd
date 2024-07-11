@@ -29,7 +29,7 @@ const EquipmentsListChanges = ({
           setPrevEquipmentsData(resp?.body || []);
         }
       );
-  }, [organogramId, isOpen]);
+  }, [isOpen, organogramId]);
 
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
 
