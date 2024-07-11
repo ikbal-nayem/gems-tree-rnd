@@ -89,14 +89,8 @@ const EquipmentsForm = ({
             <div className="card-head d-flex justify-content-start align-items-center gap-2">
               <span className="fs-5 fw-bold">
                 {langEn
-                  ? inventoryData?.length > 2
-                    ? inventoryData?.length + 1 + ". "
-                    : "3. "
-                  : numEnToBn(
-                      inventoryData?.length > 2
-                        ? inventoryData?.length + 1 + ". "
-                        : "3. "
-                    )}
+                  ? inventoryData?.length + 1 + ". "
+                  : numEnToBn(inventoryData?.length + 1 + ". ")}
               </span>
               <u className="fs-5 fw-bold m-0">{LABEL.MISCELLANEOUS}</u>
             </div>
