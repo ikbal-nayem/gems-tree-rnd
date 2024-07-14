@@ -1,4 +1,3 @@
-import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   Button,
   DateInput,
@@ -34,22 +33,12 @@ const DraftCloneModal = ({
   const formProps = useForm<any>();
 
   const {
-    register,
     handleSubmit,
     reset,
-    // setError,
-    // clearErrors,
     control,
     setValue,
-    getValues,
     formState: { errors },
   } = formProps;
-
-  const getOrgGroupList = () => {
-    OMSService.FETCH.organizationGroupList().then((resp) =>
-      setOrganizationGroupList(resp?.body)
-    );
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -73,36 +62,7 @@ const DraftCloneModal = ({
       cloneRefTemplateId: draftCloneData?.id,
       cloneTemplateOrganizationsDtoList: [templateOrganizationsDto],
       cloneOrganogramChangeActionDtoList: null,
-      // cloneOrganogramChangeActionDtoList:
-      //   !data.isEnamCommittee &&
-      //   data?.organogramChangeActionDtoList?.length > 0
-      //     ? data?.organogramChangeActionDtoList?.map((d) => ({
-      //         titleEn: d?.titleEn,
-      //         titleBn: d?.titleBn,
-      //       }))
-      //     : null,
-      // cloneTemplateOrganizationsDtoList:
-      // data?.templateOrganizationsDtoList?.length > 0
-      //   ? data?.templateOrganizationsDtoList?.map((d) => ({
-      //       organizationId: d?.id,
-      //       organizationNameEn: d?.nameEn || d?.organizationNameEn,
-      //       organizationNameBn: d?.nameBn || d?.organizationNameBn,
-      //     }))
-      //   : null,
     };
-
-    // Organization Empty Check
-    // if (
-    //   data?.templateOrganizationsDtoList === undefined ||
-    //   data?.templateOrganizationsDtoList?.length <= 0
-    // ) {
-    //   setNotOrganizationData(true);
-    //   focusById("organizationBlock", true);
-    //   return;
-    // } else {
-    //   setNotOrganizationData(false);
-    //   deFocusById("organizationBlock");
-    // }
 
     setIsSubmitLoading(true);
 
@@ -119,31 +79,6 @@ const DraftCloneModal = ({
         getDataList();
       });
   };
-
-  // const duplicateTitleCheck = (title, isEn: boolean) => {
-  //   const field = isEn ? "titleEn" : "titleBn";
-  //   OMSService.duplicateTemplateTitleCheck(title, isEn)
-  //     .then((res) => {
-  //       if (res?.body) {
-  //         const msg = (isEn ? "ইংরেজি" : "বাংলা") + " শিরোনামটি অনন্য নয় !";
-
-  //         setError(field, {
-  //           type: "manaul",
-  //           message: msg,
-  //         });
-
-  //         isEn
-  //           ? setDuplicateTitleEnDitected(true)
-  //           : setDuplicateTitleBnDitected(true);
-  //       } else {
-  //         clearErrors(field);
-  //         isEn
-  //           ? setDuplicateTitleEnDitected(false)
-  //           : setDuplicateTitleBnDitected(false);
-  //       }
-  //     })
-  //     .catch((e) => console.log(e.message));
-  // };
 
   const MODAL_TITLE =
     (draftCloneData?.organizationNameBn
