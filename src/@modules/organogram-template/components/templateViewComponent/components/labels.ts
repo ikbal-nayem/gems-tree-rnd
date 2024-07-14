@@ -9,7 +9,9 @@ export const LOCAL_LABELS = {
     GRAND_TOTAL: "সর্বমোট",
     NAME: "নাম",
     GO_NUMBER: "জিও নম্বর",
-    GO_DATE: "জিও তারিখ",
+    GO_DATE: "জিও তারিখ",Grade: "গ্রেড",
+    Service_Type: "সার্ভিসের ধরন",
+    Post_Type: "পদের ধরন",
   },
 
   EN: {
@@ -21,5 +23,8 @@ export const LOCAL_LABELS = {
     SL_NO:"Sl No",
     GO_NUMBER: "GO No",
     GO_DATE: "GO Date",
+    Grade: "Grade",
+    Service_Type: "Service Type",
+    Post_Type: "Post Type",
   },
 };
