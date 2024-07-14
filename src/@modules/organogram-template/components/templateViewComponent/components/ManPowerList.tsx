@@ -42,7 +42,7 @@ const ManPowerList: FC<TableProps> = ({
   const columns: ITableHeadColumn[] = [
     { title: LOCAL_LABEL.SL_NO, width: 50 },
     { title: LOCAL_LABEL.NAME_OF_POSTS, align: "start" },
-    { title: LOCAL_LABEL.NO_OF_POSTS, align: "start" },
+    { title: LOCAL_LABEL.NO_OF_POSTS, align: "center" },
     { title: LOCAL_LABEL.Grade, align: "center" },
     { title: LOCAL_LABEL.Service_Type, align: "center" },
     { title: LOCAL_LABEL.Post_Type, align: "center" },
