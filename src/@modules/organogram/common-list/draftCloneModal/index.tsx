@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   DateInput,
   Modal,
@@ -6,12 +7,10 @@ import {
   ModalFooter,
   toast,
 } from "@gems/components";
-import { COMMON_LABELS, IObject } from "@gems/utils";
-import { useEffect, useState } from "react";
+import { COMMON_LABELS } from "@gems/utils";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { OMSService } from "../../../../@services/api/OMS.service";
-import Organizations from "./organization";
 
 interface IForm {
   draftCloneData: any;
@@ -27,9 +26,7 @@ const DraftCloneModal = ({
   getDataList,
 }: IForm) => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [organizationGroupList, setOrganizationGroupList] =
-    useState<IObject[]>();
-  const navigate = useNavigate();
+
   const formProps = useForm<any>();
 
   const {
@@ -40,13 +37,18 @@ const DraftCloneModal = ({
     formState: { errors },
   } = formProps;
 
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "", orgCategoryGroupId: null },
+  };
+  const orgPayload = useRef(payload);
+
   useEffect(() => {
-    if (isOpen) {
-      OMSService.FETCH.organizationGroupList()
-        .then((resp) => setOrganizationGroupList(resp?.body))
-        .catch((e) => console.log(e?.message));
-    }
-    reset({});
+    if (isOpen) reset({});
   }, [isOpen, reset]);
 
   const onSubmit = (data) => {
@@ -58,8 +60,8 @@ const DraftCloneModal = ({
     const reqPayload = {
       cloneIsEnamCommittee: null,
       cloneOrganogramDate: data?.organogramDate || null,
-      cloneOrganizationGroupId: data?.organizationGroupDto?.id,
-      cloneRefTemplateId: draftCloneData?.id,
+      cloneOrganizationGroupId: null,
+      cloneRefTemplateId: draftCloneData?.id || null,
       cloneTemplateOrganizationsDtoList: [templateOrganizationsDto],
       cloneOrganogramChangeActionDtoList: null,
     };
@@ -75,10 +77,19 @@ const DraftCloneModal = ({
       .finally(() => {
         setIsSubmitLoading(false);
         // setIsNotEnamCommittee(true);
-
         getDataList();
       });
   };
+
+  const getAsyncOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey ? searchKey?.trim() : "",
+    };
+    OMSService.getEnamOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body)
+    );
+  }, []);
 
   const MODAL_TITLE =
     (draftCloneData?.organizationNameBn
@@ -95,11 +106,28 @@ const DraftCloneModal = ({
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ModalBody>
-          <Organizations
+          {/* <Organizations
             formProps={formProps}
             organizationGroupList={organizationGroupList}
-          />
+          /> */}
           <div className="row">
+            <div className="col-md-6 col-12">
+              <Autocomplete
+                label="প্রতিষ্ঠান"
+                placeholder="প্রতিষ্ঠান বাছাই করুন"
+                isRequired="প্রতিষ্ঠান বাছাই করুন"
+                isAsync
+                control={control}
+                noMargin
+                // autoFocus
+                getOptionLabel={(op) => op.nameBn}
+                getOptionValue={(op) => op?.id}
+                name="organization"
+                loadOptions={getAsyncOranizationList}
+                isError={!!errors?.organization}
+                errorMessage={errors?.organization?.message as string}
+              />
+            </div>
             <div className="col-md-6 col-12">
               <DateInput
                 label="অর্গানোগ্রাম তারিখ"
