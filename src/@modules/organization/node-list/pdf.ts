@@ -3,8 +3,8 @@ import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
-  { nameBn: "ধরণ (বাংলা)", key: "orgTypeBn" },
-  { nameBn: "ধরণ (ইংরেজি)", key: "orgTypeEn" },
+  { nameBn: "ধরন (বাংলা)", key: "orgTypeBn" },
+  { nameBn: "ধরন (ইংরেজি)", key: "orgTypeEn" },
   { nameBn: "গ্রুপ (বাংলা)", key: "orgGroupBn" },
   { nameBn: "গ্রুপ (ইংরেজি)", key: "orgGroupEn" },
   { nameBn: "লেভেল", key: "orgLevel" },
@@ -14,7 +14,7 @@ const columns = [
 export const organizationTypePDFContent = (data): TDocumentDefinitions => {
   return {
     content: [
-      { text: "প্রতিষ্ঠানের ধরণ প্রতিবেদন", style: "header" },
+      { text: "প্রতিষ্ঠানের ধরন প্রতিবেদন", style: "header" },
       {
         table: {
           headerRows: 1,

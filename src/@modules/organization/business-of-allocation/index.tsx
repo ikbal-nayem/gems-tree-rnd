@@ -203,7 +203,7 @@ const BusinessOfAllocation = () => {
           </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো প্রতিষ্ঠানের ধরন তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 

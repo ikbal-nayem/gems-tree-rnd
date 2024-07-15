@@ -11,7 +11,7 @@ const columns = [
   { nameBn: "ক্রমিক নং", key: null },
   { nameBn: "প্রতিষ্ঠানের নাম", key: "nameBn" },
   { nameBn: "প্রতিষ্ঠানের পর্যায়", key: "orgLevelBn" },
-  { nameBn: "প্রতিষ্ঠানের ধরণ", key: "orgCategoryTypeBn" },
+  { nameBn: "প্রতিষ্ঠানের ধরন", key: "orgCategoryTypeBn" },
   { nameBn: "প্রতিষ্ঠানের গ্রুপ", key: "orgCategoryGroupBn" },
   { nameBn: "প্রতিষ্ঠানের অভিভাবক", key: "parentOrgNameBn" },
 ];

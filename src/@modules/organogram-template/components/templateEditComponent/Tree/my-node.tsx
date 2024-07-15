@@ -1,11 +1,19 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
+const MyNode = ({
+  nodeData,
+  treeDispatch,
+  firstNode,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
+}) => {
   isNotEmptyList(nodeData?.manpowerList) &&
     nodeData?.manpowerList.sort((a, b) => {
       if (!notNullOrUndefined(a.gradeOrder)) return 1;
@@ -47,7 +55,11 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                 icon="add_circle"
                 size={20}
                 color="success"
-                onClick={() => treeDispatch("ADD", nodeData)}
+                onClick={() => {
+                  treeDispatch("ADD", nodeData);
+                  setMaxNodeCode(maxNodeCode + 1);
+                  setMaxManpowerCode(maxManpowerCode + 1);
+                }}
                 hoverTitle={"পরবর্তী স্তরে নতুন নোড যোগ করুন"}
               />
               {!firstNode && (
@@ -82,21 +94,9 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = numEnToBn(mp);
-              const postExists = isNotEmptyList(postList) && item?.postId;
 
-              const post = postExists
-                ? postList?.find((d) => d?.id === item?.postId)
-                : null;
-
-              const alternatePost = postExists
-                ? postList?.find((d) => d?.id === item?.alternativePostId)
-                : null;
-
-              const postName = post?.nameBn || COMMON_LABELS.NOT_ASSIGN;
-
-              const alternatePostName = !isObjectNull(alternatePost)
-                ? alternatePost?.nameBn || COMMON_LABELS.NOT_ASSIGN
-                : null;
+              const postName =
+                item?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN;
 
               return (
                 <div key={i}>
@@ -117,12 +117,12 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">
-                        {longLineBreaker(
-                          `${postName}${
-                            alternatePostName ? " / " + alternatePostName : ""
-                          }`,
-                          17
-                        )}
+                        {postName || ""}
+                        {item?.alternativePostListDTO?.length > 0
+                          ? item?.alternativePostListDTO?.map(
+                              (ap: IObject) => ` / ${ap?.nameBn}`
+                            )
+                          : ""}
                       </p>
                     </div>
                   ) : null}

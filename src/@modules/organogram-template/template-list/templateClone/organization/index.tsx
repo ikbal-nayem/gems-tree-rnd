@@ -23,7 +23,7 @@ const Organizations = ({
       limit: 1000,
       sort: [{ order: "asc", field: "serialNo" }],
     },
-    body: { searchKey: "", organizationCategoryId: null },
+    body: { searchKey: "", orgCategoryGroupId: null },
   };
   const orgPayload = useRef(payload);
 
@@ -31,7 +31,7 @@ const Organizations = ({
     setValue("organization", null);
     orgPayload.current.body = {
       ...orgPayload.current.body,
-      organizationCategoryId: OrgGroup?.id || null,
+      orgCategoryGroupId: OrgGroup?.id || null,
     };
   };
 
@@ -40,7 +40,7 @@ const Organizations = ({
       ...orgPayload.current.body,
       searchKey: searchKey ? searchKey?.trim() : "",
     };
-    OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
+    OMSService.getEnamOrganizationList(orgPayload?.current).then((resp) =>
       callback(resp?.body)
     );
   }, []);

@@ -11,7 +11,6 @@ import {
 import {
   COMMON_LABELS,
   DATE_PATTERN,
-  IMeta,
   exportXLSX,
   generateDateFormat,
   generatePDF,
@@ -21,11 +20,11 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { isNotEmptyList } from "utility/utils";
+import FormCreate from "./FormCreate";
 import FormUpdate from "./FormUpdate";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
-import { isNotEmptyList } from "utility/utils";
-import FormCreate from "./FormCreate";
 
 // const initMeta: IMeta = {
 //   page: 0,
@@ -217,6 +216,7 @@ const MainActivity = () => {
             data={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
+            isEnamCommittee={organogram?.isEnamCommittee}
           >
             {/* <Pagination
               meta={respMeta}

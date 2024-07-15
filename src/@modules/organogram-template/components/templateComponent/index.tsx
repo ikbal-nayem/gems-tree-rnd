@@ -30,6 +30,7 @@ import AttachOrganizationForm from "./components/AttachOrganizationForm";
 import AttachmentForm from "./components/AttachmentForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
+import SummaryOfManpowerForm from "./components/SummaryOfManpowerForm";
 import Organizations from "./components/organization";
 
 interface ITemplateComponent {
@@ -63,6 +64,8 @@ const TemplateComponent = ({
     useState<boolean>(false);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
   const [orgGroupTriggered, setOrgGroupTriggered] = useState<boolean>(false);
+  const [maxNodeCode, setMaxNodeCode] = useState<number>(1);
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(1);
   const [orgTriggered, setOrgTriggered] = useState<boolean>(false);
   const [isTemplate, setIsTemplate] = useState<boolean>(
     !isExistOrganogramCreate
@@ -127,8 +130,15 @@ const TemplateComponent = ({
         isTemplate: updateData?.isTemplate,
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        isInventoryOthers: updateData?.isInventoryOthers || false,
+        inventoryOthersObject: updateData?.inventoryOthersObject || "",
+        summaryOfManPowerObject: updateData?.summaryOfManPowerObject || "",
+        isSummaryOfManPowerObject:
+          updateData?.isSummaryOfManPowerObject || false,
         organizationHeader: updateData?.organizationHeader,
         organizationHeaderMsc: updateData?.organizationHeaderMsc,
+        parentOrgNameBn: updateData?.parentOrgNameBn,
+        parentOrgNameEn: updateData?.parentOrgNameEn,
         organogramDate: updateData?.organogramDate,
         organizationGroupDto: updateData?.organizationGroupDto,
         templateOrganizationsDto:
@@ -143,17 +153,22 @@ const TemplateComponent = ({
         inventoryDtoList: updateData?.inventoryDtoList,
         organogramChangeActionDtoList:
           updateData?.organogramChangeActionDtoList,
+        summaryOfManpowerDetails: "<p>sdfsdfsdfsd xs</p><p>csdf.lsdmf</p>",
         miscellaneousPointDtoList: updateData?.miscellaneousPointDtoList,
         organogramNoteDto: updateData?.organogramNoteDto,
       });
 
       setIsNotEnamCommittee(!updateData?.isEnamCommittee);
       setIsTemplate(updateData?.isTemplate);
+      if (updateData?.maxNodeCode) setMaxNodeCode(updateData?.maxNodeCode);
+      if (updateData?.maxManpowerCode)
+        setMaxManpowerCode(updateData?.maxManpowerCode);
     } else {
-      // reset({
-      //   isTemplate: true,
-      //   isEnamCommittee: true,
-      // });
+      reset({
+        isInventoryOthers: false,
+        // isTemplate: true,
+        // isEnamCommittee: true,
+      });
     }
   }, [updateData]);
 
@@ -213,8 +228,8 @@ const TemplateComponent = ({
   const templateOrganizationsDtoSimplifier = (organization) => {
     return {
       organizationId: organization?.id,
-      OrganizationNameBn: organization?.nameBn,
-      OrganizationNameEn: organization?.nameEn,
+      organizationNameBn: organization?.nameBn,
+      organizationNameEn: organization?.nameEn,
     };
   };
 
@@ -266,6 +281,8 @@ const TemplateComponent = ({
       ...data,
       titleBn: getValues("titleBn"),
       titleEn: getValues("titleEn"),
+      maxNodeCode: maxNodeCode,
+      maxManpowerCode: maxManpowerCode,
       organizationHeader: getValues("organizationHeader"),
       organizationHeaderMsc: getValues("organizationHeaderMsc"),
       organizationGroupId: data?.organizationGroupDto?.id || null,
@@ -448,6 +465,7 @@ const TemplateComponent = ({
               </div> */}
             </>
           )}
+
           <div className="col-md-6 col-12" id="orgDateBlock">
             <DateInput
               label="অর্গানোগ্রাম তারিখ"
@@ -459,6 +477,7 @@ const TemplateComponent = ({
               isError={!!errors?.organogramDate}
             />
           </div>
+
           {isNotEnamCommittee &&
             updateData?.organogramChangeActionDtoList?.length > 0 && (
               <div className="col-md-6 col-12">
@@ -479,6 +498,40 @@ const TemplateComponent = ({
               </div>
             )}
         </div>
+        {(!isTemplate || !isObjectNull(updateData)) && (
+          <div className="row">
+            {isNotEnamCommittee && (
+              <div className="col-md-6">
+                <Input
+                  label="অভিভাবকের প্রতিষ্ঠানের নাম (বাংলা)"
+                  placeholder="অভিভাবকের প্রতিষ্ঠানের নাম (বাংলা) লিখুন"
+                  // isRequired={isNotEnamCommittee}
+                  registerProperty={{
+                    ...register("parentOrgNameBn", {
+                      // required: isNotEnamCommittee,
+                    }),
+                  }}
+                  isError={!!errors?.parentOrgNameBn}
+                  errorMessage={errors?.parentOrgNameBn?.message as string}
+                />
+              </div>
+            )}
+            <div className="col-md-6">
+              <Input
+                label="অভিভাবকের প্রতিষ্ঠানের নাম (ইংরেজি)"
+                placeholder="অভিভাবকের প্রতিষ্ঠানের নাম লিখুন (ইংরেজি)"
+                // isRequired={!isNotEnamCommittee}
+                registerProperty={{
+                  ...register("parentOrgNameEn", {
+                    // required: !isNotEnamCommittee,
+                  }),
+                }}
+                isError={!!errors?.parentOrgNameEn}
+                errorMessage={errors?.parentOrgNameEn?.message as string}
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className="mb-4">
         <Organizations
@@ -493,6 +546,21 @@ const TemplateComponent = ({
           treeData={treeData}
           setTreeData={setTreeData}
           isNotEnamCommittee={isNotEnamCommittee}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
+          isOrganogramUpdate={
+            !isObjectNull(updateData) &&
+            !!updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO?.id
+          }
+          organogramData={{
+            organizationOrganogramId: updateData?.id || "",
+            organizationId:
+              updateData?.templateOrganizationsDtoList?.[0]?.organizationDTO
+                ?.id || "",
+            organogramDate: updateData?.organogramDate || "",
+          }}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">
@@ -511,6 +579,12 @@ const TemplateComponent = ({
           </div>
           <div className="col-12 mt-3">
             <EquipmentsForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+            />
+          </div>
+          <div className="col-12 mt-3">
+            <SummaryOfManpowerForm
               formProps={formProps}
               isNotEnamCommittee={isNotEnamCommittee}
             />

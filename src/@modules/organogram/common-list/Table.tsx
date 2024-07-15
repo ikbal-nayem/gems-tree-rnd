@@ -11,6 +11,7 @@ import {
   TableCell,
   TableRow,
   toast,
+  useApp,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -29,7 +30,6 @@ import { statusMapper } from "utility/textMapping";
 import { LABELS } from "./labels";
 // import OrganogramClone from "./organogramClone";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
-import { useAuth } from "@context/Auth";
 import { OMSService } from "@services/api/OMS.service";
 
 type TableProps = {
@@ -39,6 +39,7 @@ type TableProps = {
   respMeta?: IMeta;
   // getDataList: () => void;
   onDelete: (data) => void;
+  onDraftClone: (data) => void;
   status: "draft" | "inreview" | "inapprove" | "approved";
 };
 
@@ -49,9 +50,10 @@ const OrganogramTable: FC<TableProps> = ({
   respMeta,
   // getDataList,
   onDelete,
+  onDraftClone,
   status,
 }) => {
-  const { currentUser } = useAuth();
+  const { userRoles } = useApp();
 
   const onOrganogramView = (item: IObject) => {
     if (item?.id) {
@@ -64,7 +66,11 @@ const OrganogramTable: FC<TableProps> = ({
 
           if (resp?.body?.length === 1) {
             navigate(ROUTE_L2.ORG_TEMPLATE_VIEW + "?id=" + item?.id, {
-              state: resp?.body?.[0],
+              state: {
+                organizationData: resp?.body?.[0],
+                fromList: status,
+                isFormDraft: status === "draft" ? true : false,
+              },
             });
           }
         })
@@ -72,7 +78,7 @@ const OrganogramTable: FC<TableProps> = ({
     }
   };
   let columns: ITableHeadColumn[] =
-    status === "draft"
+    status === "draft" || status === "inreview"
       ? [
           { title: COMMON_LABELS.SL_NO, width: 50 },
           { title: LABELS.ORGANIZATION_NAME, width: 250 },
@@ -149,7 +155,15 @@ const OrganogramTable: FC<TableProps> = ({
               <TableCell
                 text={
                   item?.isEnamCommittee
-                    ? "Enam Committe Report (26/12/1982)"
+                    ? `Enam Committee Report (${
+                        item?.organogramDate
+                          ? generateDateFormat(
+                              item?.organogramDate,
+                              DATE_PATTERN.GOVT_STANDARD,
+                              "en"
+                            )
+                          : ""
+                      })`
                     : item?.organogramDate
                     ? generateDateFormat(
                         item?.organogramDate,
@@ -159,7 +173,7 @@ const OrganogramTable: FC<TableProps> = ({
                 }
               />
 
-              {status === "draft" && (
+              {(status === "draft" || status === "inreview") && (
                 <TableCell
                   tagText={
                     statusMapper(item?.status) || COMMON_LABELS.NOT_ASSIGN
@@ -200,9 +214,7 @@ const OrganogramTable: FC<TableProps> = ({
                     visibleCustom={
                       item?.status === TEMPLATE_STATUS.NEW ||
                       (item?.status === TEMPLATE_STATUS.NEW &&
-                        currentUser?.roles?.some(
-                          (d) => d?.roleCode === ROLES.OMS_ADMIN
-                        ))
+                        userRoles?.some((d) => d?.roleCode === ROLES.OMS_ADMIN))
                     }
                   >
                     <DropdownItem onClick={() => sendTo("node_main_act", item)}>
@@ -220,6 +232,10 @@ const OrganogramTable: FC<TableProps> = ({
                     <DropdownItem onClick={() => sendTo("details", item)}>
                       <Icon size={19} icon="edit" />
                       <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onDraftClone(item)}>
+                      <Icon size={19} icon="file_copy" />
+                      <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
                     </DropdownItem>
                     <DropdownItem onClick={() => onDelete(item)}>
                       <Icon size={19} icon="delete" color="danger" />

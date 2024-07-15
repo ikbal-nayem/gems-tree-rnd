@@ -1,3 +1,4 @@
+import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   Button,
   Checkbox,
@@ -10,10 +11,9 @@ import {
 import { COMMON_LABELS, IObject, notNullOrUndefined } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { OMSService } from "../../../../@services/api/OMS.service";
 import Organizations from "./organization";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { useNavigate } from "react-router-dom";
 
 interface IForm {
   template: any;
@@ -72,8 +72,8 @@ const TemplateClone = ({
     // if (duplicateTitleBnDitected || duplicateTitleEnDitected) return;
     const templateOrganizationsDto = {
       organizationId: data?.organization?.id,
-      OrganizationNameBn: data?.organization?.nameBn,
-      OrganizationNameEn: data?.organization?.nameEn,
+      organizationNameBn: data?.organization?.nameBn,
+      organizationNameEn: data?.organization?.nameEn,
     };
     const reqPayload = {
       cloneIsEnamCommittee: data.isEnamCommittee,

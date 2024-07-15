@@ -209,8 +209,8 @@ const NodeList = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "ধরণ (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
-      "ধরণ (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
+      "ধরন (বাংলা)": d?.orgTypeBn || COMMON_LABELS.NOT_ASSIGN,
+      "ধরন (ইংরেজি)": d?.orgType || COMMON_LABELS.NOT_ASSIGN,
       "গ্রুপ (বাংলা)": d?.orgGroupBn || COMMON_LABELS.NOT_ASSIGN,
       "গ্রুপ (ইংরেজি)": d?.orgGroupEn || COMMON_LABELS.NOT_ASSIGN,
       লেভেল: d?.orgLevel || COMMON_LABELS.NOT_ASSIGN,
@@ -235,7 +235,7 @@ const NodeList = () => {
           <div className="d-flex gap-3">
             {/* <span className="w-25">
               <Autocomplete
-                placeholder="সংস্থার ধরণ বাছাই করুন"
+                placeholder="সংস্থার ধরন বাছাই করুন"
                 options={orgTypeList || []}
                 name="organizationTypeDTO"
                 getOptionLabel={(op) => op.nameBn}
@@ -275,7 +275,7 @@ const NodeList = () => {
           </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠানের ধরণ তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো প্রতিষ্ঠানের ধরন তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 

@@ -1,24 +1,24 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { PageTitle } from "@context/PageData";
-import { Tab, TabBlock } from "@gems/components";
+import { Tab, TabBlock, useApp } from "@gems/components";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { checkTabPermission } from "utility/utils";
 import List from "./list";
 import Tree from "./tree";
 
 const OrganizationGroup = () => {
+  const { hasRoutePermission } = useApp()
   const tabs = [
     {
       label: "তালিকা",
       key: "ORGANIZATION_GROUP_LIST",
-      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_GROUP_LIST),
+      isHide: !hasRoutePermission(ROUTE_KEY.OMS_ORGANIZATION_GROUP_LIST),
     },
     {
       label: "ট্রি",
       key: "ORGANIZATION_GROUP_TREE",
-      isHide: checkTabPermission(ROUTE_KEY.OMS_ORGANIZATION_GROUP_TREE),
+      isHide: !hasRoutePermission(ROUTE_KEY.OMS_ORGANIZATION_GROUP_TREE),
     },
   ];
   const [searchParam, setSearchParam] = useSearchParams();

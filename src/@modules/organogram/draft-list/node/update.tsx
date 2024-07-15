@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import NodeCreateUpdateForm from "./form";
+import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { toast } from "@gems/components";
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { toast } from "@gems/components";
-import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import NodeCreateUpdateForm from "./form";
 
 const UpdateNode = () => {
   const { state } = useLocation();
@@ -12,6 +12,12 @@ const UpdateNode = () => {
   const [data, setData] = useState<IObject>({});
   const [searchParams] = useSearchParams();
   const organogramId = searchParams.get("id");
+  // const [maxNodeCode, setMaxNodeCode] = useState<number>(
+  //   state?.maxNodeCode || 1
+  // );
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(
+    state?.maxManpowerCode || 1
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,11 +41,20 @@ const UpdateNode = () => {
       organizationOrganogramId: state?.id || null,
       organizationId: state?.orgId || null,
       organogramDate: state?.organogramDate || null,
+      code: item?.code || state?.maxNodeCode ? state?.maxNodeCode + 1 : 1,
+      maxNodeCode: state?.maxNodeCode || null,
+      maxManpowerCode: maxManpowerCode,
     };
     OMSService.UPDATE.organogramSingleNodeById(organogramId, reqData)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, { state: state });
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_NODE_LIST, {
+          state: {
+            ...state,
+            maxNodeCode: state?.maxNodeCode || null,
+            maxManpowerCode: maxManpowerCode,
+          },
+        });
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsLoading(false));
@@ -51,6 +66,8 @@ const UpdateNode = () => {
         isNotEnamCommittee={!state?.isEnamCommittee}
         organogramData={state}
         isLoading={isLoading}
+        maxManpowerCode={maxManpowerCode}
+        setMaxManpowerCode={setMaxManpowerCode}
         updateData={data}
       />
     </div>

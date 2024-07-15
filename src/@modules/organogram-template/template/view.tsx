@@ -14,7 +14,7 @@ const TemplateView = () => {
   const [searchParam] = useSearchParams();
   const { state } = useLocation();
   const templateId = searchParam.get("id") || "";
-  const organizationId = state?.organizationId || "";
+  const organizationId = state?.organizationData?.organizationId || "";
 
   useEffect(() => {
     getTemplateDetailsDetailsById();
@@ -75,7 +75,9 @@ const TemplateView = () => {
           inventoryData={inventoryData}
           manpowerData={manpowerData}
           attachedOrganizationData={attachOrgData}
-          stateOrganizationData={state || {}}
+          stateOrganizationData={state?.organizationData || {}}
+          fromList={state?.fromList}
+          isFormDraft={state?.isFormDraft}
         />
       )}
       {!isLoading && isObjectNull(data) && (

@@ -129,8 +129,17 @@ export const OMSService = {
   getOrganizationList: async (payload: IObject): Promise<any> =>
     await axiosIns.post(OMS_SERVICE + "organization/get-list", payload),
 
+  getPreviousOrganizationList: async (payload: IObject): Promise<any> =>
+    await axiosIns.post(
+      OMS_SERVICE + "organization/previous/get-list",
+      payload
+    ),
+
+  getEnamOrganizationList: async (payload: IObject): Promise<any> =>
+    await axiosIns.post(OMS_SERVICE + "organization/enum/get-list", payload),
+
   getOrganizationCustomList: async (payload: IObject): Promise<any> =>
-    await axiosIns.post(OMS_SERVICE + "/organization/custom/get-list", payload),
+    await axiosIns.post(OMS_SERVICE + "organization/custom/get-list", payload),
 
   getOrganogramDetailsByOrganogramId: async (
     organogramId: string
@@ -337,6 +346,25 @@ export const OMSService = {
           "organization-organogram/get-proposal-node-manpower-by/" +
           id
       ),
+    organizationBranchList: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-branch/get-org-branch-list",
+        payload
+      ),
+    approveUserList: async (): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organization-organogram/get-oms-approved-user"
+      ),
+    organogramApproverList: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "orgm-approver/get-list", payload),
+
+    proposalStatistics: async (): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "analytic/get-proposal/statistic"),
+
+    equipmentsDifferenceByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-template/get-inventory-compare-by/" + id
+      ),
   },
 
   SAVE: {
@@ -374,6 +402,12 @@ export const OMSService = {
         OMS_SERVICE + "organogram-business-allocation/save",
         payload
       ),
+
+    organizationBranch: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "organization-branch/create", payload),
+
+    organogramApprover: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "orgm-approver/create", payload),
   },
 
   UPDATE: {
@@ -412,6 +446,21 @@ export const OMSService = {
           "organization-category/update-org-parent-by-category-grouping-id/" +
           groupId
       ),
+
+    undoOrganogramNodeWithChildById: async (
+      nodeId: string,
+      organogramId: string
+    ): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE +
+          "organogram-template/undo-frompreserved-organogram-structure-by-id/" +
+          nodeId +
+          "/" +
+          organogramId
+      ),
+
+    organogramApprover: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "orgm-approver/update", payload),
   },
 
   DELETE: {
@@ -436,11 +485,40 @@ export const OMSService = {
       await axiosIns.delete(
         OMS_SERVICE + "organogram-business-allocation/delete-by-id/" + id
       ),
+
     organogramNodeDeleteById: async (nodeId): Promise<any> =>
       await axiosIns.delete(
         OMS_SERVICE +
           "organogram-structure/delete-organogram-structure-node-by-id/" +
           nodeId
+      ),
+
+    organogramNodeWithChildById: async (nodeId): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE +
+          "organogram-template/delete-organogram-structure-by-id/" +
+          nodeId
+      ),
+
+    clonedOrganogramNodeWithChildById: async (
+      nodeId,
+      organogramId
+    ): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE +
+          "organogram-template/delete-clone-frompreserved-organogram-structure-by-id/" +
+          nodeId +
+          "/" +
+          organogramId
+      ),
+
+    organizationBranchDeleteById: async (id): Promise<any> => {
+      await axiosIns.delete(OMS_SERVICE + "organization-branch/delete/" + id);
+    },
+
+    organogramApprover: async (payload): Promise<any> =>
+      await axiosIns.delete(
+        OMS_SERVICE + "orgm-approver/delete-by-id/" + payload
       ),
   },
 };

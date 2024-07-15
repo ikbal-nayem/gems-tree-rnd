@@ -1,7 +1,7 @@
 import { ROUTE_L1, ROUTE_L2 } from "@constants/internal-route.constant";
 import { MENU } from "@constants/menu-titles.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
-import { useAuth } from "@context/Auth";
+import { useApp } from "@gems/components";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
 
@@ -100,10 +100,16 @@ const menuData = [
     title: MENU.BN.EMPLOYEE_LIST,
     icon: "groups",
   },
+  // {
+  //   routeKey: ROUTE_KEY.OMS_POST_CONFIG,
+  //   link: ROUTE_L1.OMS_POST_CONFIG,
+  //   title: MENU.BN.POST_CONFIG,
+  //   icon: "manage_accounts",
+  // },
   {
-    routeKey: ROUTE_KEY.OMS_POST_CONFIG,
-    link: ROUTE_L1.OMS_POST_CONFIG,
-    title: MENU.BN.POST_CONFIG,
+    routeKey: ROUTE_KEY.OMS_MASTER_POST,
+    link: ROUTE_L1.OMS_MASTER_POST,
+    title: "পদবি",
     icon: "manage_accounts",
   },
   {
@@ -130,6 +136,12 @@ const menuData = [
         title: MENU.BN.ORGANIZATION_GROUP,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
+        link: ROUTE_L2.OMS_ORGANIZATION_BRANCH,
+        title: MENU.BN.ORGANIZATION_BRANCH,
+        hasBullet: true,
+      },
       // {
       //   routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
       //   link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
@@ -148,6 +160,20 @@ const menuData = [
       //   title: MENU.BN.NODE_LIST,
       //   hasBullet: true,
       // },
+    ],
+  },
+  {
+    routeKey: ROUTE_KEY.OMS_CONFIGURATION,
+    link: ROUTE_L1.OMS_CONFIGURATION,
+    title: MENU.BN.CONFIGURATION,
+    icon: "manage_accounts",
+    childrens: [
+      {
+        routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
+        link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
+        title: MENU.BN.ORGANOGRAM_APPROVER,
+        hasBullet: true,
+      },
     ],
   },
 ];
@@ -175,16 +201,15 @@ const ParentNode = ({ item }) => {
 };
 
 const PermissionMenus = ({ data = menuData }) => {
-  const { currentUser } = useAuth();
+  const { userPermissions } = useApp();
   return (
     <>
       {data?.length > 0 &&
         data?.map((item, i) => {
           if (
-            currentUser &&
-            Object.keys(currentUser?.userPermissionDTO)?.length > 0 &&
-            currentUser?.userPermissionDTO?.sitemapList?.length > 0 &&
-            currentUser?.userPermissionDTO?.sitemapList?.find(
+            Object.keys(userPermissions)?.length > 0 &&
+            userPermissions?.sitemapList?.length > 0 &&
+            userPermissions?.sitemapList?.find(
               (d) => d?.routeKey === item?.routeKey
             )
           )
@@ -194,7 +219,7 @@ const PermissionMenus = ({ data = menuData }) => {
                 item={{
                   ...item,
                   title:
-                    currentUser?.userPermissionDTO?.sitemapList?.find(
+                    userPermissions?.sitemapList?.find(
                       (d) => d?.routeKey === item?.routeKey
                     )?.nameBn || item?.title,
                 }}

@@ -1,16 +1,19 @@
-import { Icon } from "@gems/components";
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
-import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { Icon } from "@gems/components";
+import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
 const MyNode = ({
   nodeData,
   treeDispatch,
-  postList,
   firstNode,
   isNotEnamCommittee,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
 }) => {
   isNotEmptyList(nodeData?.manpowerList) &&
     nodeData?.manpowerList.sort((a, b) => {
@@ -77,7 +80,11 @@ const MyNode = ({
                 icon="add_circle"
                 size={20}
                 color="success"
-                onClick={() => treeDispatch("ADD", nodeData)}
+                onClick={() => {
+                  treeDispatch("ADD", nodeData);
+                  setMaxNodeCode(maxNodeCode + 1);
+                  setMaxManpowerCode(maxManpowerCode + 1);
+                }}
                 hoverTitle={
                   isNotEnamCommittee
                     ? "পরবর্তী স্তরে নতুন নোড যোগ করুন"
@@ -107,25 +114,10 @@ const MyNode = ({
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
-              const postExists = isNotEmptyList(postList) && item?.postId;
-
-              const post = postExists
-                ? postList?.find((d) => d?.id === item?.postId)
-                : null;
-
-              const alternatePost = postExists
-                ? postList?.find((d) => d?.id === item?.alternativePostId)
-                : null;
 
               const postName = isNotEnamCommittee
-                ? post?.nameBn || COMMON_LABELS.NOT_ASSIGN
-                : post?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
-
-              const alternatePostName = !isObjectNull(alternatePost)
-                ? isNotEnamCommittee
-                  ? alternatePost?.nameBn || COMMON_LABELS.NOT_ASSIGN
-                  : alternatePost?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN
-                : null;
+                ? item?.postDTO?.post?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                : item?.postDTO?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
 
               return (
                 <div key={i}>
@@ -145,9 +137,17 @@ const MyNode = ({
                     >
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
-                      <p className="mb-0 fs-7 ms-1">{`${postName}${
-                        alternatePostName ? " / " + alternatePostName : ""
-                      }`}</p>
+                      <p className="mb-0 fs-7 ms-1">
+                        {postName || ""}
+                        {item?.alternativePostListDTO?.length > 0
+                          ? item?.alternativePostListDTO?.map(
+                              (ap: IObject) =>
+                                ` / ${
+                                  isNotEnamCommittee ? ap?.nameBn : ap?.nameEn
+                                }`
+                            )
+                          : ""}
+                      </p>
                     </div>
                   ) : null}
                 </div>

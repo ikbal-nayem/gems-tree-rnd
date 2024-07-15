@@ -20,7 +20,7 @@ import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  // { title: "ধরণ (বাংলা)", minWidth: 100 },
+  // { title: "ধরন (বাংলা)", minWidth: 100 },
   { title: "পদবি/স্তর", minWidth: 100 },
   { title: "অভিভাবক", minWidth: 100 },
   { title: "জনবল", minWidth: 75 },
@@ -32,6 +32,7 @@ type DataTableProps = {
   data?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
+  handleClone: (data) => void;
   organogram: IObject;
 };
 
@@ -40,6 +41,7 @@ const DataTable: FC<DataTableProps> = ({
   data = [],
   handleUpdate,
   handleDelete,
+  handleClone,
   organogram,
 }) => {
   if (!data?.length) return;
@@ -82,6 +84,10 @@ const DataTable: FC<DataTableProps> = ({
                   >
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
+                  </DropdownItem>
+                  <DropdownItem onClick={() => handleClone(data?.id)}>
+                    <Icon size={19} icon="file_copy" />
+                    <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
                   </DropdownItem>
                   {/* <DropdownItem
                     onClick={() => {

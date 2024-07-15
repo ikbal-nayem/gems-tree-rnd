@@ -1,10 +1,11 @@
-import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
-import { ConfirmationModal } from "@gems/components";
+import { ConfirmationModal, toast } from "@gems/components";
 import { META_TYPE, generateUUID, isObjectNull } from "@gems/utils";
 import { useEffect, useRef, useState } from "react";
+import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../@services/api/Core.service";
+import { OMSService } from "../../../../../@services/api/OMS.service";
 import NodeForm from "./Form";
 import MyNode from "./my-node";
-import { CoreService } from "../../../../../@services/api/Core.service";
 
 const addNode = (nd, parent, templateData) => {
   if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
@@ -207,6 +208,12 @@ const OrganizationTemplateTree = ({
   treeData,
   setTreeData,
   isNotEnamCommittee,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
+  isOrganogramUpdate = false,
+  organogramData,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [isSaving, setSaving] = useState<boolean>(false);
@@ -215,8 +222,10 @@ const OrganizationTemplateTree = ({
 
   const [postList, setPostList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
+  const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
   const postPayload = {
@@ -234,6 +243,9 @@ const OrganizationTemplateTree = ({
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
+    );
+    CoreService.getByMetaTypeList("CLASS").then((resp) =>
+      setClassList(resp.body || [])
     );
   }, []);
 
@@ -268,11 +280,28 @@ const OrganizationTemplateTree = ({
   };
 
   const onCancelDelete = () => {
+    setDeleteData(null);
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
-    setIsDeleteModal(false);
+    if (isOrganogramUpdate) {
+      setIsDeleteLoading(true);
+      OMSService.DELETE.organogramNodeWithChildById(deleteData?.id || "")
+        .then((res) => {
+          toast.success(res?.message);
+          setTreeData(
+            deleteNode(treeData, deleteData?.id || deleteData?.nodeId)
+          );
+          setDeleteData(null);
+          setIsDeleteModal(false);
+        })
+        .catch((err) => toast.error(err?.message))
+        .finally(() => setIsDeleteLoading(false));
+    } else {
+      setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
+      setDeleteData(null);
+      setIsDeleteModal(false);
+    }
   };
 
   const onFormClose = () => {
@@ -283,15 +312,63 @@ const OrganizationTemplateTree = ({
   };
 
   const onSubmit = (formData) => {
-    let ad;
+    // let ad;
     if (isObjectNull(updateNodeData.current)) {
       selectedNode.current = reOrder(selectedNode.current, formData, "add", "");
-      ad = addNode(treeData, selectedNode.current, formData);
+
+      // ad = addNode(treeData, selectedNode.current, formData);
+
+      if (isOrganogramUpdate) {
+        let reqData = {
+          ...formData,
+          ...organogramData,
+          parentNodeDTO: selectedNode.current || {},
+          parentNodeId: selectedNode.current?.id || "",
+          maxNodeCode: maxNodeCode,
+          maxManpowerCode: maxManpowerCode,
+        };
+        OMSService.SAVE.organogramSingleNodeCreate(reqData)
+          .then((res) => {
+            toast.success(res?.message);
+            setTreeData(
+              addNode(treeData, selectedNode.current, {
+                ...formData,
+                id: res?.body || "",
+              })
+            );
+            onFormClose();
+          })
+          .catch((error) => toast.error(error?.message));
+        // .finally(() => onFormClose());
+      } else {
+        setTreeData(addNode(treeData, selectedNode.current, formData));
+        onFormClose();
+      }
     } else {
-      ad = editNode(treeData, updateNodeData.current, formData);
+      if (isOrganogramUpdate) {
+        let reqData = {
+          ...formData,
+          ...organogramData,
+          code: formData?.code || maxNodeCode ? maxNodeCode + 1 : 1,
+          maxNodeCode: maxNodeCode,
+          maxManpowerCode: maxManpowerCode,
+        };
+        OMSService.UPDATE.organogramSingleNodeById(formData?.id, reqData)
+          .then((res) => {
+            toast.success(res?.message);
+            setTreeData(editNode(treeData, updateNodeData.current, formData));
+            onFormClose();
+          })
+          .catch((error) => toast.error(error?.message));
+        // .finally(() => onFormClose());
+      } else {
+        setTreeData(editNode(treeData, updateNodeData.current, formData));
+        onFormClose();
+      }
+      // ad = editNode(treeData, updateNodeData.current, formData);
     }
-    setTreeData(ad);
-    onFormClose();
+    // setTreeData(ad);
+    // onFormClose();
   };
 
   return (
@@ -336,12 +413,15 @@ const OrganizationTemplateTree = ({
             <MyNode
               nodeData={nodeData}
               treeDispatch={treeDispatch}
-              postList={postList}
               firstNode={
                 (treeData?.id || treeData?.nodeId) ===
                 (nodeData?.id || nodeData?.nodeId)
               }
               isNotEnamCommittee={isNotEnamCommittee}
+              maxNodeCode={maxNodeCode}
+              setMaxNodeCode={setMaxNodeCode}
+              maxManpowerCode={maxManpowerCode}
+              setMaxManpowerCode={setMaxManpowerCode}
             />
           )}
           // draggable={true}
@@ -351,6 +431,7 @@ const OrganizationTemplateTree = ({
           isOpen={formOpen}
           postList={postList}
           gradeList={gradeList}
+          classList={classList}
           serviceList={serviceList}
           cadreObj={cadreObj}
           updateData={updateNodeData.current}
@@ -358,10 +439,15 @@ const OrganizationTemplateTree = ({
           onClose={onFormClose}
           onSubmit={onSubmit}
           isNotEnamCommittee={isNotEnamCommittee}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
         />
       </div>
       <ConfirmationModal
         isOpen={isDeleteModal}
+        isSubmitting={isDeleteLoading}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
         onConfirmLabel={"মুছে ফেলুন"}

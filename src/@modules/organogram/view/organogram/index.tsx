@@ -27,9 +27,9 @@ const OrganogramTab = ({
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
-  const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
-    {}
-  );
+  // const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
+  //   {}
+  // );
   const [verisonList, setVersionList] = useState<IObject[]>([]);
 
   useEffect(() => {
@@ -68,21 +68,21 @@ const OrganogramTab = ({
       .finally(() => setIsLoading(false));
   };
 
-  useEffect(() => {
-    if (organogramData?.organization?.id) {
-      getParentOrganization();
-    }
-  }, [organogramData]);
+  // useEffect(() => {
+  //   if (organogramData?.organization?.id) {
+  //     getParentOrganization();
+  //   }
+  // }, [organogramData]);
 
-  const getParentOrganization = () => {
-    setIsLoading(true);
-    OMSService.getOrganizationParentByOrgId(organogramData?.organization?.id)
-      .then((resp) => {
-        setParentOrganizationData(resp?.body);
-      })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
-  };
+  // const getParentOrganization = () => {
+  //   setIsLoading(true);
+  //   OMSService.getOrganizationParentByOrgId(organogramData?.organization?.id)
+  //     .then((resp) => {
+  //       setParentOrganizationData(resp?.body);
+  //     })
+  //     .catch((e) => toast.error(e?.message))
+  //     .finally(() => setIsLoading(false));
+  // };
 
   useEffect(() => {
     getVersionListById();
@@ -152,7 +152,7 @@ const OrganogramTab = ({
             manpowerData={manpowerData}
             attachedOrganizationData={attachOrgData}
             organogramView={true}
-            parentOrganizationData={parentOrganizationData}
+            // parentOrganizationData={parentOrganizationData}
             isBeginningVersion={isBeginningVersion}
             organogramId={organogramId}
           />

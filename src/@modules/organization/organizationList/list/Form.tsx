@@ -9,12 +9,7 @@ import {
   Textarea,
   toast,
 } from "@gems/components";
-import {
-  COMMON_LABELS,
-  IObject,
-  isObjectNull,
-  makeFormData,
-} from "@gems/utils";
+import { COMMON_LABELS, IObject, isObjectNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -77,6 +72,7 @@ const OrgForm = ({
       reset({
         isActive: true,
         isTrainingOffice: false,
+        isEnamCommittee: false,
         officeTypeDTO: orgTypeGovtObject,
         officeType: orgTypeGovtObject?.metaKey,
       });
@@ -100,32 +96,34 @@ const OrgForm = ({
 
       if (updateValue && !isObjectNull(updateData?.organizationGroupDTO)) {
         onOrganizationGroupChange(updateData?.organizationGroupDTO);
-      } else {
-        OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
-          .then((res) => {
-            setOrgParentList(res?.body || []);
-          })
-          .catch((err) => toast.error(err?.message));
       }
+      // Org Parent list api called only for group change by apv
+      //  else {
+      //   OMSService.FETCH.organizationParentListByOrgType(makeFormData(typeItem))
+      //     .then((res) => {
+      //       setOrgParentList(res?.body || []);
+      //     })
+      //     .catch((err) => toast.error(err?.message));
+      // }
     }
   };
 
   const onOrganizationGroupChange = (groupItem: IObject) => {
     if (!isObjectNull(groupItem)) {
       setValue("organizationCategoryId", groupItem?.id);
-      if (
-        groupItem?.nameEn === "Ministry" ||
-        groupItem?.nameEn === "Division"
-      ) {
-        setValue("parent", null);
-        setValue("parentId", null);
-        setOrgParentList([]);
-        OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
-          .then((res) => {
-            setOrgParentList(res?.body || []);
-          })
-          .catch((err) => toast.error(err?.message));
-      }
+      // if (
+      //   groupItem?.nameEn === "Ministry" ||
+      //   groupItem?.nameEn === "Division"
+      // ) {
+      setValue("parent", null);
+      setValue("parentId", null);
+      setOrgParentList([]);
+      OMSService.FETCH.organizationParentListByOrgGroup(groupItem?.nameEn)
+        .then((res) => {
+          setOrgParentList(res?.body || []);
+        })
+        .catch((err) => toast.error(err?.message));
+      // }
     } else {
       onOrganizationTypeChange(watch("organizationTypeDTO"));
     }
@@ -136,7 +134,7 @@ const OrgForm = ({
       ...orgPayload.current.body,
       searchKey: searchKey ? searchKey?.trim() : "",
     };
-    OMSService.getOrganizationList(orgPayload?.current).then((resp) =>
+    OMSService.getPreviousOrganizationList(orgPayload?.current).then((resp) =>
       callback(resp?.body || [])
     );
   }, []);
@@ -170,9 +168,9 @@ const OrgForm = ({
             </div>
             <div className="col-12">
               <Autocomplete
-                label="প্রতিষ্ঠানের ধরণ"
-                placeholder="প্রতিষ্ঠানের ধরণ বাছাই করুন"
-                isRequired="প্রতিষ্ঠানের ধরণ বাছাই করুন"
+                label="প্রতিষ্ঠানের ধরন"
+                placeholder="প্রতিষ্ঠানের ধরন বাছাই করুন"
+                isRequired="প্রতিষ্ঠানের ধরন বাছাই করুন"
                 options={options?.organizationTypes || []}
                 name="organizationTypeDTO"
                 getOptionLabel={(op) => op.nameBn}
@@ -215,6 +213,10 @@ const OrgForm = ({
                       setValue("parentId", op?.id ? op?.id : null)
                     }
                     control={control}
+                    helpText={
+                      !watch("organizationGroupDTO") &&
+                      "* প্রতিষ্ঠানের অভিভাবক দেওয়ার জন্য প্রতিষ্ঠানের গ্রুপ বাছাই করুন"
+                    }
                     // isError={!!errors?.parent}
                     // errorMessage={errors?.parent?.message as string}
                   />
@@ -280,13 +282,13 @@ const OrgForm = ({
               label="পূর্ববর্তী প্রতিষ্ঠান"
               placeholder="পূর্ববর্তী প্রতিষ্ঠান বাছাই করুন"
               isAsync
-              // isMulti
+              isMulti
               control={control}
               // noMargin
               getOptionLabel={(op) => op.nameBn}
               getOptionValue={(op) => op?.id}
-              name="prevOrganization"
-              onChange={(e) => setValue("prevOrganizationId", e?.id)}
+              name="prevOrganizationList"
+              // onChange={(e) => setValue("prevOrganizationId", e?.id)}
               loadOptions={getAsyncPreviousOranizationList}
               isError={!!errors?.templateOrganizationsDto}
               errorMessage={errors?.templateOrganizationsDto?.message as string}
@@ -336,6 +338,14 @@ const OrgForm = ({
                         e.target.checked ? "TRAINING" : ""
                       ),
                   }),
+                }}
+              />
+            </div>
+            <div className="col-12">
+              <Checkbox
+                label="এনাম কমিটি"
+                registerProperty={{
+                  ...register("isEnamCommittee"),
                 }}
               />
             </div>

@@ -66,9 +66,9 @@ const Filter = ({ onFilterDone, options }) => {
               </div>
               <div className="col-12">
                 <Autocomplete
-                  label="সার্ভিস/ক্যাডারের ধরণ"
+                  label="সার্ভিস/ক্যাডারের ধরন"
                   name="serviceTypeDto"
-                  placeholder="সার্ভিস/ক্যাডারের ধরণ বাছাই করুন"
+                  placeholder="সার্ভিস/ক্যাডারের ধরন বাছাই করুন"
                   options={options?.serviceList || []}
                   getOptionLabel={(t) => t.titleBn}
                   getOptionValue={(op) => op?.metaKey}

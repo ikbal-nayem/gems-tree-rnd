@@ -41,6 +41,7 @@ const OrganogramTable: FC<TableProps> = ({
     { title: COMMON_LABELS.SL_NO, width: 50 },
     { title: LABELS.ORGANIZATION_NAME, width: 250 },
     { title: LABELS.ORGANOGRAM_DATE, width: 100 },
+    { title: "অনুমোদনের তারিখ", width: 100 },
     { title: COMMON_LABELS.ACTION, width: 80, align: "end" },
   ];
 
@@ -83,6 +84,16 @@ const OrganogramTable: FC<TableProps> = ({
                     : COMMON_LABELS.NOT_ASSIGN
                 }
               />
+              <TableCell
+                text={
+                  item?.approverDate
+                    ? generateDateFormat(
+                        item?.approverDate,
+                        DATE_PATTERN.GOVT_STANDARD
+                      )
+                    : "-"
+                }
+              />
               <TableCell textAlign="end" verticalAlign="top">
                 <Dropdown
                   btnIcon={true}
@@ -95,7 +106,7 @@ const OrganogramTable: FC<TableProps> = ({
                   </DropdownItem>
                   <DropdownItem onClick={() => onClone(item)}>
                     <Icon size={19} icon="file_copy" />
-                    <h6 className="mb-0 ms-3">পরবর্তী অর্গানোগ্রাম তৈরি</h6>
+                    <h6 className="mb-0 ms-3">পরবর্তী ভার্সন তৈরি</h6>
                   </DropdownItem>
                   {/* <DropdownItem onClick={() => null}>
                     <Icon size={19} icon="edit" />

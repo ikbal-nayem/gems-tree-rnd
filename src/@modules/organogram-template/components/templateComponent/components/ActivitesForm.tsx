@@ -95,7 +95,7 @@ const ActivitiesForm = ({ formProps, isNotEnamCommittee }: IActivitiesForm) => {
                             }
                           },
                           required: !isNotEnamCommittee,
-                          validate: enCheck,
+                          // validate: enCheck,
                         }
                       ),
                     }}

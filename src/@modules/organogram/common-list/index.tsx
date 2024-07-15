@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import OrganogramTable from "./Table";
 import { ROUTE_L1 } from "@constants/internal-route.constant";
+import DraftCloneModal from "./draftCloneModal";
 
 const initMeta: IMeta = {
   page: 0,
@@ -34,6 +35,8 @@ const OrganogramList = ({ status }) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isDraftCloneOpen, setIsDraftCloneOpen] = useState<boolean>(false);
+  const [draftCloneData, setDraftCloneData] = useState<IObject>({});
   const params: any = searchParamsToObject(searchParams);
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
@@ -69,7 +72,6 @@ const OrganogramList = ({ status }) => {
   useEffect(() => {
     getDataList();
   }, [searchParams]);
-
 
   const onCancelDelete = () => {
     setIsDeleteModal(false);
@@ -131,6 +133,16 @@ const OrganogramList = ({ status }) => {
 
   const onPageChanged = (metaParams: IMeta) => {
     getDataList({ ...metaParams });
+  };
+
+  const onDraftClone = (item: IObject) => {
+    setDraftCloneData(item);
+    setIsDraftCloneOpen(true);
+  };
+
+  const onDraftCloneClose = () => {
+    setDraftCloneData({});
+    setIsDraftCloneOpen(false);
   };
 
   // const getXLSXStoreList = (reqMeta = null) => {
@@ -201,6 +213,7 @@ const OrganogramList = ({ status }) => {
             respMeta={respMeta}
             isLoading={isLoading}
             onDelete={onDelete}
+            onDraftClone={onDraftClone}
             status={status}
           >
             <Pagination
@@ -212,7 +225,7 @@ const OrganogramList = ({ status }) => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
-      <ConfirmationModal
+        <ConfirmationModal
           isOpen={isDeleteModal}
           onClose={onCancelDelete}
           onConfirm={onConfirmDelete}
@@ -222,6 +235,13 @@ const OrganogramList = ({ status }) => {
           আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন
           ?
         </ConfirmationModal>
+
+        <DraftCloneModal
+          isOpen={isDraftCloneOpen}
+          onClose={onDraftCloneClose}
+          draftCloneData={draftCloneData}
+          getDataList={getDataList}
+        />
       </div>
     </>
   );

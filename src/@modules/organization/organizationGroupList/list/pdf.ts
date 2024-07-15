@@ -6,7 +6,7 @@ const columns = [
   { nameBn: "ক্রমিক নং", key: null },
   { nameBn: "নাম (বাংলা)", key: "nameBn" },
   { nameBn: "নাম (ইংরেজি)", key: "nameEn" },
-  { nameBn: "প্রতিষ্ঠানের ধরণ", key: "orgType" },
+  { nameBn: "প্রতিষ্ঠানের ধরন", key: "orgType" },
   { nameBn: "গ্রুপ অভিভাবক", key: "parentGroupName" },
   { nameBn: "অভিভাবক প্রতিষ্ঠান", key: "parentOrganizationName" },
   { nameBn: "সক্রিয়", key: "isActive" },
