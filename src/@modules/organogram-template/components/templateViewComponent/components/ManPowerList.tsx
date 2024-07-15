@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@gems/components";
 import { TextEditorPreview } from "@gems/editor";
-import { COMMON_LABELS, numEnToBn } from "@gems/utils";
+import { COMMON_LABELS, isObjectNull, numEnToBn } from "@gems/utils";
 import { FC, Fragment, useState } from "react";
 import MPListChanges from "./MPListChanges";
 import { LOCAL_LABELS } from "./labels";
@@ -24,6 +24,35 @@ type TableProps = {
   insideModal?: boolean;
   organogramId?: string;
   title?: string;
+};
+
+const postTypeList = [
+  {
+    titleEn: "Proposed",
+    key: "proposed",
+    titleBn: "প্রস্তাবিত",
+  },
+  {
+    titleEn: "Permanent",
+    key: "permanent",
+    titleBn: "স্থায়ী",
+  },
+  {
+    titleEn: "Non Permanent",
+    key: "nonPermanent",
+    titleBn: "অস্থায়ী",
+  },
+];
+
+const getPostTypeTitle = (key: string, langEn: boolean) => {
+  let notAssign = langEn ? "Not Assigned" : COMMON_LABELS.NOT_ASSIGN;
+  if (key) {
+    const postType = postTypeList.find((item) => item.key === key);
+    if (!isObjectNull(postType)) {
+      return langEn ? postType.titleEn : postType.titleBn;
+    } else return notAssign;
+  }
+  return notAssign;
 };
 
 const ManPowerList: FC<TableProps> = ({
@@ -152,15 +181,7 @@ const ManPowerList: FC<TableProps> = ({
                             </TableCell>
 
                             <TableCell className="remove-padding text-center">
-                              {itr?.postType
-                                ? langEn
-                                  ? itr.postType
-                                  : itr.postType === "Permanent"
-                                  ? "স্থায়ী"
-                                  : itr.postType === "Approved"
-                                  ? "অনুমোদিত"
-                                  : "অস্থায়ী"
-                                : COMMON_LABEL.NOT_ASSIGN}
+                              {getPostTypeTitle(itr?.postType, langEn)}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -193,7 +214,7 @@ const ManPowerList: FC<TableProps> = ({
                       </div>
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell className="remove-padding">
                       <div className="d-flex justify-content-center fw-bold fs-6">
                         {langEn
                           ? data?.totalManpower
