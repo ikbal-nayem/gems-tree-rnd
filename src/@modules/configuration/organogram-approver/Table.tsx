@@ -6,6 +6,7 @@ import {
   Table,
   TableCell,
   TableRow,
+  Tag,
 } from "@gems/components";
 import { COMMON_LABELS, IObject, generateRowNumBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
@@ -41,7 +42,7 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell text={generateRowNumBn(i)} />
               <TableCell text={data?.userDTO?.nameBn || "-"} />
               <TableCell>
-                {data?.organizationDtoList?.length > 0
+                {/* {data?.organizationDtoList?.length > 0
                   ? data?.organizationDtoList?.map(
                       (item: IObject, index: number) =>
                         `${item?.nameBn}${
@@ -49,6 +50,19 @@ const DataTable: FC<DataTableProps> = ({
                             ? ", "
                             : ""
                         }`
+                    )
+                  : "-"} */}
+                {data?.organizationDtoList?.length > 0
+                  ? data?.organizationDtoList?.map(
+                      (item: IObject, index: number) => (
+                        <Tag
+                          key={index}
+                          title={item?.nameBn || ""}
+                          color="secondary"
+                          variant="fill"
+                          className="me-1 mb-1 fw-normal"
+                        />
+                      )
                     )
                   : "-"}
               </TableCell>

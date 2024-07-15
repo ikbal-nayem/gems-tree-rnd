@@ -39,6 +39,7 @@ type TableProps = {
   respMeta?: IMeta;
   // getDataList: () => void;
   onDelete: (data) => void;
+  onDraftClone: (data) => void;
   status: "draft" | "inreview" | "inapprove" | "approved";
 };
 
@@ -49,6 +50,7 @@ const OrganogramTable: FC<TableProps> = ({
   respMeta,
   // getDataList,
   onDelete,
+  onDraftClone,
   status,
 }) => {
   const { userRoles } = useApp();
@@ -230,6 +232,10 @@ const OrganogramTable: FC<TableProps> = ({
                     <DropdownItem onClick={() => sendTo("details", item)}>
                       <Icon size={19} icon="edit" />
                       <h6 className="mb-0 ms-2">সম্পাদনা করুন</h6>
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onDraftClone(item)}>
+                      <Icon size={19} icon="file_copy" />
+                      <h6 className="mb-0 ms-2">ক্লোন করুন</h6>
                     </DropdownItem>
                     <DropdownItem onClick={() => onDelete(item)}>
                       <Icon size={19} icon="delete" color="danger" />

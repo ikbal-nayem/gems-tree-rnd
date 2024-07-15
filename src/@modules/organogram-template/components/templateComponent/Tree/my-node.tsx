@@ -116,7 +116,7 @@ const MyNode = ({
               mp = isNotEnamCommittee ? numEnToBn(mp) : mp;
 
               const postName = isNotEnamCommittee
-                ? item?.postDTO?.post?.nameBn || COMMON_LABELS.NOT_ASSIGN
+                ? item?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN
                 : item?.postDTO?.nameEn || COMMON_LABELS.EN.NOT_ASSIGN;
 
               return (

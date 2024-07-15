@@ -350,6 +350,14 @@ export const OMSService = {
       ),
     organogramApproverList: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "orgm-approver/get-list", payload),
+
+    proposalStatistics: async (): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "analytic/get-proposal/statistic"),
+
+    equipmentsDifferenceByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "organogram-template/get-inventory-compare-by/" + id
+      ),
   },
 
   SAVE: {

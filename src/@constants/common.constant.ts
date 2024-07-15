@@ -92,7 +92,13 @@ export const LABELS = {
     SUM_OF_MANPOWER: "Summary of Manpower",
     PREV_MANPOWER: "Previous Manpower",
     CURRENT_MANPOWER: "Current Manpower",
+    PREV_EQUIPMENTS:
+      "Previous AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
+    CURRENT_EQUIPMENTS:
+      "Current AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
     CHANGE_IN_MANPOWER: "Comparison of Manpower",
+    CHANGE_IN_EQUIPMENTS:
+      "Comparison of AUTHORISATION OF TRANSPORT, OFFICE EQUIPMENT AND MISC. POINTS",
     ORGANIZATION: "Organization",
     NOTES: "Notes",
     REVIEW_APPROVE_NOTES: "Review & Approve Notes",
@@ -121,7 +127,13 @@ export const LABELS = {
     SUM_OF_MANPOWER: "জনবল",
     PREV_MANPOWER: "পূর্ববর্তী জনবল",
     CURRENT_MANPOWER: "বর্তমান জনবল",
+    PREV_EQUIPMENTS:
+      "পূর্ববর্তী পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদন",
+    CURRENT_EQUIPMENTS:
+      "বর্তমান পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদন",
     CHANGE_IN_MANPOWER: "জনবলের তুলনামূলক তালিকা",
+    CHANGE_IN_EQUIPMENTS:
+      "পরিবহন, অফিস সরঞ্জাম এবং বিবিধ পয়েন্ট অনুমোদনের তুলনামূলক তালিকা",
     ORGANIZATION: "প্রতিষ্ঠান",
     NOTES: "মন্তব্য",
     REVIEW_APPROVE_NOTES: "পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",

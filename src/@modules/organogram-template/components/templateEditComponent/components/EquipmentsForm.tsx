@@ -13,7 +13,6 @@ import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
-import { enCheck } from "utility/checkValidation";
 
 interface IForm {
   formProps: any;
