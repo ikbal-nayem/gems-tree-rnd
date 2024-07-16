@@ -34,11 +34,8 @@ const ManPowerDetails: FC<TableProps> = ({
   const COMMON_LABEL = isEn ? COMMON_LABELS.EN : COMMON_LABELS;
   const columns: ITableHeadColumn[] = [
     { title: isEn ? "SL NO" : "ক্রমিক", width: 100 },
-
-    { title: isEn ? "Post" : "পদবি", width: 250},
-
+    { title: isEn ? "Post" : "পদবি", width: 250 },
     { title: isEn ? "Grade" : "গ্রেড", width: 150, align: "center" },
-
     { title: isEn ? "Class" : "শ্রেণি", width: 150, align: "center" },
     {
       title: isEn ? "Service Type" : "সার্ভিসের ধরন",
