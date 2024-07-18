@@ -358,6 +358,9 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organogram-template/get-inventory-compare-by/" + id
       ),
+
+    organogramPostList: async (payload): Promise<any> =>
+        await axiosIns.post(OMS_SERVICE + "user-create-post/get-list", payload),
   },
 
   SAVE: {
@@ -401,6 +404,9 @@ export const OMSService = {
 
     organogramApprover: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "orgm-approver/create", payload),
+  
+    organogramPostCreate: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "user-create-post/create", payload),
   },
 
   UPDATE: {
@@ -454,6 +460,9 @@ export const OMSService = {
 
     organogramApprover: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "orgm-approver/update", payload),
+
+    organogramPostUpdate: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "user-create-post/update", payload),
   },
 
   DELETE: {
@@ -513,5 +522,9 @@ export const OMSService = {
       await axiosIns.delete(
         OMS_SERVICE + "orgm-approver/delete-by-id/" + payload
       ),
+
+    organogramPostDelete: async (payload): Promise<any> =>
+      await axiosIns.put(
+        OMS_SERVICE + "user-create-post/delete-all", payload),
   },
 };
