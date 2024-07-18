@@ -9,14 +9,14 @@ import {
   Pagination,
   toast,
 } from "@gems/components";
-import { IMeta, META_TYPE, useDebounce } from "@gems/utils";
-import { CoreService } from "@services/api/Core.service";
+import { IMeta, useDebounce } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import OrganoPostTable from "./Table";
-import { initMeta, IOptions } from "@modules/post/lib";
+import { initMeta } from "@modules/post/lib";
 import Form from "./From";
+import { OMSService } from "@services/api/OMS.service";
 
 const OrganoPostList = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -35,25 +35,8 @@ const OrganoPostList = () => {
   const [updateData, setUpdateData] = useState<any>({});
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
-  const [options, setOptions] = useState<IOptions>();
-  const [isEnamCommittee, setIsEnamCommittee] = useState<boolean>(false);
+  const [isEnum, setIsEnum] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    const req1 = CoreService.getGrades();
-    const req2 = CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE);
-    const req3 = CoreService.getByMetaTypeList(META_TYPE.CADRE);
-
-    Promise.all([req1, req2, req3])
-      .then(([res1, res2, res3]) => {
-        setOptions({
-          gradeList: res1?.body,
-          serviceList: res2?.body,
-          cadreList: res3?.body,
-        });
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -62,12 +45,12 @@ const OrganoPostList = () => {
     if (isActive) params.isActive = isActive;
     else delete params.isActive;
 
-    if (isEnamCommittee) params.isEnamCommittee = isEnamCommittee;
-    else delete params.isEnamCommittee;
+    if (isEnum) params.isEnum = isEnum;
+    else delete params.isEnum;
 
     setSearchParams({ ...params });
     // eslint-disable-next-line
-  }, [searchKey, isActive, isEnamCommittee, setSearchParams]);
+  }, [searchKey, isActive, isEnum, setSearchParams]);
 
   useEffect(() => {
     getDataList();
@@ -84,11 +67,11 @@ const OrganoPostList = () => {
       body: {
         searchKey: searchKey || null,
         isActive: isActive ? isActive : null,
-        isEnamCommittee: isEnamCommittee ? isEnamCommittee : null,
+        isEnum: isEnum ? isEnum : null,
       },
     };
 
-    CoreService.getCorePostList(payload)
+    OMSService.FETCH.organogramPostList(payload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -121,10 +104,12 @@ const OrganoPostList = () => {
     setIsDeleteModal(true);
     setDeleteData(data);
   };
+
   const onCancelDelete = () => {
     setIsDeleteModal(false);
     setDeleteData(null);
   };
+
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
     let payload = {
@@ -132,7 +117,7 @@ const OrganoPostList = () => {
         ids: [deleteData?.id || ""],
       },
     };
-    CoreService.postDelete(payload)
+    OMSService.DELETE.organogramPostDelete(payload)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -148,9 +133,16 @@ const OrganoPostList = () => {
   const onSubmit = (data) => {
     setIsSubmitLoading(true);
 
-    const service = isUpdate ? CoreService.postUpdate : CoreService.postCreate;
+    const payload = {
+      ...data,
+      id: updateData?.id || "",
+      isApproved: false,
+    };
 
-    service(isUpdate ? { ...data, id: updateData?.id || "" } : data)
+    const service = isUpdate
+      ? OMSService.UPDATE.organogramPostUpdate
+      : OMSService.SAVE.organogramPostCreate;
+    service(payload)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -172,11 +164,11 @@ const OrganoPostList = () => {
       </PageToolbarRight>
       <div className="card p-5">
         <div className=" d-flex col-12 gap-4">
-          <Checkbox
-            label="এনাম কমিটি"
-            onChange={() => setIsEnamCommittee(!isEnamCommittee)}
-          />
-          <Checkbox label="সক্রিয়" onChange={() => setIsActive(!isActive)} />
+          <Checkbox label="এনাম কমিটি" 
+          onChange={() => setIsEnum(!isEnum)} />
+          
+          <Checkbox label="সক্রিয়" 
+          onChange={() => setIsActive(!isActive)} />
         </div>
         <div className="d-flex gap-3">
           <Input
@@ -210,7 +202,6 @@ const OrganoPostList = () => {
           isOpen={isDrawerOpen}
           onClose={onDrawerClose}
           updateData={updateData}
-          options={options}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
         />

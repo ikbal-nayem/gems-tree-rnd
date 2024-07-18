@@ -41,10 +41,10 @@ import {
                 <TableCell text={generateRowNumBn(i)} />
   
                 <TableCell
-                  text={data?.nameBn || COMMON_LABELS.NOT_ASSIGN}
-                  subText={data?.nameEn}
+                  text={data?.postNameBn || COMMON_LABELS.NOT_ASSIGN}
+                  subText={data?.postNameEn}
                 />
-                <TableCell isActive={data?.isEnamCommittee} />
+                <TableCell isActive={data?.isEnum} />
                 <TableCell isActive={data?.isActive} />
                 <TableCell>
                   <Dropdown
@@ -62,7 +62,7 @@ import {
                     
                     <DropdownItem
                       // onClick={() => {
-                      //   handleUpdate(data);
+                      //   handleUpdate(data); //approve section
                       // }}
                     >
                       <Icon size={19} icon="approval" />
