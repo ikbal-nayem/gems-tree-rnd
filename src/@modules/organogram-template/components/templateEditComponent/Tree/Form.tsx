@@ -23,7 +23,7 @@ import {
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 
@@ -59,6 +59,19 @@ const postTypeList = [
     titleEn: "Non Permanent",
     key: "nonPermanent",
     titleBn: "অস্থায়ী",
+  },
+];
+
+const orgmOrgOrGroupList = [
+  {
+    titleEn: "Organizations",
+    key: "ORGANIZATIONS",
+    titleBn: "প্রতিষ্ঠানসমূহ",
+  },
+  {
+    titleEn: "Organization Group",
+    key: "ORG_GROUP",
+    titleBn: "প্রতিষ্ঠানের গ্ৰুপ",
   },
 ];
 
@@ -126,6 +139,38 @@ const NodeForm = ({
   };
 
   const [titleList, setTitleList] = useState<IObject[]>([]);
+  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
+    []
+  );
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "", orgCategoryGroupId: null },
+  };
+  const orgPayload = useRef(payload);
+
+  useEffect(() => {
+    getOrgGroupList();
+  }, []);
+
+  const getOrgGroupList = () => {
+    OMSService.FETCH.organizationGroupList().then((resp) =>
+      setOrganizationGroupList(resp?.body)
+    );
+  };
+
+  const getAsyncOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey ? searchKey?.trim() : "",
+    };
+    OMSService.getEnamOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body)
+    );
+  }, []);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
     if (!notNullOrUndefined(val)) return;
@@ -292,8 +337,84 @@ const NodeForm = ({
     >
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
-          <div className="row mb-4 d-flex justify-content-center">
-            <div className="col-12 col-md-4 col-lg-3 col-xl-2 border rounded-4 p-2 bg-gray-100">
+          <div className="d-flex mb-4 p-1 justify-content-between flex-wrap border rounded-2 bg-gray-100">
+            <div className="d-flex flex-wrap">
+              <div className="me-4">
+                <Checkbox
+                  noMargin
+                  label={"সাব-অর্গানোগ্রাম"}
+                  // isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                  registerProperty={{
+                    ...register("isSubOrgm", {
+                      onChange: (e) => setValue("subOrgmOrgOrGroup", null),
+                    }),
+                  }}
+                />
+                {watch("isSubOrgm") === true && (
+                  <div className="mt-3 min-w-200px">
+                    <Select
+                      // label={index < 1 ? "পদের ধরন" : ""}
+                      options={orgmOrgOrGroupList || []}
+                      noMargin
+                      placeholder={"বাছাই করুন"}
+                      isRequired
+                      textKey={"titleBn"}
+                      // defaultValue={"permanent"}
+                      valueKey="key"
+                      registerProperty={{
+                        ...register(`subOrgmOrgOrGroup`, {
+                          onChange: () => {
+                            setValue("orgGroup", null);
+                            setValue("orgList", null);
+                          },
+                        }),
+                      }}
+                      isError={!!errors?.subOrgmOrgOrGroup}
+                    />
+                  </div>
+                )}
+              </div>
+              {watch("subOrgmOrgOrGroup") && (
+                <div className="min-w-300px">
+                  {watch("subOrgmOrgOrGroup") === "ORG_GROUP" ? (
+                    <Autocomplete
+                      label="প্রতিষ্ঠানের গ্ৰুপ"
+                      placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+                      name="orgGroup"
+                      options={organizationGroupList}
+                      noMargin
+                      // isRequired={
+                      //   isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false
+                      // }
+                      control={control}
+                      // autoFocus
+                      getOptionLabel={(op) => op?.nameBn}
+                      getOptionValue={(op) => op?.id}
+                      // onChange={(org) => onOrgGroupChange(org)}
+                      isError={!!errors?.orgGroup}
+                      errorMessage={errors?.orgGroup?.message as string}
+                    />
+                  ) : (
+                    <Autocomplete
+                      label="প্রতিষ্ঠান"
+                      placeholder="প্রতিষ্ঠান বাছাই করুন"
+                      isRequired="প্রতিষ্ঠান বাছাই করুন"
+                      isAsync
+                      isMulti
+                      control={control}
+                      noMargin
+                      getOptionLabel={(op) => op.nameBn}
+                      getOptionValue={(op) => op?.id}
+                      name="orgList"
+                      loadOptions={getAsyncOranizationList}
+                      isError={!!errors?.orgList}
+                      errorMessage={errors?.orgList?.message as string}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+            <div>
               <Input
                 label="প্রদর্শন ক্রম"
                 placeholder="প্রদর্শন ক্রম লিখুন"
@@ -305,7 +426,7 @@ const NodeForm = ({
                 type="number"
                 registerProperty={{
                   ...register("displayOrder", {
-                    required: " ",
+                    required: true,
                   }),
                 }}
                 isError={!!errors?.displayOrder}

@@ -394,9 +394,6 @@ const NodeForm = ({
                         name="orgGroup"
                         options={organizationGroupList}
                         noMargin
-                        isRequired={
-                          isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false
-                        }
                         control={control}
                         // autoFocus
                         getOptionLabel={(op) => op?.nameBn}
