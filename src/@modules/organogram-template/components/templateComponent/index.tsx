@@ -547,6 +547,7 @@ const TemplateComponent = ({
           setTreeData={setTreeData}
           isNotEnamCommittee={isNotEnamCommittee}
           isTemplate={isTemplate}
+          draftListRecord={draftListRecord}
           maxNodeCode={maxNodeCode}
           setMaxNodeCode={setMaxNodeCode}
           maxManpowerCode={maxManpowerCode}

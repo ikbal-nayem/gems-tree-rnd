@@ -209,6 +209,7 @@ const OrganizationTemplateTree = ({
   setTreeData,
   isNotEnamCommittee,
   isTemplate,
+  draftListRecord,
   maxNodeCode,
   setMaxNodeCode,
   maxManpowerCode,
@@ -441,6 +442,7 @@ const OrganizationTemplateTree = ({
           onSubmit={onSubmit}
           isNotEnamCommittee={isNotEnamCommittee}
           isTemplate={isTemplate}
+          draftListRecord={draftListRecord}
           maxNodeCode={maxNodeCode}
           setMaxNodeCode={setMaxNodeCode}
           maxManpowerCode={maxManpowerCode}

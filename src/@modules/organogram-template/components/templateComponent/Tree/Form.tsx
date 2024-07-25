@@ -40,6 +40,7 @@ interface INodeForm {
   serviceList: IObject[];
   cadreObj: IObject;
   isNotEnamCommittee: boolean;
+  draftListRecord?: any;
   isTemplate?: boolean;
   maxNodeCode: number;
   setMaxNodeCode: (code: number) => void;
@@ -91,6 +92,7 @@ const NodeForm = ({
   defaultDisplayOrder,
   isNotEnamCommittee,
   isTemplate,
+  draftListRecord,
   maxNodeCode,
   setMaxNodeCode,
   maxManpowerCode,
@@ -343,29 +345,7 @@ const NodeForm = ({
     >
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
-          {isTemplate ? (
-            <div className="d-flex justify-content-center">
-              <div className="mb-4 p-1 border rounded-2 bg-gray-100">
-                {" "}
-                <Input
-                  label="প্রদর্শন ক্রম"
-                  placeholder="প্রদর্শন ক্রম লিখুন"
-                  isRequired
-                  noMargin
-                  numaricOnly
-                  defaultValue={defaultDisplayOrder}
-                  min={1}
-                  type="number"
-                  registerProperty={{
-                    ...register("displayOrder", {
-                      required: true,
-                    }),
-                  }}
-                  isError={!!errors?.displayOrder}
-                />
-              </div>
-            </div>
-          ) : (
+          {!isTemplate || draftListRecord ? (
             <div className="d-flex mb-4 p-1 justify-content-between flex-wrap border rounded-2 bg-gray-100">
               <div className="d-flex flex-wrap">
                 <div className="me-4">
@@ -446,6 +426,28 @@ const NodeForm = ({
                 )}
               </div>
               <div>
+                <Input
+                  label="প্রদর্শন ক্রম"
+                  placeholder="প্রদর্শন ক্রম লিখুন"
+                  isRequired
+                  noMargin
+                  numaricOnly
+                  defaultValue={defaultDisplayOrder}
+                  min={1}
+                  type="number"
+                  registerProperty={{
+                    ...register("displayOrder", {
+                      required: true,
+                    }),
+                  }}
+                  isError={!!errors?.displayOrder}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="mb-4 p-1 border rounded-2 bg-gray-100">
+                {" "}
                 <Input
                   label="প্রদর্শন ক্রম"
                   placeholder="প্রদর্শন ক্রম লিখুন"
