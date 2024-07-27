@@ -9,7 +9,6 @@ import {
   Label,
   Select,
   Textarea,
-  toast,
 } from "@gems/components";
 import {
   DATE_PATTERN,
@@ -25,7 +24,7 @@ import {
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isNotEmptyList } from "utility/utils";
 
@@ -54,6 +53,19 @@ const postTypeList = [
     titleEn: "Non Permanent",
     key: "nonPermanent",
     titleBn: "অস্থায়ী",
+  },
+];
+
+const orgmOrgOrGroupList = [
+  {
+    titleEn: "Organizations",
+    key: "ORGANIZATIONS",
+    titleBn: "প্রতিষ্ঠানসমূহ",
+  },
+  {
+    titleEn: "Organization Group",
+    key: "ORG_GROUP",
+    titleBn: "প্রতিষ্ঠানের গ্ৰুপ",
   },
 ];
 
@@ -104,11 +116,23 @@ const NodeCreateUpdateForm = ({
   });
 
   const [titleList, setTitleList] = useState<IObject[]>([]);
-  const [postList, setPostList] = useState<IObject[]>([]);
   const [gradeList, setGradeList] = useState<IObject[]>([]);
   const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState<IObject[]>([]);
   const [parentNodeList, setParentNodeList] = useState<IObject[]>([]);
+  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
+    []
+  );
+
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "", orgCategoryGroupId: null },
+  };
+  const orgPayload = useRef(payload);
 
   const postPayload = {
     meta: {
@@ -120,9 +144,6 @@ const NodeCreateUpdateForm = ({
   };
 
   useEffect(() => {
-    CoreService.getPostList(postPayload).then((resp) =>
-      setPostList(resp.body || [])
-    );
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
@@ -140,6 +161,26 @@ const NodeCreateUpdateForm = ({
       })
       .catch((e) => console.log(e?.message));
   };
+
+  useEffect(() => {
+    getOrgGroupList();
+  }, []);
+
+  const getOrgGroupList = () => {
+    OMSService.FETCH.organizationGroupList().then((resp) =>
+      setOrganizationGroupList(resp?.body)
+    );
+  };
+
+  const getAsyncOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey ? searchKey?.trim() : "",
+    };
+    OMSService.getEnamOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body)
+    );
+  }, []);
 
   const cadreObj = serviceList?.find(
     (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
@@ -297,6 +338,90 @@ const NodeCreateUpdateForm = ({
               ))}
         </span>
       </PageTitle>
+
+      <div className="d-flex flex-wrap border p-2">
+        <div className="me-4">
+          <Checkbox
+            noMargin
+            label={"সাব-অর্গানোগ্রাম"}
+            // isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+            registerProperty={{
+              ...register("isSubOrgm", {
+                onChange: (e) => setValue("subOrgmOrgOrGroupName", null),
+              }),
+            }}
+          />
+          {watch("isSubOrgm") === true && (
+            <div className="mt-3 min-w-200px">
+              <Select
+                // label={index < 1 ? "পদের ধরন" : ""}
+                options={orgmOrgOrGroupList || []}
+                noMargin
+                placeholder={"বাছাই করুন"}
+                // isRequired
+                textKey={"titleBn"}
+                // defaultValue={"permanent"}
+                valueKey="key"
+                registerProperty={{
+                  ...register(`subOrgmOrgOrGroupName`, {
+                    onChange: () => {
+                      setValue("subOrgmOrgOrGroup.orgGroup", null);
+                      setValue("subOrgmOrgOrGroup.orgList", null);
+                    },
+                  }),
+                }}
+                isError={!!errors?.subOrgmOrgOrGroupName}
+              />
+            </div>
+          )}
+        </div>
+        {watch("subOrgmOrgOrGroupName") && (
+          <div className="min-w-300px">
+            {watch("subOrgmOrgOrGroupName") === "ORG_GROUP" ? (
+              <Autocomplete
+                label="প্রতিষ্ঠানের গ্ৰুপ"
+                placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+                name="subOrgmOrgOrGroup.orgGroup"
+                options={organizationGroupList}
+                noMargin
+                // isRequired={
+                //   isTemplate ? "প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন" : false
+                // }
+                control={control}
+                // autoFocus
+                getOptionLabel={(op) => op?.nameBn}
+                getOptionValue={(op) => op?.id}
+                // onChange={(org) => onOrgGroupChange(org)}
+                isError={(!!errors?.subOrgmOrgOrGroup as any)?.orgGroup}
+                errorMessage={
+                  (errors?.subOrgmOrgOrGroup as any)?.orgGroup
+                    ?.message as string
+                }
+              />
+            ) : (
+              <Autocomplete
+                label="প্রতিষ্ঠান"
+                placeholder="প্রতিষ্ঠান বাছাই করুন"
+                // isRequired="প্রতিষ্ঠান বাছাই করুন"
+                isAsync
+                isMulti
+                control={control}
+                noMargin
+                getOptionLabel={(op) => op.nameBn}
+                getOptionValue={(op) => op?.id}
+                name={`subOrgmOrgOrGroup.orgList`}
+                loadOptions={getAsyncOranizationList}
+                isError={(!!errors?.subOrgmOrgOrGroup as any)?.orgList}
+                errorMessage={
+                  (errors?.subOrgmOrgOrGroup as any)?.orgList?.message as string
+                }
+                closeMenuOnSelect={false}
+              />
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="col-12 col-md-6 col-xl-4 p-2 bg-gray-100">
         <Autocomplete
           label={"পদ/স্তরের অভিভাবক"}
