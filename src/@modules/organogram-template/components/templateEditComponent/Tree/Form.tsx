@@ -361,8 +361,8 @@ const NodeForm = ({
                       registerProperty={{
                         ...register(`subOrgmOrgOrGroupName`, {
                           onChange: () => {
-                            setValue("orgGroup", null);
-                            setValue("orgList", null);
+                            setValue("subOrgmOrgOrGroup.orgGroup", null);
+                            setValue("subOrgmOrgOrGroup.orgList", null);
                           },
                         }),
                       }}
