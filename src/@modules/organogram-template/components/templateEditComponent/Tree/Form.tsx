@@ -33,7 +33,6 @@ interface INodeForm {
   onSubmit: (data) => void;
   updateData?: IObject;
   defaultDisplayOrder?: number;
-  postList: IObject[];
   gradeList: IObject[];
   classList: IObject[];
   serviceList: IObject[];
@@ -77,7 +76,6 @@ const orgmOrgOrGroupList = [
 
 const NodeForm = ({
   isOpen,
-  postList,
   gradeList,
   classList,
   serviceList,
@@ -97,7 +95,6 @@ const NodeForm = ({
     reset,
     watch,
     setValue,
-    getValues,
     control,
     formState: { errors },
   } = useForm<any>({
@@ -346,7 +343,7 @@ const NodeForm = ({
                   // isDisabled={isHeadIndex ? isHeadIndex !== index : false}
                   registerProperty={{
                     ...register("isSubOrgm", {
-                      onChange: (e) => setValue("subOrgmOrgOrGroup", null),
+                      onChange: (e) => setValue("subOrgmOrgOrGroupName", null),
                     }),
                   }}
                 />
@@ -362,25 +359,25 @@ const NodeForm = ({
                       // defaultValue={"permanent"}
                       valueKey="key"
                       registerProperty={{
-                        ...register(`subOrgmOrgOrGroup`, {
+                        ...register(`subOrgmOrgOrGroupName`, {
                           onChange: () => {
                             setValue("orgGroup", null);
                             setValue("orgList", null);
                           },
                         }),
                       }}
-                      isError={!!errors?.subOrgmOrgOrGroup}
+                      isError={!!errors?.subOrgmOrgOrGroupName}
                     />
                   </div>
                 )}
               </div>
-              {watch("subOrgmOrgOrGroup") && (
+              {watch("subOrgmOrgOrGroupName") && (
                 <div className="min-w-300px">
-                  {watch("subOrgmOrgOrGroup") === "ORG_GROUP" ? (
+                  {watch("subOrgmOrgOrGroupName") === "ORG_GROUP" ? (
                     <Autocomplete
                       label="প্রতিষ্ঠানের গ্ৰুপ"
                       placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
-                      name="subOrgmOrgOrGroupDto.orgGroup"
+                      name="subOrgmOrgOrGroup.orgGroup"
                       options={organizationGroupList}
                       noMargin
                       // isRequired={
@@ -391,11 +388,9 @@ const NodeForm = ({
                       getOptionLabel={(op) => op?.nameBn}
                       getOptionValue={(op) => op?.id}
                       // onChange={(org) => onOrgGroupChange(org)}
-                      isError={
-                        (!!errors?.subOrgmOrgOrGroupDto as any)?.orgGroup
-                      }
+                      isError={(!!errors?.subOrgmOrgOrGroup as any)?.orgGroup}
                       errorMessage={
-                        (errors?.subOrgmOrgOrGroupDto as any)?.orgGroup
+                        (errors?.subOrgmOrgOrGroup as any)?.orgGroup
                           ?.message as string
                       }
                     />
@@ -410,11 +405,11 @@ const NodeForm = ({
                       noMargin
                       getOptionLabel={(op) => op.nameBn}
                       getOptionValue={(op) => op?.id}
-                      name={`subOrgmOrgOrGroupDto.orgList`}
+                      name={`subOrgmOrgOrGroup.orgList`}
                       loadOptions={getAsyncOranizationList}
-                      isError={(!!errors?.subOrgmOrgOrGroupDto as any)?.orgList}
+                      isError={(!!errors?.subOrgmOrgOrGroup as any)?.orgList}
                       errorMessage={
-                        (errors?.subOrgmOrgOrGroupDto as any)?.orgList
+                        (errors?.subOrgmOrgOrGroup as any)?.orgList
                           ?.message as string
                       }
                       closeMenuOnSelect={false}
