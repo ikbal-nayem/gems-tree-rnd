@@ -368,7 +368,7 @@ const NodeForm = ({
                         placeholder={
                           isNotEnamCommittee ? "বাছাই করুন" : "Select"
                         }
-                        isRequired
+                        // isRequired
                         textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
                         // defaultValue={"permanent"}
                         valueKey="key"
@@ -391,7 +391,7 @@ const NodeForm = ({
                       <Autocomplete
                         label="প্রতিষ্ঠানের গ্ৰুপ"
                         placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
-                        name="orgGroup"
+                        name="subOrgmOrgOrGroupDto.orgGroup"
                         options={organizationGroupList}
                         noMargin
                         control={control}
@@ -399,24 +399,35 @@ const NodeForm = ({
                         getOptionLabel={(op) => op?.nameBn}
                         getOptionValue={(op) => op?.id}
                         // onChange={(org) => onOrgGroupChange(org)}
-                        isError={!!errors?.orgGroup}
-                        errorMessage={errors?.orgGroup?.message as string}
+                        isError={
+                          (!!errors?.subOrgmOrgOrGroupDto as any)?.orgGroup
+                        }
+                        errorMessage={
+                          (errors?.subOrgmOrgOrGroupDto as any)?.orgGroup
+                            ?.message as string
+                        }
                       />
                     ) : (
                       <Autocomplete
                         label="প্রতিষ্ঠান"
                         placeholder="প্রতিষ্ঠান বাছাই করুন"
-                        isRequired="প্রতিষ্ঠান বাছাই করুন"
+                        // isRequired="প্রতিষ্ঠান বাছাই করুন"
                         isAsync
                         isMulti
                         control={control}
                         noMargin
                         getOptionLabel={(op) => op.nameBn}
                         getOptionValue={(op) => op?.id}
-                        name="orgList"
+                        name={`subOrgmOrgOrGroupDto.orgList`}
                         loadOptions={getAsyncOranizationList}
-                        isError={!!errors?.orgList}
-                        errorMessage={errors?.orgList?.message as string}
+                        isError={
+                          (!!errors?.subOrgmOrgOrGroupDto as any)?.orgList
+                        }
+                        errorMessage={
+                          (errors?.subOrgmOrgOrGroupDto as any)?.orgList
+                            ?.message as string
+                        }
+                        closeMenuOnSelect={false}
                       />
                     )}
                   </div>
