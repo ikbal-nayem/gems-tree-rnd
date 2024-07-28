@@ -361,6 +361,9 @@ export const OMSService = {
 
     organogramPostList: async (payload): Promise<any> =>
         await axiosIns.post(OMS_SERVICE + "user-create-post/get-list", payload),
+
+    organogramApprovedPostList: async (id:string): Promise<any> =>
+        await axiosIns.get(OMS_SERVICE + "user-create-post/get-post/" + id),
   },
 
   SAVE: {
@@ -407,6 +410,9 @@ export const OMSService = {
   
     organogramPostCreate: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "user-create-post/create", payload),
+
+    organogramApprovePost: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "user-create-post/approve", payload),
   },
 
   UPDATE: {
@@ -463,6 +469,9 @@ export const OMSService = {
 
     organogramPostUpdate: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "user-create-post/update", payload),
+
+    organogramPostReject: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "user-create-post/take-reject", payload),
   },
 
   DELETE: {

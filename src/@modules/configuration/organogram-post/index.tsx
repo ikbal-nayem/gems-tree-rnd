@@ -17,6 +17,7 @@ import OrganoPostTable from "./Table";
 import { initMeta } from "@modules/post/lib";
 import Form from "./From";
 import { OMSService } from "@services/api/OMS.service";
+import PostApproveModel from "./postApproveModel";
 
 const OrganoPostList = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -37,6 +38,8 @@ const OrganoPostList = () => {
   const searchKey = useDebounce(search, 500);
   const [isEnum, setIsEnum] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
+  const [selectedPost, setSelectedPost] = useState<any>("");
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -105,6 +108,15 @@ const OrganoPostList = () => {
     setDeleteData(data);
   };
 
+  const handleApprovedModel = (data: any) => {
+    setIsModelOpen(true);
+    setSelectedPost(data);
+  };
+
+  const onModelClose = () => {
+    setIsModelOpen(false);
+  };
+
   const onCancelDelete = () => {
     setIsDeleteModal(false);
     setDeleteData(null);
@@ -156,7 +168,7 @@ const OrganoPostList = () => {
 
   return (
     <>
-      <PageTitle>পদবি</PageTitle>
+      <PageTitle>অননুমোদিত পদবি</PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
@@ -164,11 +176,9 @@ const OrganoPostList = () => {
       </PageToolbarRight>
       <div className="card p-5">
         <div className=" d-flex col-12 gap-4">
-          <Checkbox label="এনাম কমিটি" 
-          onChange={() => setIsEnum(!isEnum)} />
-          
-          <Checkbox label="সক্রিয়" 
-          onChange={() => setIsActive(!isActive)} />
+          <Checkbox label="এনাম কমিটি" onChange={() => setIsEnum(!isEnum)} />
+
+          <Checkbox label="সক্রিয়" onChange={() => setIsActive(!isActive)} />
         </div>
         <div className="d-flex gap-3">
           <Input
@@ -185,6 +195,7 @@ const OrganoPostList = () => {
             data={listData}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
+            handleApprovedModel={handleApprovedModel}
           >
             <Pagination
               meta={respMeta}
@@ -204,6 +215,13 @@ const OrganoPostList = () => {
           updateData={updateData}
           onSubmit={onSubmit}
           submitLoading={isSubmitLoading}
+        />
+
+        <PostApproveModel
+          isOpen={isModelOpen}
+          onClose={onModelClose}
+          selectedPost={selectedPost}
+          getDataList={getDataList}
         />
       </div>
       <ConfirmationModal
