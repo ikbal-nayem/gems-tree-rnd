@@ -6,10 +6,12 @@ import {
   ModalFooter,
   Table,
   TableCell,
+  TableHead,
   TableRow,
   Textarea,
   toast,
 } from "@gems/components";
+import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,7 +29,7 @@ const PostApproveModel = ({
   selectedPost,
   getDataList,
 }: ICard) => {
-  const [postData, setPostData] = useState<any>({});
+  const [postData, setPostData] = useState<IObject>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState<boolean>(false);
@@ -43,14 +45,13 @@ const PostApproveModel = ({
       setIsLoading(true);
       OMSService.FETCH.organogramApprovedPostList(selectedPost.id)
         .then((res) => {
-          setPostData(res.body);
+          setPostData(res.body || {});
         })
         .catch((err) => toast.error(err?.message))
         .finally(() => {
           setIsLoading(false);
         });
     }
-    setPostData(false);
   }, [isOpen, selectedPost]);
 
   const handleApprove = () => {
@@ -63,7 +64,7 @@ const PostApproveModel = ({
     OMSService.SAVE.organogramApprovePost(payload)
       .then((res) => {
         toast.success(res?.message);
-        setPostData([]);
+        setPostData({});
         getDataList();
         onClose();
       })
@@ -91,11 +92,11 @@ const PostApproveModel = ({
     OMSService.UPDATE.organogramPostReject(payload)
       .then((res) => {
         toast.success(res?.message);
+        setRejectModalOpen(false);
         getDataList();
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsSubmitLoading(false));
-    setRejectModalOpen(false);
   };
 
   const mergedExistingPosts = [
@@ -120,10 +121,10 @@ const PostApproveModel = ({
               <div className="row">
                 <div className="col-12 text-center">
                   <Table>
-                    <TableRow>
+                    <TableHead>
                       <TableCell text={"নতুন পদবি"} textAlign="center" />
                       <TableCell text={"বিদ্যমান পদবি"} textAlign="center" />
-                    </TableRow>
+                    </TableHead>
                     <TableRow>
                       <TableCell
                         text={`${postData?.newPostNameBn || ""} | ${
