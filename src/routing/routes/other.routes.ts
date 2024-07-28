@@ -37,9 +37,15 @@ let routeList: IAppRoutes[] = [
   },
   {
     link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
-    routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
+    routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
     element: lazy(() => import("@modules/configuration/organogram-approver")),
   },
+  {
+    link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+    routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+    element: lazy(() => import("@modules/configuration/organogram-post")),
+  },
+
 ];
 
 const permiableRouteList:IAppRoutes[] = [

@@ -162,6 +162,13 @@ const menuData = [
         title: MENU.BN.ORGANOGRAM_APPROVER,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+        link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+        title: MENU.BN.ORGANOGRAM_POST,
+        hasBullet: true,
+      },
+
     ],
   },
 ];
