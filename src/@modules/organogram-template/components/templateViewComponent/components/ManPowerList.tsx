@@ -1,8 +1,8 @@
 import { LABELS } from "@constants/common.constant";
 import {
   ContentPreloader,
-  ITableHeadColumn,
   Icon,
+  ITableHeadColumn,
   Separator,
   Table,
   TableCell,
@@ -89,19 +89,30 @@ const ManPowerList: FC<TableProps> = ({
           <h4 className={title ? "m-0 text-info" : "m-0"}>
             {title ? title : LABEL.SUM_OF_MANPOWER}
           </h4>
-          {!isSummaryOfManPowerObject &&
-            organogramId &&
-            !isBeginningVersion &&
-            !insideModal && (
-              <Icon
-                icon="swap_horiz"
-                variants="outlined"
-                hoverTitle={LABEL.CHANGES}
-                size={25}
-                className="text-primary text-hover-warning"
-                onClick={() => setIsOpen(true)}
+          <div>
+            {!isSummaryOfManPowerObject &&
+              organogramId &&
+              !isBeginningVersion &&
+              !insideModal && (
+                <Icon
+                  icon="swap_horiz"
+                  variants="outlined"
+                  hoverTitle={LABEL.CHANGES}
+                  size={25}
+                  className="text-primary text-hover-warning"
+                  onClick={() => setIsOpen(true)}
+                />
+              )}
+            {/* {isSummaryOfManPowerObject && (
+              <IconButton
+                iconName="file_download"
+                iconVariant="outlined"
+                color="primary"
+                hoverTitle={"ডাউনলোড করুন"}
+                onClick={onMenualDownload}
               />
-            )}
+            )} */}
+          </div>
         </div>
 
         <Separator className="mt-1 mb-0" />
