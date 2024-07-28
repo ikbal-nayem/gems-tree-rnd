@@ -7,8 +7,8 @@ import {
   Table,
   TableCell,
   TableRow,
+  TextEditorPreview,
 } from "@gems/components";
-import { TextEditorPreview } from "@gems/editor";
 import { COMMON_LABELS, isObjectNull, numEnToBn } from "@gems/utils";
 import { FC, Fragment, useState } from "react";
 import MPListChanges from "./MPListChanges";

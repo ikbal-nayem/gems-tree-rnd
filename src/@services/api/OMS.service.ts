@@ -380,7 +380,7 @@ export const OMSService = {
       ),
     organogramSingleNodeCreate: async (payload): Promise<any> =>
       await axiosIns.post(
-        OMS_SERVICE + "/organogram-structure/single-save",
+        OMS_SERVICE + "organogram-structure/single-save",
         payload
       ),
 

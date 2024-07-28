@@ -23,7 +23,7 @@ import {
 } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { enCheck } from "utility/checkValidation";
 import { isNotEmptyList } from "utility/utils";
@@ -40,6 +40,8 @@ interface INodeForm {
   serviceList: IObject[];
   cadreObj: IObject;
   isNotEnamCommittee: boolean;
+  draftListRecord?: any;
+  isTemplate?: boolean;
   maxNodeCode: number;
   setMaxNodeCode: (code: number) => void;
   maxManpowerCode: number;
@@ -64,6 +66,19 @@ const postTypeList = [
   },
 ];
 
+const orgmOrgOrGroupList = [
+  {
+    titleEn: "Organizations",
+    key: "ORGANIZATIONS",
+    titleBn: "প্রতিষ্ঠানসমূহ",
+  },
+  {
+    titleEn: "Organization Group",
+    key: "ORG_GROUP",
+    titleBn: "প্রতিষ্ঠানের গ্ৰুপ",
+  },
+];
+
 const NodeForm = ({
   isOpen,
   postList,
@@ -76,6 +91,8 @@ const NodeForm = ({
   updateData,
   defaultDisplayOrder,
   isNotEnamCommittee,
+  isTemplate,
+  draftListRecord,
   maxNodeCode,
   setMaxNodeCode,
   maxManpowerCode,
@@ -128,6 +145,38 @@ const NodeForm = ({
   };
 
   const [titleList, setTitleList] = useState<IObject[]>([]);
+  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
+    []
+  );
+  const payload = {
+    meta: {
+      page: 0,
+      limit: 1000,
+      sort: [{ order: "asc", field: "serialNo" }],
+    },
+    body: { searchKey: "", orgCategoryGroupId: null },
+  };
+  const orgPayload = useRef(payload);
+
+  useEffect(() => {
+    getOrgGroupList();
+  }, []);
+
+  const getOrgGroupList = () => {
+    OMSService.FETCH.organizationGroupList().then((resp) =>
+      setOrganizationGroupList(resp?.body)
+    );
+  };
+
+  const getAsyncOranizationList = useCallback((searchKey, callback) => {
+    orgPayload.current.body = {
+      ...orgPayload.current.body,
+      searchKey: searchKey ? searchKey?.trim() : "",
+    };
+    OMSService.getEnamOrganizationList(orgPayload?.current).then((resp) =>
+      callback(resp?.body)
+    );
+  }, []);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
     if (!notNullOrUndefined(val)) return;
@@ -296,27 +345,134 @@ const NodeForm = ({
     >
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
         <ModalBody>
-          <div className="row mb-4 d-flex justify-content-center">
-            <div className="col-12 col-md-4 col-lg-3 col-xl-2 border rounded-4 p-2 bg-gray-100">
-              <Input
-                label="প্রদর্শন ক্রম"
-                placeholder="প্রদর্শন ক্রম লিখুন"
-                isRequired
-                noMargin
-                numaricOnly
-                defaultValue={defaultDisplayOrder}
-                min={1}
-                type="number"
-                registerProperty={{
-                  ...register("displayOrder", {
-                    required: true,
-                  }),
-                }}
-                isError={!!errors?.displayOrder}
-              />
+          {!isTemplate || draftListRecord ? (
+            <div className="d-flex mb-4 p-1 justify-content-between flex-wrap border rounded-2 bg-gray-100">
+              <div className="d-flex flex-wrap">
+                <div className="me-4">
+                  <Checkbox
+                    noMargin
+                    label={"সাব-অর্গানোগ্রাম"}
+                    // isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                    registerProperty={{
+                      ...register("isSubOrgm", {
+                        onChange: (e) =>
+                          setValue("subOrgmOrgOrGroupName", null),
+                      }),
+                    }}
+                  />
+                  {watch("isSubOrgm") === true && (
+                    <div className="mt-3 min-w-200px">
+                      <Select
+                        // label={index < 1 ? "পদের ধরন" : ""}
+                        options={orgmOrgOrGroupList || []}
+                        noMargin
+                        placeholder={
+                          isNotEnamCommittee ? "বাছাই করুন" : "Select"
+                        }
+                        // isRequired
+                        textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
+                        // defaultValue={"permanent"}
+                        valueKey="key"
+                        registerProperty={{
+                          ...register(`subOrgmOrgOrGroupName`, {
+                            onChange: () => {
+                              setValue("subOrgmOrgOrGroup.orgGroup", null);
+                              setValue("subOrgmOrgOrGroup.orgList", null);
+                            },
+                          }),
+                        }}
+                        isError={!!errors?.subOrgmOrgOrGroupName}
+                      />
+                    </div>
+                  )}
+                </div>
+                {watch("subOrgmOrgOrGroupName") && (
+                  <div className="min-w-300px">
+                    {watch("subOrgmOrgOrGroupName") === "ORG_GROUP" ? (
+                      <Autocomplete
+                        label="প্রতিষ্ঠানের গ্ৰুপ"
+                        placeholder="প্রতিষ্ঠানের গ্ৰুপ বাছাই করুন"
+                        name="subOrgmOrgOrGroup.orgGroup"
+                        options={organizationGroupList}
+                        noMargin
+                        control={control}
+                        // autoFocus
+                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionValue={(op) => op?.id}
+                        // onChange={(org) => onOrgGroupChange(org)}
+                        isError={(!!errors?.subOrgmOrgOrGroup as any)?.orgGroup}
+                        errorMessage={
+                          (errors?.subOrgmOrgOrGroup as any)?.orgGroup
+                            ?.message as string
+                        }
+                      />
+                    ) : (
+                      <Autocomplete
+                        label="প্রতিষ্ঠান"
+                        placeholder="প্রতিষ্ঠান বাছাই করুন"
+                        // isRequired="প্রতিষ্ঠান বাছাই করুন"
+                        isAsync
+                        isMulti
+                        control={control}
+                        noMargin
+                        getOptionLabel={(op) => op.nameBn}
+                        getOptionValue={(op) => op?.id}
+                        name={`subOrgmOrgOrGroup.orgList`}
+                        loadOptions={getAsyncOranizationList}
+                        isError={(!!errors?.subOrgmOrgOrGroup as any)?.orgList}
+                        errorMessage={
+                          (errors?.subOrgmOrgOrGroup as any)?.orgList
+                            ?.message as string
+                        }
+                        closeMenuOnSelect={false}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+              <div>
+                <Input
+                  label="প্রদর্শন ক্রম"
+                  placeholder="প্রদর্শন ক্রম লিখুন"
+                  isRequired
+                  noMargin
+                  numaricOnly
+                  defaultValue={defaultDisplayOrder}
+                  min={1}
+                  type="number"
+                  registerProperty={{
+                    ...register("displayOrder", {
+                      required: true,
+                    }),
+                  }}
+                  isError={!!errors?.displayOrder}
+                />
+              </div>
             </div>
-          </div>
-          <div className="row border rounded p-2 my-1 bg-gray-100">
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="mb-4 p-1 border rounded-2 bg-gray-100">
+                {" "}
+                <Input
+                  label="প্রদর্শন ক্রম"
+                  placeholder="প্রদর্শন ক্রম লিখুন"
+                  isRequired
+                  noMargin
+                  numaricOnly
+                  defaultValue={defaultDisplayOrder}
+                  min={1}
+                  type="number"
+                  registerProperty={{
+                    ...register("displayOrder", {
+                      required: true,
+                    }),
+                  }}
+                  isError={!!errors?.displayOrder}
+                />
+              </div>
+            </div>
+          )}
+          <div className="row border rounded p-2 mx-1 my-1 bg-gray-100">
             {isNotEnamCommittee && (
               <div className="col-md-6 col-12">
                 <Input
