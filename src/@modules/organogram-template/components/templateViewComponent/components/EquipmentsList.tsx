@@ -1,6 +1,5 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
-import { Icon, Separator } from "@gems/components";
-import { TextEditorPreview } from "@gems/editor";
+import { Icon, Separator, TextEditorPreview } from "@gems/components";
 import { IObject, numEnToBn } from "@gems/utils";
 import { useState } from "react";
 import { isNotEmptyList } from "utility/utils";

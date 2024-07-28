@@ -1,10 +1,10 @@
-import { useAuth } from "@context/Auth";
-import { ENV } from "config/ENV.config";
 import { FC, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { App } from "../App";
 import { ErrorsPage } from "../pages/errors/ErrorsPage";
+import { App } from "../App";
 import { PrivateRoutes } from "./PrivateRoutes";
+import { ENV } from "config/ENV.config";
+import { useAuth } from "@context/Auth";
 
 const PUBLIC_URL = ENV.public_url;
 

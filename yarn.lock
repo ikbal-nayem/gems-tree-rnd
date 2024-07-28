@@ -1166,10 +1166,10 @@
     intl-messageformat "9.12.0"
     tslib "^2.1.0"
 
-"@gems/components@^1.7.11":
-  version "1.7.11"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/32/packages/npm/@gems/components/-/@gems/components-1.7.11.tgz#1a35abfa2aaeab03a91a8d493ff411cd5c6594dd"
-  integrity sha1-GjWr+iquqwOpGo1JP/QRzVxllN0=
+"@gems/components@^1.7.17":
+  version "1.7.17"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/32/packages/npm/@gems/components/-/@gems/components-1.7.17.tgz#fe8546807bca21cba6bdeeba82a25be6de457dde"
+  integrity sha1-/oVGgHvKIcumve66gqJb5t5Ffd4=
   dependencies:
     clsx "^2.1.1"
     million "^3.1.6"
@@ -1180,19 +1180,20 @@
     react-select "^5.8.0"
     react-toastify "^10.0.5"
 
-"@gems/editor@^1.0.6":
-  version "1.0.10"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/41/packages/npm/@gems/editor/-/@gems/editor-1.0.10.tgz#0ba44535c7c46bdf4a805dcbb6b97a7dbfe1626c"
-  integrity sha1-C6RFNcfEa99KgF3Ltrl6fb/hYmw=
+"@gems/editor@^1.0.12":
+  version "1.0.12"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/41/packages/npm/@gems/editor/-/@gems/editor-1.0.12.tgz#b730ae7f684b364260908f0eac86ca5ac5600961"
+  integrity sha1-tzCuf2hLNkJgkI8OrIbKWsVgCWE=
   dependencies:
     "@ckeditor/ckeditor5-react" "^6.2.0"
     ckeditor-gems-build "git+https://gitlab.gems.gov.bd/gemsckeditor/ckeditor-gems-build.git"
     clsx "^2.0.0"
+    million "^3.0.6"
 
-"@gems/utils@^1.5.3":
-  version "1.5.3"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/33/packages/npm/@gems/utils/-/@gems/utils-1.5.3.tgz#045898d6092b42eaa169a229360458d6301e791c"
-  integrity sha1-BFiY1gkrQuqhaaIpNgRY1jAeeRw=
+"@gems/utils@^1.5.6":
+  version "1.5.6"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/33/packages/npm/@gems/utils/-/@gems/utils-1.5.6.tgz#ee2c54655d60eb8e790045d67dc4bd509bf5bb53"
+  integrity sha1-7ixUZV1g6455AEXWfcS9UJv1u1M=
   dependencies:
     browser-image-compression "^2.0.2"
     jwt-decode "^3.1.2"
@@ -3315,7 +3316,7 @@ microseconds@0.2.0:
   resolved "https://registry.yarnpkg.com/microseconds/-/microseconds-0.2.0.tgz#233b25f50c62a65d861f978a4a4f8ec18797dc39"
   integrity sha512-n7DHHMjR1avBbSpsTBj6fmMGh2AGrifVV4e+WYc3Q9lO+xnSZ3NyhcBND3vzzatt05LFhoKFRxrIyklmLlUtyA==
 
-million@^3.1.6:
+million@^3.0.6, million@^3.1.6:
   version "3.1.11"
   resolved "https://registry.yarnpkg.com/million/-/million-3.1.11.tgz#dfd947270e89735657be8ec23335a16f19ba6cac"
   integrity sha512-6Vh1s0da0PzSqbbp9Zd8yMTIkOWnvBU4vNJCMHTZPXaY3fZ5h+N7s5croS/RBgjJIHz3WQZnvyNBQz7gQ6cqJg==
