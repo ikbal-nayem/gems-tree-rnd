@@ -45,10 +45,14 @@ let routeList: IAppRoutes[] = [
     routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
     element: lazy(() => import("@modules/configuration/organogram-post")),
   },
-
+  {
+    link: ROUTE_L2.OMS_AUDIT_LOG_ORGANOGRAM_LOG,
+    routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+    element: lazy(() => import("@modules/audit-log/organogram-log")),
+  },
 ];
 
-const permiableRouteList:IAppRoutes[] = [
+const permiableRouteList: IAppRoutes[] = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_MAIN_ACTIVITY,
     // routeKey: ROUTE_KEY.OMS_ORGANIZATION_MAIN_ACTIVITY,
