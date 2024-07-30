@@ -20,6 +20,7 @@ import {
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
+import { ActionLogModal } from "./actionLogModal";
 
 type TableProps = {
   children: ReactNode;
@@ -52,11 +53,16 @@ const OrganogramTable: FC<TableProps> = ({
     navigate(ROUTE_L2.OMS_AUDIT_LOG_ORGANOGRAM_VIEW + "?id=" + id);
   };
 
-  const [template, setTemplate] = useState<any>();
+  const [organogramId, setOrganogramId] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const onClose = () => setIsOpen(false);
-  const onClone = (template) => {
-    setTemplate(template);
+
+  const onClose = () => {
+    setIsOpen(false);
+    setOrganogramId("");
+  };
+
+  const onActivityLog = (item) => {
+    setOrganogramId(item?.id);
     setIsOpen(true);
   };
 
@@ -103,7 +109,7 @@ const OrganogramTable: FC<TableProps> = ({
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">অর্গানোগ্রাম দেখুন</h6>
                   </DropdownItem>
-                  <DropdownItem onClick={() => onClone(item)}>
+                  <DropdownItem onClick={() => onActivityLog(item)}>
                     <Icon size={19} icon="file_copy" />
                     <h6 className="mb-0 ms-3">কার্যক্রম</h6>
                   </DropdownItem>
@@ -126,6 +132,12 @@ const OrganogramTable: FC<TableProps> = ({
         <NoData details="কোনো অর্গানোগ্রামের তথ্য পাওয়া যায়নি!" />
       )}
       {children}
+      <ActionLogModal
+        title="অর্গানোগ্রামের সংক্রান্ত কার্যক্রম ও মন্তব্য সমূহ"
+        isOpen={isOpen}
+        onClose={onClose}
+        organogramId={organogramId || null}
+      />
     </>
   );
 };
