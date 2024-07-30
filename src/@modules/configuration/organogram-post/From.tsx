@@ -62,6 +62,7 @@ const Form = ({
                     required: "নাম (ইংরেজি) লিখুন",
                   }),
                 }}
+                isRequired
                 isError={!!errors?.postNameEn}
                 errorMessage={errors?.postNameEn?.message as string}
               />
@@ -72,9 +73,10 @@ const Form = ({
                 placeholder="নাম (বাংলা) লিখুন"
                 registerProperty={{
                   ...register("postNameBn", {
-                    required: "নাম (ইংরেজি) লিখুন",
+                    required: "নাম (বাংলা) লিখুন",
                   }),
                 }}
+                isRequired
                 isError={!!errors?.postNameBn}
                 errorMessage={errors?.postNameBn?.message as string}
               />
