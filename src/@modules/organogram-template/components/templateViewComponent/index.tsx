@@ -362,8 +362,11 @@ const TemplateViewComponent = ({
       const canvas = await html2canvas(element, {
         scale: 3,
         onclone: (clone: any) => {
+          clone.querySelector(".animate__animated") &&
+            (clone.querySelector(".animate__animated").style.animation =
+              "unset");
           clone.querySelector(".animate__fadeIn") &&
-            (clone.querySelector(".animate__fadeIn").style.animation = "none");
+            (clone.querySelector(".animate__fadeIn").style.animation = "unset");
           clone.querySelector(".summary-manpower-pdfGenerator").style.overflow =
             "auto";
           clone.querySelector(".summary-manpower-pdfGenerator").style.height =
