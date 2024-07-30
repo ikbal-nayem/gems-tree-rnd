@@ -1,5 +1,6 @@
 import { LABELS } from "@constants/common.constant";
 import {
+  Button,
   ContentPreloader,
   Icon,
   ITableHeadColumn,
@@ -24,6 +25,9 @@ type TableProps = {
   insideModal?: boolean;
   organogramId?: string;
   title?: string;
+  onDownloadPDF?: (type: string) => void;
+  isSinglePDFLoading?: boolean;
+  isDownloadVisible?: boolean;
 };
 
 const postTypeList = [
@@ -65,6 +69,9 @@ const ManPowerList: FC<TableProps> = ({
   summaryOfManPowerObject,
   isSummaryOfManPowerObject,
   title,
+  onDownloadPDF,
+  isSinglePDFLoading,
+  isDownloadVisible,
 }) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
@@ -82,6 +89,7 @@ const ManPowerList: FC<TableProps> = ({
   const COMMON_LABEL = langEn ? COMMON_LABELS.EN : COMMON_LABELS;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onClose = () => setIsOpen(false);
+
   return (
     <>
       <div className="card border p-3">
@@ -89,7 +97,7 @@ const ManPowerList: FC<TableProps> = ({
           <h4 className={title ? "m-0 text-info" : "m-0"}>
             {title ? title : LABEL.SUM_OF_MANPOWER}
           </h4>
-          <div>
+          <div className="d-flex gap-1">
             {!isSummaryOfManPowerObject &&
               organogramId &&
               !isBeginningVersion &&
@@ -99,19 +107,28 @@ const ManPowerList: FC<TableProps> = ({
                   variants="outlined"
                   hoverTitle={LABEL.CHANGES}
                   size={25}
-                  className="text-primary text-hover-warning"
+                  className="text-primary text-hover-warning mt-2"
                   onClick={() => setIsOpen(true)}
                 />
               )}
-            {/* {isSummaryOfManPowerObject && (
-              <IconButton
-                iconName="file_download"
-                iconVariant="outlined"
+            {isDownloadVisible && (
+              <Button
                 color="primary"
-                hoverTitle={"ডাউনলোড করুন"}
-                onClick={onMenualDownload}
-              />
-            )} */}
+                className="rounded-circle px-3 py-3"
+                isDisabled={isSinglePDFLoading}
+                size="sm"
+                variant="active-light"
+                onClick={() => onDownloadPDF("print")}
+              >
+                {isSinglePDFLoading ? (
+                  <span
+                    className={`spinner-border spinner-border-md align-middle`}
+                  ></span>
+                ) : (
+                  <Icon icon="download" color="primary" size={20} />
+                )}
+              </Button>
+            )}
           </div>
         </div>
 
