@@ -133,7 +133,7 @@ const OrganogramTable: FC<TableProps> = ({
       )}
       {children}
       <ActionLogModal
-        title="অর্গানোগ্রামের সংক্রান্ত কার্যক্রম ও মন্তব্য সমূহ"
+        title="অর্গানোগ্রামের সংক্রান্ত কার্যক্রম সমূহ"
         isOpen={isOpen}
         onClose={onClose}
         organogramId={organogramId || null}

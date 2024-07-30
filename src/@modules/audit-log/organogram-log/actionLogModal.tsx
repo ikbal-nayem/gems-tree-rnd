@@ -6,14 +6,12 @@ import {
   ModalBody,
   ModalFooter,
   NoData,
-  Separator,
-  Textarea,
   toast,
 } from "@gems/components";
-import { ReactNode, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { ActivitesLog } from "../components/ActivityLogs/ActivityLog";
 import { IObject } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { useEffect, useState } from "react";
+import { ActivitesLog } from "../components/ActivityLogs/ActivityLog";
 
 interface ActionLogModalProps {
   title?: string;
@@ -31,20 +29,19 @@ export const ActionLogModal = ({
   const [activityLogData, setActivityLogData] = useState<IObject[]>([]);
   const [isActivityLoading, setIsActivityLoading] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   getActivityLogData();
-  //   getRemarksData();
-  // }, []);
+  useEffect(() => {
+    if (isOpen) getActivityLogData();
+  }, [isOpen, organogramId]);
 
-  // const getActivityLogData = () => {
-  //   setIsActivityLoading(true);
-  //   ACRService.FETCH.shortLogByACRId(acrId)
-  //     .then((res) => setActivityLogData(res?.body || []))
-  //     .catch((err) => toast.error(err?.message))
-  //     .finally(() => {
-  //       setIsActivityLoading(false);
-  //     });
-  // };
+  const getActivityLogData = () => {
+    setIsActivityLoading(true);
+    OMSService.FETCH.getOrganogramLogById(organogramId)
+      .then((res) => setActivityLogData(res?.body || []))
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsActivityLoading(false);
+      });
+  };
 
   return (
     <Modal
@@ -58,7 +55,7 @@ export const ActionLogModal = ({
       <ModalBody>
         {isActivityLoading && <ContentPreloader />}
         {!isActivityLoading && activityLogData?.length > 0 ? (
-          <ActivitesLog applicationComments={activityLogData} />
+          <ActivitesLog data={activityLogData} />
         ) : null}
         {!isActivityLoading && !(activityLogData?.length > 0) && (
           <NoData details="কোনো কার্যক্রম তথ্য পাওয়া যাচ্ছে না!" />
