@@ -49,7 +49,7 @@ const OrganogramTable: FC<TableProps> = ({
   //     navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
   //   };
   const navigateToView = (id: string) => {
-    navigate(ROUTE_L2.OMS_ORGANOGRAM_VIEW + "?id=" + id);
+    navigate(ROUTE_L2.OMS_AUDIT_LOG_ORGANOGRAM_VIEW + "?id=" + id);
   };
 
   const [template, setTemplate] = useState<any>();
