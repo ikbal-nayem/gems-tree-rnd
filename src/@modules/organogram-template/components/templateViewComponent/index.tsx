@@ -85,7 +85,10 @@ const TemplateViewComponent = ({
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [isApproveLoading, setApproveLoading] = useState<boolean>(false);
   const [isPDFLoading, setPDFLoading] = useState<boolean>(false);
-  const [isSinglePDFLoading, setSinglePDFLoading] = useState<boolean>(false);
+  const [isSummaryManpowerPDFLoading, setSummaryManpowerPDFLoading] =
+    useState<boolean>(false);
+  const [isEquipmentsPDFLoading, setEquipmentsPDFLoading] =
+    useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [modalButtonLabel, setModalButtonLabel] = useState<any>();
@@ -343,7 +346,9 @@ const TemplateViewComponent = ({
     : "";
 
   const captureSinglePageToPDF = async (className: string, pdfName: string) => {
-    setSinglePDFLoading(true);
+    if (className === "summary-manpower-pdfGenerator") {
+      setSummaryManpowerPDFLoading(true);
+    } else setEquipmentsPDFLoading(true);
     // Get references to the HTML elements you want to capture
     const elementsToCapture = document.getElementsByClassName(className);
     // Create a new instance of jsPDF
@@ -360,19 +365,10 @@ const TemplateViewComponent = ({
       const canvas = await html2canvas(element, {
         scale: 3,
         onclone: (clone: any) => {
-          if (className === "summary-manpower-pdfGenerator") {
-            clone.querySelector(
-              ".summary-manpower-pdfGenerator"
-            ).style.overflow = "auto";
-            clone.querySelector(".summary-manpower-pdfGenerator").style.height =
-              "fit-content";
-            clone.querySelector(
-              ".summary-manpower-pdfGenerator"
-            ).style.padding = "20px";
-            clone.querySelector(
-              ".summary-manpower-pdfGenerator"
-            ).style.paddingBottom = "30px";
-          }
+          clone.querySelector("." + className).style.overflow = "auto";
+          clone.querySelector("." + className).style.height = "fit-content";
+          clone.querySelector("." + className).style.padding = "20px";
+          clone.querySelector("." + className).style.paddingBottom = "30px";
         },
       });
 
@@ -425,7 +421,9 @@ const TemplateViewComponent = ({
 
     // Save or display the PDF
     pdf.save(pdfName + ".pdf");
-    setSinglePDFLoading(false);
+    if (className === "summary-manpower-pdfGenerator") {
+      setSummaryManpowerPDFLoading(false);
+    } else setEquipmentsPDFLoading(false);
   };
 
   return (
@@ -715,7 +713,6 @@ const TemplateViewComponent = ({
       <div
         className="summary-manpower-pdfGenerator"
         style={{ overflow: "hidden", height: 0 }}
-        id="divToPrint"
       >
         <div className="mb-6 text-center">
           <p className="fs-2 mb-0">{orgName || titleName || null}</p>
@@ -728,6 +725,27 @@ const TemplateViewComponent = ({
           data={manpowerData}
           langEn={langEn}
           isDownloadVisible={false}
+        />
+      </div>
+      {/* Manpower pdf generator Stop */}
+
+      {/* Equipment/TO&E pdf generator Start*/}
+      <div
+        className="equipments-pdfGenerator"
+        style={{ overflow: "hidden", height: 0 }}
+      >
+        <div className="mb-6 text-center">
+          <p className="fs-2 mb-0">{orgName || titleName || null}</p>
+          <p className="fs-3 mb-0">{versionName}</p>
+        </div>
+        <EquipmentsList
+          data={updateData?.miscellaneousPointDtoList || []}
+          othersData={{
+            isInventoryOthers: updateData?.isInventoryOthers,
+            inventoryOthersObject: updateData?.inventoryOthersObject || "",
+          }}
+          inventoryData={inventoryData || []}
+          langEn={langEn}
         />
       </div>
       {/* Manpower pdf generator Stop */}
@@ -751,6 +769,9 @@ const TemplateViewComponent = ({
               isBeginningVersion={isBeginningVersion}
               organogramId={organogramId}
               insideModal={false}
+              onDownloadPDF={captureSinglePageToPDF}
+              isEquipmentsPDFLoading={isEquipmentsPDFLoading}
+              isDownloadVisible={true}
             />
           </div>
           {/* {(!orgName || !orgParentName) && !organogramView && ( */}
@@ -817,7 +838,7 @@ const TemplateViewComponent = ({
               organogramId={organogramId}
               onDownloadPDF={captureSinglePageToPDF}
               insideModal={false}
-              isSinglePDFLoading={isSinglePDFLoading}
+              isSummaryManpowerPDFLoading={isSummaryManpowerPDFLoading}
               isDownloadVisible={true}
             />
           </div>
