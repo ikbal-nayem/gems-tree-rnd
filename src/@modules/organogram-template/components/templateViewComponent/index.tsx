@@ -342,12 +342,10 @@ const TemplateViewComponent = ({
       ) + " রিপোর্ট"
     : "";
 
-  const captureSinglePageToPDF = async (downloadType: string) => {
+  const captureSinglePageToPDF = async (className: string, pdfName: string) => {
     setSinglePDFLoading(true);
     // Get references to the HTML elements you want to capture
-    const elementsToCapture = document.getElementsByClassName(
-      "summary-manpower-pdfGenerator"
-    );
+    const elementsToCapture = document.getElementsByClassName(className);
     // Create a new instance of jsPDF
     const pdf: any = new jsPDF("p", "px", "letter");
 
@@ -362,24 +360,27 @@ const TemplateViewComponent = ({
       const canvas = await html2canvas(element, {
         scale: 3,
         onclone: (clone: any) => {
-          clone.querySelector(".animate__animated") &&
-            (clone.querySelector(".animate__animated").style.animation =
-              "unset");
-          clone.querySelector(".animate__fadeIn") &&
-            (clone.querySelector(".animate__fadeIn").style.animation = "unset");
-          clone.querySelector(".summary-manpower-pdfGenerator").style.overflow =
-            "auto";
-          clone.querySelector(".summary-manpower-pdfGenerator").style.height =
-            "fit-content";
-          clone.querySelector(".summary-manpower-pdfGenerator").style.padding =
-            "20px";
-          clone.querySelector(
-            ".summary-manpower-pdfGenerator"
-          ).style.paddingBottom = "30px";
+          if (className === "summary-manpower-pdfGenerator") {
+            clone.querySelector(".animate__animated") &&
+              (clone.querySelector(".animate__animated").style.animation =
+                "unset");
+            clone.querySelector(".animate__fadeIn") &&
+              (clone.querySelector(".animate__fadeIn").style.animation =
+                "unset");
+            clone.querySelector(
+              ".summary-manpower-pdfGenerator"
+            ).style.overflow = "auto";
+            clone.querySelector(".summary-manpower-pdfGenerator").style.height =
+              "fit-content";
+            clone.querySelector(
+              ".summary-manpower-pdfGenerator"
+            ).style.padding = "20px";
+            clone.querySelector(
+              ".summary-manpower-pdfGenerator"
+            ).style.paddingBottom = "30px";
+          }
         },
       });
-
-      // if (i > 0) pdf.addPage();
 
       // Convert the canvas to an image and add it to the PDF
 
@@ -427,17 +428,9 @@ const TemplateViewComponent = ({
         pdf.internal.pageSize.getHeight() - 4
       );
     }
-    // For open direct print
-    // if (downloadType === "print") {
-
-    pdf.autoPrint();
-    window.open(pdf.output("bloburl"), "_blank");
-    // }
 
     // Save or display the PDF
-    // if (downloadType === "pdf") {
-    // pdf.save("Summary of Manpower.pdf");
-    // }
+    pdf.save(pdfName + ".pdf");
     setSinglePDFLoading(false);
   };
 

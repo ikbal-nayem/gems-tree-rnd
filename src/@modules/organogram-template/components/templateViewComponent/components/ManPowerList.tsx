@@ -25,7 +25,7 @@ type TableProps = {
   insideModal?: boolean;
   organogramId?: string;
   title?: string;
-  onDownloadPDF?: (type: string) => void;
+  onDownloadPDF?: (className: string, pdfName: string) => void;
   isSinglePDFLoading?: boolean;
   isDownloadVisible?: boolean;
 };
@@ -118,7 +118,12 @@ const ManPowerList: FC<TableProps> = ({
                 isDisabled={isSinglePDFLoading}
                 size="sm"
                 variant="active-light"
-                onClick={() => onDownloadPDF("print")}
+                onClick={() =>
+                  onDownloadPDF(
+                    "summary-manpower-pdfGenerator",
+                    "Summary of Manpower Data"
+                  )
+                }
               >
                 {isSinglePDFLoading ? (
                   <span
