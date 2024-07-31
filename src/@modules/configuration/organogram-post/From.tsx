@@ -6,8 +6,9 @@ import {
   DrawerFooter,
   Input,
 } from "@gems/components";
-import { isObjectNull } from "@gems/utils";
-import { useEffect } from "react";
+import { IObject, isObjectNull } from "@gems/utils";
+import { CoreService } from "@services/api/Core.service";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface IPostForm {
@@ -31,6 +32,7 @@ const Form = ({
     reset,
     formState: { errors },
   } = useForm();
+  const [titleList, setTitleList] = useState<IObject[]>([]);
 
   useEffect(() => {
     if (!isObjectNull(updateData)) {
@@ -42,6 +44,12 @@ const Form = ({
       reset({ isActive: true, isEnum: false });
     }
   }, [updateData, reset]);
+
+  useEffect(() => {
+    CoreService.getCorePostList().then((resp) => {
+      setTitleList(resp?.body);
+    });
+  }, []);
 
   return (
     <Drawer
@@ -63,6 +71,9 @@ const Form = ({
                   }),
                 }}
                 isRequired
+                suggestionOptions={titleList || []}
+                autoSuggestionKey="nameEn"
+                suggestionTextKey="nameEn"
                 isError={!!errors?.postNameEn}
                 errorMessage={errors?.postNameEn?.message as string}
               />
@@ -77,6 +88,9 @@ const Form = ({
                   }),
                 }}
                 isRequired
+                suggestionOptions={titleList || []}
+                autoSuggestionKey="nameBn"
+                suggestionTextKey="nameBn"
                 isError={!!errors?.postNameBn}
                 errorMessage={errors?.postNameBn?.message as string}
               />
