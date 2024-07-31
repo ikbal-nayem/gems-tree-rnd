@@ -361,12 +361,6 @@ const TemplateViewComponent = ({
         scale: 3,
         onclone: (clone: any) => {
           if (className === "summary-manpower-pdfGenerator") {
-            clone.querySelector(".animate__animated") &&
-              (clone.querySelector(".animate__animated").style.animation =
-                "unset");
-            clone.querySelector(".animate__fadeIn") &&
-              (clone.querySelector(".animate__fadeIn").style.animation =
-                "unset");
             clone.querySelector(
               ".summary-manpower-pdfGenerator"
             ).style.overflow = "auto";

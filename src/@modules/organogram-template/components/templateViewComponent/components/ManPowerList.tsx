@@ -12,6 +12,7 @@ import {
 } from "@gems/components";
 import { COMMON_LABELS, isObjectNull, numEnToBn } from "@gems/utils";
 import { FC, Fragment, useState } from "react";
+import "../style.scss";
 import MPListChanges from "./MPListChanges";
 import { LOCAL_LABELS } from "./labels";
 
