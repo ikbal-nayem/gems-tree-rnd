@@ -360,10 +360,17 @@ export const OMSService = {
       ),
 
     organogramPostList: async (payload): Promise<any> =>
-        await axiosIns.post(OMS_SERVICE + "user-create-post/get-list", payload),
+      await axiosIns.post(OMS_SERVICE + "user-create-post/get-list", payload),
 
-    organogramApprovedPostList: async (id:string): Promise<any> =>
-        await axiosIns.get(OMS_SERVICE + "user-create-post/get-post/" + id),
+    organogramApprovedPostList: async (id: string): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "user-create-post/get-post/" + id),
+
+    getOrganogramLogById: async (organogramId: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-oms-log-by-id/" +
+          organogramId
+      ),
   },
 
   SAVE: {
@@ -407,7 +414,7 @@ export const OMSService = {
 
     organogramApprover: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "orgm-approver/create", payload),
-  
+
     organogramPostCreate: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "user-create-post/create", payload),
 
@@ -533,7 +540,6 @@ export const OMSService = {
       ),
 
     organogramPostDelete: async (payload): Promise<any> =>
-      await axiosIns.put(
-        OMS_SERVICE + "user-create-post/delete-all", payload),
+      await axiosIns.put(OMS_SERVICE + "user-create-post/delete-all", payload),
   },
 };
