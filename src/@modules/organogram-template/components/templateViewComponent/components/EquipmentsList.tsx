@@ -1,5 +1,5 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
-import { Icon, Separator, TextEditorPreview } from "@gems/components";
+import { Button, Icon, Separator, TextEditorPreview } from "@gems/components";
 import { IObject, numEnToBn } from "@gems/utils";
 import { useState } from "react";
 import { isNotEmptyList } from "utility/utils";
@@ -14,6 +14,9 @@ interface IEquipmentsForm {
   organogramId?: string;
   insideModal?: boolean;
   title?: string;
+  onDownloadPDF?: (className: string, pdfName: string) => void;
+  isEquipmentsPDFLoading?: boolean;
+  isDownloadVisible?: boolean;
 }
 
 const EquipmentsForm = ({
@@ -25,6 +28,9 @@ const EquipmentsForm = ({
   organogramId,
   insideModal,
   title,
+  onDownloadPDF,
+  isEquipmentsPDFLoading,
+  isDownloadVisible,
 }: IEquipmentsForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -34,23 +40,45 @@ const EquipmentsForm = ({
   return (
     <>
       <div className="card border p-3">
-        <div className="card-head d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between">
           <h4 className={title ? "m-0 text-info" : "m-0"}>
             {title ? title : LABEL.EQUIPMENTS}
           </h4>
-          {!othersData?.isInventoryOthers &&
-            organogramId &&
-            !isBeginningVersion &&
-            !insideModal && (
-              <Icon
-                icon="swap_horiz"
-                variants="outlined"
-                hoverTitle={LABEL.CHANGES}
-                size={25}
-                className="text-primary text-hover-warning"
-                onClick={() => setIsOpen(true)}
-              />
+          <div className="d-flex gap-1">
+            {!othersData?.isInventoryOthers &&
+              organogramId &&
+              !isBeginningVersion &&
+              !insideModal && (
+                <Icon
+                  icon="swap_horiz"
+                  variants="outlined"
+                  hoverTitle={LABEL.CHANGES}
+                  size={25}
+                  className="text-primary text-hover-warning mt-2"
+                  onClick={() => setIsOpen(true)}
+                />
+              )}
+            {isDownloadVisible && (
+              <Button
+                color="primary"
+                className="rounded-circle px-3 py-3"
+                isDisabled={isEquipmentsPDFLoading}
+                size="sm"
+                variant="active-light"
+                onClick={() =>
+                  onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
+                }
+              >
+                {isEquipmentsPDFLoading ? (
+                  <span
+                    className={`spinner-border spinner-border-md align-middle`}
+                  ></span>
+                ) : (
+                  <Icon icon="download" color="primary" size={20} />
+                )}
+              </Button>
             )}
+          </div>
         </div>
         <Separator className="mt-1 mb-1" />
         {othersData?.isInventoryOthers ? (

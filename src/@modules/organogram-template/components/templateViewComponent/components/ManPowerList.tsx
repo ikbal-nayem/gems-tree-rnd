@@ -27,7 +27,7 @@ type TableProps = {
   organogramId?: string;
   title?: string;
   onDownloadPDF?: (className: string, pdfName: string) => void;
-  isSinglePDFLoading?: boolean;
+  isSummaryManpowerPDFLoading?: boolean;
   isDownloadVisible?: boolean;
 };
 
@@ -71,7 +71,7 @@ const ManPowerList: FC<TableProps> = ({
   isSummaryOfManPowerObject,
   title,
   onDownloadPDF,
-  isSinglePDFLoading,
+  isSummaryManpowerPDFLoading,
   isDownloadVisible,
 }) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
@@ -116,7 +116,7 @@ const ManPowerList: FC<TableProps> = ({
               <Button
                 color="primary"
                 className="rounded-circle px-3 py-3"
-                isDisabled={isSinglePDFLoading}
+                isDisabled={isSummaryManpowerPDFLoading}
                 size="sm"
                 variant="active-light"
                 onClick={() =>
@@ -126,7 +126,7 @@ const ManPowerList: FC<TableProps> = ({
                   )
                 }
               >
-                {isSinglePDFLoading ? (
+                {isSummaryManpowerPDFLoading ? (
                   <span
                     className={`spinner-border spinner-border-md align-middle`}
                   ></span>
