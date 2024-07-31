@@ -6,7 +6,7 @@ import {
   DrawerFooter,
   Input,
 } from "@gems/components";
-import { IObject, isObjectNull } from "@gems/utils";
+import { enCheck, IObject, isObjectNull } from "@gems/utils";
 import { CoreService } from "@services/api/Core.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -68,6 +68,7 @@ const Form = ({
                 registerProperty={{
                   ...register("postNameEn", {
                     required: "নাম (ইংরেজি) লিখুন",
+                    validate: enCheck,
                   }),
                 }}
                 isRequired
