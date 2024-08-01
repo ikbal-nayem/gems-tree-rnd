@@ -771,7 +771,7 @@ const TemplateViewComponent = ({
               insideModal={false}
               onDownloadPDF={captureSinglePageToPDF}
               isEquipmentsPDFLoading={isEquipmentsPDFLoading}
-              isDownloadVisible={true}
+              isDownloadVisible={organogramOrganizationView ? true : false}
             />
           </div>
           {/* {(!orgName || !orgParentName) && !organogramView && ( */}
@@ -839,7 +839,7 @@ const TemplateViewComponent = ({
               onDownloadPDF={captureSinglePageToPDF}
               insideModal={false}
               isSummaryManpowerPDFLoading={isSummaryManpowerPDFLoading}
-              isDownloadVisible={true}
+              isDownloadVisible={organogramOrganizationView ? true : false}
             />
           </div>
           {langEn && (
