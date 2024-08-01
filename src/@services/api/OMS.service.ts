@@ -371,6 +371,11 @@ export const OMSService = {
           "organization-organogram/get-oms-log-by-id/" +
           organogramId
       ),
+    getSubVersionListByOrganogramId: async (payload: IObject): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-organogram/get-organogram-suv-versions",
+        payload
+      ),
   },
 
   SAVE: {
