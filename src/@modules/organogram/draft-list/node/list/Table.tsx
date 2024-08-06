@@ -63,7 +63,7 @@ const DataTable: FC<DataTableProps> = ({
                 text={
                   (isEnamCommittee
                     ? data?.parentNodeDto?.titleEn
-                    : data?.parentNodeDto?.titleBn) || COMMON_LABELS.NOT_ASSIGN
+                    : data?.parentNodeDto?.titleBn) || "প্রারম্ভিক দপ্তর"
                 }
               />
               <TableCell
