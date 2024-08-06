@@ -22,7 +22,6 @@ const OrganogramView = () => {
   const [isPreviousVerison, setIsPreviousVersion] = useState<boolean>(false);
   const [isOrgangramTab, setIsOrgangramTab] = useState<boolean>(true);
   const [verisonList, setVersionList] = useState<IObject[]>([]);
-  const [selectedVersionData, setSelectedVersionData] = useState<IObject>({});
   const [subVerisonList, setSubVersionList] = useState<IObject[]>([]);
   const [isBeginningVersion, setIsBeginningVersion] = useState<boolean>(false);
 
@@ -67,46 +66,12 @@ const OrganogramView = () => {
     OMSService.getVersionListByOrganogramId(organogramId)
       .then((resp) => {
         setVersionList(resp?.body);
-        setIsBeginningVersion(
-          resp?.body?.length &&
-            (resp?.body.length < 2 ||
-              resp?.body[resp?.body.length - 1]?.organogramId === organogramId)
-        );
-        // setIsLatestVersion(
-        //   resp?.body?.length &&
-        //     (resp?.body.length < 2 ||
-        //       resp?.body[0]?.organogramId === organogramId)
-        // );
-      })
-      .catch((e) => toast.error(e?.message));
-  };
-
-  useEffect(() => {
-    if (!isObjectNull(selectedVersionData)) getSubVersionListById();
-  }, [selectedVersionData]);
-
-  const getSubVersionListById = () => {
-    const reqPayload = {
-      organizationId: selectedVersionData?.organizationId,
-      orgmFromDate: selectedVersionData?.organogramDate,
-      orgmToDate:
-        (
-          !isListNull(verisonList) &&
-          verisonList[
-            verisonList.findIndex(
-              (fd) => fd["organogramId"] === selectedVersionData?.organogramId
-            ) + 1
-          ]
-        )?.organogramDate || null,
-    };
-    OMSService.FETCH.getSubVersionListByOrganogramId(reqPayload)
-      .then((resp) => {
-        setSubVersionList(resp?.body);
-        // setIsBeginningVersion(
-        //   resp?.body?.length &&
-        //     (resp?.body.length < 2 ||
-        //       resp?.body[resp?.body.length - 1]?.organogramId === organogramId)
-        // );
+        // if (resp?.body?.length) {
+        //   setIsBeginningVersion(
+        //     resp?.body.length < 2 ||
+        //       resp?.body[resp?.body.length - 1]?.organogramId === organogramId
+        //   );
+        // }
         // setIsLatestVersion(
         //   resp?.body?.length &&
         //     (resp?.body.length < 2 ||
@@ -120,12 +85,45 @@ const OrganogramView = () => {
     setOrganogramData(null);
     setSubVersionList([]);
     setOrganogramId(item?.organogramId);
-    setSelectedVersionData(item);
+    getSubVersionListById(item);
     setIsBeginningVersion(
       verisonList?.length &&
         verisonList[verisonList.length - 1]?.organogramId === item?.organogramId
     );
   };
+
+  const getSubVersionListById = (versionData) => {
+    const reqPayload = {
+      organizationId: versionData?.organizationId,
+      orgmFromDate: versionData?.organogramDate,
+      orgmToDate:
+        (
+          !isListNull(verisonList) &&
+          verisonList[
+            verisonList.findIndex(
+              (fd) => fd["organogramId"] === versionData?.organogramId
+            ) + 1
+          ]
+        )?.organogramDate || null,
+    };
+    OMSService.FETCH.getSubVersionListByOrganogramId(reqPayload)
+      .then((resp) => {
+        setSubVersionList(resp?.body);
+        // if (resp?.body?.length > 0) {
+        //   setIsBeginningVersion(
+        //     resp?.body.length < 2 ||
+        //       resp?.body[resp?.body.length - 1]?.organogramId === organogramId
+        //   );
+        // }
+        // setIsLatestVersion(
+        //   resp?.body?.length &&
+        //     (resp?.body.length < 2 ||
+        //       resp?.body[0]?.organogramId === organogramId)
+        // );
+      })
+      .catch((e) => toast.error(e?.message));
+  };
+
   const handleSubVersionChange = (item) => {
     setOrganogramData(null);
     setOrganogramId(item?.organogramId);
@@ -145,6 +143,8 @@ const OrganogramView = () => {
               setIsOrgangramTab(true);
               setOrganogramId(searchParam.get("id") || "");
               setIsPreviousVersion(false);
+              setSubVersionList([]);
+              setIsBeginningVersion(verisonList?.length > 1 ? false : true);
             }}
             className={`
               ${
