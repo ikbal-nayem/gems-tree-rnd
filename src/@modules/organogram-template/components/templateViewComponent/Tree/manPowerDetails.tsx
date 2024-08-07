@@ -5,14 +5,17 @@ import {
   ModalBody,
   ModalFooter,
   NoData,
+  Separator,
   Table,
   TableCell,
   TableRow,
+  Tag,
 } from "@gems/components";
 import {
   COMMON_LABELS,
   generateRowNumBn,
   IObject,
+  isListNull,
   isObjectNull,
   numEnToBn,
 } from "@gems/utils";
@@ -20,17 +23,12 @@ import { FC } from "react";
 
 type TableProps = {
   isEn: boolean;
-  dataList: IObject[];
+  data: IObject;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const ManPowerDetails: FC<TableProps> = ({
-  dataList,
-  isEn,
-  isOpen,
-  onClose,
-}) => {
+const ManPowerDetails: FC<TableProps> = ({ data, isEn, isOpen, onClose }) => {
   const COMMON_LABEL = isEn ? COMMON_LABELS.EN : COMMON_LABELS;
   const columns: ITableHeadColumn[] = [
     { title: isEn ? "SL NO" : "ক্রমিক", width: 100 },
@@ -81,7 +79,7 @@ const ManPowerDetails: FC<TableProps> = ({
 
   return (
     <Modal
-      title={isEn ? "ManPower" : "জনবল"}
+      title={isEn ? "Node Details" : "পদ/স্তরের বিস্তারিত"}
       isOpen={isOpen}
       handleClose={onClose}
       holdOn
@@ -89,9 +87,48 @@ const ManPowerDetails: FC<TableProps> = ({
     >
       <ModalBody>
         <div className="p-2">
-          {dataList?.length ? (
+          <div>
+            {data?.isSubOrgm ? (
+              <div className="p-1 border rounded my-3">
+                <p className="fs-5 mb-0 fw-bolder">
+                  {isEn ? "Sub-Organogram" : "সাব-অর্গানোগ্রাম"}
+                </p>
+                <Separator className="mt-1 mb-2" />
+                {!isObjectNull(data?.subOrgmOrgOrGroup)
+                  ? data?.subOrgmOrgOrGroupName === "ORGANIZATIONS"
+                    ? !isListNull(data?.subOrgmOrgOrGroup?.orgList) && (
+                        <div>
+                          {isEn ? "Organizations" : "প্রতিষ্ঠানসমূহ"}:{" "}
+                          {data?.subOrgmOrgOrGroup?.orgList?.map((org) => (
+                            <Tag
+                              title={isEn ? org?.nameEn : org?.nameBn}
+                              className="me-2 my-1"
+                              color="dark"
+                            />
+                          ))}
+                        </div>
+                      )
+                    : !isObjectNull(data?.subOrgmOrgOrGroup?.orgGroup) && (
+                        <div>
+                          {isEn ? "Organization Group" : "প্রতিষ্ঠানের গ্ৰুপ"}:{" "}
+                          <Tag
+                            title={
+                              isEn
+                                ? data?.subOrgmOrgOrGroup?.orgGroup?.nameEn
+                                : data?.subOrgmOrgOrGroup?.orgGroup?.nameBn
+                            }
+                            className="me-2 my-1"
+                            color="dark"
+                          />
+                        </div>
+                      )
+                  : COMMON_LABELS.NOT_ASSIGN}
+              </div>
+            ) : null}
+          </div>
+          {data?.manpowerList?.length > 0 ? (
             <Table columns={columns}>
-              {dataList.map((item, idx) => (
+              {data?.manpowerList?.map((item, idx) => (
                 <TableRow key={idx}>
                   <TableCell
                     text={isEn ? (idx + 1).toString() : generateRowNumBn(idx)}
