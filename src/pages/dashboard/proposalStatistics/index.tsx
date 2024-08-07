@@ -2,7 +2,8 @@ import { ContentPreloader } from "@gems/components";
 import { ENV } from "config/ENV.config";
 import { useEffect, useState } from "react";
 // import { COMMON_LABELS } from "@gems/utils";
-// import { chartRespValidate } from "utility/utils";
+import { OMSService } from "@services/api/OMS.service";
+import { chartRespValidate } from "utility/utils";
 import Graph from "./Graph";
 
 const ProposalStatistics = ({ reqBody }) => {
@@ -12,7 +13,7 @@ const ProposalStatistics = ({ reqBody }) => {
     series: [
       {
         name: "প্রস্তাবের পরিসংখ্যান",
-        data: [120, 35, 85],
+        data: [0, 0, 0],
       },
     ],
     categories: [
@@ -27,16 +28,17 @@ const ProposalStatistics = ({ reqBody }) => {
   }, [reqBody]);
 
   const getData = () => {
-    // DashboardService.getRecruitmentStatisticsList(reqBody)
-    //   .then((res) => {
-    //     if (chartRespValidate(res)) {
-    //       setChartData(res?.body);
-    //       setDataFound(true);
-    //     } else {
-    //       setDataFound(false);
-    //     }
-    //   })
-    //   .finally(() => setIsLoading(false));
+    OMSService.FETCH.proposalStatistics()
+      .then((res) => {
+        if (chartRespValidate(res)) {
+          setChartData(res?.body);
+          // setDataFound(true);
+        }
+        // else {
+        //   setDataFound(false);
+        // }
+      })
+      .finally(() => setIsLoading(false));
   };
   return (
     <div>

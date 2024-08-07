@@ -1,38 +1,42 @@
 import {
+  ACLWrapper,
   Dropdown,
   DropdownItem,
-  ITableHeadColumn,
   Icon,
+  ITableHeadColumn,
   Table,
   TableCell,
   TableRow,
-  Tag,
 } from "@gems/components";
-import { COMMON_LABELS, IObject, generateRowNumBn } from "@gems/utils";
+import { COMMON_LABELS, generateRowNumBn, ROLES } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
   { title: COMMON_LABELS.SL_NO, minWidth: 50 },
-  { title: "ব্যবহারকারী", minWidth: 100 },
-  { title: "প্রতিষ্ঠানসমূহ", minWidth: 100 },
-  { title: COMMON_LABELS.ACTION, align: "end" },
+  { title: "নাম", minWidth: 200 },
+  { title: "এনাম কমিটি?", minWidth: 75 },
+  { title: "সক্রিয়?", minWidth: 75 },
+  { title: "বাতিল?", minWidth: 75 },
+  { title: "মন্তব্য", minWidth: 100 },
+  { title: COMMON_LABELS.ACTION },
 ];
 
-type DataTableProps = {
+type TableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
   handleDelete: (data) => void;
+  handleApprovedModel: (data) => void;
 };
 
-const DataTable: FC<DataTableProps> = ({
+const OrgPostTable: FC<TableProps> = ({
   children,
   data = [],
   handleUpdate,
   handleDelete,
+  handleApprovedModel,
 }) => {
   if (!data?.length) return;
-
   return (
     <>
       <Table columns={columns}>
@@ -40,37 +44,19 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.userDTO?.nameBn || "-"} />
+
+              <TableCell
+                text={data?.postNameBn || COMMON_LABELS.NOT_ASSIGN}
+                subText={data?.postNameEn}
+              />
+              <TableCell isActive={data?.isEnum} />
+              <TableCell isActive={data?.isActive} />
+              <TableCell isActive={data?.isRejected} />
+              <TableCell text={data?.remarks} />
               <TableCell>
-                {/* {data?.organizationDtoList?.length > 0
-                  ? data?.organizationDtoList?.map(
-                      (item: IObject, index: number) =>
-                        `${item?.nameBn}${
-                          index < data?.organizationDtoList?.length - 1
-                            ? ", "
-                            : ""
-                        }`
-                    )
-                  : "-"} */}
-                {data?.organizationDtoList?.length > 0
-                  ? data?.organizationDtoList?.map(
-                      (item: IObject, index: number) => (
-                        <Tag
-                          key={index}
-                          title={item?.nameBn || ""}
-                          color="secondary"
-                          variant="fill"
-                          className="me-1 mb-1 fw-normal"
-                        />
-                      )
-                    )
-                  : "-"}
-              </TableCell>
-              <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
-                  id={"data?.id"}
                 >
                   <DropdownItem
                     onClick={() => {
@@ -80,6 +66,17 @@ const DataTable: FC<DataTableProps> = ({
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem>
+
+                  <ACLWrapper visibleToRoles={[ROLES.SUPER_ADMIN]}>
+                    <DropdownItem
+                      onClick={() => {
+                        handleApprovedModel(data);
+                      }}
+                    >
+                      <Icon size={19} icon="approval" />
+                      <h6 className="mb-0 ms-3">অনুমোদন</h6>
+                    </DropdownItem>
+                  </ACLWrapper>
 
                   <DropdownItem
                     onClick={() => {
@@ -100,4 +97,4 @@ const DataTable: FC<DataTableProps> = ({
   );
 };
 
-export default DataTable;
+export default OrgPostTable;

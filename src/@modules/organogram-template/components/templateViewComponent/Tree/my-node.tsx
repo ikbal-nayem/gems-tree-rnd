@@ -10,7 +10,7 @@ import {
 import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, onView }) => {
+const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -26,7 +26,6 @@ const MyNode = ({ langEn, nodeData, onView }) => {
 
   let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
   let additionClass = nodeData?.isAddition ? "text-decoration-underline" : "";
-
   return (
     <div className={`position rounded border border-gray-400 border-1`}>
       <div className="bg-light rounded-top d-flex justify-content-between">
@@ -44,12 +43,14 @@ const MyNode = ({ langEn, nodeData, onView }) => {
                   ? "primary"
                   : "light"
               }
-              onClick={() => onView(nodeData)}
+              onClick={() => onViewOrManPowertableView(nodeData, 'view')}
             />
           </div>
         )}
 
-        <p className={`mb-0 fs-8  text-start ${deletedClass} ${additionClass}`}>
+        <p className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start" ${deletedClass} ${additionClass}`}
+              onClick={() => onViewOrManPowertableView(nodeData,"manPower")}
+              >
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn

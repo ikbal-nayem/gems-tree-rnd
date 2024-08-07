@@ -1,0 +1,182 @@
+import {
+  Button,
+  ITableHeadColumn,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  NoData,
+  Table,
+  TableCell,
+  TableRow,
+} from "@gems/components";
+import {
+  COMMON_LABELS,
+  generateRowNumBn,
+  IObject,
+  isObjectNull,
+  numEnToBn,
+} from "@gems/utils";
+import { FC } from "react";
+
+type TableProps = {
+  isEn: boolean;
+  dataList: IObject[];
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const ManPowerDetails: FC<TableProps> = ({
+  dataList,
+  isEn,
+  isOpen,
+  onClose,
+}) => {
+  const COMMON_LABEL = isEn ? COMMON_LABELS.EN : COMMON_LABELS;
+  const columns: ITableHeadColumn[] = [
+    { title: isEn ? "SL NO" : "ক্রমিক", width: 100 },
+    { title: isEn ? "Post" : "পদবি", width: 250 },
+    { title: isEn ? "Grade" : "গ্রেড", width: 150, align: "center" },
+    { title: isEn ? "Class" : "শ্রেণি", width: 150, align: "center" },
+    {
+      title: isEn ? "Service Type" : "সার্ভিসের ধরন",
+      width: 150,
+      align: "center",
+    },
+    {
+      title: isEn ? "No of Employees" : "জনবল সংখ্যা",
+      width: 200,
+      align: "center",
+    },
+    { title: isEn ? "Post Type" : "পদের ধরন", width: 150, align: "center" },
+  ];
+
+  const postTypeList = [
+    {
+      titleEn: "Proposed",
+      key: "proposed",
+      titleBn: "প্রস্তাবিত",
+    },
+    {
+      titleEn: "Permanent",
+      key: "permanent",
+      titleBn: "স্থায়ী",
+    },
+    {
+      titleEn: "Non Permanent",
+      key: "nonPermanent",
+      titleBn: "অস্থায়ী",
+    },
+  ];
+
+  const getPostTypeTitle = (key: string, isEn: boolean) => {
+    let notAssign = isEn ? "Not Assigned" : COMMON_LABELS.NOT_ASSIGN;
+    if (key) {
+      const postType = postTypeList.find((item) => item.key === key);
+      if (!isObjectNull(postType)) {
+        return isEn ? postType.titleEn : postType.titleBn;
+      } else return notAssign;
+    }
+    return notAssign;
+  };
+
+  return (
+    <Modal
+      title={isEn ? "ManPower" : "জনবল"}
+      isOpen={isOpen}
+      handleClose={onClose}
+      holdOn
+      size="lg"
+    >
+      <ModalBody>
+        <div className="p-2">
+          {dataList?.length ? (
+            <Table columns={columns}>
+              {dataList.map((item, idx) => (
+                <TableRow key={idx}>
+                  <TableCell
+                    text={isEn ? (idx + 1).toString() : generateRowNumBn(idx)}
+                    verticalAlign="top"
+                  />
+                  <TableCell
+                    text={
+                      item?.postDTO
+                        ? `${isEn ? item.postDTO.nameEn : item.postDTO.nameBn}${
+                            item.alternativePostListDTO?.length
+                              ? ` / ${item.alternativePostListDTO
+                                  .map((ap) => (isEn ? ap.nameEn : ap.nameBn))
+                                  .join(" / ")}`
+                              : ""
+                          }`
+                        : COMMON_LABEL.NOT_ASSIGN
+                    }
+                  />
+                  <TableCell
+                    text={
+                      item?.gradeDTO
+                        ? isEn
+                          ? item.gradeDTO.nameEn
+                          : item.gradeDTO.nameBn
+                        : COMMON_LABEL.NOT_ASSIGN
+                    }
+                    textAlign="center"
+                  />
+                  <TableCell
+                    text={
+                      item?.classKeyDto
+                        ? isEn
+                          ? item.classKeyDto.titleEn
+                          : item.classKeyDto.titleBn
+                        : COMMON_LABEL.NOT_ASSIGN
+                    }
+                    textAlign="center"
+                  />
+                  <TableCell
+                    text={
+                      item?.serviceTypeDto
+                        ? isEn
+                          ? item.serviceTypeDto.titleEn
+                          : item.serviceTypeDto.titleBn
+                        : COMMON_LABEL.NOT_ASSIGN
+                    }
+                    textAlign="center"
+                  />
+                  <TableCell
+                    text={
+                      item?.numberOfEmployee
+                        ? isEn
+                          ? item.numberOfEmployee.toString()
+                          : numEnToBn(item.numberOfEmployee)
+                        : COMMON_LABEL.NOT_ASSIGN
+                    }
+                    textAlign="center"
+                  />
+                  <TableCell className="remove-padding text-center">
+                    {getPostTypeTitle(item?.postType, isEn)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </Table>
+          ) : (
+            <NoData
+              details={
+                isEn
+                  ? "No template data found!"
+                  : "কোনো টেমপ্লেটের তথ্য পাওয়া যায়নি!"
+              }
+            />
+          )}
+        </div>
+      </ModalBody>
+
+      <ModalFooter>
+        <div className="d-flex gap-3 justify-content-end">
+          <Button color="secondary" onClick={onClose}>
+            {isEn ? "Close" : "বন্ধ করুন"}
+          </Button>
+        </div>
+      </ModalFooter>
+    </Modal>
+  );
+};
+
+export default ManPowerDetails;

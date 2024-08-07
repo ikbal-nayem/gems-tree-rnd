@@ -1,6 +1,6 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle } from "@context/PageData";
-import { ConfirmationModal, Input, Pagination, toast } from "@gems/components";
+import { Input, Pagination, toast } from "@gems/components";
 import {
   IMeta,
   IObject,
@@ -10,11 +10,9 @@ import {
   useDebounce,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import OrganogramTable from "./Table";
-import { ROUTE_L1 } from "@constants/internal-route.constant";
-import DraftCloneModal from "./draftCloneModal";
 
 const initMeta: IMeta = {
   page: 0,
@@ -27,40 +25,17 @@ const initMeta: IMeta = {
   ],
 };
 
-const OrganogramList = ({ status }) => {
+const OrganogramLogList = () => {
   const [dataList, setDataList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isDraftCloneOpen, setIsDraftCloneOpen] = useState<boolean>(false);
-  const [draftCloneData, setDraftCloneData] = useState<IObject>({});
   const params: any = searchParamsToObject(searchParams);
+  const filterBody = useRef<IObject>({});
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
-  const navigate = useNavigate();
-
-  let service, title;
-  switch (status) {
-    case "draft":
-      service = OMSService.FETCH.draftOrganogramList;
-      title = MENU.BN.ORGANOGRAM_LIST_DRAFT;
-      break;
-    case "inreview":
-      service = OMSService.FETCH.inReviewOrganogramList;
-      title = MENU.BN.ORGANOGRAM_LIST_INREVIEW;
-      break;
-    case "inapprove":
-      service = OMSService.FETCH.inApproveOrganogramList;
-      title = MENU.BN.ORGANOGRAM_LIST_INAPPROVE;
-      break;
-    default:
-      navigate(ROUTE_L1.DASHBOARD);
-  }
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -73,31 +48,6 @@ const OrganogramList = ({ status }) => {
     getDataList();
   }, [searchParams]);
 
-  const onCancelDelete = () => {
-    setIsDeleteModal(false);
-    setDeleteData(null);
-  };
-
-  const onDelete = (data) => {
-    setIsDeleteModal(true);
-    setDeleteData(data);
-  };
-
-  const onConfirmDelete = () => {
-    setIsDeleteLoading(true);
-    OMSService.DELETE.organogramByID(deleteData?.id)
-      .then((res) => {
-        toast.success(res?.message);
-        getDataList();
-        setDeleteData(null);
-      })
-      .catch((err) => toast.error(err?.message))
-      .finally(() => {
-        setIsDeleteLoading(false);
-        setIsDeleteModal(false);
-      });
-  };
-
   const getDataList = (reqMeta = null) => {
     const payload = {
       meta: searchKey
@@ -107,7 +57,8 @@ const OrganogramList = ({ status }) => {
         : reqMeta || respMeta,
       body: {
         searchKey: searchKey || null,
-        isTemplate: 1,
+        isTemplate: 0,
+        ...filterBody.current,
       },
     };
 
@@ -115,7 +66,7 @@ const OrganogramList = ({ status }) => {
 
     topProgress.show();
     setLoading(true);
-    service(reqData)
+    OMSService.FETCH.organogramList(reqData)
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
@@ -131,18 +82,13 @@ const OrganogramList = ({ status }) => {
       });
   };
 
+  const onFilter = (data) => {
+    filterBody.current = data;
+    getDataList();
+  };
+
   const onPageChanged = (metaParams: IMeta) => {
     getDataList({ ...metaParams });
-  };
-
-  const onDraftClone = (item: IObject) => {
-    setDraftCloneData(item);
-    setIsDraftCloneOpen(true);
-  };
-
-  const onDraftCloneClose = () => {
-    setDraftCloneData({});
-    setIsDraftCloneOpen(false);
   };
 
   // const getXLSXStoreList = (reqMeta = null) => {
@@ -170,9 +116,8 @@ const OrganogramList = ({ status }) => {
 
   return (
     <>
-      <PageTitle> {title} </PageTitle>
+      <PageTitle> {MENU.BN.ORGANOGRAM_LOG} </PageTitle>
       <div className="card p-4">
-        {/* <Filter onFilter={onFilter} /> */}
         {/* <Separator /> */}
         <div className="d-flex gap-3 mb-4">
           <Input
@@ -182,6 +127,9 @@ const OrganogramList = ({ status }) => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          {/* <ACLWrapper visibleToRoles={[ROLES.SUPER_ADMIN]}>
+            <Filter onFilter={onFilter} />
+          </ACLWrapper> */}
           {/* <ListDownload
             fnDownloadExcel={() =>
               getXLSXStoreList({
@@ -209,12 +157,9 @@ const OrganogramList = ({ status }) => {
         <div className="p-4">
           <OrganogramTable
             dataList={dataList}
-            // getDataList={getDataList}
+            getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
-            onDelete={onDelete}
-            onDraftClone={onDraftClone}
-            status={status}
           >
             <Pagination
               meta={respMeta}
@@ -225,26 +170,9 @@ const OrganogramList = ({ status }) => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
-        <ConfirmationModal
-          isOpen={isDeleteModal}
-          onClose={onCancelDelete}
-          onConfirm={onConfirmDelete}
-          isSubmitting={isDeleteLoading}
-          onConfirmLabel={"মুছে ফেলুন"}
-        >
-          আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন
-          ?
-        </ConfirmationModal>
-
-        <DraftCloneModal
-          isOpen={isDraftCloneOpen}
-          onClose={onDraftCloneClose}
-          draftCloneData={draftCloneData}
-          getDataList={getDataList}
-        />
       </div>
     </>
   );
 };
 
-export default OrganogramList;
+export default OrganogramLogList;

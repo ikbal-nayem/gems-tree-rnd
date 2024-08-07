@@ -315,6 +315,7 @@ const TemplateEditComponent = ({
           <div className="col-12 mt-3">
             <EquipmentsForm
               formProps={formProps}
+
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
