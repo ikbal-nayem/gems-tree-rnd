@@ -1,3 +1,16 @@
+def callWebhook(result, env, projectName) {
+    def webhookURL = 'https://deployalert.pythonanywhere.com/webhook'
+
+    script {
+        sh """
+        curl --header "Content-Type: application/json" \
+            --request POST \
+            --data '{"status":"${result}","service":"${projectName}","env":"${env}"}' \
+            ${webhookURL}
+        """
+    }
+}
+
 pipeline {
     agent any
 
@@ -64,6 +77,9 @@ post {
                 footer: "Status:  ${currentBuild.currentResult}, build ${env.BUILD_NUMBER} Job ${env.JOB_NAME}\nMore info at: ${env.BUILD_URL}",
                 webhookURL: 'https://discord.com/api/webhooks/1208421423119470662/GC0oRal1UnnOEgaA7CLo9LEjIJJOdoCmUg5jrkiX0AZ9q33UjhI8vh-YpTLZy0CDqIPA',
             )
+
+            echo 'Sending Notification to custom webhook'
+            callWebhook(currentBuild.currentResult, DEPLOYMENT_ENV, PROJECT_NAME)
     } 
 }    
 
