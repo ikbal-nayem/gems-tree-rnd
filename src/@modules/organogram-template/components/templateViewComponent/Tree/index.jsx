@@ -88,7 +88,7 @@ const OrganizationTemplateTree = ({
 
       <ManPowerDetails
         isEn={langEn}
-        dataList={selectedNode?.current?.manpowerList || []}
+        data={selectedNode?.current || []}
         isOpen={manpowerListModalOpen}
         onClose={onFormClose}
       />
