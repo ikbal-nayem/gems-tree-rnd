@@ -95,9 +95,9 @@ const ManPowerList: FC<TableProps> = ({
     <>
       <div className="card border p-3">
         <div className="d-flex justify-content-between">
-          <h4 className={title ? "m-0 text-info" : "m-0"}>
+          <p className={`${title ? "text-info" : ""} m-0 fs-4 fw-bold`}>
             {title ? title : LABEL.SUM_OF_MANPOWER}
-          </h4>
+          </p>
           <div className="d-flex gap-1">
             {!isSummaryOfManPowerObject &&
               organogramId &&
@@ -186,12 +186,12 @@ const ManPowerList: FC<TableProps> = ({
                             </TableCell>
 
                             <TableCell className="remove-padding">
-                              <div className="d-flex justify-content-center fs-7">
+                              <p className="text-center fs-7 mb-0">
                                 {langEn
                                   ? itr?.manpower
                                   : numEnToBn(itr?.manpower) ||
                                     COMMON_LABEL.NOT_ASSIGN}
-                              </div>
+                              </p>
                             </TableCell>
 
                             <TableCell className="remove-padding text-center">
@@ -223,18 +223,18 @@ const ManPowerList: FC<TableProps> = ({
                         <TableRow key={idx++}>
                           <TableCell />
                           <TableCell className="remove-padding">
-                            <div className="d-flex justify-content-start mb-2 fw-bold fs-7">
+                            <p className="mb-2 fw-bold fs-7">
                               {LOCAL_LABEL.TOTAL}
-                            </div>
+                            </p>
                           </TableCell>
 
                           <TableCell className="remove-padding">
-                            <div className="d-flex justify-content-center mb-2 fw-bold fs-7">
+                            <p className="text-center mb-2 fw-bold fs-7">
                               {langEn
                                 ? classs?.totalClassManpower
                                 : numEnToBn(classs?.totalClassManpower) ||
                                   COMMON_LABEL.NOT_ASSIGN}
-                            </div>
+                            </p>
                           </TableCell>
                         </TableRow>
                       </Fragment>
@@ -243,18 +243,18 @@ const ManPowerList: FC<TableProps> = ({
                   <TableRow key={idx++}>
                     <TableCell />
                     <TableCell className="p-0">
-                      <div className="fw-bold fs-6">
+                      <p className="fw-bold fs-6 mb-0">
                         {LOCAL_LABEL.GRAND_TOTAL}
-                      </div>
+                      </p>
                     </TableCell>
 
                     <TableCell className="remove-padding">
-                      <div className="d-flex justify-content-center fw-bold fs-6">
+                      <p className="text-center fw-bold fs-6 mb-0">
                         {langEn
                           ? data?.totalManpower
                           : numEnToBn(data?.totalManpower) ||
                             COMMON_LABEL.NOT_ASSIGN}
-                      </div>
+                      </p>
                     </TableCell>
                   </TableRow>
                   {/* <TableRow key={idx++}>
