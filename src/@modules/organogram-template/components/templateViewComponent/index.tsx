@@ -948,6 +948,8 @@ const TemplateViewComponent = ({
               insideModal={false}
               isSummaryManpowerPDFLoading={isSummaryManpowerPDFLoading}
               isDownloadVisible={organogramOrganizationView ? true : false}
+              orgName={orgName || titleName || null}
+              versionDate={versionName}
             />
           </div>
           {langEn && (
