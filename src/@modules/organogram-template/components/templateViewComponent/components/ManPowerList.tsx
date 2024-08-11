@@ -127,16 +127,6 @@ const ManPowerList: FC<TableProps> = ({
         marginBottom: 5,
         decoration: "underline",
       },
-      tableHeader: {
-        bold: true,
-        fontSize: 10,
-        color: "black",
-        alignment: "center",
-      },
-      textBold: {
-        bold: true,
-        fontSize: 14,
-      },
     };
 
     let fau = [
