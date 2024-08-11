@@ -210,13 +210,13 @@ export const manpowerListPDFContent = (
         alignment: "center",
       },
       subHeader: {
-        fontSize: 13,
+        fontSize: 10,
         bold: true,
         alignment: "center",
         marginBottom: 10,
       },
       title: {
-        fontSize: 13,
+        fontSize: 12,
         bold: true,
         alignment: "left",
         marginBottom: 5,

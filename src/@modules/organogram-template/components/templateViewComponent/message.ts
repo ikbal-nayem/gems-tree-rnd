@@ -27,27 +27,3 @@ export const BUTTON_LABEL = {
     APPROVE: "অনুমোদন",
   },
 };
-
-
-
-
-
-
-// const data = document.getElementById('pdfPage_');
-// html2canvas(data).then((canvas:any) => {
-//   const imgWidth = 208;
-//   const pageHeight = 295;
-//   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-//   let heightLeft = imgHeight;
-//   let position = 0;
-//   heightLeft -= pageHeight;
-//   const doc = new jspdf('p', 'mm');
-//   doc.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
-//   while (heightLeft >= 0) {
-//     position = heightLeft - imgHeight;
-//     doc.addPage();
-//     doc.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
-//     heightLeft -= pageHeight;
-//   }
-//   doc.save('Downld.pdf');
-// });
