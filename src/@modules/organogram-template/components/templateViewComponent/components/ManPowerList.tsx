@@ -220,7 +220,15 @@ const ManPowerList: FC<TableProps> = ({
                   // )
                   // onMenualDownload()
                   generatePDF(
-                    manpowerListPDFContent(data, orgName, versionDate, langEn)
+                    manpowerListPDFContent(data, orgName, versionDate, langEn),
+                    {
+                      action: "download",
+                      fileName: `Summary Of Manpower Report ${generateDateFormat(
+                        makeBDLocalTime(new Date()),
+                        DATE_PATTERN.GOVT_STANDARD,
+                        "en"
+                      )}`,
+                    }
                   )
                 }
               >

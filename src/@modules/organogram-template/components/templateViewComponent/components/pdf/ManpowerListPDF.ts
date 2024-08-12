@@ -233,6 +233,6 @@ export const manpowerListPDFContent = (
         fontSize: 14,
       },
     },
-    pageMargins: [15, 20, 15, 20],
+    // pageMargins: [15, 20, 15, 20],
   };
 };
