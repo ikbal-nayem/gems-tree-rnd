@@ -1,9 +1,17 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Button, Icon, Separator, TextEditorPreview } from "@gems/components";
-import { IObject, numEnToBn } from "@gems/utils";
+import {
+  DATE_PATTERN,
+  generateDateFormat,
+  generatePDF,
+  IObject,
+  makeBDLocalTime,
+  numEnToBn,
+} from "@gems/utils";
 import { useState } from "react";
 import { isNotEmptyList } from "utility/utils";
 import EquipmentsListChanges from "./EquipmentsListChanges";
+import { equipmentPDFContent } from "./pdf/EquipmentsPDF";
 
 interface IEquipmentsForm {
   data: IObject[];
@@ -17,6 +25,8 @@ interface IEquipmentsForm {
   onDownloadPDF?: (className: string, pdfName: string) => void;
   isEquipmentsPDFLoading?: boolean;
   isDownloadVisible?: boolean;
+  orgName?: string;
+  versionDate?: string;
 }
 
 const EquipmentsForm = ({
@@ -31,6 +41,8 @@ const EquipmentsForm = ({
   onDownloadPDF,
   isEquipmentsPDFLoading,
   isDownloadVisible,
+  orgName,
+  versionDate,
 }: IEquipmentsForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -66,7 +78,23 @@ const EquipmentsForm = ({
                 size="sm"
                 variant="active-light"
                 onClick={() =>
-                  onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
+                  // onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
+                  generatePDF(
+                    equipmentPDFContent(
+                      { inventoryData: inventoryData, miscelleanousData: data },
+                      orgName,
+                      versionDate,
+                      langEn
+                    ),
+                    {
+                      // action: "download",
+                      fileName: `Inventory Report ${generateDateFormat(
+                        makeBDLocalTime(new Date()),
+                        DATE_PATTERN.GOVT_STANDARD,
+                        "en"
+                      )}`,
+                    }
+                  )
                 }
               >
                 {isEquipmentsPDFLoading ? (
