@@ -129,24 +129,24 @@ const ManPowerList: FC<TableProps> = ({
       },
     };
 
-    let fau = [
+    let pdfHeader = [
       {
-        text: "সরকারি যানবাহন অধিদপ্তর",
+        text: orgName,
         style: "header",
       },
       {
-        text: "১১/০১/২০২২ রিপোর্ট",
+        text: versionDate,
         style: "subHeader",
       },
       {
-        text: "জনবল",
+        text: LABEL.SUM_OF_MANPOWER,
         style: "title",
       },
     ];
 
     generatePDF(
       {
-        content: fau.concat(docs),
+        content: pdfHeader.concat(docs),
         styles: style,
         footer: (currentPage, pageCount) => {
           return [
@@ -181,7 +181,14 @@ const ManPowerList: FC<TableProps> = ({
           ];
         },
       },
-      { action: "download" }
+      {
+        action: "download",
+        fileName: `Summary Of Manpower Report ${generateDateFormat(
+          makeBDLocalTime(new Date()),
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        )}`,
+      }
     );
   };
 
@@ -213,24 +220,32 @@ const ManPowerList: FC<TableProps> = ({
                 isDisabled={isSummaryManpowerPDFLoading}
                 size="sm"
                 variant="active-light"
-                onClick={() =>
+                onClick={() => {
                   // onDownloadPDF(
                   //   "summary-manpower-pdfGenerator",
                   //   "Summary of Manpower Data"
                   // )
-                  // onMenualDownload()
-                  generatePDF(
-                    manpowerListPDFContent(data, orgName, versionDate, langEn),
-                    {
-                      action: "download",
-                      fileName: `Summary Of Manpower Report ${generateDateFormat(
-                        makeBDLocalTime(new Date()),
-                        DATE_PATTERN.GOVT_STANDARD,
-                        "en"
-                      )}`,
-                    }
-                  )
-                }
+                  if (isSummaryOfManPowerObject) {
+                    onMenualDownload();
+                  } else {
+                    generatePDF(
+                      manpowerListPDFContent(
+                        data,
+                        orgName,
+                        versionDate,
+                        langEn
+                      ),
+                      {
+                        action: "download",
+                        fileName: `Summary Of Manpower Report ${generateDateFormat(
+                          makeBDLocalTime(new Date()),
+                          DATE_PATTERN.GOVT_STANDARD,
+                          "en"
+                        )}`,
+                      }
+                    );
+                  }
+                }}
               >
                 {isSummaryManpowerPDFLoading ? (
                   <span
