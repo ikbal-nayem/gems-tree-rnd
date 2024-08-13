@@ -1,9 +1,18 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Button, Icon, Separator, TextEditorPreview } from "@gems/components";
-import { IObject, numEnToBn } from "@gems/utils";
+import {
+  ckToPdfMake,
+  DATE_PATTERN,
+  generateDateFormat,
+  generatePDF,
+  IObject,
+  makeBDLocalTime,
+  numEnToBn,
+} from "@gems/utils";
 import { useState } from "react";
-import { isNotEmptyList } from "utility/utils";
+import { commonPDFFooter, isNotEmptyList } from "utility/utils";
 import EquipmentsListChanges from "./EquipmentsListChanges";
+import { equipmentPDFContent } from "./pdf/EquipmentsPDF";
 
 interface IEquipmentsForm {
   data: IObject[];
@@ -17,6 +26,8 @@ interface IEquipmentsForm {
   onDownloadPDF?: (className: string, pdfName: string) => void;
   isEquipmentsPDFLoading?: boolean;
   isDownloadVisible?: boolean;
+  orgName?: string;
+  versionDate?: string;
 }
 
 const EquipmentsForm = ({
@@ -31,11 +42,70 @@ const EquipmentsForm = ({
   onDownloadPDF,
   isEquipmentsPDFLoading,
   isDownloadVisible,
+  orgName,
+  versionDate,
 }: IEquipmentsForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClose = () => setIsOpen(false);
+
+  const onMenualDownload = () => {
+    const docs = ckToPdfMake(othersData?.inventoryOthersObject);
+
+    let style = {
+      header: {
+        fontSize: 14,
+        bold: true,
+        alignment: "center",
+      },
+      subHeader: {
+        fontSize: 13,
+        bold: true,
+        alignment: "center",
+        marginBottom: 10,
+      },
+      title: {
+        fontSize: 13,
+        bold: true,
+        alignment: "left",
+        marginBottom: 5,
+        decoration: "underline",
+      },
+    };
+
+    let pdfHeader = [
+      {
+        text: orgName,
+        style: "header",
+      },
+      {
+        text: versionDate,
+        style: "subHeader",
+      },
+      {
+        text: LABEL.EQUIPMENTS,
+        style: "title",
+      },
+    ];
+
+    generatePDF(
+      {
+        content: pdfHeader.concat(docs),
+        styles: style,
+        footer: (currentPage, pageCount) =>
+          commonPDFFooter(currentPage, pageCount, langEn),
+      },
+      {
+        action: "download",
+        fileName: `Inventory Report ${generateDateFormat(
+          makeBDLocalTime(new Date()),
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        )}`,
+      }
+    );
+  };
 
   return (
     <>
@@ -65,9 +135,33 @@ const EquipmentsForm = ({
                 isDisabled={isEquipmentsPDFLoading}
                 size="sm"
                 variant="active-light"
-                onClick={() =>
-                  onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
-                }
+                onClick={() => {
+                  // onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
+
+                  if (othersData?.isInventoryOthers) {
+                    onMenualDownload();
+                  } else {
+                    generatePDF(
+                      equipmentPDFContent(
+                        {
+                          inventoryData: inventoryData,
+                          miscelleanousData: data,
+                        },
+                        orgName,
+                        versionDate,
+                        langEn
+                      ),
+                      {
+                        action: "download",
+                        fileName: `Inventory Report ${generateDateFormat(
+                          makeBDLocalTime(new Date()),
+                          DATE_PATTERN.GOVT_STANDARD,
+                          "en"
+                        )}`,
+                      }
+                    );
+                  }
+                }}
               >
                 {isEquipmentsPDFLoading ? (
                   <span

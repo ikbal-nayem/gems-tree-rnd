@@ -10,11 +10,22 @@ import {
   TableRow,
   TextEditorPreview,
 } from "@gems/components";
-import { COMMON_LABELS, isObjectNull, numEnToBn } from "@gems/utils";
+import {
+  ckToPdfMake,
+  COMMON_LABELS,
+  DATE_PATTERN,
+  generateDateFormat,
+  generatePDF,
+  isObjectNull,
+  makeBDLocalTime,
+  numEnToBn,
+} from "@gems/utils";
 import { FC, Fragment, useState } from "react";
 import "../style.scss";
 import MPListChanges from "./MPListChanges";
 import { LOCAL_LABELS } from "./labels";
+import { manpowerListPDFContent } from "./pdf/ManpowerListPDF";
+import { commonPDFFooter } from "utility/utils";
 
 type TableProps = {
   data: any;
@@ -26,12 +37,12 @@ type TableProps = {
   insideModal?: boolean;
   organogramId?: string;
   title?: string;
-  onDownloadPDF?: (className: string, pdfName: string) => void;
-  isSummaryManpowerPDFLoading?: boolean;
   isDownloadVisible?: boolean;
+  orgName?: string;
+  versionDate?: string;
 };
 
-const postTypeList = [
+export const postTypeList = [
   {
     titleEn: "Proposed",
     key: "proposed",
@@ -70,9 +81,9 @@ const ManPowerList: FC<TableProps> = ({
   summaryOfManPowerObject,
   isSummaryOfManPowerObject,
   title,
-  onDownloadPDF,
-  isSummaryManpowerPDFLoading,
   isDownloadVisible,
+  orgName,
+  versionDate,
 }) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
@@ -91,13 +102,70 @@ const ManPowerList: FC<TableProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onClose = () => setIsOpen(false);
 
+  const onMenualDownload = () => {
+    const docs = ckToPdfMake(summaryOfManPowerObject);
+
+    let style = {
+      header: {
+        fontSize: 14,
+        bold: true,
+        alignment: "center",
+      },
+      subHeader: {
+        fontSize: 13,
+        bold: true,
+        alignment: "center",
+        marginBottom: 10,
+      },
+      title: {
+        fontSize: 13,
+        bold: true,
+        alignment: "left",
+        marginBottom: 5,
+        decoration: "underline",
+      },
+    };
+
+    let pdfHeader = [
+      {
+        text: orgName,
+        style: "header",
+      },
+      {
+        text: versionDate,
+        style: "subHeader",
+      },
+      {
+        text: LABEL.SUM_OF_MANPOWER,
+        style: "title",
+      },
+    ];
+
+    generatePDF(
+      {
+        content: pdfHeader.concat(docs),
+        styles: style,
+        footer: (currentPage, pageCount) =>
+          commonPDFFooter(currentPage, pageCount, langEn),
+      },
+      {
+        action: "download",
+        fileName: `Summary Of Manpower Report ${generateDateFormat(
+          makeBDLocalTime(new Date()),
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        )}`,
+      }
+    );
+  };
+
   return (
     <>
-      <div className="card border p-3">
+      <div className="card border p-3 test">
         <div className="d-flex justify-content-between">
-          <h4 className={title ? "m-0 text-info" : "m-0"}>
+          <p className={`${title ? "text-info" : ""} m-0 fs-4 fw-bold`}>
             {title ? title : LABEL.SUM_OF_MANPOWER}
-          </h4>
+          </p>
           <div className="d-flex gap-1">
             {!isSummaryOfManPowerObject &&
               organogramId &&
@@ -116,23 +184,36 @@ const ManPowerList: FC<TableProps> = ({
               <Button
                 color="primary"
                 className="rounded-circle px-3 py-3"
-                isDisabled={isSummaryManpowerPDFLoading}
                 size="sm"
                 variant="active-light"
-                onClick={() =>
-                  onDownloadPDF(
-                    "summary-manpower-pdfGenerator",
-                    "Summary of Manpower Data"
-                  )
-                }
+                onClick={() => {
+                  // onDownloadPDF(
+                  //   "summary-manpower-pdfGenerator",
+                  //   "Summary of Manpower Data"
+                  // )
+                  if (isSummaryOfManPowerObject) {
+                    onMenualDownload();
+                  } else {
+                    generatePDF(
+                      manpowerListPDFContent(
+                        data,
+                        orgName,
+                        versionDate,
+                        langEn
+                      ),
+                      {
+                        action: "download",
+                        fileName: `Summary Of Manpower Report ${generateDateFormat(
+                          makeBDLocalTime(new Date()),
+                          DATE_PATTERN.GOVT_STANDARD,
+                          "en"
+                        )}`,
+                      }
+                    );
+                  }
+                }}
               >
-                {isSummaryManpowerPDFLoading ? (
-                  <span
-                    className={`spinner-border spinner-border-md align-middle`}
-                  ></span>
-                ) : (
-                  <Icon icon="download" color="primary" size={20} />
-                )}
+                <Icon icon="download" color="primary" size={20} />
               </Button>
             )}
           </div>
@@ -186,12 +267,12 @@ const ManPowerList: FC<TableProps> = ({
                             </TableCell>
 
                             <TableCell className="remove-padding">
-                              <div className="d-flex justify-content-center fs-7">
+                              <p className="text-center fs-7 mb-0">
                                 {langEn
                                   ? itr?.manpower
                                   : numEnToBn(itr?.manpower) ||
                                     COMMON_LABEL.NOT_ASSIGN}
-                              </div>
+                              </p>
                             </TableCell>
 
                             <TableCell className="remove-padding text-center">
@@ -223,18 +304,18 @@ const ManPowerList: FC<TableProps> = ({
                         <TableRow key={idx++}>
                           <TableCell />
                           <TableCell className="remove-padding">
-                            <div className="d-flex justify-content-start mb-2 fw-bold fs-7">
+                            <p className="mb-2 fw-bold fs-7">
                               {LOCAL_LABEL.TOTAL}
-                            </div>
+                            </p>
                           </TableCell>
 
                           <TableCell className="remove-padding">
-                            <div className="d-flex justify-content-center mb-2 fw-bold fs-7">
+                            <p className="text-center mb-2 fw-bold fs-7">
                               {langEn
                                 ? classs?.totalClassManpower
                                 : numEnToBn(classs?.totalClassManpower) ||
                                   COMMON_LABEL.NOT_ASSIGN}
-                            </div>
+                            </p>
                           </TableCell>
                         </TableRow>
                       </Fragment>
@@ -243,18 +324,18 @@ const ManPowerList: FC<TableProps> = ({
                   <TableRow key={idx++}>
                     <TableCell />
                     <TableCell className="p-0">
-                      <div className="fw-bold fs-6">
+                      <p className="fw-bold fs-6 mb-0">
                         {LOCAL_LABEL.GRAND_TOTAL}
-                      </div>
+                      </p>
                     </TableCell>
 
                     <TableCell className="remove-padding">
-                      <div className="d-flex justify-content-center fw-bold fs-6">
+                      <p className="text-center fw-bold fs-6 mb-0">
                         {langEn
                           ? data?.totalManpower
                           : numEnToBn(data?.totalManpower) ||
                             COMMON_LABEL.NOT_ASSIGN}
-                      </div>
+                      </p>
                     </TableCell>
                   </TableRow>
                   {/* <TableRow key={idx++}>
