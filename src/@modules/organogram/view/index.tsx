@@ -9,13 +9,14 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { NewProposalMenu } from "../components/NewProposalMenu";
 import OrganogramTab from "./organogram";
 
 const OrganogramView = () => {
   const [searchParam] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [organogramData, setOrganogramData] = useState<IObject>({});
-  // const [organizationId, setOrganizationId] = useState<string>();
+  const [organizationId, setOrganizationId] = useState<string>();
   const [organogramId, setOrganogramId] = useState<string>(
     searchParam.get("id") || ""
   );
@@ -38,8 +39,8 @@ const OrganogramView = () => {
     OMSService.getOrganogramWithOutDeletionAdditionByOrganogramId(organogramId)
       .then((resp) => {
         setOrganogramData(resp?.body);
-        // if (resp?.body?.organization?.id)
-        //   setOrganizationId(resp?.body?.organization?.id);
+        if (resp?.body?.organization?.id)
+          setOrganizationId(resp?.body?.organization?.id);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -50,8 +51,8 @@ const OrganogramView = () => {
     OMSService.getOrganogramDetailsByOrganogramId(organogramId)
       .then((resp) => {
         setOrganogramData(resp?.body || {});
-        // if (resp?.body?.organization?.id)
-        //   setOrganizationId(resp?.body?.organization?.id);
+        if (resp?.body?.organization?.id)
+          setOrganizationId(resp?.body?.organization?.id);
       })
       .catch((e) => toast.error(e?.message))
       .finally(() => setIsLoading(false));
@@ -206,12 +207,12 @@ const OrganogramView = () => {
               );
             })}
         </div>
-        {/* {!isPreviousVerison && (
+        {!isPreviousVerison && (
           <NewProposalMenu
             organogramId={organogramId}
             organizationId={organizationId}
           />
-        )} */}
+        )}
       </div>
       <div className="mt-3">
         {subVerisonList?.length > 0 && (
