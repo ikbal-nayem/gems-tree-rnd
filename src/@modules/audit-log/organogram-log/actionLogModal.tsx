@@ -32,9 +32,10 @@ export const ActionLogModal = ({
   const [isActivityLoading, setIsActivityLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isOpen) 
-    getActivityLogData();
-    getCommentLogData();
+    if (isOpen) {
+      getActivityLogData();
+      getCommentLogData();
+    }
   }, [isOpen, organogramId]);
 
   const getActivityLogData = () => {
@@ -50,22 +51,19 @@ export const ActionLogModal = ({
   const getCommentLogData = () => {
     setIsActivityLoading(true);
     OMSService.FETCH.getOrganogramCommentLogById(organogramId)
-      .then((res) => setCommentLogData(res?.body || [])
-    )
+      .then((res) => setCommentLogData(res?.body || []))
       .catch((err) => toast.error(err?.message))
       .finally(() => {
         setIsActivityLoading(false);
       });
   };
-  console.log("commentLogData", commentLogData)
 
   return (
     <Modal
       isOpen={isOpen}
-      // holdOn={holdOn}
       title={title || ""}
       handleClose={onClose}
-      size="lg"
+      size="xl"
       scrollBody
     >
       <ModalBody>
