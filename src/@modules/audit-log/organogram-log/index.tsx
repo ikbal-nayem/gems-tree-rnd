@@ -157,7 +157,6 @@ const OrganogramLogList = () => {
         <div className="p-4">
           <OrganogramTable
             dataList={dataList}
-            getDataList={getDataList}
             respMeta={respMeta}
             isLoading={isLoading}
           >

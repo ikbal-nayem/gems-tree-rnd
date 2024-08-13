@@ -1,4 +1,3 @@
-// import ProfilePostingInfo from '@components/ProfileSummary/ProfilePostingInfo';
 import { Icon, NoData, Tag, Thumb } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -9,22 +8,22 @@ import {
   makePreviewUrl,
 } from "@gems/utils";
 import { statusColorMapping } from "utility/colorMap";
-import "./activitiesLog.scss";
+import "../ActivityLogs/activitiesLog.scss";
 
-interface IActivitesLog {
-  data: IObject[];
+interface ICommentLog {
+  CommentData: IObject[];
 }
 
-const ActivitesLog = ({ data }: IActivitesLog) => {
+const CommentLog = ({ CommentData }: ICommentLog) => {
   return (
     <>
       <div className="mt-5 activities-log border p-3 rounded">
         <h4 className="activities-title border-bottom pb-2 mb-3">
-          কার্যক্রম সমূহ
+          পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ
         </h4>
         <div className="timeline-label-wrapper">
           <div className="timeline-label">
-            {data?.map((item, i) => {
+            {CommentData?.map((item, i) => {
               return (
                 <div className="timeline-item" key={i}>
                   <div className="timeline-label fw-bold text-gray-800">
@@ -56,24 +55,25 @@ const ActivitesLog = ({ data }: IActivitesLog) => {
                     />
                   </div>
                   <div className="fw-normal timeline-content text-muted ps-3">
-                    <p className="fw-bold text-gray-800 mb-1">
+                    <p className="fw-bold text-gray-800">
                       <Tag
                         title={item?.statusBn}
                         color={statusColorMapping(item?.statusEn) as IColors}
+                        className="text-wrap"
                       />
                     </p>
 
                     <p className="fw-bolder fs-6 text-gray-800 mb-0">
                       {item?.employeeDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN}
                     </p>
-                    <p className="fw-normal fs-7 text-gray-800">
-                      {item?.employeeDTO?.postDTO?.nameBn || ""}
-                      {item?.employeeDTO?.postDTO?.nameBn &&
-                      item?.employeeDTO?.organizationDTO?.nameBn
-                        ? ", " + item?.employeeDTO?.organizationDTO?.nameBn
-                        : item?.employeeDTO?.organizationDTO?.nameBn
+
+                    <p className="fw-light fs-7 text-gray-800 mb-0">
+                      {item?.employeeDTO?.organizationDTO?.nameBn
                         ? item?.employeeDTO?.organizationDTO?.nameBn
                         : ""}
+                    </p>
+                    <p className="fw-normal fs-7 text-gray-800 fw-bold">
+                      মন্তব্য :- &nbsp;{item?.reason || ""}
                     </p>
                   </div>
                 </div>
@@ -82,9 +82,11 @@ const ActivitesLog = ({ data }: IActivitesLog) => {
           </div>
         </div>
       </div>
-      {data?.length === 0 && <NoData details="কোনো কার্যক্রম পাওয়া যায়নি!" />}
+      {CommentData?.length === 0 && (
+        <NoData details="কোনো কার্যক্রম পাওয়া যায়নি!" />
+      )}
     </>
   );
 };
 
-export { ActivitesLog };
+export { CommentLog };

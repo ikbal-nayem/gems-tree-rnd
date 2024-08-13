@@ -27,15 +27,13 @@ type TableProps = {
   dataList: any[];
   isLoading: boolean;
   respMeta?: IMeta;
-  getDataList: () => void;
 };
 
 const OrganogramTable: FC<TableProps> = ({
   children,
   dataList,
   isLoading,
-  respMeta,
-  getDataList,
+  respMeta
 }) => {
   let columns: ITableHeadColumn[] = [
     { title: COMMON_LABELS.SL_NO, width: 50 },
@@ -133,7 +131,7 @@ const OrganogramTable: FC<TableProps> = ({
       )}
       {children}
       <ActionLogModal
-        title="অর্গানোগ্রামের সংক্রান্ত কার্যক্রম সমূহ"
+        title="অর্গানোগ্রামের সংক্রান্ত কার্যক্রম ও মন্তব্য সমূহ"
         isOpen={isOpen}
         onClose={onClose}
         organogramId={organogramId || null}

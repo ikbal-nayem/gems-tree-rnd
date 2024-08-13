@@ -12,6 +12,7 @@ import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { ActivitesLog } from "../components/ActivityLogs/ActivityLog";
+import { CommentLog } from "../components/CommentLog/CommentLog";
 
 interface ActionLogModalProps {
   title?: string;
@@ -27,10 +28,13 @@ export const ActionLogModal = ({
   organogramId,
 }: ActionLogModalProps) => {
   const [activityLogData, setActivityLogData] = useState<IObject[]>([]);
+  const [commentLogData, setCommentLogData] = useState<IObject[]>([]);
   const [isActivityLoading, setIsActivityLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isOpen) getActivityLogData();
+    if (isOpen) 
+    getActivityLogData();
+    getCommentLogData();
   }, [isOpen, organogramId]);
 
   const getActivityLogData = () => {
@@ -42,6 +46,18 @@ export const ActionLogModal = ({
         setIsActivityLoading(false);
       });
   };
+
+  const getCommentLogData = () => {
+    setIsActivityLoading(true);
+    OMSService.FETCH.getOrganogramCommentLogById(organogramId)
+      .then((res) => setCommentLogData(res?.body || [])
+    )
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsActivityLoading(false);
+      });
+  };
+  console.log("commentLogData", commentLogData)
 
   return (
     <Modal
@@ -55,7 +71,14 @@ export const ActionLogModal = ({
       <ModalBody>
         {isActivityLoading && <ContentPreloader />}
         {!isActivityLoading && activityLogData?.length > 0 ? (
-          <ActivitesLog data={activityLogData} />
+          <div className="d-flex flex-column flex-lg-row gap-5">
+            <div className="flex-fill">
+              <ActivitesLog data={activityLogData} />
+            </div>
+            <div className="flex-fill">
+              <CommentLog CommentData={commentLogData} />
+            </div>
+          </div>
         ) : null}
         {!isActivityLoading && !(activityLogData?.length > 0) && (
           <NoData details="কোনো কার্যক্রম তথ্য পাওয়া যাচ্ছে না!" />
