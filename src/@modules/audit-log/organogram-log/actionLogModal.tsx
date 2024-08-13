@@ -65,7 +65,7 @@ export const ActionLogModal = ({
       // holdOn={holdOn}
       title={title || ""}
       handleClose={onClose}
-      size="lg"
+      size="xl"
       scrollBody
     >
       <ModalBody>
