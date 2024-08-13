@@ -78,14 +78,14 @@ export const OrganogramRoutes: IAppRoutes = {
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW,
-      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
+      // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
       element: lazy(
         () => import("@modules/organogram/proposal-organogram/view/index")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_UPDATE,
-      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_UPDATE,
+      // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_UPDATE,
       element: lazy(
         () => import("@modules/organogram/proposal-organogram/update")
       ),
