@@ -7,6 +7,7 @@ export const ROUTE_L1 = {
   OMS_MASTER_POST: "/master-post",
   OMS_ORGANIZATION: "/organization",
   OMS_CONFIGURATION: "/configuration",
+  OMS_AUDIT_LOG: "/audit-log",
 };
 export const ROUTE_L2 = {
   ORG_TEMPLATE_CREATE: ROUTE_L1.ORG_TEMPLATE + "/create",
@@ -38,7 +39,11 @@ export const ROUTE_L2 = {
   OMS_ORGANIZATION_NODE_LIST: ROUTE_L1.OMS_ORGANIZATION + "/node-list",
   OMS_ORGANIZATION_BRANCH: ROUTE_L1.OMS_ORGANIZATION + "/branch",
   OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST:
-    ROUTE_L1.OMS_CONFIGURATION + "/organogram-approver-list",
+    ROUTE_L1.OMS_CONFIGURATION + "/orgm-approver-list",
+  OMS_CONFIGURATION_ORGANOGRAM_POST_LIST:
+    ROUTE_L1.OMS_CONFIGURATION + "/unapprove-post-list",
+  OMS_AUDIT_LOG_ORGANOGRAM_LOG: ROUTE_L1.OMS_AUDIT_LOG + "/log-organogram",
+  OMS_AUDIT_LOG_ORGANOGRAM_VIEW: ROUTE_L1.OMS_AUDIT_LOG + "/view",
 
   // Proposal Organogram Routes
   OMS_PROPOSAL_LIST: ROUTE_L1.OMS_ORGANOGRAM + "/proposal-list",

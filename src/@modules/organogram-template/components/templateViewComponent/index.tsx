@@ -40,6 +40,7 @@ import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModa
 import NotesList from "./components/NotesList";
 import NotesReviewApproverList from "./components/NotesReviewApproverList";
 import { BUTTON_LABEL, MSG } from "./message";
+import "./style.scss";
 import { GemsLogoBase64 } from "./utils";
 
 interface ITemplateViewComponent {
@@ -616,12 +617,14 @@ const TemplateViewComponent = ({
               summaryOfManPowerObject={updateData?.summaryOfManPowerObject}
               data={manpowerData}
               langEn={langEn}
+              isDownloadVisible={false}
             />
           </div>
         </div>
       </div>
 
       {/* Pdf generating end */}
+
       <div className="row">
         <div className="col-md-6">
           <ActivitiesList
@@ -641,6 +644,9 @@ const TemplateViewComponent = ({
               isBeginningVersion={isBeginningVersion}
               organogramId={organogramId}
               insideModal={false}
+              isDownloadVisible={organogramOrganizationView ? true : false}
+              orgName={orgName || titleName || null}
+              versionDate={versionName}
             />
           </div>
           {/* {(!orgName || !orgParentName) && !organogramView && ( */}
@@ -706,6 +712,9 @@ const TemplateViewComponent = ({
               isBeginningVersion={isBeginningVersion}
               organogramId={organogramId}
               insideModal={false}
+              isDownloadVisible={organogramOrganizationView ? true : false}
+              orgName={orgName || titleName || null}
+              versionDate={versionName}
             />
           </div>
           {langEn && (

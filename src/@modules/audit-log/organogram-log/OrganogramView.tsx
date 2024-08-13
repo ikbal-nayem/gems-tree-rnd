@@ -3,69 +3,65 @@ import { IObject, isObjectNull } from "@gems/utils";
 import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
-interface ITab {
-  organogramData: IObject;
-  organogramId: string;
-  isBeginningVersion?: boolean;
-}
-
-const OrganogramTab = ({
-  organogramId,
-  organogramData,
-  isBeginningVersion,
-}: ITab) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+const OrganogramView = () => {
+  const [searchParam] = useSearchParams();
+  const [isOrganogramLoading, setOrganogramLoading] = useState<boolean>(false);
+  const [organogramData, setOrganogramData] = useState<IObject>({});
 
   const [inventoryData, setInventoryData] = useState<IObject[]>([]);
   const [attachOrgData, setAttachOrgData] = useState<IObject>();
   const [manpowerData, setManpowerData] = useState<IObject>();
-  // const [parentOrganizationData, setParentOrganizationData] = useState<IObject>(
-  //   {}
-  // );
+  const organogramId = searchParam.get("id") || "";
 
   useEffect(() => {
     if (organogramId) {
+      getOrganogramVersionDetailsById();
       getTemplateInventoryById();
       getManpowerSummaryById();
       getAttachedOrganizationById();
     }
   }, [organogramId]);
 
+  const getOrganogramVersionDetailsById = () => {
+    setOrganogramLoading(true);
+    OMSService.getOrganogramDetailsByOrganogramId(organogramId)
+      .then((resp) => {
+        setOrganogramData(resp?.body);
+      })
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setOrganogramLoading(false));
+  };
+
   const getTemplateInventoryById = () => {
-    setIsLoading(true);
     OMSService.getTemplateInventoryByTemplateId(organogramId)
       .then((resp) => {
         setInventoryData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   const getManpowerSummaryById = () => {
-    setIsLoading(true);
     OMSService.getTemplateManpowerSummaryById(organogramId)
       .then((resp) => {
         setManpowerData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   const getAttachedOrganizationById = () => {
-    setIsLoading(true);
     OMSService.getAttachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   return (
     <div>
-      {isLoading && <ContentPreloader />}
-      {!isLoading && !isObjectNull(organogramData) && (
+      {isOrganogramLoading && <ContentPreloader />}
+      {!isOrganogramLoading && !isObjectNull(organogramData) && (
         <div>
           <TemplateViewComponent
             updateData={organogramData}
@@ -74,7 +70,7 @@ const OrganogramTab = ({
             attachedOrganizationData={attachOrgData}
             organogramView={true}
             // parentOrganizationData={parentOrganizationData}
-            isBeginningVersion={isBeginningVersion}
+            isBeginningVersion={true}
             organogramId={organogramId}
           />
         </div>
@@ -83,4 +79,4 @@ const OrganogramTab = ({
   );
 };
 
-export default OrganogramTab;
+export default OrganogramView;
