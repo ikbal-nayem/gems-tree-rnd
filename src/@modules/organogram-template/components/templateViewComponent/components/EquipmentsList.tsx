@@ -1,10 +1,18 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
-import { Icon, Separator } from "@gems/components";
-import { TextEditorPreview } from "@gems/editor";
-import { IObject, numEnToBn } from "@gems/utils";
+import { Button, Icon, Separator, TextEditorPreview } from "@gems/components";
+import {
+  ckToPdfMake,
+  DATE_PATTERN,
+  generateDateFormat,
+  generatePDF,
+  IObject,
+  makeBDLocalTime,
+  numEnToBn,
+} from "@gems/utils";
 import { useState } from "react";
-import { isNotEmptyList } from "utility/utils";
+import { commonPDFFooter, isNotEmptyList } from "utility/utils";
 import EquipmentsListChanges from "./EquipmentsListChanges";
+import { equipmentPDFContent } from "./pdf/EquipmentsPDF";
 
 interface IEquipmentsForm {
   data: IObject[];
@@ -15,6 +23,11 @@ interface IEquipmentsForm {
   organogramId?: string;
   insideModal?: boolean;
   title?: string;
+  onDownloadPDF?: (className: string, pdfName: string) => void;
+  isEquipmentsPDFLoading?: boolean;
+  isDownloadVisible?: boolean;
+  orgName?: string;
+  versionDate?: string;
 }
 
 const EquipmentsForm = ({
@@ -26,32 +39,140 @@ const EquipmentsForm = ({
   organogramId,
   insideModal,
   title,
+  onDownloadPDF,
+  isEquipmentsPDFLoading,
+  isDownloadVisible,
+  orgName,
+  versionDate,
 }: IEquipmentsForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClose = () => setIsOpen(false);
 
+  const onMenualDownload = () => {
+    const docs = ckToPdfMake(othersData?.inventoryOthersObject);
+
+    let style = {
+      header: {
+        fontSize: 14,
+        bold: true,
+        alignment: "center",
+      },
+      subHeader: {
+        fontSize: 13,
+        bold: true,
+        alignment: "center",
+        marginBottom: 10,
+      },
+      title: {
+        fontSize: 13,
+        bold: true,
+        alignment: "left",
+        marginBottom: 5,
+        decoration: "underline",
+      },
+    };
+
+    let pdfHeader = [
+      {
+        text: orgName,
+        style: "header",
+      },
+      {
+        text: versionDate,
+        style: "subHeader",
+      },
+      {
+        text: LABEL.EQUIPMENTS,
+        style: "title",
+      },
+    ];
+
+    generatePDF(
+      {
+        content: pdfHeader.concat(docs),
+        styles: style,
+        footer: (currentPage, pageCount) =>
+          commonPDFFooter(currentPage, pageCount, langEn),
+      },
+      {
+        action: "download",
+        fileName: `Inventory Report ${generateDateFormat(
+          makeBDLocalTime(new Date()),
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        )}`,
+      }
+    );
+  };
+
   return (
     <>
       <div className="card border p-3">
-        <div className="card-head d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between">
           <h4 className={title ? "m-0 text-info" : "m-0"}>
             {title ? title : LABEL.EQUIPMENTS}
           </h4>
-          {!othersData?.isInventoryOthers &&
-            organogramId &&
-            !isBeginningVersion &&
-            !insideModal && (
-              <Icon
-                icon="swap_horiz"
-                variants="outlined"
-                hoverTitle={LABEL.CHANGES}
-                size={25}
-                className="text-primary text-hover-warning"
-                onClick={() => setIsOpen(true)}
-              />
+          <div className="d-flex gap-1">
+            {!othersData?.isInventoryOthers &&
+              organogramId &&
+              !isBeginningVersion &&
+              !insideModal && (
+                <Icon
+                  icon="swap_horiz"
+                  variants="outlined"
+                  hoverTitle={LABEL.CHANGES}
+                  size={25}
+                  className="text-primary text-hover-warning mt-2"
+                  onClick={() => setIsOpen(true)}
+                />
+              )}
+            {isDownloadVisible && (
+              <Button
+                color="primary"
+                className="rounded-circle px-3 py-3"
+                isDisabled={isEquipmentsPDFLoading}
+                size="sm"
+                variant="active-light"
+                onClick={() => {
+                  // onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
+
+                  if (othersData?.isInventoryOthers) {
+                    onMenualDownload();
+                  } else {
+                    generatePDF(
+                      equipmentPDFContent(
+                        {
+                          inventoryData: inventoryData,
+                          miscelleanousData: data,
+                        },
+                        orgName,
+                        versionDate,
+                        langEn
+                      ),
+                      {
+                        action: "download",
+                        fileName: `Inventory Report ${generateDateFormat(
+                          makeBDLocalTime(new Date()),
+                          DATE_PATTERN.GOVT_STANDARD,
+                          "en"
+                        )}`,
+                      }
+                    );
+                  }
+                }}
+              >
+                {isEquipmentsPDFLoading ? (
+                  <span
+                    className={`spinner-border spinner-border-md align-middle`}
+                  ></span>
+                ) : (
+                  <Icon icon="download" color="primary" size={20} />
+                )}
+              </Button>
             )}
+          </div>
         </div>
         <Separator className="mt-1 mb-1" />
         {othersData?.isInventoryOthers ? (

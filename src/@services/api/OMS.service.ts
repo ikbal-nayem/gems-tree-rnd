@@ -358,6 +358,24 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organogram-template/get-inventory-compare-by/" + id
       ),
+
+    organogramPostList: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "user-create-post/get-list", payload),
+
+    organogramApprovedPostList: async (id: string): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + "user-create-post/get-post/" + id),
+
+    getOrganogramLogById: async (organogramId: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-oms-log-by-id/" +
+          organogramId
+      ),
+    getSubVersionListByOrganogramId: async (payload: IObject): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "organization-organogram/get-organogram-suv-versions",
+        payload
+      ),
   },
 
   SAVE: {
@@ -374,7 +392,7 @@ export const OMSService = {
       ),
     organogramSingleNodeCreate: async (payload): Promise<any> =>
       await axiosIns.post(
-        OMS_SERVICE + "/organogram-structure/single-save",
+        OMS_SERVICE + "organogram-structure/single-save",
         payload
       ),
 
@@ -401,6 +419,12 @@ export const OMSService = {
 
     organogramApprover: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "orgm-approver/create", payload),
+
+    organogramPostCreate: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "user-create-post/create", payload),
+
+    organogramApprovePost: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "user-create-post/approve", payload),
   },
 
   UPDATE: {
@@ -454,6 +478,12 @@ export const OMSService = {
 
     organogramApprover: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "orgm-approver/update", payload),
+
+    organogramPostUpdate: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "user-create-post/update", payload),
+
+    organogramPostReject: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "user-create-post/take-reject", payload),
   },
 
   DELETE: {
@@ -513,5 +543,8 @@ export const OMSService = {
       await axiosIns.delete(
         OMS_SERVICE + "orgm-approver/delete-by-id/" + payload
       ),
+
+    organogramPostDelete: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "user-create-post/delete-all", payload),
   },
 };

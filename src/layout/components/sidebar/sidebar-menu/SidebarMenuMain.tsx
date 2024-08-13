@@ -162,6 +162,26 @@ const menuData = [
         title: MENU.BN.ORGANOGRAM_APPROVER,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+        link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
+        title: MENU.BN.ORGANOGRAM_POST,
+        hasBullet: true,
+      },
+    ],
+  },
+  {
+    routeKey: ROUTE_KEY.OMS_AUDIT_LOG,
+    link: ROUTE_L1.OMS_AUDIT_LOG,
+    title: MENU.BN.AUDIT_LOG,
+    icon: "history",
+    childrens: [
+      {
+        routeKey: ROUTE_KEY.OMS_AUDIT_LOG_ORGANOGRAM_LOG,
+        link: ROUTE_L2.OMS_AUDIT_LOG_ORGANOGRAM_LOG,
+        title: MENU.BN.ORGANOGRAM_LOG,
+        hasBullet: true,
+      },
     ],
   },
 ];

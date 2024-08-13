@@ -5,3 +5,17 @@
 .remove-padding {
   padding: 0 !important;
 }
+
+.animate__animated {
+  animation: none !important;
+}
+.animate__fadeIn {
+  animation: none !important;
+}
+
+.forPdfDown {
+  font-size: 20px !important;
+  p {
+    font-size: 20px !important;
+  }
+}

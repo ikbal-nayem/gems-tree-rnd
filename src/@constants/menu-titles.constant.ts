@@ -24,6 +24,9 @@ export const MENU = {
     ORGANIZATION_BRANCH: "প্রতিষ্ঠানের শাখা",
     CONFIGURATION: "কনফিগারেশন",
     ORGANOGRAM_APPROVER: "অর্গানোগ্রাম অনুমোদনকারী",
+    ORGANOGRAM_POST: "অননুমোদিত পদবি",
+    AUDIT_LOG: "অডিট লগ",
+    ORGANOGRAM_LOG: "অর্গানোগ্রাম লগ",
   },
 
   EN: {
@@ -51,5 +54,8 @@ export const MENU = {
     ORGANIZATION_BRANCH: "Organization Branch",
     CONFIGURATION: "Configuration",
     ORGANOGRAM_APPROVER: "Organogram Approver",
+    ORGANOGRAM_POST: "Unapproved Designation",
+    AUDIT_LOG: "Audit Log",
+    ORGANOGRAM_LOG: "Organogram Log",
   },
 };
