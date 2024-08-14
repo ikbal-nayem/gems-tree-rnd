@@ -1,25 +1,18 @@
-import { LABELS } from "@constants/common.constant";
 import {
   COMMON_LABELS,
   TDocumentDefinitions,
   isObjectNull,
-  makeBDLocalTime,
   numEnToBn,
 } from "@gems/utils";
-import { commonPDFFooter } from "utility/utils";
 import { LOCAL_LABELS } from "../labels";
 import { postTypeList } from "../ManPowerList";
 
 export const manpowerListPDFContent = (
   data,
-  orgName,
-  versionDate,
   langEn: boolean
 ): TDocumentDefinitions => {
-  const today = makeBDLocalTime(new Date());
   let slNo = 1;
   const pushData = [];
-  const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const LOCAL_LABEL = langEn ? LOCAL_LABELS.EN : LOCAL_LABELS.BN;
   const COMMON_LABEL = langEn ? COMMON_LABELS.EN : COMMON_LABELS;
   const columns = [
@@ -153,9 +146,6 @@ export const manpowerListPDFContent = (
 
   return {
     content: [
-      { text: orgName, style: "header" },
-      { text: versionDate, style: "subHeader" },
-      { text: LABEL.SUM_OF_MANPOWER, style: "title" },
       {
         table: {
           headerRows: 1,
@@ -169,38 +159,5 @@ export const manpowerListPDFContent = (
         layout: "lightHorizontalLines",
       },
     ],
-    footer: (currentPage, pageCount) =>
-      commonPDFFooter(currentPage, pageCount, langEn),
-    styles: {
-      header: {
-        fontSize: 14,
-        bold: true,
-        alignment: "center",
-      },
-      subHeader: {
-        fontSize: 10,
-        bold: true,
-        alignment: "center",
-        marginBottom: 10,
-      },
-      title: {
-        fontSize: 12,
-        bold: true,
-        alignment: "left",
-        marginBottom: 5,
-        decoration: "underline",
-      },
-      tableHeader: {
-        bold: true,
-        fontSize: 10,
-        color: "black",
-        alignment: "center",
-      },
-      textBold: {
-        bold: true,
-        fontSize: 14,
-      },
-    },
-    // pageMargins: [15, 20, 15, 20],
   };
 };
