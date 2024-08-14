@@ -3,7 +3,7 @@ import { toast } from "@gems/components";
 import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TemplateComponent from "../components/templateComponent";
+import TemplateComponent from "../components/template-component";
 
 const ExistOrganogramCreate = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);

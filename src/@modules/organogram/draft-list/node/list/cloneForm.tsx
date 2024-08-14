@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { OMSService } from "../../../../../@services/api/OMS.service";
-import ManPowerList from "@modules/organogram-template/components/templateViewComponent/components/ManPowerList";
+import ManPowerList from "@modules/organogram-template/components/template-view-component/components/ManPowerList";
 
 interface IForm {
   cloneNodeId: string;

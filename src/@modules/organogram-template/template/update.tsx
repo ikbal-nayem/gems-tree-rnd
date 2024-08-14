@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { isNotEmptyList } from "utility/utils";
 import { OMSService } from "../../../@services/api/OMS.service";
-import TemplateComponent from "../components/templateComponent";
-import TemplateEditComponent from "../components/templateEditComponent";
+import TemplateComponent from "../components/template-component";
+import TemplateEditComponent from "../components/template-edit-component";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

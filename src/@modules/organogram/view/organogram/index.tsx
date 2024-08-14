@@ -1,6 +1,6 @@
 import { ContentPreloader, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
-import TemplateViewComponent from "@modules/organogram-template/components/templateViewComponent";
+import TemplateViewComponent from "@modules/organogram-template/components/template-view-component";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 
