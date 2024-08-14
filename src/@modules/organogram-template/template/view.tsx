@@ -3,7 +3,7 @@ import { IObject, isObjectNull } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { OMSService } from "../../../@services/api/OMS.service";
-import TemplateViewComponent from "../components/templateViewComponent";
+import TemplateViewComponent from "../components/template-view-component";
 
 const TemplateView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
