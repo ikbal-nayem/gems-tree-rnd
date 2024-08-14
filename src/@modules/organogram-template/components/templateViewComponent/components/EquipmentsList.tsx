@@ -1,5 +1,5 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
-import { style } from "@constants/pdfGenarator.constant";
+import { organogramDeafultStyles } from "@constants/pdf-generator.constant";
 import { Button, Icon, Separator, TextEditorPreview } from "@gems/components";
 import {
   ckToPdfMake,
@@ -92,7 +92,7 @@ const EquipmentsForm = ({
       generatePDF(
         {
           content: pdfHeader.concat(content),
-          styles: style,
+          styles: organogramDeafultStyles,
           footer: (currentPage, pageCount) =>
             commonPDFFooter(currentPage, pageCount, langEn),
         },

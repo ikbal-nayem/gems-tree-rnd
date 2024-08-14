@@ -4,7 +4,7 @@ import {
   LABELS,
 } from "@constants/common.constant";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
-import { style } from "@constants/pdfGenarator.constant";
+import { organogramDeafultStyles } from "@constants/pdf-generator.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import {
   ACLWrapper,
@@ -367,7 +367,7 @@ const TemplateViewComponent = ({
               ...equipmentContent,
             ])
           : pdfHeader.concat(content),
-        styles: style,
+        styles: organogramDeafultStyles,
         footer: (currentPage, pageCount) =>
           commonPDFFooter(currentPage, pageCount, langEn),
       },

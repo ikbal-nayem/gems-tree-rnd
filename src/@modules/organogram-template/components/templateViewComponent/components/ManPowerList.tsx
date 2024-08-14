@@ -18,9 +18,9 @@ import {
 } from "@gems/utils";
 import { FC, Fragment, useState } from "react";
 import "../style.scss";
-import MPListChanges from "./MPListChanges";
 import { LOCAL_LABELS } from "./labels";
-import ManpowerPDFDownloadModal from "./manpowerPdfDownloadModal";
+import ManpowerPDFDownloadModal from "./ManpowerPdfDownloadModal";
+import MPListChanges from "./MPListChanges";
 import { manpowerListPDFContent } from "./pdf/ManpowerListPDF";
 
 type TableProps = {

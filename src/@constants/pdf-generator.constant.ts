@@ -1,4 +1,4 @@
-export const style = {
+export const organogramDeafultStyles = {
   tableHeader: {
     bold: true,
     fontSize: 10,
