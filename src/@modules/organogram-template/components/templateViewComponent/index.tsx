@@ -4,6 +4,7 @@ import {
   LABELS,
 } from "@constants/common.constant";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { style } from "@constants/pdfGenarator.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import {
   ACLWrapper,
@@ -20,14 +21,17 @@ import {
   DATE_PATTERN,
   IObject,
   generateDateFormat,
+  generatePDF,
   generateUUID,
   isObjectNull,
+  makeBDLocalTime,
 } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { commonPDFFooter } from "utility/utils";
 import OrganizationTemplateTree from "./Tree";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
@@ -91,6 +95,7 @@ const TemplateViewComponent = ({
   const [modalButtonLabel, setModalButtonLabel] = useState<any>();
   const [modalMsg, setModalMsg] = useState<any>();
   const [modalAction, setModalAction] = useState<any>();
+  const [equipmentContent, setEquipmentContent] = useState<any>(null);
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
   const navigate = useNavigate();
@@ -341,6 +346,37 @@ const TemplateViewComponent = ({
         DATE_PATTERN.GOVT_STANDARD
       ) + " রিপোর্ট"
     : "";
+
+  const multiplePDFGenarator = (content, isEquipment) => {
+    let pdfHeader = [
+      {
+        text: orgName || titleName || null,
+        style: "header",
+      },
+      {
+        text: versionName,
+        style: "subHeader",
+      },
+    ];
+    generatePDF(
+      {
+        content: isEquipment
+          ? pdfHeader.concat([...content, ...equipmentContent])
+          : pdfHeader.concat(content),
+        styles: style,
+        footer: (currentPage, pageCount) =>
+          commonPDFFooter(currentPage, pageCount, langEn),
+      },
+      {
+        action: "download",
+        fileName: `Summary Of Manpower Report ${generateDateFormat(
+          makeBDLocalTime(new Date()),
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        )}`,
+      }
+    );
+  };
 
   return (
     <div>
@@ -647,6 +683,7 @@ const TemplateViewComponent = ({
               isDownloadVisible={organogramOrganizationView ? true : false}
               orgName={orgName || titleName || null}
               versionDate={versionName}
+              setEquipmentContent={setEquipmentContent}
             />
           </div>
           {/* {(!orgName || !orgParentName) && !organogramView && ( */}
@@ -713,8 +750,7 @@ const TemplateViewComponent = ({
               organogramId={organogramId}
               insideModal={false}
               isDownloadVisible={organogramOrganizationView ? true : false}
-              orgName={orgName || titleName || null}
-              versionDate={versionName}
+              multiplePDFGenarator={multiplePDFGenarator}
             />
           </div>
           {langEn && (

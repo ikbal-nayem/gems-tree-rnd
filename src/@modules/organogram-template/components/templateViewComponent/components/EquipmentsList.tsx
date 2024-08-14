@@ -1,4 +1,5 @@
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
+import { style } from "@constants/pdfGenarator.constant";
 import { Button, Icon, Separator, TextEditorPreview } from "@gems/components";
 import {
   ckToPdfMake,
@@ -9,7 +10,7 @@ import {
   makeBDLocalTime,
   numEnToBn,
 } from "@gems/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { commonPDFFooter, isNotEmptyList } from "utility/utils";
 import EquipmentsListChanges from "./EquipmentsListChanges";
 import { equipmentPDFContent } from "./pdf/EquipmentsPDF";
@@ -23,7 +24,7 @@ interface IEquipmentsForm {
   organogramId?: string;
   insideModal?: boolean;
   title?: string;
-  onDownloadPDF?: (className: string, pdfName: string) => void;
+  setEquipmentContent?: (content) => void;
   isEquipmentsPDFLoading?: boolean;
   isDownloadVisible?: boolean;
   orgName?: string;
@@ -39,41 +40,22 @@ const EquipmentsForm = ({
   organogramId,
   insideModal,
   title,
-  onDownloadPDF,
   isEquipmentsPDFLoading,
   isDownloadVisible,
   orgName,
   versionDate,
+  setEquipmentContent,
 }: IEquipmentsForm) => {
   const LABEL = langEn ? LABELS.EN : LABELS.BN;
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClose = () => setIsOpen(false);
 
-  const onMenualDownload = () => {
-    const docs = ckToPdfMake(othersData?.inventoryOthersObject);
+  useEffect(() => {
+    if (setEquipmentContent) setEquipmentContent(handleTOEPdfDownload());
+  }, [setEquipmentContent]);
 
-    let style = {
-      header: {
-        fontSize: 14,
-        bold: true,
-        alignment: "center",
-      },
-      subHeader: {
-        fontSize: 13,
-        bold: true,
-        alignment: "center",
-        marginBottom: 10,
-      },
-      title: {
-        fontSize: 13,
-        bold: true,
-        alignment: "left",
-        marginBottom: 5,
-        decoration: "underline",
-      },
-    };
-
+  const handleTOEPdfDownload = (singlePDF = false) => {
     let pdfHeader = [
       {
         text: orgName,
@@ -83,28 +65,47 @@ const EquipmentsForm = ({
         text: versionDate,
         style: "subHeader",
       },
+    ];
+    let content = [
       {
         text: LABEL.EQUIPMENTS,
         style: "title",
       },
     ];
 
-    generatePDF(
-      {
-        content: pdfHeader.concat(docs),
-        styles: style,
-        footer: (currentPage, pageCount) =>
-          commonPDFFooter(currentPage, pageCount, langEn),
-      },
-      {
-        action: "download",
-        fileName: `Inventory Report ${generateDateFormat(
-          makeBDLocalTime(new Date()),
-          DATE_PATTERN.GOVT_STANDARD,
-          "en"
-        )}`,
-      }
-    );
+    if (othersData?.isInventoryOthers) {
+      content = content.concat(
+        ckToPdfMake(othersData?.inventoryOthersObject) || []
+      );
+    } else {
+      content = content.concat(
+        equipmentPDFContent(
+          {
+            inventoryData: inventoryData,
+            miscelleanousData: data,
+          },
+          langEn
+        )?.content || []
+      );
+    }
+    if (singlePDF) {
+      generatePDF(
+        {
+          content: pdfHeader.concat(content),
+          styles: style,
+          footer: (currentPage, pageCount) =>
+            commonPDFFooter(currentPage, pageCount, langEn),
+        },
+        {
+          action: "download",
+          fileName: `Inventory Report ${generateDateFormat(
+            makeBDLocalTime(new Date()),
+            DATE_PATTERN.GOVT_STANDARD,
+            "en"
+          )}`,
+        }
+      );
+    } else return content;
   };
 
   return (
@@ -136,31 +137,7 @@ const EquipmentsForm = ({
                 size="sm"
                 variant="active-light"
                 onClick={() => {
-                  // onDownloadPDF("equipments-pdfGenerator", "TO&E Data")
-
-                  if (othersData?.isInventoryOthers) {
-                    onMenualDownload();
-                  } else {
-                    generatePDF(
-                      equipmentPDFContent(
-                        {
-                          inventoryData: inventoryData,
-                          miscelleanousData: data,
-                        },
-                        orgName,
-                        versionDate,
-                        langEn
-                      ),
-                      {
-                        action: "download",
-                        fileName: `Inventory Report ${generateDateFormat(
-                          makeBDLocalTime(new Date()),
-                          DATE_PATTERN.GOVT_STANDARD,
-                          "en"
-                        )}`,
-                      }
-                    );
-                  }
+                  handleTOEPdfDownload(true);
                 }}
               >
                 {isEquipmentsPDFLoading ? (
