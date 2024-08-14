@@ -53,7 +53,7 @@ const EquipmentsForm = ({
 
   useEffect(() => {
     if (setEquipmentContent) setEquipmentContent(handleTOEPdfDownload());
-  }, [setEquipmentContent]);
+  }, [setEquipmentContent, langEn]);
 
   const handleTOEPdfDownload = (singlePDF = false) => {
     let pdfHeader = [

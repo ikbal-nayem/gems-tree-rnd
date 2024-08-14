@@ -361,7 +361,11 @@ const TemplateViewComponent = ({
     generatePDF(
       {
         content: isEquipment
-          ? pdfHeader.concat([...content, ...equipmentContent])
+          ? pdfHeader.concat([
+              ...content,
+              { text: "", margin: [0, 0, 0, 10] },
+              ...equipmentContent,
+            ])
           : pdfHeader.concat(content),
         styles: style,
         footer: (currentPage, pageCount) =>
@@ -369,7 +373,9 @@ const TemplateViewComponent = ({
       },
       {
         action: "download",
-        fileName: `Summary Of Manpower Report ${generateDateFormat(
+        fileName: `Summary Of Manpower ${
+          isEquipment ? "and TOE " : ""
+        }Report ${generateDateFormat(
           makeBDLocalTime(new Date()),
           DATE_PATTERN.GOVT_STANDARD,
           "en"
