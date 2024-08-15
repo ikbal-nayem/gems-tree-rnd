@@ -20,7 +20,7 @@ import {
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
-import { ActionLogModal } from "./actionLogModal";
+import { ActionLogModal } from "./ActionLogModal";
 
 type TableProps = {
   children: ReactNode;

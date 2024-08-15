@@ -17,7 +17,7 @@ import OrganoPostTable from "./Table";
 import { initMeta } from "@modules/post/lib";
 import Form from "./From";
 import { OMSService } from "@services/api/OMS.service";
-import PostApproveModel from "./postApproveModel";
+import PostApproveModel from "./PostApproveModel";
 
 const OrganoPostList = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);

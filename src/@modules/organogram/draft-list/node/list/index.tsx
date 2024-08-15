@@ -28,7 +28,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { searchParamsToObject } from "utility/makeObject";
 import DataTable from "./Table";
 import { organizationTypePDFContent } from "./pdf";
-import NodeClone from "./cloneForm";
+import NodeClone from "./CloneForm";
 
 const initMeta: IMeta = {
   page: 0,

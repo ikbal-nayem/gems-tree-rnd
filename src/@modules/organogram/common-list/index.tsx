@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import OrganogramTable from "./Table";
 import { ROUTE_L1 } from "@constants/internal-route.constant";
-import DraftCloneModal from "./draftCloneModal";
+import DraftCloneModal from "./draft-clone-modal";
 
 const initMeta: IMeta = {
   page: 0,

@@ -3,7 +3,7 @@ import { toast } from "@gems/components";
 import { OMSService } from "@services/api/OMS.service";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import NodeCreateUpdateForm from "./form";
+import NodeCreateUpdateForm from "./Form";
 
 const CreateNode = () => {
   const { state } = useLocation();

@@ -20,7 +20,7 @@ import {
 import { FC, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LABELS } from "./labels";
-import OrganogramClone from "./organogramClone";
+import OrganogramClone from "./organogram-clone";
 
 type TableProps = {
   children: ReactNode;

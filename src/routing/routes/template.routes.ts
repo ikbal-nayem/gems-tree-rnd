@@ -45,12 +45,12 @@ export const TemplateRoutes: IAppRoutes = {
     {
       link: ROUTE_L2.ORG_TEMPLATE_NODE_CREATE,
       // routeKey: ROUTE_KEY.ORG_TEMPLATE_NODE_CREATE,
-      element: lazy(() => import("@modules/organogram/draft-list/node/create")),
+      element: lazy(() => import("@modules/organogram/draft-list/node/Create")),
     },
     {
       link: ROUTE_L2.ORG_TEMPLATE_NODE_UPDATE,
       // routeKey: ROUTE_KEY.ORG_TEMPLATE_NODE_UPDATE,
-      element: lazy(() => import("@modules/organogram/draft-list/node/update")),
+      element: lazy(() => import("@modules/organogram/draft-list/node/Update")),
     },
     {
       link: ROUTE_L2.ORG_TEMPLATE_VIEW,

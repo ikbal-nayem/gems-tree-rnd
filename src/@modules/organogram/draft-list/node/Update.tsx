@@ -4,7 +4,7 @@ import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import NodeCreateUpdateForm from "./form";
+import NodeCreateUpdateForm from "./Form";
 
 const UpdateNode = () => {
   const { state } = useLocation();
