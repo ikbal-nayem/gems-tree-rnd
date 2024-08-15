@@ -7,8 +7,7 @@ import {
 import { IObject } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useState } from "react";
-import OrganizationTemplateTree from "./OrganizationTreeComponent/index";
-import ModuleNodeComponent from "./organizationNodeComponent";
+import ModuleNodeComponent from "./OrganizationNodeComponent";
 
 const Tree = () => {
   const [loading, setLoading] = useState<boolean>(false);

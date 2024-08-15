@@ -1,7 +1,7 @@
 import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import { CoreService } from "../../../../../@services/api/Core.service";
 import { useEffect, useState } from "react";
-import MyNode from "./my-node";
+import MyNode from "./MyNode";
 
 const OrganizationTemplateTree = ({ treeData }) => {
   const [postList, setPostist] = useState([]);

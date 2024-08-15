@@ -10,7 +10,7 @@ import {
 import { IObject, numEnToBn } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import { useEffect, useRef, useState } from "react";
-import GroupWiseOrgListModal from "./groupWiseOrgListModal";
+import GroupWiseOrgListModal from "./GroupWiseOrgListModal";
 
 const Tree = () => {
   const [loading, setLoading] = useState<boolean>(false);
