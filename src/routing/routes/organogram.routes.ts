@@ -35,27 +35,27 @@ export const OrganogramRoutes: IAppRoutes = {
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_VIEW,
       // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_VIEW,
-      element: lazy(() => import("@modules/organogram/view")),
+      element: lazy(() => import("@modules/organograms/view")),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_APPROVED_LIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_APPROVED_LIST,
-      element: lazy(() => import("@modules/organogram/approved-list")),
+      element: lazy(() => import("@modules/organograms/approved-list")),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_DRAFT_LIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_DRAFT_LIST,
-      element: lazy(() => import("@modules/organogram/draft-list")),
+      element: lazy(() => import("@modules/organograms/draft-list")),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_INREVIEW_LIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INREVIEW_LIST,
-      element: lazy(() => import("@modules/organogram/inreview-list")),
+      element: lazy(() => import("@modules/organograms/inreview-list")),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_INAPPROVE_LIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_INAPPROVE_LIST,
-      element: lazy(() => import("@modules/organogram/inapprove-list")),
+      element: lazy(() => import("@modules/organograms/inapprove-list")),
     },
   ],
 };

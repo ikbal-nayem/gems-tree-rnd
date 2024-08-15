@@ -14,7 +14,7 @@ export const AppRouteList: IAppRoutes[] = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_LIST,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_LIST,
-    element: lazy(() => import("@modules/organization/organizationList")),
+    element: lazy(() => import("@modules/organizations/organization-list")),
   },
   { ...TemplateRoutes },
   { ...OrganogramRoutes },
