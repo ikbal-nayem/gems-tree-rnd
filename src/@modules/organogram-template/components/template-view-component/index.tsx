@@ -32,7 +32,7 @@ import jsPDF from "jspdf";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { commonPDFFooter } from "utility/utils";
-import OrganizationTemplateTree from "./Tree";
+import OrganizationTemplateTree from "./tree";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";

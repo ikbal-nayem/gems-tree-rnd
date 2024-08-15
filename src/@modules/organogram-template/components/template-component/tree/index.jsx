@@ -5,7 +5,7 @@ import { ChartContainer } from "../../../../../@components/OrgChart/ChartContain
 import { CoreService } from "../../../../../@services/api/Core.service";
 import { OMSService } from "../../../../../@services/api/OMS.service";
 import NodeForm from "./Form";
-import MyNode from "./my-node";
+import MyNode from "./MyNode";
 
 const addNode = (nd, parent, templateData) => {
   if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
@@ -50,109 +50,62 @@ const editNode = (nd, node, updateData) => {
   return { ...nd };
 };
 
-const deleteNode = (nd, deleteItem) => {
-  if (
-    nd?.id &&
-    deleteItem?.id &&
-    nd?.id === deleteItem?.id &&
-    deleteItem?.isAddition
-  ) {
-    return null;
-  }
+// const deleteNode = (nd, deleteItem) => {
+//   if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
+//     return nd?.children && nd?.children?.length > 0
+//       ? nd?.children?.filter((s) => !s?.nodeId)?.length > 0 &&
+//           nd?.children
+//             ?.filter((s) => !s?.nodeId)
+//             ?.map((d) => {
+//               return {
+//                 ...d,
+//                 children: d?.children?.length > 0 ? deleteNode(d, d) : [],
+//                 isDeleted: true,
+//               };
+//             })
+//       : null;
+//   }
 
-  if (nd?.id && deleteItem?.id && nd?.id === deleteItem?.id) {
-    return nd?.children && nd?.children?.length > 0
-      ? nd?.children?.filter((s) => !s?.nodeId && !s?.isAddition)?.length > 0 &&
-          nd?.children
-            ?.filter((s) => !s?.nodeId && !s?.isAddition)
-            ?.map((d) => {
-              return {
-                ...d,
-                children: d?.children?.length > 0 ? deleteNode(d, d) : [],
-                isDeleted: true,
-                isParentDeleted: true,
-              };
-            })
-      : null;
-  }
-
-  if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
-    return null;
-  }
-
-  for (var i = 0; i < nd.children.length; i++) {
-    const nodeState = deleteNode(nd.children[i], deleteItem);
-    if (nodeState && nodeState?.length > 0) {
-      nd.children[i] = {
-        ...nd.children[i],
-        children: nodeState || [],
-        isDeleted: true,
-      };
-    }
-    if (!nodeState) {
-      if (nd?.children[i]?.isAddition) {
-        nd.children.splice(i, 1);
-      } else if (nd?.children[i]?.id)
-        nd.children[i] = {
-          ...nd.children[i],
-          children: [],
-          isDeleted: true,
-        };
-      else {
-        nd.children.splice(i, 1);
-        break;
-      }
-    }
-  }
-  nd = childSerializer(nd);
-  return { ...nd };
-};
-
-// const deleteNode = (nd, nodeId) => {
-//   if (nd.id === nodeId || nd.nodeId === nodeId) {
+//   if (nd?.nodeId && deleteItem?.nodeId && nd?.nodeId === deleteItem?.nodeId) {
 //     return null;
 //   }
-//   for (var i = 0; i < nd.children.length; i++) {
-//     const nodeState = deleteNode(nd.children[i], nodeId);
 
+//   for (var i = 0; i < nd.children.length; i++) {
+//     const nodeState = deleteNode(nd.children[i], deleteItem);
+//     if (nodeState && nodeState?.length > 0) {
+//       nd.children[i] = {
+//         ...nd.children[i],
+//         children: nodeState,
+//         isDeleted: true,
+//       };
+//     }
 //     if (!nodeState) {
-//       nd.children.splice(i, 1);
-//       break;
+//       if (nd?.children[i]?.id)
+//         nd.children[i] = {
+//           ...nd.children[i],
+//           children: [],
+//           isDeleted: true,
+//         };
+//       else {
+//         nd.children.splice(i, 1);
+//         break;
+//       }
 //     }
 //   }
 //   nd = childSerializer(nd);
 //   return { ...nd };
 // };
 
-const undoDeleteNode = (nd, undoItem) => {
-  if (nd?.id === undoItem?.id) {
-    return nd?.children && nd?.children?.length > 0
-      ? nd?.children?.map((d) => {
-          return {
-            ...d,
-            children: d?.children?.length > 0 ? undoDeleteNode(d, d) : [],
-            isDeleted: false,
-            isParentDeleted: false,
-          };
-        })
-      : null;
+const deleteNode = (nd, nodeId) => {
+  if (nd.id === nodeId || nd.nodeId === nodeId) {
+    return null;
   }
-
   for (var i = 0; i < nd.children.length; i++) {
-    const nodeState = undoDeleteNode(nd.children[i], undoItem);
-    if (nodeState && nodeState?.length > 0) {
-      nd.children[i] = {
-        ...nd.children[i],
-        children: nodeState || [],
-        isDeleted: false,
-      };
-    }
+    const nodeState = deleteNode(nd.children[i], nodeId);
+
     if (!nodeState) {
-      nd.children[i] = {
-        ...nd.children[i],
-        children: [],
-        isDeleted: false,
-      };
+      nd.children.splice(i, 1);
+      break;
     }
   }
   nd = childSerializer(nd);
@@ -254,10 +207,14 @@ const reOrder = (parent, formData, mode, direction) => {
 const OrganizationTemplateTree = ({
   treeData,
   setTreeData,
+  isNotEnamCommittee,
+  isTemplate,
+  draftListRecord,
   maxNodeCode,
   setMaxNodeCode,
   maxManpowerCode,
   setMaxManpowerCode,
+  isOrganogramUpdate = false,
   organogramData,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
@@ -265,7 +222,7 @@ const OrganizationTemplateTree = ({
   const selectedNode = useRef(null);
   const updateNodeData = useRef(null);
 
-  const [postList, getPostList] = useState([]);
+  const [postList, setPostList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
   const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
@@ -277,14 +234,13 @@ const OrganizationTemplateTree = ({
     meta: {
       page: 0,
       limit: 10000000,
-      sort: [{ order: "asc", field: "nameBn" }],
+      sort: [{ order: "asc", field: isNotEnamCommittee ? "nameBn" : "nameEn" }],
     },
     body: {},
   };
-
   useEffect(() => {
     CoreService.getPostList(postPayload).then((resp) =>
-      getPostList(resp.body || [])
+      setPostList(resp.body || [])
     );
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
@@ -294,6 +250,12 @@ const OrganizationTemplateTree = ({
       setClassList(resp.body || [])
     );
   }, []);
+
+  useEffect(() => {
+    isNotEnamCommittee
+      ? postList.sort((a, b) => (a.nameBn > b.nameBn ? 1 : -1))
+      : postList.sort((a, b) => (a.nameEn > b.nameEn ? 1 : -1));
+  }, [isNotEnamCommittee]);
 
   const cadreObj = serviceList?.find(
     (op) => op?.metaKey === META_TYPE.SERVICE_TYPE_CADRE
@@ -314,21 +276,6 @@ const OrganizationTemplateTree = ({
         setIsDeleteModal(true);
         setDeleteData(data);
         break;
-      case "REMOVE_UNDO":
-        // setTreeData(undoDeleteNode(treeData, data));
-
-        OMSService.UPDATE.undoOrganogramNodeWithChildById(
-          data?.id || "",
-          organogramData?.organizationOrganogramId || ""
-        )
-          .then((res) => {
-            toast.success(res?.message);
-            // setTreeData(undoDeleteNode(treeData, data));
-            setTreeData(res?.body || {});
-          })
-          .catch((err) => toast.error(err?.message));
-        break;
-
       default:
         return;
     }
@@ -339,23 +286,24 @@ const OrganizationTemplateTree = ({
     setIsDeleteModal(false);
   };
   const onConfirmDelete = () => {
-    setIsDeleteLoading(true);
-    OMSService.DELETE.clonedOrganogramNodeWithChildById(
-      deleteData?.id || "",
-      organogramData?.organizationOrganogramId || ""
-    )
-      .then((res) => {
-        toast.success(res?.message);
-        // setTreeData(deleteNode(treeData, deleteData));
-        setTreeData(res?.body || {});
-        setDeleteData(null);
-        setIsDeleteModal(false);
-      })
-      .catch((err) => toast.error(err?.message))
-      .finally(() => setIsDeleteLoading(false));
-
-    // setTreeData(deleteNode(treeData, deleteData));
-    // setIsDeleteModal(false);
+    if (isOrganogramUpdate) {
+      setIsDeleteLoading(true);
+      OMSService.DELETE.organogramNodeWithChildById(deleteData?.id || "")
+        .then((res) => {
+          toast.success(res?.message);
+          setTreeData(
+            deleteNode(treeData, deleteData?.id || deleteData?.nodeId)
+          );
+          setDeleteData(null);
+          setIsDeleteModal(false);
+        })
+        .catch((err) => toast.error(err?.message))
+        .finally(() => setIsDeleteLoading(false));
+    } else {
+      setTreeData(deleteNode(treeData, deleteData?.id || deleteData?.nodeId));
+      setDeleteData(null);
+      setIsDeleteModal(false);
+    }
   };
 
   const onFormClose = () => {
@@ -369,43 +317,56 @@ const OrganizationTemplateTree = ({
     // let ad;
     if (isObjectNull(updateNodeData.current)) {
       selectedNode.current = reOrder(selectedNode.current, formData, "add", "");
+
       // ad = addNode(treeData, selectedNode.current, formData);
-      let reqData = {
-        ...formData,
-        ...organogramData,
-        parentNodeDTO: selectedNode.current || {},
-        parentNodeId: selectedNode.current?.id || "",
-        maxNodeCode: maxNodeCode,
-        maxManpowerCode: maxManpowerCode,
-      };
-      OMSService.SAVE.organogramSingleNodeCreate(reqData)
-        .then((res) => {
-          toast.success(res?.message);
-          setTreeData(
-            addNode(treeData, selectedNode.current, {
-              ...formData,
-              id: res?.body || "",
-            })
-          );
-          onFormClose();
-        })
-        .catch((error) => toast.error(error?.message));
+
+      if (isOrganogramUpdate) {
+        let reqData = {
+          ...formData,
+          ...organogramData,
+          parentNodeDTO: selectedNode.current || {},
+          parentNodeId: selectedNode.current?.id || "",
+          maxNodeCode: maxNodeCode,
+          maxManpowerCode: maxManpowerCode,
+        };
+        OMSService.SAVE.organogramSingleNodeCreate(reqData)
+          .then((res) => {
+            toast.success(res?.message);
+            setTreeData(
+              addNode(treeData, selectedNode.current, {
+                ...formData,
+                id: res?.body || "",
+              })
+            );
+            onFormClose();
+          })
+          .catch((error) => toast.error(error?.message));
+        // .finally(() => onFormClose());
+      } else {
+        setTreeData(addNode(treeData, selectedNode.current, formData));
+        onFormClose();
+      }
     } else {
-      let reqData = {
-        ...formData,
-        ...organogramData,
-        code: formData?.code || maxNodeCode ? maxNodeCode + 1 : 1,
-        maxNodeCode: maxNodeCode,
-        maxManpowerCode: maxManpowerCode,
-      };
-      OMSService.UPDATE.organogramSingleNodeById(formData?.id, reqData)
-        .then((res) => {
-          toast.success(res?.message);
-          setTreeData(editNode(treeData, updateNodeData.current, formData));
-          onFormClose();
-        })
-        .catch((error) => toast.error(error?.message));
-      // .finally(() => onFormClose());
+      if (isOrganogramUpdate) {
+        let reqData = {
+          ...formData,
+          ...organogramData,
+          code: formData?.code || maxNodeCode ? maxNodeCode + 1 : 1,
+          maxNodeCode: maxNodeCode,
+          maxManpowerCode: maxManpowerCode,
+        };
+        OMSService.UPDATE.organogramSingleNodeById(formData?.id, reqData)
+          .then((res) => {
+            toast.success(res?.message);
+            setTreeData(editNode(treeData, updateNodeData.current, formData));
+            onFormClose();
+          })
+          .catch((error) => toast.error(error?.message));
+        // .finally(() => onFormClose());
+      } else {
+        setTreeData(editNode(treeData, updateNodeData.current, formData));
+        onFormClose();
+      }
       // ad = editNode(treeData, updateNodeData.current, formData);
     }
     // setTreeData(ad);
@@ -458,13 +419,13 @@ const OrganizationTemplateTree = ({
                 (treeData?.id || treeData?.nodeId) ===
                 (nodeData?.id || nodeData?.nodeId)
               }
+              isNotEnamCommittee={isNotEnamCommittee}
               maxNodeCode={maxNodeCode}
               setMaxNodeCode={setMaxNodeCode}
               maxManpowerCode={maxManpowerCode}
               setMaxManpowerCode={setMaxManpowerCode}
             />
           )}
-
           // draggable={true}
           // zoom={true}
         />
@@ -479,6 +440,9 @@ const OrganizationTemplateTree = ({
           defaultDisplayOrder={displayOrder}
           onClose={onFormClose}
           onSubmit={onSubmit}
+          isNotEnamCommittee={isNotEnamCommittee}
+          isTemplate={isTemplate}
+          draftListRecord={draftListRecord}
           maxNodeCode={maxNodeCode}
           setMaxNodeCode={setMaxNodeCode}
           maxManpowerCode={maxManpowerCode}

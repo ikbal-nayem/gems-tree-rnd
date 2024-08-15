@@ -8,7 +8,7 @@ import {
   numEnToBn,
 } from "@gems/utils";
 import { longLineBreaker } from "utility/utils";
-import "./my-node.css";
+import "./myNode.css";
 
 const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
   let COMMON_LABEL = null,
@@ -43,14 +43,15 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
                   ? "primary"
                   : "light"
               }
-              onClick={() => onViewOrManPowertableView(nodeData, 'view')}
+              onClick={() => onViewOrManPowertableView(nodeData, "view")}
             />
           </div>
         )}
 
-        <p className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start" ${deletedClass} ${additionClass}`}
-              onClick={() => onViewOrManPowertableView(nodeData,"manPower")}
-              >
+        <p
+          className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start" ${deletedClass} ${additionClass}`}
+          onClick={() => onViewOrManPowertableView(nodeData, "manPower")}
+        >
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn

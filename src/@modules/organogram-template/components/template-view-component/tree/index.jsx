@@ -2,9 +2,9 @@ import { Button, Icon, IconButton } from "@gems/components";
 import { useEffect, useRef, useState } from "react";
 import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import { CoreService } from "../../../../../@services/api/Core.service";
-import MyNode from "./my-node";
-import NodeDetails from "./node-details";
-import ManPowerDetails from "./manPowerDetails";
+import MyNode from "./MyNode";
+import NodeDetails from "./NodeDetails";
+import ManPowerDetails from "./ManPowerDetails";
 
 const OrganizationTemplateTree = ({
   treeData,

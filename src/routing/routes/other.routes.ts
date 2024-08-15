@@ -28,12 +28,14 @@ let routeList: IAppRoutes[] = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_GROUP,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_GROUP,
-    element: lazy(() => import("@modules/organization/organizationGroupList")),
+    element: lazy(
+      () => import("@modules/organization/organization-group-list")
+    ),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_BRANCH,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_BRANCH,
-    element: lazy(() => import("@modules/organization/organizationBranch")),
+    element: lazy(() => import("@modules/organization/organization-branch")),
   },
   {
     link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_APPROVER_LIST,
@@ -81,7 +83,7 @@ const permiableRouteList: IAppRoutes[] = [
     element: lazy(
       () =>
         import(
-          "@modules/organization/organizationGroupList/list/organizationListByGroup"
+          "@modules/organization/organization-group-list/list/organization-list-by-group"
         )
     ),
   },

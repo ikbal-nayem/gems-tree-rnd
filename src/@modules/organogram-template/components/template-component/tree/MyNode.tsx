@@ -3,7 +3,7 @@ import { COMMON_LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
 import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
-import "./my-node.css";
+import "./myNode.css";
 
 const MyNode = ({
   nodeData,

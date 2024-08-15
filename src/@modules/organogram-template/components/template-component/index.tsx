@@ -15,7 +15,7 @@ import {
 } from "@gems/utils";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import OrganizationTemplateTree from "./Tree";
+import OrganizationTemplateTree from "./tree";
 // import { orgData } from "./Tree/data2";
 import { META_TYPE } from "@constants/common.constant";
 import { CoreService } from "@services/api/Core.service";
