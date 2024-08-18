@@ -47,7 +47,8 @@ const ProposalOrganogramEditComponent = ({
     IObject[]
   >([]);
   const [isNotEnamCommittee, setIsNotEnamCommittee] = useState<boolean>(false);
-  // const isNotEnamCommittee = true;
+  const [maxNodeCode, setMaxNodeCode] = useState<number>(1);
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(1);
   const formProps = useForm<any>({
     defaultValues: {
       abbreviationDtoList: [],
@@ -108,6 +109,9 @@ const ProposalOrganogramEditComponent = ({
         organogramNoteDto: updateData?.organogramNoteDto,
         templateOrganizationsDtoList: updateData?.templateOrganizationsDtoList,
       });
+      if (updateData?.maxNodeCode) setMaxNodeCode(updateData?.maxNodeCode);
+      if (updateData?.maxManpowerCode)
+        setMaxManpowerCode(updateData?.maxManpowerCode);
     }
   }, [updateData]);
 
@@ -269,7 +273,15 @@ const ProposalOrganogramEditComponent = ({
         <OrganizationTemplateTree
           treeData={treeData}
           setTreeData={setTreeData}
-          // isNotEnamCommittee={isNotEnamCommittee}
+          maxNodeCode={maxNodeCode}
+          setMaxNodeCode={setMaxNodeCode}
+          maxManpowerCode={maxManpowerCode}
+          setMaxManpowerCode={setMaxManpowerCode}
+          organogramData={{
+            organizationOrganogramId: updateData?.id || "",
+            organizationId: updateData?.organization?.id || "",
+            organogramDate: updateData?.organogramDate || "",
+          }}
         />
       </div>
       <form onSubmit={handleSubmit(onFinalSubmit)} noValidate id="templateForm">

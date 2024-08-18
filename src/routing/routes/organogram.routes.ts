@@ -92,35 +92,35 @@ export const OrganogramRoutes: IAppRoutes = {
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
-      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
+      // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
       element: lazy(
         () => import("@modules/organograms/proposal-organogram/node/list")
       ),
     },
     {
       link: ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
-      routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
+      // routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
       element: lazy(
         () => import("@modules/organograms/proposal-organogram/node/create")
       ),
     },
     {
       link: ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
-      routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
+      // routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
       element: lazy(
         () => import("@modules/organograms/proposal-organogram/node/update")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_MAIN_ACTIVITY,
-      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_MAIN_ACTIVITY,
+      // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_MAIN_ACTIVITY,
       element: lazy(
         () => import("@modules/organograms/proposal-organogram/main-activity")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS,
-      routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS,
+      // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_ALLOCATION_OF_BUSINESS,
       element: lazy(
         () =>
           import(

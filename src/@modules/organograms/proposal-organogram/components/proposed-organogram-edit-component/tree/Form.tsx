@@ -11,7 +11,6 @@ import {
   ModalFooter,
   Select,
   Textarea,
-  toast,
 } from "@gems/components";
 import {
   COMMON_LABELS,
@@ -38,6 +37,10 @@ interface INodeForm {
   gradeList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
+  maxNodeCode: number;
+  setMaxNodeCode: (code: number) => void;
+  maxManpowerCode: number;
+  setMaxManpowerCode: (code: number) => void;
 }
 
 const postTypeList = [
@@ -68,13 +71,15 @@ const NodeForm = ({
   onSubmit,
   updateData,
   defaultDisplayOrder,
+  maxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
 }: INodeForm) => {
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    getValues,
     control,
     watch,
     formState: { errors },
@@ -178,6 +183,7 @@ const NodeForm = ({
               isAddition: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
+              code: maxManpowerCode,
             },
           ],
         };
@@ -193,6 +199,7 @@ const NodeForm = ({
             isAddition: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
+            code: maxManpowerCode,
           },
         ],
         postFunctionalityList: [],
@@ -284,23 +291,24 @@ const NodeForm = ({
 
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
-    if (notNullOrUndefined(opt)) {
-      let noDuplicate = true;
-      const mpList = getValues("manpowerList") || [];
-      if (mpList.length > 1) {
-        for (let i = 0; i < mpList.length; i++) {
-          if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
-            noDuplicate = false;
-            toast.error(
-              "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
-            );
-            setValue(`manpowerList.${index}.postDTO`, null);
-            break;
-          }
-        }
-      }
-      if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
-    }
+    // if (notNullOrUndefined(opt)) {
+    //   let noDuplicate = true;
+    //   const mpList = getValues("manpowerList") || [];
+    //   if (mpList.length > 1) {
+    //     for (let i = 0; i < mpList.length; i++) {
+    //       if (i !== index && mpList[i]?.postDTO?.id === opt?.id) {
+    //         noDuplicate = false;
+    //         toast.error(
+    //           "'" + mpList[i]?.postDTO?.nameBn + "' পদবিটি অনন্য নয়"
+    //         );
+    //         setValue(`manpowerList.${index}.postDTO`, null);
+    //         break;
+    //       }
+    //     }
+    //   }
+    //   if (noDuplicate) setValue(`manpowerList.${index}.postId`, opt?.id);
+    // }
+    setValue(`manpowerList.${index}.postId`, opt?.id);
   };
 
   const getAsyncPostList = useCallback((searchKey, callback) => {
@@ -319,7 +327,8 @@ const NodeForm = ({
         isAddition: true,
       };
     }
-    // console.log("da", data);
+
+    data.code = data.code || maxNodeCode;
     onSubmit(data);
   };
 
@@ -516,7 +525,9 @@ const NodeForm = ({
                       isAddition: true,
                       serviceTypeDto: cadreObj,
                       serviceTypeKey: cadreObj?.metaKey,
+                      code: maxManpowerCode + 1,
                     });
+                    setMaxManpowerCode(maxManpowerCode + 1);
                   }}
                 />
               </div>

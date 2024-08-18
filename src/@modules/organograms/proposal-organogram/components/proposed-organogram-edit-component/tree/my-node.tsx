@@ -5,7 +5,15 @@ import { notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
+const MyNode = ({
+  nodeData,
+  treeDispatch,
+  firstNode,
+  maxNodeCode,
+  setMaxNodeCode,
+  maxManpowerCode,
+  setMaxManpowerCode,
+}) => {
   isNotEmptyList(nodeData?.manpowerList) &&
     nodeData?.manpowerList.sort((a, b) => {
       if (!notNullOrUndefined(a.gradeOrder)) return 1;
@@ -50,7 +58,11 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
                 icon="add_circle"
                 size={20}
                 color="success"
-                onClick={() => treeDispatch("ADD", nodeData)}
+                onClick={() => {
+                  treeDispatch("ADD", nodeData);
+                  setMaxNodeCode(maxNodeCode + 1);
+                  setMaxManpowerCode(maxManpowerCode + 1);
+                }}
                 hoverTitle={"পরবর্তী স্তরে নতুন নোড যোগ করুন"}
               />
               {!firstNode && (
@@ -85,13 +97,8 @@ const MyNode = ({ nodeData, treeDispatch, postList, firstNode }) => {
             nodeData?.manpowerList?.map((item, i) => {
               let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
               mp = numEnToBn(mp);
-              const postExists = isNotEmptyList(postList) && item?.postId;
-
-              const post = postExists
-                ? postList?.find((d) => d?.id === item?.postId)
-                : null;
-
-              const postName = post?.nameBn || COMMON_LABELS.NOT_ASSIGN;
+              const postName =
+                item?.postDTO?.nameBn || COMMON_LABELS.NOT_ASSIGN;
 
               return (
                 <div key={i}>
