@@ -21,6 +21,9 @@ export const MENU = {
     MAIN_ACTIVITY_LIST: "প্রধান কার্যাবলির তালিকা",
     ALLOCATION_OF_BUSINESS_LIST: "কর্মবন্টনের তালিকা",
     NODE_LIST: "পদবি/স্তরের তালিকা",
+
+    ORGANOGRAM_CHANGE_TYPE: "পরিবর্তনের ধরণ",
+    ORGANOGRAM_CHECKLIST: "চেকলিস্ট",
     ORGANIZATION_BRANCH: "প্রতিষ্ঠানের শাখা",
     CONFIGURATION: "কনফিগারেশন",
     ORGANOGRAM_APPROVER: "অর্গানোগ্রাম অনুমোদনকারী",
@@ -51,6 +54,9 @@ export const MENU = {
     MAIN_ACTIVITY_LIST: "Main Activity List",
     ALLOCATION_OF_BUSINESS_LIST: "Business of Allocation List",
     NODE_LIST: "Node List",
+
+    ORGANOGRAM_CHANGE_TYPE: "Change Type",
+    ORGANOGRAM_CHECKLIST: "Checklist",
     ORGANIZATION_BRANCH: "Organization Branch",
     CONFIGURATION: "Configuration",
     ORGANOGRAM_APPROVER: "Organogram Approver",

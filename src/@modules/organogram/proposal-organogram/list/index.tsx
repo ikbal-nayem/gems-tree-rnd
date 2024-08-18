@@ -4,6 +4,7 @@ import { useAuth } from "@context/Auth";
 import { PageTitle } from "@context/PageData";
 import {
   Autocomplete,
+  ConfirmationModal,
   DownloadMenu,
   Pagination,
   toast,
@@ -27,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import ProposalTable from "./Table";
 import { LABELS } from "./labels";
+import { ProposalService } from "@services/api/Proposal.service";
 
 const initMeta: IMeta = {
   page: 0,
@@ -45,6 +47,9 @@ const ProposalList = () => {
   const [proposalStatusList, setProposalStatusList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
   const [officeScopeKey, setOfficeScopeKey] = useState<string>();
@@ -160,6 +165,31 @@ const ProposalList = () => {
       .catch((err) => toast.error(err?.message));
   };
 
+  const onCancelDelete = () => {
+    setIsDeleteModal(false);
+    setDeleteData(null);
+  };
+
+  const onDelete = (data) => {
+    setIsDeleteModal(true);
+    setDeleteData(data);
+  };
+
+  const onConfirmDelete = () => {
+    setIsDeleteLoading(true);
+    ProposalService.DELETE.proposedOrganogramByID(deleteData?.id)
+      .then((res) => {
+        toast.success(res?.message);
+        getDataList();
+        setDeleteData(null);
+      })
+      .catch((err) => toast.error(err?.message))
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setIsDeleteModal(false);
+      });
+  };
+
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       [COMMON_LABELS.SL_NO]: numEnToBn(i + 1) || COMMON_LABELS.NOT_ASSIGN,
@@ -250,6 +280,7 @@ const ProposalList = () => {
             //   { version: "name A" },
             //   { version: "name B" },
             // ]}
+            onDelete={onDelete}
             respMeta={respMeta}
             isLoading={isLoading}
           >
@@ -262,6 +293,17 @@ const ProposalList = () => {
         </div>
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
+
+        <ConfirmationModal
+          isOpen={isDeleteModal}
+          onClose={onCancelDelete}
+          onConfirm={onConfirmDelete}
+          isSubmitting={isDeleteLoading}
+          onConfirmLabel={"মুছে ফেলুন"}
+        >
+          আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন
+          ?
+        </ConfirmationModal>
       </div>
     </>
   );

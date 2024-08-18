@@ -339,6 +339,13 @@ export const OMSService = {
       await axiosIns.get(
         OMS_SERVICE + "organization/get-sum-organization/" + organizationId
       ),
+
+    nodeWiseManpowerById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organization-organogram/get-proposal-node-manpower-by/" +
+          id
+      ),
     organizationBranchList: async (payload): Promise<any> =>
       await axiosIns.post(
         OMS_SERVICE + "organization-branch/get-org-branch-list",

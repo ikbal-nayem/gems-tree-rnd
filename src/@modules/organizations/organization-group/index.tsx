@@ -1,3 +1,4 @@
+import { MENU } from "@constants/menu-titles.constant";
 import { ROUTE_KEY } from "@constants/route-keys.constant";
 import { PageTitle } from "@context/PageData";
 import { Tab, TabBlock, useApp } from "@gems/components";
@@ -5,7 +6,6 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import List from "./list";
 import Tree from "./tree";
-import { MENU } from "@constants/menu-titles.constant";
 
 const OrganizationGroup = () => {
   const { hasRoutePermission } = useApp()
