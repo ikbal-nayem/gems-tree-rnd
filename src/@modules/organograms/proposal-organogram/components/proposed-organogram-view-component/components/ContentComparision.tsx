@@ -1,6 +1,6 @@
 import { toast } from "@gems/components";
 import { IObject } from "@gems/utils";
-import Manpower from "@modules/organogram/proposal-organogram/view/tabComponent/manpower";
+import Manpower from "@modules/organograms/proposal-organogram/view/tabComponent/manpower";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";

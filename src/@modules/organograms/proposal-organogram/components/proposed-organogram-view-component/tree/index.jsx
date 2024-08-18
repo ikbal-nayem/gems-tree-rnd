@@ -1,10 +1,10 @@
-import { ChartContainer } from "../../../../../../@components/OrgChart/ChartContainer";
 import { Button, Icon, IconButton } from "@gems/components";
-import { CoreService } from "../../../../../../@services/api/Core.service";
 import { useEffect, useRef, useState } from "react";
-import MyNode from "./my-node";
-import NodeDetails from "./node-details";
+import { ChartContainer } from "../../../../../../@components/OrgChart/ChartContainer";
+import { CoreService } from "../../../../../../@services/api/Core.service";
 import { captureAndConvertToPDF } from "../local-util";
+import MyNode from "./my-node";
+import NodeDetails from "./NodeDetails";
 
 const OrganogramTree = ({
   treeData,
@@ -40,7 +40,6 @@ const OrganogramTree = ({
       setIsDownlaodButton(true);
     }, 1500);
   }, []);
-
 
   const download = useRef();
   const onDownload = () => {

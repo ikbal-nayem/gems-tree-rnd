@@ -63,59 +63,59 @@ export const OrganogramRoutes: IAppRoutes = {
       link: ROUTE_L2.OMS_PROPOSAL_LIST,
       routeKey: ROUTE_KEY.OMS_PROPOSAL_LIST,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/list")
+        () => import("@modules/organograms/proposal-organogram/list")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
-      element: lazy(() => import("@modules/organogram/changeTypeList")),
+      element: lazy(() => import("@modules/organograms/change-type-list")),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_CHECKLIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_CHANGE_TYPE_LIST,
-      element: lazy(() => import("@modules/organogram/checkList")),
+      element: lazy(() => import("@modules/organograms/check-list")),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW,
       // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_VIEW,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/view/index")
+        () => import("@modules/organograms/proposal-organogram/view/index")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_UPDATE,
       // routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_UPDATE,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/update")
+        () => import("@modules/organograms/proposal-organogram/update")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/node/list")
+        () => import("@modules/organograms/proposal-organogram/node/list")
       ),
     },
     {
       link: ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
       routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_CREATE,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/node/create")
+        () => import("@modules/organograms/proposal-organogram/node/create")
       ),
     },
     {
       link: ROUTE_L2.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
       routeKey: ROUTE_KEY.ORG_ORGANOGRAM_PROPOSAL_NODE_UPDATE,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/node/update")
+        () => import("@modules/organograms/proposal-organogram/node/update")
       ),
     },
     {
       link: ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_MAIN_ACTIVITY,
       routeKey: ROUTE_KEY.OMS_ORGANOGRAM_MAIN_ACTIVITY,
       element: lazy(
-        () => import("@modules/organogram/proposal-organogram/main-activity")
+        () => import("@modules/organograms/proposal-organogram/main-activity")
       ),
     },
     {
@@ -124,7 +124,7 @@ export const OrganogramRoutes: IAppRoutes = {
       element: lazy(
         () =>
           import(
-            "@modules/organogram/proposal-organogram/allocation-of-business"
+            "@modules/organograms/proposal-organogram/allocation-of-business"
           )
       ),
     },

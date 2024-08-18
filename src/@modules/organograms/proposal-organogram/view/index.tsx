@@ -4,8 +4,8 @@ import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { sortBy } from "utility/utils";
-import ProposedOrganogramViewComponent from "../components/proposedOrganogramViewComponent";
-import ContentComparision from "../components/proposedOrganogramViewComponent/components/ContentComparision";
+import ProposedOrganogramViewComponent from "../components/proposed-organogram-view-component";
+import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
 
 const ProposedOrganogramView = () => {

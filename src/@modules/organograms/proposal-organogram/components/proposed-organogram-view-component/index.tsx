@@ -25,7 +25,7 @@ import {
 } from "@gems/utils";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import OrganogramTree from "./Tree";
+import OrganogramTree from "./tree";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";

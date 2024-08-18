@@ -4,7 +4,7 @@ import { IObject, isObjectNull } from "@gems/utils";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import ProposalOrganogramEditComponent from "../components/proposedOrganogramEditComponent";
+import ProposalOrganogramEditComponent from "../components/proposed-organogram-edit-component";
 
 const TemplateUpdate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
