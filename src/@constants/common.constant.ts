@@ -34,6 +34,7 @@ export const COMMON_LABELS = {
   EN_ONLY: "ইংরেজিতে লিখুন",
   BN_ONLY: "বাংলায় লিখুন",
   TITLE: "শিরোনাম",
+  DOWNLOAD: "ডাউনলোড",
 
   // ===========================================================================================
 
@@ -66,6 +67,7 @@ export const COMMON_LABELS = {
     EN_ONLY: "English Only",
     BN_ONLY: "Bangla Only",
     TITLE: "Title",
+    DOWNLOAD: "Download",
   },
 };
 
@@ -103,6 +105,7 @@ export const LABELS = {
     NOTES: "Notes",
     REVIEW_APPROVE_NOTES: "Review & Approve Notes",
     CHANGES: "Changes",
+    DOWNLOAD_OPTION: "Download Option",
   },
 
   BN: {
@@ -138,6 +141,7 @@ export const LABELS = {
     NOTES: "মন্তব্য",
     REVIEW_APPROVE_NOTES: "পর্যালোচনা ও অনুমোদন ক্ষেত্রে মন্তব্য সমূহ",
     CHANGES: "পরিবর্তনসমূহ",
+    DOWNLOAD_OPTION: "ডাউনলোড অপশন",
   },
 };
 
