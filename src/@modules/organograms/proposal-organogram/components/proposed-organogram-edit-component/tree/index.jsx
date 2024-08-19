@@ -5,7 +5,7 @@ import { ChartContainer } from "../../../../../../@components/OrgChart/ChartCont
 import { CoreService } from "../../../../../../@services/api/Core.service";
 import { OMSService } from "../../../../../../@services/api/OMS.service";
 import NodeForm from "./Form";
-import MyNode from "./my-node";
+import MyNode from "./MyNode";
 
 const addNode = (nd, parent, templateData) => {
   if ((nd?.id || nd?.nodeId) === (parent?.id || parent?.nodeId)) {
