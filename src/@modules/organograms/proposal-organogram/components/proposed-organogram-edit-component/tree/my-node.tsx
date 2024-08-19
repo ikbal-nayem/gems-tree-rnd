@@ -1,7 +1,7 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { notNullOrUndefined, numEnToBn } from "@gems/utils";
+import { IObject, notNullOrUndefined, numEnToBn } from "@gems/utils";
 import { isNotEmptyList, longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
@@ -123,7 +123,12 @@ const MyNode = ({
                       <p className="mb-0 fs-7">{mp} </p>
                       <p className="mb-0 fs-7 ms-1">x</p>
                       <p className="mb-0 fs-7 ms-1">
-                        {longLineBreaker(postName, 17)}
+                        {postName || ""}
+                        {item?.alternativePostListDTO?.length > 0
+                          ? item?.alternativePostListDTO?.map(
+                              (ap: IObject) => ` / ${ap?.nameBn}`
+                            )
+                          : ""}
                       </p>
                     </div>
                   ) : null}
