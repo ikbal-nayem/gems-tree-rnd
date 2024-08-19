@@ -76,7 +76,6 @@ const orgmOrgOrGroupList = [
 
 const NodeForm = ({
   isOpen,
-  postList,
   gradeList,
   serviceList,
   cadreObj,

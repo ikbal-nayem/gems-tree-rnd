@@ -264,27 +264,14 @@ const OrganizationTemplateTree = ({
   // const [isSaving, setSaving] = useState<boolean>(false);
   const selectedNode = useRef(null);
   const updateNodeData = useRef(null);
-
-  const [postList, getPostList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [deleteData, setDeleteData] = useState();
   const [displayOrder, setDisplayOrder] = useState(1);
-  const postPayload = {
-    meta: {
-      page: 0,
-      limit: 10000000,
-      sort: [{ order: "asc", field: "nameBn" }],
-    },
-    body: {},
-  };
 
   useEffect(() => {
-    CoreService.getPostList(postPayload).then((resp) =>
-      getPostList(resp.body || [])
-    );
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
@@ -428,7 +415,6 @@ const OrganizationTemplateTree = ({
         />
         <NodeForm
           isOpen={formOpen}
-          postList={postList}
           gradeList={gradeList}
           serviceList={serviceList}
           cadreObj={cadreObj}
