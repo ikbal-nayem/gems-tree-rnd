@@ -25,7 +25,7 @@ import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { enCheck } from "utility/checkValidation";
+import { arraysAreEqual, enCheck } from "utility/checkValidation";
 
 interface INodeForm {
   isOpen: boolean;
@@ -35,6 +35,7 @@ interface INodeForm {
   defaultDisplayOrder?: number;
   postList: IObject[];
   gradeList: IObject[];
+  classList: IObject[];
   serviceList: IObject[];
   cadreObj: IObject;
   maxNodeCode: number;
@@ -77,6 +78,7 @@ const orgmOrgOrGroupList = [
 const NodeForm = ({
   isOpen,
   gradeList,
+  classList,
   serviceList,
   cadreObj,
   onClose,
@@ -94,7 +96,7 @@ const NodeForm = ({
     setValue,
     control,
     watch,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<any>({
     defaultValues: {
       postFunctionalityList: [],
@@ -125,7 +127,10 @@ const NodeForm = ({
   });
 
   const [isNodeModified, setIsNodeModified] = useState<boolean>(false);
-
+  const [titleList, setTitleList] = useState<IObject[]>([]);
+  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
+    []
+  );
   const postPayload = {
     meta: {
       page: 0,
@@ -134,11 +139,6 @@ const NodeForm = ({
     },
     body: { searchKey: "" },
   };
-
-  const [titleList, setTitleList] = useState<IObject[]>([]);
-  const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
-    []
-  );
   const payload = {
     meta: {
       page: 0,
@@ -201,6 +201,8 @@ const NodeForm = ({
 
             return {
               ...item,
+              isAlternativePost:
+                item?.alternativePostListDTO?.length > 0 ? true : false,
             };
           }),
         };
@@ -272,9 +274,18 @@ const NodeForm = ({
       if (
         fieldName === "postDTO" ||
         fieldName === "gradeDTO" ||
-        fieldName === "serviceTypeDto"
+        fieldName === "serviceTypeDto" ||
+        fieldName === "classKeyDto"
       ) {
         if (itemUpdateObject?.[fieldName]?.id !== item?.id) {
+          man[index] = { ...man[index], isModified: true };
+          setValue("manpowerList", man);
+        } else {
+          man[index] = { ...man[index], isModified: false };
+          setValue("manpowerList", man);
+        }
+      } else if (fieldName === "alternativePostListDTO") {
+        if (!arraysAreEqual(itemUpdateObject[fieldName], item)) {
           man[index] = { ...man[index], isModified: true };
           setValue("manpowerList", man);
         } else {
@@ -287,8 +298,6 @@ const NodeForm = ({
             ? JSON.stringify(itemUpdateObject?.[fieldName])
             : itemUpdateObject?.[fieldName]) !== item
         ) {
-          // man[index] = { ...man[index], isModified: true };
-          // setValue("manpowerList", man);
           manpowerListUpdate(index, {
             ...field,
             [fieldName]: item,
@@ -301,7 +310,11 @@ const NodeForm = ({
             isModified: false,
           });
         }
-      } else if (fieldName === "postType" || fieldName === "isHead") {
+      } else if (
+        fieldName === "postType" ||
+        fieldName === "isHead" ||
+        fieldName === "isAlternativePost"
+      ) {
         if (itemUpdateObject?.[fieldName] !== item) {
           manpowerListUpdate(index, {
             ...field,
@@ -670,7 +683,11 @@ const NodeForm = ({
                         // isMulti
                         control={control}
                         noMargin
-                        getOptionLabel={(op) => op?.nameBn}
+                        getOptionLabel={(op) =>
+                          `${op?.nameBn} ${
+                            op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                          }`
+                        }
                         getOptionValue={(op) => op?.id}
                         name={`manpowerList.${index}.postDTO`}
                         onChange={(t) => {
@@ -684,28 +701,135 @@ const NodeForm = ({
                             ?.message as string
                         }
                       />
+                      <div className="my-1">
+                        <Checkbox
+                          noMargin
+                          label={"বিকল্প পদবি"}
+                          // label='প্রধান ?'
+                          registerProperty={{
+                            ...register(
+                              `manpowerList.${index}.isAlternativePost`,
+                              {
+                                onChange: (e) => {
+                                  setValue(
+                                    `manpowerList.${index}.alternativePostListDTO`,
+                                    null
+                                  );
+                                  onManpowerModified(
+                                    field,
+                                    index,
+                                    e.target.checked,
+                                    "isAlternativePost"
+                                  );
+                                },
+                              }
+                            ),
+                          }}
+                        />
+                      </div>
+                      {watch(`manpowerList.${index}.isAlternativePost`) && (
+                        <Autocomplete
+                          // label={index < 1 ? "বিকল্প পদবি" : ""}
+                          placeholder="বিকল্প পদবি বাছাই করুন"
+                          // isRequired
+                          isAsync
+                          isMulti
+                          control={control}
+                          noMargin
+                          getOptionLabel={(op) =>
+                            `${op?.nameBn} ${
+                              op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                            }`
+                          }
+                          getOptionValue={(op) => op?.id}
+                          name={`manpowerList.${index}.alternativePostListDTO`}
+                          onChange={(t) =>
+                            onManpowerModified(
+                              field,
+                              index,
+                              t,
+                              "alternativePostListDTO"
+                            )
+                          }
+                          loadOptions={getAsyncPostList}
+                          isError={
+                            !!errors?.manpowerList?.[index]
+                              ?.alternativePostListDTO
+                          }
+                          errorMessage={
+                            errors?.manpowerList?.[index]
+                              ?.alternativePostListDTO?.message as string
+                          }
+                        />
+                      )}
                     </div>
 
-                    <div className="col-md-6 col-xl-3 px-1">
-                      <Autocomplete
-                        label={index < 1 ? "গ্রেড" : ""}
-                        placeholder="বাছাই করুন"
-                        control={control}
-                        options={gradeList || []}
-                        getOptionLabel={(op) => op?.nameBn}
-                        getOptionValue={(op) => op?.id}
-                        name={`manpowerList.${index}.gradeDTO`}
-                        onChange={(t) => {
-                          setValue(`manpowerList.${index}.gradeId`, t?.id);
-                          setValue(
-                            `manpowerList.${index}.gradeOrder`,
-                            t?.displayOrder
-                          );
-                          onManpowerModified(field, index, t, "gradeDTO");
-                        }}
-                        noMargin
-                        isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                      />
+                    <div className="col-xl-3 ps-0 pe-1">
+                      <div className="d-flex">
+                        <div className="w-50 me-1">
+                          <Autocomplete
+                            label={index < 1 ? "গ্রেড" : ""}
+                            placeholder="বাছাই করুন"
+                            control={control}
+                            isClearable={false}
+                            options={gradeList || []}
+                            getOptionLabel={(op) => op?.nameBn}
+                            getOptionValue={(op) => op?.id}
+                            name={`manpowerList.${index}.gradeDTO`}
+                            onChange={(t) => {
+                              setValue(`manpowerList.${index}.gradeId`, t?.id);
+                              setValue(
+                                `manpowerList.${index}.gradeOrder`,
+                                t?.displayOrder
+                              );
+                              setValue(
+                                `manpowerList.${index}.classKeyDto`,
+                                classList.find(
+                                  (d) => d?.metaKey === t?.classMetaKey
+                                )
+                              );
+                              setValue(
+                                `manpowerList.${index}.classKey`,
+                                classList.find(
+                                  (d) => d?.metaKey === t?.classMetaKey
+                                )?.metaKey
+                              );
+                              onManpowerModified(field, index, t, "gradeDTO");
+                            }}
+                            noMargin
+                            isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                          />
+                        </div>
+                        <div className="w-50">
+                          <Autocomplete
+                            label={index < 1 ? "শ্রেণি" : ""}
+                            placeholder="বাছাই করুন"
+                            control={control}
+                            // isRequired
+                            isClearable={false}
+                            options={classList || []}
+                            getOptionLabel={(op) => op?.titleBn}
+                            getOptionValue={(op) => op?.metaKey}
+                            name={`manpowerList.${index}.classKeyDto`}
+                            onChange={(t) => {
+                              setValue(
+                                `manpowerList.${index}.classKey`,
+                                t?.metaKey
+                              );
+                              onManpowerModified(
+                                field,
+                                index,
+                                t,
+                                "classKeyDto"
+                              );
+                            }}
+                            noMargin
+                            isError={
+                              !!errors?.manpowerList?.[index]?.classKeyDto
+                            }
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-md-6 col-xl-2 px-1">
@@ -794,8 +918,8 @@ const NodeForm = ({
 
                     <div
                       className={
-                        "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
-                        (index < 1 ? "mt-5" : "my-0")
+                        "col-md-6 col-xl-1 px-1 " +
+                        (index < 1 ? "mt-8" : "mt-2")
                       }
                     >
                       {isHeadIndex === null || isHeadIndex === index ? (
@@ -855,6 +979,24 @@ const NodeForm = ({
                 )}
               </div>
             ))}
+            <div className="d-flex justify-content-center mt-4 mb-12">
+              <IconButton
+                iconName="add"
+                color="success"
+                className="w-25 rounded-pill"
+                rounded={false}
+                onClick={() => {
+                  manpowerListAppend({
+                    isNewManpower: true,
+                    isAddition: true,
+                    serviceTypeDto: cadreObj,
+                    serviceTypeKey: cadreObj?.metaKey,
+                    code: maxManpowerCode + 1,
+                  });
+                  setMaxManpowerCode(maxManpowerCode + 1);
+                }}
+              />
+            </div>
           </div>
           <div className="mt-6">
             <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
