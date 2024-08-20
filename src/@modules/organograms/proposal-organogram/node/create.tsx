@@ -9,7 +9,7 @@ const CreateNode = () => {
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [maxManpowerCode, setMaxManpowerCode] = useState<number>(
-    state?.maxManpowerCode + 1 || 1
+    state?.proposedOrganogram?.maxManpowerCode + 1 || 1
   );
 
   const navigate = useNavigate();

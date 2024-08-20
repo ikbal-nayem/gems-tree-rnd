@@ -14,7 +14,7 @@ const UpdateNode = () => {
   const nodeId = searchParams.get("id");
   const navigate = useNavigate();
   const [maxManpowerCode, setMaxManpowerCode] = useState<number>(
-    state?.maxManpowerCode || 1
+    state?.proposedOrganogram?.maxManpowerCode || 1
   );
 
   useEffect(() => {
