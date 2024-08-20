@@ -14,6 +14,8 @@ const CreateNode = () => {
 
   const navigate = useNavigate();
 
+  console.log(state);
+
   const onSubmit = (data) => {
     setIsLoading(true);
     let reqData = {
@@ -35,10 +37,13 @@ const CreateNode = () => {
         navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, {
           state: {
             ...state,
-            maxNodeCode: state?.proposedOrganogram?.maxNodeCode
-              ? state?.proposedOrganogram?.maxNodeCode + 1
-              : 1,
-            maxManpowerCode: maxManpowerCode,
+            proposedOrganogram: {
+              ...state?.proposedOrganogram,
+              maxNodeCode: state?.proposedOrganogram?.maxNodeCode
+                ? state?.proposedOrganogram?.maxNodeCode + 1
+                : 1,
+              maxManpowerCode: maxManpowerCode,
+            },
           },
         });
       })

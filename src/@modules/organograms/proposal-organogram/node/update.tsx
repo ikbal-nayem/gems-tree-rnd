@@ -39,9 +39,10 @@ const UpdateNode = () => {
       organizationId: state?.proposedOrganization?.id || null,
       organogramDate: state?.proposedDate || null,
       code:
-        item?.code || state?.proposedOrganogram?.maxNodeCode
+        item?.code ||
+        (state?.proposedOrganogram?.maxNodeCode
           ? state?.proposedOrganogram?.maxNodeCode + 1
-          : 1,
+          : 1),
       maxNodeCode: state?.proposedOrganogram?.maxNodeCode || null,
       maxManpowerCode: maxManpowerCode,
     };
@@ -51,8 +52,11 @@ const UpdateNode = () => {
         navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, {
           state: {
             ...state,
-            maxNodeCode: state?.proposedOrganogram?.maxNodeCode || null,
-            maxManpowerCode: maxManpowerCode,
+            proposedOrganogram: {
+              ...state?.proposedOrganogram,
+              maxNodeCode: state?.proposedOrganogram?.maxNodeCode,
+              maxManpowerCode: maxManpowerCode,
+            },
           },
         });
       })

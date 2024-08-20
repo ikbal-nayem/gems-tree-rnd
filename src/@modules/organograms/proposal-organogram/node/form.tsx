@@ -664,6 +664,52 @@ const NodeCreateUpdateForm = ({
                     errors?.manpowerList?.[index]?.postDTO?.message as string
                   }
                 />
+                <div className="my-1">
+                  <Checkbox
+                    noMargin
+                    label={"বিকল্প পদবি"}
+                    registerProperty={{
+                      ...register(`manpowerList.${index}.isAlternativePost`, {
+                        onChange: (e) => {
+                          setValue(
+                            `manpowerList.${index}.alternativePostListDTO`,
+                            null
+                          );
+                        },
+                      }),
+                    }}
+                  />
+                </div>
+                {watch(`manpowerList.${index}.isAlternativePost`) && (
+                  <Autocomplete
+                    // label={index < 1 ? "বিকল্প পদবি" : ""}
+                    placeholder="বিকল্প পদবি বাছাই করুন"
+                    // isRequired
+                    isAsync
+                    isMulti
+                    control={control}
+                    noMargin
+                    getOptionLabel={(op) =>
+                      isNotEnamCommittee
+                        ? `${op?.nameBn} ${
+                            op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                          }`
+                        : `${op?.nameEn} ${
+                            op?.nameBn ? "(" + op?.nameBn + ")" : ""
+                          }`
+                    }
+                    getOptionValue={(op) => op?.id}
+                    name={`manpowerList.${index}.alternativePostListDTO`}
+                    loadOptions={getAsyncPostList}
+                    isError={
+                      !!errors?.manpowerList?.[index]?.alternativePostListDTO
+                    }
+                    errorMessage={
+                      errors?.manpowerList?.[index]?.alternativePostListDTO
+                        ?.message as string
+                    }
+                  />
+                )}
               </div>
 
               <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
@@ -787,8 +833,7 @@ const NodeCreateUpdateForm = ({
 
               <div
                 className={
-                  "col-md-6 col-xl-1 px-1 d-flex align-items-center " +
-                  (index < 1 ? "mt-5" : "my-0")
+                  "col-md-6 col-xl-1 px-1 " + (index < 1 ? "mt-8" : "mt-2")
                 }
               >
                 {isHeadIndex === null || isHeadIndex === index ? (
@@ -823,6 +868,23 @@ const NodeCreateUpdateForm = ({
             </div>
           </div>
         ))}
+        <div className="d-flex justify-content-center mt-4 mb-12">
+          <IconButton
+            iconName="add"
+            color="success"
+            className="w-25 rounded-pill"
+            rounded={false}
+            onClick={() => {
+              manpowerListAppend({
+                isNewManpower: true,
+                serviceTypeDto: cadreObj,
+                serviceTypeKey: cadreObj?.metaKey,
+                code: maxManpowerCode + 1,
+              });
+              setMaxManpowerCode(maxManpowerCode + 1);
+            }}
+          />
+        </div>
       </div>
       <div className="mt-6">
         <h3 className="mt-3">{LABELS.BN.NOTES}</h3>
