@@ -31,7 +31,7 @@ type DataTableProps = {
   children?: ReactNode;
   data?: any;
   handleUpdate: (data) => void;
-  handleDelete: (data) => void;
+  // handleDelete: (data) => void;
   organogram: IObject;
 };
 
@@ -39,7 +39,7 @@ const DataTable: FC<DataTableProps> = ({
   children,
   data = [],
   handleUpdate,
-  handleDelete,
+  // handleDelete,
   organogram,
 }) => {
   if (!data?.length) return;
@@ -78,14 +78,14 @@ const DataTable: FC<DataTableProps> = ({
                     <Icon size={19} icon="edit" />
                     <h6 className="mb-0 ms-3">সম্পাদনা করুন</h6>
                   </DropdownItem>
-                  <DropdownItem
+                  {/* <DropdownItem
                     onClick={() => {
                       handleDelete(data);
                     }}
                   >
                     <Icon size={19} icon="delete" color="danger" />
                     <h6 className="mb-0 ms-3 text-danger">মুছে ফেলুন</h6>
-                  </DropdownItem>
+                  </DropdownItem> */}
                 </Dropdown>
               </TableCell>
             </TableRow>

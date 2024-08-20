@@ -3,7 +3,6 @@ import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
   Button,
-  ConfirmationModal,
   ContentPreloader,
   DownloadMenu,
   Input,
@@ -47,9 +46,9 @@ const initMeta: IMeta = {
 const OrganogramNodeList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<any>();
-  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+  // const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  // const [deleteData, setDeleteData] = useState<any>();
+  // const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [listData, setListData] = useState<any>([]);
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [search, setSearch] = useState<string>(
@@ -120,28 +119,28 @@ const OrganogramNodeList = () => {
     });
   };
 
-  const handleDelete = (data: any) => {
-    setIsDeleteModal(true);
-    setDeleteData(data);
-  };
-  const onCancelDelete = () => {
-    setIsDeleteModal(false);
-    setDeleteData(null);
-  };
-  const onConfirmDelete = () => {
-    setIsDeleteLoading(true);
-    OMSService.DELETE.organogramNodeDeleteById(deleteData?.id || "")
-      .then((res) => {
-        toast.success(res?.message);
-        getDataList();
-        setDeleteData(null);
-      })
-      .catch((err) => toast.error(err?.message))
-      .finally(() => {
-        setIsDeleteLoading(false);
-        setIsDeleteModal(false);
-      });
-  };
+  // const handleDelete = (data: any) => {
+  //   setIsDeleteModal(true);
+  //   setDeleteData(data);
+  // };
+  // const onCancelDelete = () => {
+  //   setIsDeleteModal(false);
+  //   setDeleteData(null);
+  // };
+  // const onConfirmDelete = () => {
+  //   setIsDeleteLoading(true);
+  //   OMSService.DELETE.organogramNodeDeleteById(deleteData?.id || "")
+  //     .then((res) => {
+  //       toast.success(res?.message);
+  //       getDataList();
+  //       setDeleteData(null);
+  //     })
+  //     .catch((err) => toast.error(err?.message))
+  //     .finally(() => {
+  //       setIsDeleteLoading(false);
+  //       setIsDeleteModal(false);
+  //     });
+  // };
 
   const downloadFile = (downloadtype: "excel" | "pdf") => {
     downloadtype === "pdf"
@@ -223,7 +222,7 @@ const OrganogramNodeList = () => {
           <DataTable
             data={listData}
             handleUpdate={handleUpdate}
-            handleDelete={handleDelete}
+            // handleDelete={handleDelete}
             organogram={organogram}
           >
             <Pagination
@@ -240,7 +239,7 @@ const OrganogramNodeList = () => {
 
         {/* ============================================================ TABLE ENDS ============================================================ */}
       </div>
-      <ConfirmationModal
+      {/* <ConfirmationModal
         isOpen={isDeleteModal}
         onClose={onCancelDelete}
         onConfirm={onConfirmDelete}
@@ -248,7 +247,7 @@ const OrganogramNodeList = () => {
         onConfirmLabel={"মুছে ফেলুন"}
       >
         আপনি কি আসলেই <b>{deleteData?.titleBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
-      </ConfirmationModal>
+      </ConfirmationModal> */}
     </>
   );
 };

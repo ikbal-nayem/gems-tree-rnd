@@ -13,6 +13,9 @@ const UpdateNode = () => {
   const [searchParams] = useSearchParams();
   const nodeId = searchParams.get("id");
   const navigate = useNavigate();
+  const [maxManpowerCode, setMaxManpowerCode] = useState<number>(
+    state?.maxManpowerCode || 1
+  );
 
   useEffect(() => {
     getNodeDetailsById();
@@ -35,11 +38,23 @@ const UpdateNode = () => {
       organizationnodeId: state?.proposedOrganogram?.id || null,
       organizationId: state?.proposedOrganization?.id || null,
       organogramDate: state?.proposedDate || null,
+      code:
+        item?.code || state?.proposedOrganogram?.maxNodeCode
+          ? state?.proposedOrganogram?.maxNodeCode + 1
+          : 1,
+      maxNodeCode: state?.proposedOrganogram?.maxNodeCode || null,
+      maxManpowerCode: maxManpowerCode,
     };
     OMSService.UPDATE.organogramSingleNodeById(nodeId, reqData)
       .then((res) => {
         toast.success(res?.message);
-        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, { state: state });
+        navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_NODE_LIST, {
+          state: {
+            ...state,
+            maxNodeCode: state?.proposedOrganogram?.maxNodeCode || null,
+            maxManpowerCode: maxManpowerCode,
+          },
+        });
       })
       .catch((error) => toast.error(error?.message))
       .finally(() => setIsLoading(false));
@@ -52,6 +67,8 @@ const UpdateNode = () => {
         organogramData={state}
         isLoading={isLoading}
         updateData={data}
+        maxManpowerCode={maxManpowerCode}
+        setMaxManpowerCode={setMaxManpowerCode}
       />
     </div>
   );
