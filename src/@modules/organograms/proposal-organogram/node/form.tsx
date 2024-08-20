@@ -116,6 +116,7 @@ const NodeCreateUpdateForm = ({
 
   const [titleList, setTitleList] = useState<IObject[]>([]);
   const [gradeList, setGradeList] = useState<IObject[]>([]);
+  const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState<IObject[]>([]);
   const [parentNodeList, setParentNodeList] = useState<IObject[]>([]);
   const [organizationGroupList, setOrganizationGroupList] = useState<IObject[]>(
@@ -144,6 +145,9 @@ const NodeCreateUpdateForm = ({
     CoreService.getGrades().then((resp) => setGradeList(resp.body || []));
     CoreService.getByMetaTypeList(META_TYPE.SERVICE_TYPE).then((resp) =>
       setServiceList(resp.body || [])
+    );
+    CoreService.getByMetaTypeList("CLASS").then((resp) =>
+      setClassList(resp.body || [])
     );
     getParentNodeList();
   }, []);
@@ -643,7 +647,13 @@ const NodeCreateUpdateForm = ({
                   control={control}
                   noMargin
                   getOptionLabel={(op) =>
-                    isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                    isNotEnamCommittee
+                      ? `${op?.nameBn} ${
+                          op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                        }`
+                      : `${op?.nameEn} ${
+                          op?.nameBn ? "(" + op?.nameBn + ")" : ""
+                        }`
                   }
                   getOptionValue={(op) => op?.id}
                   name={`manpowerList.${index}.postDTO`}
@@ -657,26 +667,61 @@ const NodeCreateUpdateForm = ({
               </div>
 
               <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
-                <Autocomplete
-                  label={index < 1 ? "গ্রেড" : ""}
-                  placeholder="বাছাই করুন"
-                  control={control}
-                  options={gradeList || []}
-                  getOptionLabel={(op) =>
-                    isNotEnamCommittee ? op?.nameBn : op?.nameEn
-                  }
-                  getOptionValue={(op) => op?.id}
-                  name={`manpowerList.${index}.gradeDTO`}
-                  onChange={(t) => {
-                    setValue(`manpowerList.${index}.gradeId`, t?.id);
-                    setValue(
-                      `manpowerList.${index}.gradeOrder`,
-                      t?.displayOrder
-                    );
-                  }}
-                  noMargin
-                  isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                />
+                <div className="d-flex">
+                  <div className="w-50 me-1">
+                    <Autocomplete
+                      label={index < 1 ? "গ্রেড" : ""}
+                      placeholder="বাছাই করুন"
+                      control={control}
+                      isRequired
+                      isClearable={false}
+                      options={gradeList || []}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                      }
+                      getOptionValue={(op) => op?.id}
+                      name={`manpowerList.${index}.gradeDTO`}
+                      onChange={(t) => {
+                        setValue(`manpowerList.${index}.gradeId`, t?.id);
+                        setValue(
+                          `manpowerList.${index}.gradeOrder`,
+                          t?.displayOrder
+                        );
+                        setValue(
+                          `manpowerList.${index}.classKeyDto`,
+                          classList.find((d) => d?.metaKey === t?.classMetaKey)
+                        );
+                        setValue(
+                          `manpowerList.${index}.classKey`,
+                          classList.find((d) => d?.metaKey === t?.classMetaKey)
+                            ?.metaKey
+                        );
+                      }}
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                    />
+                  </div>
+                  <div className="w-50">
+                    <Autocomplete
+                      label={index < 1 ? "শ্রেণি" : ""}
+                      placeholder="বাছাই করুন"
+                      control={control}
+                      // isRequired
+                      isClearable={false}
+                      options={classList || []}
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                      }
+                      getOptionValue={(op) => op?.metaKey}
+                      name={`manpowerList.${index}.classKeyDto`}
+                      onChange={(t) => {
+                        setValue(`manpowerList.${index}.classKey`, t?.metaKey);
+                      }}
+                      noMargin
+                      isError={!!errors?.manpowerList?.[index]?.classKeyDto}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="col-md-6 col-xl-2 px-1">
