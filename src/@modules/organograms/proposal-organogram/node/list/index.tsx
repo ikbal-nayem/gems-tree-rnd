@@ -60,8 +60,6 @@ const OrganogramNodeList = () => {
   const [organogram] = useState<any>(state);
   const navigate = useNavigate();
 
-  console.log(state);
-
   const orgName = organogram?.proposedOrganization?.nameBn;
 
   const organogramDate =

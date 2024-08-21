@@ -26,7 +26,9 @@ import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { arraysAreEqual } from "utility/checkValidation";
 import { isNotEmptyList } from "utility/utils";
+import "./form.scss";
 
 interface INodeCreateUpdateForm {
   onSubmit: (data) => void;
@@ -109,12 +111,14 @@ const NodeCreateUpdateForm = ({
     fields: manpowerListFields,
     append: manpowerListAppend,
     remove: manpowerListRemove,
+    update: manpowerListUpdate,
   } = useFieldArray({
     control,
     name: "manpowerList",
   });
 
   const [titleList, setTitleList] = useState<IObject[]>([]);
+  const [isNodeModified, setIsNodeModified] = useState<boolean>(false);
   const [gradeList, setGradeList] = useState<IObject[]>([]);
   const [classList, setClassList] = useState([]);
   const [serviceList, setServiceList] = useState<IObject[]>([]);
@@ -187,6 +191,7 @@ const NodeCreateUpdateForm = ({
   }, []);
 
   const onTitleChange = (val, fieldLang: "en" | "bn") => {
+    setIsNodeModified(true);
     if (!notNullOrUndefined(val)) return;
     let suggestedValue;
     // if (fieldLang === "en") {
@@ -219,6 +224,8 @@ const NodeCreateUpdateForm = ({
 
             return {
               ...item,
+              isAlternativePost:
+                item?.alternativePostListDTO?.length > 0 ? true : false,
             };
           }),
         };
@@ -228,6 +235,7 @@ const NodeCreateUpdateForm = ({
           manpowerList: [
             {
               isNewManpower: true,
+              isAddition: true,
               serviceTypeDto: cadreObj,
               serviceTypeKey: cadreObj?.metaKey,
               code: maxManpowerCode,
@@ -244,6 +252,7 @@ const NodeCreateUpdateForm = ({
         manpowerList: [
           {
             isNewManpower: true,
+            isAddition: true,
             serviceTypeDto: cadreObj,
             serviceTypeKey: cadreObj?.metaKey,
             code: maxManpowerCode,
@@ -284,6 +293,94 @@ const NodeCreateUpdateForm = ({
     };
   };
 
+  const checkFieldIsDeleted = (field) => {
+    return field?.isDeleted ? true : false;
+  };
+
+  const handleManpowerDelete = (field, index) => {
+    console.log(field);
+
+    if (index >= 0) {
+      if (!isObjectNull(field) && (field?.isNewManpower || field?.isAddition)) {
+        manpowerListRemove(index);
+      } else {
+        manpowerListUpdate(index, {
+          ...field,
+          isDeleted: true,
+          isModified: false,
+        });
+      }
+    }
+  };
+
+  const onManpowerModified = (field, index, item, fieldName) => {
+    if (!isObjectNull(updateData)) {
+      let itemUpdateObject = updateData?.manpowerList?.[index];
+      let man = watch("manpowerList");
+
+      if (itemUpdateObject?.isAddition || field?.isAddition) return;
+
+      if (
+        fieldName === "postDTO" ||
+        fieldName === "gradeDTO" ||
+        fieldName === "serviceTypeDto" ||
+        fieldName === "classKeyDto"
+      ) {
+        if (itemUpdateObject?.[fieldName]?.id !== item?.id) {
+          man[index] = { ...man[index], isModified: true };
+          setValue("manpowerList", man);
+        } else {
+          man[index] = { ...man[index], isModified: false };
+          setValue("manpowerList", man);
+        }
+      } else if (fieldName === "alternativePostListDTO") {
+        if (!arraysAreEqual(itemUpdateObject[fieldName], item)) {
+          man[index] = { ...man[index], isModified: true };
+          setValue("manpowerList", man);
+        } else {
+          man[index] = { ...man[index], isModified: false };
+          setValue("manpowerList", man);
+        }
+      } else if (fieldName === "numberOfEmployee") {
+        if (
+          (typeof itemUpdateObject?.[fieldName] === "number"
+            ? JSON.stringify(itemUpdateObject?.[fieldName])
+            : itemUpdateObject?.[fieldName]) !== item
+        ) {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: true,
+          });
+        } else {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: false,
+          });
+        }
+      } else if (
+        fieldName === "postType" ||
+        fieldName === "isHead" ||
+        fieldName === "isAlternativePost"
+      ) {
+        if (itemUpdateObject?.[fieldName] !== item) {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: true,
+          });
+        } else {
+          manpowerListUpdate(index, {
+            ...field,
+            [fieldName]: item,
+            isModified: false,
+          });
+        }
+      }
+    }
+  };
+
   const onPostChange = (index, opt) => {
     // Post Uniquness Check
     // if (notNullOrUndefined(opt)) {
@@ -313,7 +410,16 @@ const NodeCreateUpdateForm = ({
 
   const onFormSubmit = (data) => {
     setIsHeadIndex(null);
-    onSubmit(isNotEnamCommittee ? data : setEnIntoBnFields(data));
+    if (data?.isAddition === false) {
+      data = { ...data, isModified: data?.isModified || isNodeModified };
+    }
+    if (isObjectNull(updateData)) {
+      data = {
+        ...data,
+        isAddition: true,
+      };
+    }
+    onSubmit(data);
   };
 
   return (
@@ -619,6 +725,7 @@ const NodeCreateUpdateForm = ({
               onClick={() => {
                 manpowerListAppend({
                   isNewManpower: true,
+                  isAddition: true,
                   serviceTypeDto: cadreObj,
                   serviceTypeKey: cadreObj?.metaKey,
                   code: maxManpowerCode + 1,
@@ -630,63 +737,27 @@ const NodeCreateUpdateForm = ({
         </div>
         {manpowerListFields.map((field, index) => (
           <div
-            className={`d-flex align-items-top gap-3 w-100 my-1 mb-3 mb-xl-0 bg-gray-100`}
+            className={`d-flex align-items-top border rounded px-3 my-1 bg-gray-100`}
             key={field?.id}
           >
-            <div className={index < 1 ? "mt-10" : "mt-3"}>
-              <Label> {numEnToBn(index + 1) + "।"} </Label>
-            </div>
-            <div className="row w-100">
-              <div className="col-md-6 col-xl-3 col-xxl-4 px-1">
-                <Autocomplete
-                  label={index < 1 ? "পদবি" : ""}
-                  placeholder="বাছাই করুন"
-                  isRequired
-                  isAsync
-                  // isMulti
-                  control={control}
-                  noMargin
-                  getOptionLabel={(op) =>
-                    isNotEnamCommittee
-                      ? `${op?.nameBn} ${
-                          op?.nameEn ? "(" + op?.nameEn + ")" : ""
-                        }`
-                      : `${op?.nameEn} ${
-                          op?.nameBn ? "(" + op?.nameBn + ")" : ""
-                        }`
-                  }
-                  getOptionValue={(op) => op?.id}
-                  name={`manpowerList.${index}.postDTO`}
-                  onChange={(t) => onPostChange(index, t)}
-                  loadOptions={getAsyncPostList}
-                  isError={!!errors?.manpowerList?.[index]?.postDTO}
-                  errorMessage={
-                    errors?.manpowerList?.[index]?.postDTO?.message as string
-                  }
-                />
-                <div className="my-1">
-                  <Checkbox
-                    noMargin
-                    label={"বিকল্প পদবি"}
-                    registerProperty={{
-                      ...register(`manpowerList.${index}.isAlternativePost`, {
-                        onChange: (e) => {
-                          setValue(
-                            `manpowerList.${index}.alternativePostListDTO`,
-                            null
-                          );
-                        },
-                      }),
-                    }}
-                  />
-                </div>
-                {watch(`manpowerList.${index}.isAlternativePost`) && (
+            <div
+              className={`d-flex align-items-top gap-3 w-100 ${
+                checkFieldIsDeleted(field)
+                  ? "disabledDiv border border-danger rounded p-1"
+                  : ""
+              }`}
+            >
+              <div className={index < 1 ? "mt-10" : "mt-3"}>
+                <Label> {numEnToBn(index + 1) + "।"} </Label>
+              </div>
+              <div className="row w-100">
+                <div className="col-md-6 col-xl-4 px-1">
                   <Autocomplete
-                    // label={index < 1 ? "বিকল্প পদবি" : ""}
-                    placeholder="বিকল্প পদবি বাছাই করুন"
-                    // isRequired
+                    label={index < 1 ? "পদবি" : ""}
+                    placeholder="বাছাই করুন"
+                    isRequired
                     isAsync
-                    isMulti
+                    // isMulti
                     control={control}
                     noMargin
                     getOptionLabel={(op) =>
@@ -699,173 +770,281 @@ const NodeCreateUpdateForm = ({
                           }`
                     }
                     getOptionValue={(op) => op?.id}
-                    name={`manpowerList.${index}.alternativePostListDTO`}
+                    name={`manpowerList.${index}.postDTO`}
+                    onChange={(t) => {
+                      onPostChange(index, t);
+                      onManpowerModified(field, index, t, "postDTO");
+                    }}
                     loadOptions={getAsyncPostList}
-                    isError={
-                      !!errors?.manpowerList?.[index]?.alternativePostListDTO
-                    }
+                    isError={!!errors?.manpowerList?.[index]?.postDTO}
                     errorMessage={
-                      errors?.manpowerList?.[index]?.alternativePostListDTO
+                      errors?.manpowerList?.[index]?.postDTO?.message as string
+                    }
+                  />
+                  <div className="my-1">
+                    <Checkbox
+                      noMargin
+                      label={"বিকল্প পদবি"}
+                      registerProperty={{
+                        ...register(`manpowerList.${index}.isAlternativePost`, {
+                          onChange: (e) => {
+                            setValue(
+                              `manpowerList.${index}.alternativePostListDTO`,
+                              null
+                            );
+                            onManpowerModified(
+                              field,
+                              index,
+                              e.target.checked,
+                              "isAlternativePost"
+                            );
+                          },
+                        }),
+                      }}
+                    />
+                  </div>
+                  {watch(`manpowerList.${index}.isAlternativePost`) && (
+                    <Autocomplete
+                      placeholder="বিকল্প পদবি বাছাই করুন"
+                      isAsync
+                      isMulti
+                      control={control}
+                      noMargin
+                      getOptionLabel={(op) =>
+                        isNotEnamCommittee
+                          ? `${op?.nameBn} ${
+                              op?.nameEn ? "(" + op?.nameEn + ")" : ""
+                            }`
+                          : `${op?.nameEn} ${
+                              op?.nameBn ? "(" + op?.nameBn + ")" : ""
+                            }`
+                      }
+                      getOptionValue={(op) => op?.id}
+                      name={`manpowerList.${index}.alternativePostListDTO`}
+                      onChange={(t) =>
+                        onManpowerModified(
+                          field,
+                          index,
+                          t,
+                          "alternativePostListDTO"
+                        )
+                      }
+                      loadOptions={getAsyncPostList}
+                      isError={
+                        !!errors?.manpowerList?.[index]?.alternativePostListDTO
+                      }
+                      errorMessage={
+                        errors?.manpowerList?.[index]?.alternativePostListDTO
+                          ?.message as string
+                      }
+                    />
+                  )}
+                </div>
+
+                <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
+                  <div className="d-flex">
+                    <div className="w-50 me-1">
+                      <Autocomplete
+                        label={index < 1 ? "গ্রেড" : ""}
+                        placeholder="বাছাই করুন"
+                        control={control}
+                        isRequired
+                        isClearable={false}
+                        options={gradeList || []}
+                        getOptionLabel={(op) =>
+                          isNotEnamCommittee ? op?.nameBn : op?.nameEn
+                        }
+                        getOptionValue={(op) => op?.id}
+                        name={`manpowerList.${index}.gradeDTO`}
+                        onChange={(t) => {
+                          setValue(`manpowerList.${index}.gradeId`, t?.id);
+                          setValue(
+                            `manpowerList.${index}.gradeOrder`,
+                            t?.displayOrder
+                          );
+                          setValue(
+                            `manpowerList.${index}.classKeyDto`,
+                            classList.find(
+                              (d) => d?.metaKey === t?.classMetaKey
+                            )
+                          );
+                          setValue(
+                            `manpowerList.${index}.classKey`,
+                            classList.find(
+                              (d) => d?.metaKey === t?.classMetaKey
+                            )?.metaKey
+                          );
+                          onManpowerModified(field, index, t, "gradeDTO");
+                        }}
+                        noMargin
+                        isError={!!errors?.manpowerList?.[index]?.gradeDTO}
+                      />
+                    </div>
+                    <div className="w-50">
+                      <Autocomplete
+                        label={index < 1 ? "শ্রেণি" : ""}
+                        placeholder="বাছাই করুন"
+                        control={control}
+                        // isRequired
+                        isClearable={false}
+                        options={classList || []}
+                        getOptionLabel={(op) =>
+                          isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                        }
+                        getOptionValue={(op) => op?.metaKey}
+                        name={`manpowerList.${index}.classKeyDto`}
+                        onChange={(t) => {
+                          setValue(
+                            `manpowerList.${index}.classKey`,
+                            t?.metaKey
+                          );
+                          onManpowerModified(field, index, t, "classKeyDto");
+                        }}
+                        noMargin
+                        isError={!!errors?.manpowerList?.[index]?.classKeyDto}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-xl-2 px-1">
+                  <Autocomplete
+                    label={index < 1 ? "সার্ভিসের ধরণ" : ""}
+                    placeholder="বাছাই করুন"
+                    isRequired={true}
+                    control={control}
+                    options={serviceList || []}
+                    getOptionLabel={(op) =>
+                      isNotEnamCommittee ? op?.titleBn : op?.titleEn
+                    }
+                    getOptionValue={(op) => op?.metaKey}
+                    defaultValue={cadreObj}
+                    name={`manpowerList.${index}.serviceTypeDto`}
+                    onChange={(t) =>
+                      setValue(
+                        `manpowerList.${index}.serviceTypeKey`,
+                        t?.metaKey
+                      )
+                    }
+                    noMargin
+                    isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
+                  />
+                </div>
+
+                <div className="col-md-6 col-xl-1 px-1">
+                  <Input
+                    label={index < 1 ? "জনবল সংখ্যা" : ""}
+                    placeholder="জনবল সংখ্যা লিখুন"
+                    registerProperty={{
+                      ...register(`manpowerList.${index}.numberOfEmployee`, {
+                        required: "জনবল সংখ্যা লিখুন",
+                        setValueAs: (v) => numBnToEn(v),
+                        validate: manpowerNumberCheck,
+                        onBlur: (t) =>
+                          onManpowerModified(
+                            field,
+                            index,
+                            t?.target?.value,
+                            "numberOfEmployee"
+                          ),
+                      }),
+                    }}
+                    defaultValue={1}
+                    noMargin
+                    isRequired
+                    isError={!!errors?.manpowerList?.[index]?.numberOfEmployee}
+                    errorMessage={
+                      errors?.manpowerList?.[index]?.numberOfEmployee
                         ?.message as string
                     }
                   />
-                )}
-              </div>
-
-              <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
-                <div className="d-flex">
-                  <div className="w-50 me-1">
-                    <Autocomplete
-                      label={index < 1 ? "গ্রেড" : ""}
-                      placeholder="বাছাই করুন"
-                      control={control}
-                      isRequired
-                      isClearable={false}
-                      options={gradeList || []}
-                      getOptionLabel={(op) =>
-                        isNotEnamCommittee ? op?.nameBn : op?.nameEn
-                      }
-                      getOptionValue={(op) => op?.id}
-                      name={`manpowerList.${index}.gradeDTO`}
-                      onChange={(t) => {
-                        setValue(`manpowerList.${index}.gradeId`, t?.id);
-                        setValue(
-                          `manpowerList.${index}.gradeOrder`,
-                          t?.displayOrder
-                        );
-                        setValue(
-                          `manpowerList.${index}.classKeyDto`,
-                          classList.find((d) => d?.metaKey === t?.classMetaKey)
-                        );
-                        setValue(
-                          `manpowerList.${index}.classKey`,
-                          classList.find((d) => d?.metaKey === t?.classMetaKey)
-                            ?.metaKey
-                        );
-                      }}
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.gradeDTO}
-                    />
-                  </div>
-                  <div className="w-50">
-                    <Autocomplete
-                      label={index < 1 ? "শ্রেণি" : ""}
-                      placeholder="বাছাই করুন"
-                      control={control}
-                      // isRequired
-                      isClearable={false}
-                      options={classList || []}
-                      getOptionLabel={(op) =>
-                        isNotEnamCommittee ? op?.titleBn : op?.titleEn
-                      }
-                      getOptionValue={(op) => op?.metaKey}
-                      name={`manpowerList.${index}.classKeyDto`}
-                      onChange={(t) => {
-                        setValue(`manpowerList.${index}.classKey`, t?.metaKey);
-                      }}
-                      noMargin
-                      isError={!!errors?.manpowerList?.[index]?.classKeyDto}
-                    />
-                  </div>
                 </div>
-              </div>
 
-              <div className="col-md-6 col-xl-2 px-1">
-                <Autocomplete
-                  label={index < 1 ? "সার্ভিসের ধরণ" : ""}
-                  placeholder="বাছাই করুন"
-                  isRequired={true}
-                  control={control}
-                  options={serviceList || []}
-                  getOptionLabel={(op) =>
-                    isNotEnamCommittee ? op?.titleBn : op?.titleEn
-                  }
-                  getOptionValue={(op) => op?.metaKey}
-                  name={`manpowerList.${index}.serviceTypeDto`}
-                  onChange={(t) =>
-                    setValue(`manpowerList.${index}.serviceTypeKey`, t?.metaKey)
-                  }
-                  noMargin
-                  isError={!!errors?.manpowerList?.[index]?.serviceTypeDto}
-                />
-              </div>
-
-              <div className="col-md-6 col-xl-2 col-xxl-1 px-1">
-                <Input
-                  label={index < 1 ? "জনবল সংখ্যা" : ""}
-                  placeholder="জনবল সংখ্যা লিখুন"
-                  registerProperty={{
-                    ...register(`manpowerList.${index}.numberOfEmployee`, {
-                      required: "জনবল সংখ্যা লিখুন",
-                      setValueAs: (v) => numBnToEn(v),
-                      validate: manpowerNumberCheck,
-                    }),
-                  }}
-                  defaultValue={1}
-                  noMargin
-                  isRequired
-                  isError={!!errors?.manpowerList?.[index]?.numberOfEmployee}
-                  errorMessage={
-                    errors?.manpowerList?.[index]?.numberOfEmployee
-                      ?.message as string
-                  }
-                />
-              </div>
-
-              <div className="col-md-6 col-xl-2 col-xxl-1 px-1">
-                <Select
-                  label={index < 1 ? "পদের ধরণ" : ""}
-                  options={postTypeList || []}
-                  noMargin
-                  placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
-                  isRequired
-                  textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
-                  defaultValue={"permanent"}
-                  valueKey="key"
-                  registerProperty={{
-                    ...register(`manpowerList.${index}.postType`, {
-                      required: true,
-                    }),
-                  }}
-                  isError={!!errors?.manpowerList?.[index]?.postType}
-                />
-              </div>
-
-              <div
-                className={
-                  "col-md-6 col-xl-1 px-1 " + (index < 1 ? "mt-8" : "mt-2")
-                }
-              >
-                {isHeadIndex === null || isHeadIndex === index ? (
-                  <Checkbox
+                <div className="col-md-6 col-xl-1 px-1">
+                  <Select
+                    label={index < 1 ? "পদের ধরণ" : ""}
+                    options={postTypeList || []}
                     noMargin
-                    label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
-                    // label='প্রধান ?'
-                    isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                    placeholder={isNotEnamCommittee ? "বাছাই করুন" : "Select"}
+                    isRequired
+                    textKey={isNotEnamCommittee ? "titleBn" : "titleEn"}
+                    defaultValue={"permanent"}
+                    valueKey="key"
                     registerProperty={{
-                      ...register(`manpowerList.${index}.isHead`, {
-                        onChange: (e) => {
-                          e.target.checked
-                            ? setIsHeadIndex(index)
-                            : setIsHeadIndex(null);
-                        },
+                      ...register(`manpowerList.${index}.postType`, {
+                        required: " ",
+                        onBlur: (t) =>
+                          onManpowerModified(
+                            field,
+                            index,
+                            t?.target?.value,
+                            "postType"
+                          ),
                       }),
                     }}
+                    isError={!!errors?.manpowerList?.[index]?.postType}
                   />
-                ) : null}
+                </div>
+
+                <div
+                  className={
+                    "col-md-6 col-xl-1 px-1 " + (index < 1 ? "mt-8" : "mt-2")
+                  }
+                >
+                  {isHeadIndex === null || isHeadIndex === index ? (
+                    <Checkbox
+                      noMargin
+                      label={isHeadIndex === index ? "প্রধান" : "প্রধান ?"}
+                      // label='প্রধান ?'
+                      isDisabled={isHeadIndex ? isHeadIndex !== index : false}
+                      registerProperty={{
+                        ...register(`manpowerList.${index}.isHead`, {
+                          onChange: (e) => {
+                            e.target.checked
+                              ? setIsHeadIndex(index)
+                              : setIsHeadIndex(null);
+                            onManpowerModified(
+                              field,
+                              index,
+                              e.target.checked,
+                              "isHead"
+                            );
+                          },
+                        }),
+                      }}
+                    />
+                  ) : null}
+                </div>
               </div>
             </div>
-
-            <div className={index < 1 ? "mt-6" : ""}>
-              <IconButton
-                iconName="delete"
-                color="danger"
-                rounded={false}
-                onClick={() => {
-                  manpowerListRemove(index);
-                }}
-              />
-            </div>
+            {!checkFieldIsDeleted(field) && (
+              <div className={index < 1 ? "mt-6" : ""}>
+                <IconButton
+                  iconName="delete"
+                  color="danger"
+                  rounded={false}
+                  onClick={() => {
+                    handleManpowerDelete(field, index);
+                  }}
+                />
+              </div>
+            )}
+            {checkFieldIsDeleted(field) && (
+              <div className={index < 1 ? "mt-6 ms-3" : "mt-1 ms-3"}>
+                <IconButton
+                  iconName="change_circle"
+                  color="warning"
+                  rounded={false}
+                  onClick={() => {
+                    manpowerListUpdate(index, {
+                      ...field,
+                      isDeleted: false,
+                    });
+                    // manpowerListRemove(index);
+                  }}
+                />
+              </div>
+            )}
           </div>
         ))}
         <div className="d-flex justify-content-center mt-4 mb-12">

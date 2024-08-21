@@ -771,6 +771,7 @@ const NodeForm = ({
                             label={index < 1 ? "গ্রেড" : ""}
                             placeholder="বাছাই করুন"
                             control={control}
+                            isRequired
                             isClearable={false}
                             options={gradeList || []}
                             getOptionLabel={(op) => op?.nameBn}
