@@ -743,7 +743,7 @@ const NodeCreateUpdateForm = ({
             <div
               className={`d-flex align-items-top gap-3 w-100 ${
                 checkFieldIsDeleted(field)
-                  ? "disabledDiv border border-danger rounded p-1"
+                  ? "disabledDiv border border-danger rounded p-1 pe-3"
                   : ""
               }`}
             >
@@ -841,7 +841,7 @@ const NodeCreateUpdateForm = ({
                   )}
                 </div>
 
-                <div className="col-md-6 col-xl-2 col-xxl-3  px-1">
+                <div className="col-xl-3 ps-0 pe-1">
                   <div className="d-flex">
                     <div className="w-50 me-1">
                       <Autocomplete
@@ -1018,7 +1018,11 @@ const NodeCreateUpdateForm = ({
               </div>
             </div>
             {!checkFieldIsDeleted(field) && (
-              <div className={index < 1 ? "mt-6" : ""}>
+              <div
+                className={
+                  index < 1 ? "mt-6 ms-3 ms-lg-0" : "mt-1 ms-3 ms-lg-0"
+                }
+              >
                 <IconButton
                   iconName="delete"
                   color="danger"
