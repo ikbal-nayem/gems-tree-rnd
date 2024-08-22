@@ -17,8 +17,10 @@ import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
 import AllocationOfBusinessForm from "./components/AllocationOfBusinessForm";
 import AttachmentForm from "./components/AttachmentForm";
+import AttachOrganizationForm from "./components/AttachOrganizationForm";
 import EquipmentsForm from "./components/EquipmentsForm";
 import NotesForm from "./components/NotesForm";
+import SummaryOfManpowerForm from "./components/SummaryOfManpowerForm";
 import WorkSpaceComponent from "./components/WorkSpaceComponent";
 
 interface IProposalOrganogramEditComponent {
@@ -95,12 +97,19 @@ const ProposalOrganogramEditComponent = ({
       reset({
         titleBn: updateData?.titleBn,
         titleEn: updateData?.titleEn,
+        isInventoryOthers: updateData?.isInventoryOthers || false,
+        inventoryOthersObject: updateData?.inventoryOthersObject || "",
+        summaryOfManPowerObject: updateData?.summaryOfManPowerObject || "",
+        isSummaryOfManPowerObject:
+          updateData?.isSummaryOfManPowerObject || false,
         isEnamCommittee: updateData?.isEnamCommittee,
         organogramDate: updateData?.organogramDate,
         abbreviationDtoList: abbreviationist,
         mainActivitiesDtoList: updateData?.mainActivitiesDtoList,
         businessAllocationDtoList: updateData?.businessAllocationDtoList,
         attachmentDtoList: updateData?.attachmentDtoList,
+        attachedOrganizationDtoList:
+          updateData?.attachedOrganizationDtoList || [],
         inventoryDtoList: updateData?.inventoryDtoList,
         organization: updateData?.organization,
         organogramChangeActionDtoList:
@@ -310,6 +319,11 @@ const ProposalOrganogramEditComponent = ({
               // isNotEnamCommittee={isNotEnamCommittee}
             />
           </div>
+          <div className="col-12 mt-3">
+            <SummaryOfManpowerForm
+              formProps={formProps}
+            />
+          </div>
           {/* <div className="col-md-6 mt-3">
             <Organizations
               formProps={formProps}
@@ -321,6 +335,13 @@ const ProposalOrganogramEditComponent = ({
             <AttachmentForm
               formProps={formProps}
               // isNotEnamCommittee={isNotEnamCommittee}
+            />
+          </div>
+          <div className="col-12 mt-3">
+            <AttachOrganizationForm
+              formProps={formProps}
+              isNotEnamCommittee={isNotEnamCommittee}
+              updateData={updateData?.attachedOrganizationDtoList || []}
             />
           </div>
           <div className="col-md-6 mt-3">
