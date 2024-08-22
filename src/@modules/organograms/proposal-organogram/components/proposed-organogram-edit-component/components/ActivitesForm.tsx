@@ -7,7 +7,6 @@ import {
   numEnToBn,
 } from "@gems/utils";
 import { useFieldArray } from "react-hook-form";
-import { enCheck } from "utility/checkValidation";
 
 interface IActivitiesForm {
   formProps: any;
@@ -158,7 +157,7 @@ const ActivitiesForm = ({ formProps, updateData }: IActivitiesForm) => {
                                 "mainActivityEn"
                               );
                             },
-                            validate: enCheck,
+                            // validate: enCheck,
                           }
                         ),
                       }}

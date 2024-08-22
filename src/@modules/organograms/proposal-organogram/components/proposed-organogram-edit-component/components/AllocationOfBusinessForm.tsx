@@ -144,40 +144,6 @@ const AllocationOfBusinessForm = ({
                     />
                   </div>
                   <div className={"col-xl-6 col-12 mt-1 mt-xl-0"}>
-                    {/* <Input
-                    label={idx < 1 ? labelEn : ""}
-                    placeholder={labelEn + " লিখুন"}
-                    isRequired={!isNotEnamCommittee}
-                    noMargin
-                    registerProperty={{
-                      ...register(
-                        `businessAllocationDtoList.${idx}.businessOfAllocationEn`,
-                        {
-                          onChange: (e) => {
-                            if (!isNotEnamCommittee) {
-                              setValue(
-                                `businessAllocationDtoList.${idx}.businessOfAllocationBn`,
-                                e.target.value
-                              );
-                            }
-
-                            if (notNullOrUndefined(e.target.value)) {
-                              setValue(
-                                `businessAllocationDtoList.${idx}.displayOrder`,
-                                idx + 1
-                              );
-                            }
-                          },
-                          required: !isNotEnamCommittee,
-                          validate: enCheck,
-                        }
-                      ),
-                    }}
-                    isError={
-                      !!errors?.businessAllocationDtoList?.[idx]
-                        ?.businessOfAllocationEn
-                    }
-                  /> */}
                     <Textarea
                       label={idx < 1 ? labelEn : ""}
                       placeholder={labelEn + " লিখুন"}
