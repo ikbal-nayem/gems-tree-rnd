@@ -31,12 +31,14 @@ export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
     setIsSubmitLoading(true);
 
     OMSService.SAVE.organogramProposal(reqPayload)
-      .then((res) => toast.success(res?.message))
+      .then((res) => {
+        toast.success(res?.message);
+        navigate(ROUTE_L2.OMS_PROPOSAL_LIST);
+      })
       .catch((error) => toast.error(error?.message))
       .finally(() => {
         setIsSubmitLoading(false);
         onClose();
-        navigate(ROUTE_L2.OMS_PROPOSAL_LIST);
       });
   };
 
