@@ -87,6 +87,7 @@ const AttachOrganizationForm = ({
           color="primary"
           onClick={() =>
             append({
+              isAddition: true,
               organizationGroupBn:
                 attachedOrganizationLastData?.organizationGroupBn || null,
               organizationGroupEn:
