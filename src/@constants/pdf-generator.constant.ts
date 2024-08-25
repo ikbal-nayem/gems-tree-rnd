@@ -27,4 +27,9 @@ export const organogramDeafultStyles = {
     marginBottom: 5,
     decoration: "underline",
   },
+  olTitle: {
+    fontSize: 11,
+    bold: true,
+    decoration: "underline",
+  },
 };

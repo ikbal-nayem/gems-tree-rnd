@@ -53,7 +53,7 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
         )}
 
         <p
-          className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start ${deletedClass} ${additionClass}`}
+          className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start ${deletedClass} ${additionClass} ${modificationClass}`}
           onClick={() => onViewOrManPowertableView(nodeData, "manPower")}
         >
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
@@ -64,7 +64,7 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
             ? longLineBreaker(nodeData.titleBn || "", 20)
             : COMMON_LABELS.NOT_ASSIGN}
         </p>
-        <p className={`mb-0 fs-8 ${deletedClass} ${additionClass}`}>
+        <p className={`mb-0 fs-8 ${deletedClass} ${additionClass} ${modificationClass}`}>
           {manPower}
         </p>
       </div>
