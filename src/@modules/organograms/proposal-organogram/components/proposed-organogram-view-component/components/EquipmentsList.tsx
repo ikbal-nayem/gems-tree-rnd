@@ -87,7 +87,7 @@ const EquipmentsList = ({
             commonPDFFooter(currentPage, pageCount, langEn),
         },
         {
-          action: "open",
+          action: "download",
           fileName: `Inventory Report ${generateDateFormat(
             makeBDLocalTime(new Date()),
             DATE_PATTERN.GOVT_STANDARD,

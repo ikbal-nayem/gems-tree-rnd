@@ -32,7 +32,7 @@ const AttachmentList: FC<TableProps> = ({ data, langEn }) => {
   let idx = 1000; // lets take a common index for both parent-child list
   return (
     <div className="card border p-3">
-      <h4 className="m-0">{LABEL.ATTACHMENT}</h4>
+      <h4 className="m-0">{LOCAL_LABEL.ATTACHMENT}</h4>
       <Separator className="mt-1 mb-0" />
       {data?.length > 0 ? (
         <Table columns={columns}>
