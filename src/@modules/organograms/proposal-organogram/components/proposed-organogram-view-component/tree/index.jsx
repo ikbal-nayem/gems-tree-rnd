@@ -44,11 +44,15 @@ const OrganogramTree = ({
 
   const download = useRef();
   const onDownload = () => {
-    captureAndConvertToPDF(false, setPDFLoading);
+    captureAndConvertToPDF(setPDFLoading, "pdf");
   };
 
   const onPrint = () => {
-    captureAndConvertToPDF(true, setPDFLoading);
+    captureAndConvertToPDF(setPDFLoading, "print");
+  };
+
+  const onImageDownload = () => {
+    captureAndConvertToPDF(setPDFLoading, "image-download");
   };
 
   return (
@@ -82,6 +86,18 @@ const OrganogramTree = ({
         isOpen={manpowerListModalOpen}
         onClose={onFormClose}
       />
+
+      {organogramView && (
+        <div className="position-absolute" style={{ top: 0, right: 175 }}>
+          <IconButton
+            iconName="add_a_photo"
+            color="info"
+            variant="fill"
+            onClick={onImageDownload}
+            isDisabled={!isDownloadButton || isPDFLoading}
+          />
+        </div>
+      )}
       {/* =========================  PRINT BUTTON ========================== */}
 
       {organogramView && (

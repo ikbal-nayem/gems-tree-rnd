@@ -305,9 +305,57 @@ const ProposedOrganogramViewComponent = ({
           )}
           <p className="fs-3 mb-0">{versionName}</p>
         </div>
-        <AllocationOfBusinessList
-          data={organogramData?.businessAllocationDtoList || []}
+        {organogramData?.businessAllocationDtoList?.length > 0 ? (
+          <AllocationOfBusinessList
+            data={organogramData?.businessAllocationDtoList || []}
+            langEn={langEn}
+          />
+        ) : (
+          <ActivitiesList
+            data={organogramData?.mainActivitiesDtoList || []}
+            langEn={langEn}
+          />
+        )}
+      </div>
+      <div
+        className="treeBlock"
+        style={{ overflow: "hidden", height: 0, minWidth: "2140px" }}
+      >
+        <div className="mb-6 text-center">
+          {organogramData?.organizationHeader && (
+            <p className="fs-2 mb-0">
+              {organogramData?.organizationHeader || null}
+            </p>
+          )}
+          {organogramData?.organizationHeaderMsc && (
+            <p className="fs-2 mb-0">
+              {organogramData?.organizationHeaderMsc || null}
+            </p>
+          )}
+          <p className="fs-2 mb-0">{titleName || null}</p>
+          {orgParentName && (
+            <p className="fs-2 mb-0">{orgParentName || null}</p>
+          )}
+          <p className="fs-3 mb-0">{versionName}</p>
+        </div>
+        <OrganogramTree
+          treeData={treeData}
           langEn={langEn}
+          pdfClass="pdfGenarator"
+          isPDFLoading={isPDFLoading}
+          setPDFLoading={setPDFLoading}
+          organogramView={organogramView}
+          headerData={{
+            titleName: titleName || null,
+            versionName: versionName || null,
+            orgName: langEn
+              ? organogramData?.organization?.nameEn
+              : organogramData?.organization?.nameBn || null,
+            orgParentName: orgParentName || null,
+            organizationHeader: organogramData?.organizationHeader || null,
+            organizationHeaderMsc:
+              organogramData?.organizationHeaderMsc || null,
+          }}
         />
       </div>
       <div className="position-relative border border-secondary mb-3">
@@ -315,7 +363,7 @@ const ProposedOrganogramViewComponent = ({
           treeData={treeData}
           langEn={langEn}
           setPDFLoading={setPDFLoading}
-          pdfClass="pdfGenarator"
+          pdfClass=""
           isPDFLoading={isPDFLoading}
           organogramView={organogramView}
           headerData={{
@@ -330,7 +378,7 @@ const ProposedOrganogramViewComponent = ({
         />
         <div
           className="position-absolute"
-          style={{ top: 10, right: organogramView ? 175 : 125 }}
+          style={{ top: 10, right: organogramView ? 225 : 125 }}
         >
           <IconButton
             iconName="fullscreen"
@@ -415,12 +463,10 @@ const ProposedOrganogramViewComponent = ({
             )}
           </div>
           <div className="pe-4" style={{ width: "33.33333%" }}>
-            {(orgParentName || organogramView) && (
-              <AttachedOrgList
-                data={attachedOrganizationData?.attachedOrganization || []}
-                langEn={langEn}
-              />
-            )}
+            <AttachedOrgList
+              data={attachedOrganizationData?.attachedOrganization || []}
+              langEn={langEn}
+            />
             <AbbreviationList
               data={organogramData?.abbreviationDtoList || []}
               langEn={langEn}
@@ -429,8 +475,13 @@ const ProposedOrganogramViewComponent = ({
           <div className="" style={{ width: "33.33333%" }}>
             <ManPowerList
               isLoading={false}
+              isSummaryOfManPowerObject={
+                organogramData?.isSummaryOfManPowerObject
+              }
+              summaryOfManPowerObject={organogramData?.summaryOfManPowerObject}
               data={manpowerData}
               langEn={langEn}
+              isDownloadVisible={false}
             />
           </div>
         </div>
@@ -447,6 +498,11 @@ const ProposedOrganogramViewComponent = ({
           <div className="mt-3">
             <EquipmentsList
               data={organogramData?.miscellaneousPointDtoList || []}
+              othersData={{
+                isInventoryOthers: organogramData?.isInventoryOthers,
+                inventoryOthersObject:
+                  organogramData?.inventoryOthersObject || "",
+              }}
               inventoryData={inventoryData || []}
               langEn={langEn}
               isDownloadVisible={true}

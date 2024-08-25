@@ -265,7 +265,7 @@ const ManPowerList: FC<TableProps> = ({
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="d-flex justify-content-end fw-bold fs-6">
+                      <div className="text-center fw-bold fs-6 mb-0">
                         {langEn
                           ? data?.totalManpower
                           : numEnToBn(data?.totalManpower) ||
