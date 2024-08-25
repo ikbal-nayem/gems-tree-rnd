@@ -1,10 +1,9 @@
 import { Button, Icon, IconButton } from "@gems/components";
 import { useEffect, useRef, useState } from "react";
 import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
-import { CoreService } from "../../../../../@services/api/Core.service";
+import ManPowerDetails from "./ManPowerDetails";
 import MyNode from "./MyNode";
 import NodeDetails from "./NodeDetails";
-import ManPowerDetails from "./ManPowerDetails";
 
 const OrganizationTemplateTree = ({
   treeData,
@@ -15,19 +14,14 @@ const OrganizationTemplateTree = ({
   isPDFLoading,
   organogramView = false,
 }) => {
-  const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
   const [manpowerListModalOpen, setManpowerListModalOpen] = useState(false);
   const [isDownloadButton, setIsDownlaodButton] = useState(true);
   const selectedNode = useRef(null);
 
-  useEffect(() => {
-    CoreService.getPostList().then((resp) => setPostist(resp.body || []));
-  }, []);
-
   const onViewOrManPowertableView = (data, type) => {
     selectedNode.current = data;
-    if (type === 'view') {
+    if (type === "view") {
       setFormOpen(true);
     } else {
       setManpowerListModalOpen(true);
