@@ -78,6 +78,7 @@ const ProposedOrganogramViewComponent = ({
   const [modalButtonLabel, setModalButtonLabel] = useState<any>();
   const [modalMsg, setModalMsg] = useState<any>();
   const [modalAction, setModalAction] = useState<any>();
+  const [equipmentContent, setEquipmentContent] = useState<any>(null);
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
   const navigate = useNavigate();
@@ -358,6 +359,11 @@ const ProposedOrganogramViewComponent = ({
             <EquipmentsList
               data={organogramData?.miscellaneousPointDtoList || []}
               inventoryData={inventoryData || []}
+              othersData={{
+                isInventoryOthers: organogramData?.isInventoryOthers,
+                inventoryOthersObject:
+                  organogramData?.inventoryOthersObject || "",
+              }}
               langEn={langEn}
             />
             {!isObjectNull(organogramData?.organogramNoteDto) && (
@@ -402,6 +408,10 @@ const ProposedOrganogramViewComponent = ({
               data={organogramData?.miscellaneousPointDtoList || []}
               inventoryData={inventoryData || []}
               langEn={langEn}
+              isDownloadVisible={true}
+              orgName={titleName || null}
+              versionDate={versionName}
+              setEquipmentContent={setEquipmentContent}
             />
           </div>
 
