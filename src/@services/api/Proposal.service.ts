@@ -16,13 +16,6 @@ export const ProposalService = {
           id
       ),
 
-    manpowerSummaryById: async (id: string): Promise<any> =>
-      await axiosIns.get(
-        OMS_SERVICE +
-          "organogram-template/get-summary-manpower-list-by-organogramId/" +
-          id
-      ),
-
     nodeWisePresentManpowerById: async (id: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE +
@@ -53,13 +46,6 @@ export const ProposalService = {
       await axiosIns.get(
         OMS_SERVICE +
           "organization-organogram/get-proposal-node-manpower-by/" +
-          id
-      ),
-
-    attachedOrganizationById: async (id: string): Promise<any> =>
-      await axiosIns.get(
-        OMS_SERVICE +
-          "organization-organogram/get-attached-by-organogram-id/" +
           id
       ),
 

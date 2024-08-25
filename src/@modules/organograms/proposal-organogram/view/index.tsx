@@ -7,6 +7,7 @@ import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposed-organogram-view-component";
 import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
+import { OMSService } from "@services/api/OMS.service";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const ProposedOrganogramView = () => {
 
   const getManpowerSummaryById = () => {
     setIsLoading(true);
-    ProposalService.FETCH.manpowerSummaryById(organogramId)
+    OMSService.getTemplateManpowerSummaryById(organogramId)
       .then((resp) => {
         setManpowerData(resp?.body);
       })
@@ -70,7 +71,7 @@ const ProposedOrganogramView = () => {
 
   const getAttachedOrganizationById = () => {
     setIsLoading(true);
-    ProposalService.FETCH.attachedOrganizationById(organogramId)
+    OMSService.getAttachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
       })
