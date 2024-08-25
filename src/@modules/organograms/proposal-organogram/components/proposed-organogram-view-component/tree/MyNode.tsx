@@ -1,11 +1,16 @@
 import TextBlock from "@components/TextBlock";
 import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Icon } from "@gems/components";
-import { isObjectNull, notNullOrUndefined, numEnToBn } from "@gems/utils";
-import { isNotEmptyList, longLineBreaker } from "utility/utils";
+import {
+  IObject,
+  isObjectNull,
+  notNullOrUndefined,
+  numEnToBn,
+} from "@gems/utils";
+import { longLineBreaker } from "utility/utils";
 import "./my-node.css";
 
-const MyNode = ({ langEn, nodeData, postList, onView }) => {
+const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
   let COMMON_LABEL = null,
     LABEL,
     manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
@@ -39,12 +44,15 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                   ? "primary"
                   : "light"
               }
-              onClick={() => onView(nodeData)}
+              onClick={() => onViewOrManPowertableView(nodeData, "view")}
             />
           </div>
         )}
 
-        <p className={`mb-0 fs-8  text-start ${deletedClass} ${additionClass}`}>
+        <p
+          className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start ${deletedClass} ${additionClass}`}
+          onClick={() => onViewOrManPowertableView(nodeData, "manPower")}
+        >
           {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
           {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
           {langEn
@@ -72,16 +80,10 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
 
             let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
             mp = langEn ? mp : numEnToBn(mp);
-            const postExists = isNotEmptyList(postList) && item?.postId;
-
-            const post = postExists
-              ? postList?.find((d) => d?.id === item?.postId)
-              : null;
-
-            const postName = !isObjectNull(post)
+            const postName = !isObjectNull(item?.postDTO)
               ? langEn
-                ? post?.nameEn
-                : post?.nameBn
+                ? item?.postDTO?.nameEn
+                : item?.postDTO?.nameBn
               : langEn
               ? COMMON_LABELS.EN.NOT_ASSIGN
               : COMMON_LABELS.NOT_ASSIGN;
@@ -119,6 +121,14 @@ const MyNode = ({ langEn, nodeData, postList, onView }) => {
                       } ${additionClass || itemAdditionClass}`}
                     >
                       {longLineBreaker(postName, 17)}
+                      {item?.alternativePostListDTO?.length > 0
+                        ? item?.alternativePostListDTO?.map((ap: IObject) =>
+                            longLineBreaker(
+                              ` / ${langEn ? ap?.nameEn : ap?.nameBn}`,
+                              17
+                            )
+                          )
+                        : ""}
                     </p>
                   </div>
                 ) : null}

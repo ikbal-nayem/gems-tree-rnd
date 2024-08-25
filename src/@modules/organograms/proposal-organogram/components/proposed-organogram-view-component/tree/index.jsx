@@ -1,9 +1,9 @@
 import { Button, Icon, IconButton } from "@gems/components";
 import { useEffect, useRef, useState } from "react";
 import { ChartContainer } from "../../../../../../@components/OrgChart/ChartContainer";
-import { CoreService } from "../../../../../../@services/api/Core.service";
 import { captureAndConvertToPDF } from "../local-util";
-import MyNode from "./my-node";
+import ManPowerDetails from "./ManPowerDetails";
+import MyNode from "./MyNode";
 import NodeDetails from "./NodeDetails";
 
 const OrganogramTree = ({
@@ -15,23 +15,24 @@ const OrganogramTree = ({
   isPDFLoading,
   organogramView = false,
 }) => {
-  const [postList, setPostist] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
+  const [manpowerListModalOpen, setManpowerListModalOpen] = useState(false);
   const [isDownloadButton, setIsDownlaodButton] = useState(true);
   const selectedNode = useRef(null);
 
-  useEffect(() => {
-    CoreService.getPostList().then((resp) => setPostist(resp.body || []));
-  }, []);
-
-  const onView = (data) => {
+  const onViewOrManPowertableView = (data, type) => {
     selectedNode.current = data;
-    setFormOpen(true);
+    if (type === "view") {
+      setFormOpen(true);
+    } else {
+      setManpowerListModalOpen(true);
+    }
   };
 
   const onFormClose = () => {
     selectedNode.current = null;
     setFormOpen(false);
+    setManpowerListModalOpen(false);
   };
 
   useEffect(() => {
@@ -59,8 +60,7 @@ const OrganogramTree = ({
           <MyNode
             langEn={langEn}
             nodeData={nodeData}
-            postList={postList}
-            onView={onView}
+            onViewOrManPowertableView={onViewOrManPowertableView}
           />
         )}
         ref={download}
@@ -68,10 +68,18 @@ const OrganogramTree = ({
         pan={true}
         zoom={true}
       />
+
       <NodeDetails
         isEn={langEn}
         data={selectedNode.current}
         isOpen={formOpen}
+        onClose={onFormClose}
+      />
+
+      <ManPowerDetails
+        isEn={langEn}
+        data={selectedNode?.current || []}
+        isOpen={manpowerListModalOpen}
         onClose={onFormClose}
       />
       {/* =========================  PRINT BUTTON ========================== */}
