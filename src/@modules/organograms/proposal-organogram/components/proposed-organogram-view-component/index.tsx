@@ -4,6 +4,7 @@ import {
   LABELS,
 } from "@constants/common.constant";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { organogramDeafultStyles } from "@constants/pdf-generator.constant";
 import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import {
   ACLWrapper,
@@ -20,12 +21,15 @@ import {
   DATE_PATTERN,
   IObject,
   generateDateFormat,
+  generatePDF,
   generateUUID,
   isObjectNull,
+  makeBDLocalTime,
 } from "@gems/utils";
+import { ProposalService } from "@services/api/Proposal.service";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import OrganogramTree from "./tree";
+import { commonPDFFooter } from "utility/utils";
 import AbbreviationList from "./components/AbbreviationList";
 import ActivitiesList from "./components/ActivitesList";
 import AllocationOfBusinessList from "./components/AllocationOfBusinessList";
@@ -37,7 +41,7 @@ import { NoteWithConfirmationModal } from "./components/NoteWithConfirmationModa
 import NotesList from "./components/NotesList";
 import NotesReviewApproverList from "./components/NotesReviewApproverList";
 import { ACTIONS, BUTTON_LABEL, MSG, STATE } from "./local-constants";
-import { ProposalService } from "@services/api/Proposal.service";
+import OrganogramTree from "./tree";
 
 interface IProposedOrganogramViewComponent {
   organogramData: IObject;
@@ -207,6 +211,43 @@ const ProposedOrganogramViewComponent = ({
         DATE_PATTERN.GOVT_STANDARD
       ) + " রিপোর্ট"
     : "";
+
+  const multiplePDFGenarator = (content, isEquipment) => {
+    let pdfHeader = [
+      {
+        text: titleName || null,
+        style: "header",
+      },
+      {
+        text: versionName,
+        style: "subHeader",
+      },
+    ];
+    generatePDF(
+      {
+        content: isEquipment
+          ? pdfHeader.concat([
+              ...content,
+              { text: "", margin: [0, 0, 0, 10] },
+              ...equipmentContent,
+            ])
+          : pdfHeader.concat(content),
+        styles: organogramDeafultStyles,
+        footer: (currentPage, pageCount) =>
+          commonPDFFooter(currentPage, pageCount, langEn),
+      },
+      {
+        action: "download",
+        fileName: `Summary Of Manpower ${
+          isEquipment ? "and TOE " : ""
+        }Report ${generateDateFormat(
+          makeBDLocalTime(new Date()),
+          DATE_PATTERN.GOVT_STANDARD,
+          "en"
+        )}`,
+      }
+    );
+  };
 
   return (
     <div>
@@ -461,6 +502,12 @@ const ProposedOrganogramViewComponent = ({
               data={manpowerData}
               langEn={langEn}
               isTabContent={false}
+              isSummaryOfManPowerObject={
+                organogramData?.isSummaryOfManPowerObject
+              }
+              summaryOfManPowerObject={organogramData?.summaryOfManPowerObject}
+              isDownloadVisible={true}
+              multiplePDFGenarator={multiplePDFGenarator}
             />
           </div>
           {langEn && (

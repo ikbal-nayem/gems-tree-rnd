@@ -3,6 +3,7 @@ import {COMMON_LABELS} from "@gems/utils"
 export const LOCAL_LABELS = {
   BN: {
     ...COMMON_LABELS,
+    SUM_OF_MANPOWER:"জনবল",
     NAME_OF_POSTS: "পদবি",
     NO_OF_POSTS: "লোকবল",
     TOTAL: "মোট",
@@ -15,6 +16,7 @@ export const LOCAL_LABELS = {
   },
 
   EN: {
+    SUM_OF_MANPOWER:"Summary of Manpower",
     NAME_OF_POSTS: "Name of Posts",
     NO_OF_POSTS: "No of Posts",
     TOTAL: "Total",
