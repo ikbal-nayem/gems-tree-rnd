@@ -26,6 +26,9 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
 
   let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
   let additionClass = nodeData?.isAddition ? "text-decoration-underline" : "";
+  let modificationClass = nodeData?.isModified
+    ? "text-underline-color-yellow"
+    : "";
 
   return (
     <div className={`position rounded border border-gray-400 border-1`}>
@@ -78,6 +81,10 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
               ? "text-decoration-underline"
               : "";
 
+            let itemModifiedClass = item?.isModified
+              ? "text-underline-color-yellow"
+              : "";
+
             let mp = item?.numberOfEmployee ? item?.numberOfEmployee : 0;
             mp = langEn ? mp : numEnToBn(mp);
             const postName = !isObjectNull(item?.postDTO)
@@ -104,21 +111,27 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
                     <p
                       className={`mb-0 fs-8 ${
                         deletedClass || itemDeletedClass
-                      } ${additionClass || itemAdditionClass}`}
+                      } ${
+                        additionClass || itemAdditionClass
+                      } ${itemModifiedClass}`}
                     >
                       {mp}{" "}
                     </p>
                     <p
                       className={`mb-0 ms-1 fs-8 ${
                         deletedClass || itemDeletedClass
-                      } ${additionClass || itemAdditionClass}`}
+                      } ${
+                        additionClass || itemAdditionClass
+                      } ${itemModifiedClass}`}
                     >
                       x
                     </p>
                     <p
                       className={`ms-1 mb-0 fs-8 ${
                         deletedClass || itemDeletedClass
-                      } ${additionClass || itemAdditionClass}`}
+                      } ${
+                        additionClass || itemAdditionClass
+                      } ${itemModifiedClass}`}
                     >
                       {longLineBreaker(postName, 17)}
                       {item?.alternativePostListDTO?.length > 0
