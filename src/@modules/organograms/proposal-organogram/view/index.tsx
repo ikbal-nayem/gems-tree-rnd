@@ -19,7 +19,6 @@ const ProposedOrganogramView = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
   const organogramId = state?.organogramId;
-  const previousOrganogramId = state?.previousOrganogramId;
   const subjects = state?.subjects;
 
   useEffect(() => {
@@ -34,29 +33,27 @@ const ProposedOrganogramView = () => {
   };
 
   const getOrganogramDetails = () => {
+    setIsLoading(true);
     ProposalService.FETCH.organogramDetailsByOrganogramId(organogramId)
       .then((resp) => setOrganogramData(resp?.body))
-      .catch((e) => toast.error(e?.message));
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
   };
 
   const getTemplateInventoryById = () => {
-    setIsLoading(true);
     ProposalService.FETCH.inventoryByOrganogramId(organogramId)
       .then((resp) => {
         setInventoryData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   const getManpowerSummaryById = () => {
-    setIsLoading(true);
     OMSService.getTemplateManpowerSummaryById(organogramId)
       .then((resp) => {
         setManpowerData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   // const getManpowerProposedSummaryById = () => {
@@ -70,13 +67,11 @@ const ProposedOrganogramView = () => {
   // };
 
   const getAttachedOrganizationById = () => {
-    setIsLoading(true);
     OMSService.getAttachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   useEffect(() => {
@@ -86,15 +81,13 @@ const ProposedOrganogramView = () => {
   }, [organogramData]);
 
   const getParentOrganization = () => {
-    setIsLoading(true);
     ProposalService.FETCH.parentOrganizationByOrgId(
       organogramData?.organization?.id
     )
       .then((resp) => {
         setParentOrgData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   const onProposalChange = (proposalKey: string) => {

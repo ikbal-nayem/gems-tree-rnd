@@ -150,7 +150,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
               <EquipmentsList
                 data={currentData?.data || []}
                 inventoryData={currentData?.inventoryData || []}
-                othersData={data?.othersData || {}}
+                // othersData={data?.othersData || {}}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_INVENTORY}
@@ -224,7 +224,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             <EquipmentsList
               data={proposeData?.data || []}
               inventoryData={proposeData?.inventoryData || []}
-              othersData={data?.othersData || {}}
+              // othersData={data?.othersData || {}}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_INVENTORY}
