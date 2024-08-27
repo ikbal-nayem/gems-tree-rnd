@@ -179,6 +179,11 @@ const ProposedOrganogramView = () => {
                   data={{
                     inventoryData: inventoryData,
                     data: organogramData?.miscellaneousPointDtoList,
+                    othersData: {
+                      isInventoryOthers: organogramData?.isInventoryOthers,
+                      inventoryOthersObject:
+                        organogramData?.inventoryOthersObject || "",
+                    },
                   }}
                   content="equipments"
                 />
