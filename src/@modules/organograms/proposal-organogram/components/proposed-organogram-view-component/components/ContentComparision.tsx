@@ -33,10 +33,9 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
     IObject[]
   >([]);
   const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
-    useState<IObject[]>([]);
-  const [manpowerPresentSummaryData, setManpowerPresentSummaryData] = useState<
-    IObject[]
-  >([]);
+    useState<IObject>({});
+  const [manpowerPresentSummaryData, setManpowerPresentSummaryData] =
+    useState<IObject>({});
 
   useEffect(() => {
     if (organogramId && content === "manpower") {
@@ -141,7 +140,13 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             ) : content === "summary_of_manpower" ? (
               <ManPowerList
                 isLoading={false}
-                data={manpowerPresentSummaryData || []}
+                data={manpowerPresentSummaryData || {}}
+                isSummaryOfManPowerObject={
+                  manpowerPresentSummaryData?.isSummaryOfManPowerObject
+                }
+                summaryOfManPowerObject={
+                  manpowerPresentSummaryData?.summaryOfManPowerObject
+                }
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_SUMMARY_MANPOWER}
@@ -216,6 +221,12 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             <ManPowerList
               isLoading={false}
               data={manpowerProposedSummaryData || []}
+              isSummaryOfManPowerObject={
+                manpowerProposedSummaryData?.isSummaryOfManPowerObject
+              }
+              summaryOfManPowerObject={
+                manpowerProposedSummaryData?.summaryOfManPowerObject
+              }
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_SUMMARY_MANPOWER}
