@@ -169,15 +169,7 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision
-                  data={{
-                    inventoryData: inventoryData,
-                    data: organogramData?.miscellaneousPointDtoList,
-                    othersData: {
-                      isInventoryOthers: organogramData?.isInventoryOthers,
-                      inventoryOthersObject:
-                        organogramData?.inventoryOthersObject || "",
-                    },
-                  }}
+                  organogramId={organogramId}
                   content="equipments"
                 />
               ) : t?.key === TAB_KEY.ABBREVIATION ? (

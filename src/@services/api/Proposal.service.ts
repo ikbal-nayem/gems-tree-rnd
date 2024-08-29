@@ -42,6 +42,20 @@ export const ProposalService = {
           id
       ),
 
+    equipmentsPresentById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-proposal/get-proposal-present-inventory-misle-by-id/" +
+          id
+      ),
+
+    equipmentsProposedById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-proposal/get-proposal-inventory-misle-by-id/" +
+          id
+      ),
+
     nodeWiseManpowerById: async (id: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE +

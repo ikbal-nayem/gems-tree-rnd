@@ -53,19 +53,19 @@ export const tabs = [
     label: "চেক লিস্ট",
     key: TAB_KEY.CHECK_LIST,
   },
+  // {
+  //   displayOrder: 8,
+  //   label: "লেটার বিল্ডার",
+  //   key: TAB_KEY.LETTER_BUILDER,
+  // },
   {
     displayOrder: 8,
-    label: "লেটার বিল্ডার",
-    key: TAB_KEY.LETTER_BUILDER,
-  },
-  {
-    displayOrder: 9,
     label: "খসড়া পত্র",
     key: TAB_KEY.DRAFT,
   },
-  {
-    displayOrder: 10,
-    label: "আর্কাইভ",
-    key: TAB_KEY.ARCHIVE,
-  },
+  // {
+  //   displayOrder: 10,
+  //   label: "আর্কাইভ",
+  //   key: TAB_KEY.ARCHIVE,
+  // },
 ];
