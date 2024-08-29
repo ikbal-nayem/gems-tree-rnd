@@ -36,6 +36,10 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
     useState<IObject>({});
   const [manpowerPresentSummaryData, setManpowerPresentSummaryData] =
     useState<IObject>({});
+  const [equipmentProposedData, setEquipmentProposedData] = useState<IObject>(
+    {}
+  );
+  const [equipmentPresentData, setEquipmentPresentData] = useState<IObject>({});
 
   useEffect(() => {
     if (organogramId && content === "manpower") {
@@ -65,47 +69,29 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
         })
         .catch((e) => toast.error(e?.message));
     }
+
+    if (organogramId && content === "equipments") {
+      ProposalService.FETCH.equipmentsProposedById(organogramId)
+        .then((resp) => {
+          setEquipmentProposedData(resp?.body || []);
+        })
+        .catch((e) => toast.error(e?.message));
+
+      ProposalService.FETCH.equipmentsPresentById(organogramId)
+        .then((resp) => {
+          setEquipmentPresentData(resp?.body || []);
+        })
+        .catch((e) => toast.error(e?.message));
+    }
   }, [organogramId]);
 
   let proposeData =
-    content === "equipments"
-      ? {
-          data: data?.data?.filter(
-            (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
-          ),
-          inventoryData:
-            data?.inventoryData?.length > 0 &&
-            data?.inventoryData?.map((inData) => {
-              return {
-                ...inData,
-                itemList: inData?.itemList?.filter(
-                  (pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified
-                ),
-              };
-            }),
-        }
-      : data?.length > 0
+    data?.length > 0
       ? data?.filter((pd) => pd?.isAddition || pd?.isDeleted || pd?.isModified)
       : data;
 
   let currentData =
-    content === "equipments"
-      ? {
-          data: data?.data?.filter(
-            (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
-          ),
-          inventoryData:
-            data?.inventoryData?.length > 0 &&
-            data?.inventoryData?.map((inData) => {
-              return {
-                ...inData,
-                itemList: inData?.itemList?.filter(
-                  (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
-                ),
-              };
-            }),
-        }
-      : data?.length > 0
+    data?.length > 0
       ? data?.filter(
           (pd) => !(pd?.isAddition || pd?.isDeleted || pd?.isModified)
         )
@@ -153,9 +139,22 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
               />
             ) : content === "equipments" ? (
               <EquipmentsList
-                data={currentData?.data || []}
-                inventoryData={currentData?.inventoryData || []}
-                // othersData={data?.othersData || {}}
+                data={
+                  equipmentPresentData?.proposalMiscellaneousPostDto
+                    ?.miscellaneousPointDtoList || []
+                }
+                inventoryData={
+                  equipmentPresentData?.proposalInventoryTypeDto
+                    ?.inventoryTypeDtoList || []
+                }
+                othersData={{
+                  isInventoryOthers:
+                    equipmentPresentData?.proposalInventoryTypeDto
+                      ?.isInventoryOthers,
+                  inventoryOthersObject:
+                    equipmentPresentData?.proposalInventoryTypeDto
+                      ?.inventoryOthersObject,
+                }}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_INVENTORY}
@@ -233,9 +232,22 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             />
           ) : content === "equipments" ? (
             <EquipmentsList
-              data={proposeData?.data || []}
-              inventoryData={proposeData?.inventoryData || []}
-              // othersData={data?.othersData || {}}
+              data={
+                equipmentProposedData?.proposalMiscellaneousPostDto
+                  ?.miscellaneousPointDtoList || []
+              }
+              inventoryData={
+                equipmentProposedData?.proposalInventoryTypeDto
+                  ?.inventoryTypeDtoList || []
+              }
+              othersData={{
+                isInventoryOthers:
+                  equipmentProposedData?.proposalInventoryTypeDto
+                    ?.isInventoryOthers,
+                inventoryOthersObject:
+                  equipmentProposedData?.proposalInventoryTypeDto
+                    ?.inventoryOthersObject,
+              }}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_INVENTORY}
