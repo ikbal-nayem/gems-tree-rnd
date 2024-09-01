@@ -81,9 +81,11 @@ const ChartContainer = forwardRef(
       data.relationship =
         flags + (data.children && data.children.length > 0 ? 1 : 0);
       if (data.children) {
+        // Check if the current node is the last node with childrens where the childrens has no other children.
         data.isLastNode = data.children
           .map((d) => !d?.children?.length)
           .every((v) => v);
+
         data.children.forEach(function (item) {
           attachRel(item, "1" + (data.children.length > 1 ? 1 : 0));
         });

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { dragNodeService, selectNodeService } from "./service";
 import "./ChartNode.css";
+import clsx from "clsx";
 
 const propTypes = {
   datasource: PropTypes.object,
@@ -231,16 +232,17 @@ const ChartNode = ({
     );
   };
 
+  const hasMoreChildren = datasource?.isLastNode && datasource?.children?.length > 5;
+
   return (
     <li className="oc-hierarchy">
       <div
         ref={node}
         id={datasource.id}
-        className={`${nodeClass}${
-          datasource?.children?.length && datasource?.isLastNode
-            ? " last-node-sibling"
-            : ""
-        }`}
+        className={clsx(nodeClass, {
+          'last-parent': !hasMoreChildren && datasource?.children?.length && datasource?.isLastNode,
+          'last-parent-more-children': hasMoreChildren
+        })}
         draggable={draggable ? "true" : undefined}
         onClick={clickNodeHandler}
         onDragStart={dragstartHandler}
@@ -321,9 +323,11 @@ const ChartNode = ({
       </div>
       {datasource.children && datasource.children.length > 0 && (
         <ul
-          className={`${isChildrenCollapsed ? "hidden" : ""} ${
-            datasource?.isLastNode ? "last-node" : ""
-          }`}
+          className={clsx({
+            'hidden': isChildrenCollapsed,
+            'last-node': !hasMoreChildren && datasource?.isLastNode,
+            'last-node-more-children': hasMoreChildren
+          })}
         >
           {datasource.children.map((node) => (
             <ChartNode

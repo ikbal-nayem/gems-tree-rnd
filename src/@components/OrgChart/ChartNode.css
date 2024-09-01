@@ -450,7 +450,7 @@
   }
 }
 
-/******************** handle last node *******************/
+/******************** last node with less children *******************/
 .orgchart .last-node {
   display: inline-flex;
   flex-direction: column;
@@ -482,12 +482,56 @@
   background-color: #215a88;
 }
 
-.orgchart ul li .last-node-sibling {
+/**************** last node with more children ************/
+
+.orgchart .last-node-more-children {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 3px;
+}
+
+.orgchart .last-node-more-children li::before,
+.orgchart .last-node-more-children li:first-child::before,
+.orgchart .last-node-more-children li:last-child::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  width: 2px;
+  height: 100%;
+  background-color: #215a88;
+}
+.orgchart .last-node-more-children li:nth-child(odd)::before {
+  left: calc(100%);
+}
+
+.orgchart .last-node-more-children li:last-child::before {
+  height: calc(50% + 3px);
+}
+
+.orgchart .last-node-more-children .oc-node::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  /* left: -3px; */
+  width: 6px;
+  height: 2px;
+  background-color: #215a88;
+}
+.orgchart .last-node-more-children li:nth-child(even) .oc-node::before {
+  left: -3px;
+}
+.orgchart .last-node-more-children li:nth-child(odd) .oc-node::before {
+  left: calc(100% - 3px);
+}
+
+/* ***************** last parent ********************** */
+
+.orgchart ul li .last-parent {
   margin-bottom: 10px;
   padding-right: 50px;
 }
 
-.orgchart ul li .last-node-sibling:not(:only-child)::after {
+.orgchart ul li .last-parent:not(:only-child)::after {
   height: 0;
   left: calc(20% - 6px);
 }
@@ -496,4 +540,17 @@
   background-color: transparent;
 }
 
-/******************** handle last node *******************/
+/* ***************** last parent with more child ********************** */
+
+.orgchart ul li .last-parent-more-children {
+  margin-bottom: 10px;
+}
+
+.orgchart ul li .last-parent-more-children:not(:only-child)::after {
+  height: 0;
+  left: calc(20% - 6px);
+}
+
+.orgchart ul li .oc-node:hover {
+  background-color: transparent;
+}
