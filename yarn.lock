@@ -1166,10 +1166,10 @@
     intl-messageformat "9.12.0"
     tslib "^2.1.0"
 
-"@gems/components@^1.7.17":
-  version "1.7.17"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/32/packages/npm/@gems/components/-/@gems/components-1.7.17.tgz#fe8546807bca21cba6bdeeba82a25be6de457dde"
-  integrity sha1-/oVGgHvKIcumve66gqJb5t5Ffd4=
+"@gems/components@^1.7.27":
+  version "1.7.27"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/32/packages/npm/@gems/components/-/@gems/components-1.7.27.tgz#e75591d3ef2de90356db7edf8bb9ff3143ed0760"
+  integrity sha1-51WR0+8t6QNW237fi7n/MUPtB2A=
   dependencies:
     clsx "^2.1.1"
     million "^3.1.6"
@@ -1190,15 +1190,15 @@
     clsx "^2.1.1"
     million "^3.1.11"
 
-"@gems/utils@^1.5.6":
-  version "1.5.6"
-  resolved "https://gitlab.gems.gov.bd/api/v4/projects/33/packages/npm/@gems/utils/-/@gems/utils-1.5.6.tgz#ee2c54655d60eb8e790045d67dc4bd509bf5bb53"
-  integrity sha1-7ixUZV1g6455AEXWfcS9UJv1u1M=
+"@gems/utils@^1.5.12":
+  version "1.5.13"
+  resolved "https://gitlab.gems.gov.bd/api/v4/projects/33/packages/npm/@gems/utils/-/@gems/utils-1.5.13.tgz#a996e1a29a0d099acf30eb475e07820889435096"
+  integrity sha1-qZbhopoNCZrPMOtHXgeCCIlDUJY=
   dependencies:
     browser-image-compression "^2.0.2"
     jwt-decode "^3.1.2"
     moment "^2.30.1"
-    pdfmake "^0.2.10"
+    pdfmake "^0.2.12"
     topbar "^3.0.0"
     ua-parser-js "^1.0.38"
     xlsx "^0.18.5"
@@ -3526,10 +3526,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pdfmake@^0.2.10:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/pdfmake/-/pdfmake-0.2.10.tgz#a8a0ee8a5acca8f5d728e0dfe4db8be5f1b9ec6b"
-  integrity sha512-doipFnmE1UHSk+Z3wfQuVweVQqx2pE/Ns2G5gCqZmWwqjDj+mZHnZYH/ryXWoIfD+iVdZUAutgI/VHkTCN+Xrw==
+pdfmake@^0.2.12:
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/pdfmake/-/pdfmake-0.2.12.tgz#5156f91ff73797947942aa342423bedaa0c0bc93"
+  integrity sha512-TFsqaG6KVtk+TWermmJNNwom3wmB/xiz07prM74KBhdM+7pz3Uwq2b0uoqhhQRn6cYUTpL8lXZY6xF011o1YcQ==
   dependencies:
     "@foliojs-fork/linebreak" "^1.1.1"
     "@foliojs-fork/pdfkit" "^0.14.0"
