@@ -1,5 +1,4 @@
 import { toast } from "@gems/components";
-import { IObject } from "@gems/utils";
 import Manpower from "@modules/organograms/proposal-organogram/view/tabComponent/manpower";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
@@ -26,32 +25,20 @@ interface IForm {
 }
 
 const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
-  const [nodeProposedManpowerList, setNodeProposedManpowerList] = useState<
-    IObject[]
-  >([]);
-  const [nodePresentManpowerList, setNodePresentManpowerList] = useState<
-    IObject[]
-  >([]);
-  const [manpowerProposedSummaryData, setManpowerProposedSummaryData] =
-    useState<IObject>({});
-  const [manpowerPresentSummaryData, setManpowerPresentSummaryData] =
-    useState<IObject>({});
-  const [equipmentProposedData, setEquipmentProposedData] = useState<IObject>(
-    {}
-  );
-  const [equipmentPresentData, setEquipmentPresentData] = useState<IObject>({});
+  const [proposedAPIData, setProposedAPIData] = useState<any>();
+  const [presentAPIData, setPresentAPIData] = useState<any>();
 
   useEffect(() => {
     if (organogramId && content === "manpower") {
       ProposalService.FETCH.nodeWiseProposedManpowerById(organogramId)
         .then((resp) => {
-          setNodeProposedManpowerList(resp?.body);
+          setProposedAPIData(resp?.body);
         })
         .catch((e) => toast.error(e?.message));
 
       ProposalService.FETCH.nodeWisePresentManpowerById(organogramId)
         .then((resp) => {
-          setNodePresentManpowerList(resp?.body);
+          setPresentAPIData(resp?.body);
         })
         .catch((e) => toast.error(e?.message));
     }
@@ -59,13 +46,13 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
     if (organogramId && content === "summary_of_manpower") {
       ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
         .then((resp) => {
-          setManpowerProposedSummaryData(resp?.body || []);
+          setProposedAPIData(resp?.body || []);
         })
         .catch((e) => toast.error(e?.message));
 
       ProposalService.FETCH.manpowerPresentSummaryById(organogramId)
         .then((resp) => {
-          setManpowerPresentSummaryData(resp?.body || []);
+          setPresentAPIData(resp?.body || []);
         })
         .catch((e) => toast.error(e?.message));
     }
@@ -73,13 +60,27 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
     if (organogramId && content === "equipments") {
       ProposalService.FETCH.equipmentsProposedById(organogramId)
         .then((resp) => {
-          setEquipmentProposedData(resp?.body || []);
+          setProposedAPIData(resp?.body || []);
         })
         .catch((e) => toast.error(e?.message));
 
       ProposalService.FETCH.equipmentsPresentById(organogramId)
         .then((resp) => {
-          setEquipmentPresentData(resp?.body || []);
+          setPresentAPIData(resp?.body || []);
+        })
+        .catch((e) => toast.error(e?.message));
+    }
+
+    if (organogramId && content === "attached_org") {
+      ProposalService.FETCH.attachOrganizationsProposedById(organogramId)
+        .then((resp) => {
+          setProposedAPIData(resp?.body || {});
+        })
+        .catch((e) => toast.error(e?.message));
+
+      ProposalService.FETCH.attachOrganizationsPresentById(organogramId)
+        .then((resp) => {
+          setPresentAPIData(resp?.body || {});
         })
         .catch((e) => toast.error(e?.message));
     }
@@ -104,7 +105,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
           <div className="w-100 px-md-1 pb-2 pb-md-0">
             {content === "manpower" ? (
               <Manpower
-                dataList={nodePresentManpowerList || []}
+                dataList={presentAPIData || []}
                 isEnamCommittee={false}
                 isTabContent={true}
                 title={LABEL.CURRENT_MANPOWER}
@@ -126,12 +127,12 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             ) : content === "summary_of_manpower" ? (
               <ManPowerList
                 isLoading={false}
-                data={manpowerPresentSummaryData || {}}
+                data={presentAPIData || {}}
                 isSummaryOfManPowerObject={
-                  manpowerPresentSummaryData?.isSummaryOfManPowerObject
+                  presentAPIData?.isSummaryOfManPowerObject
                 }
                 summaryOfManPowerObject={
-                  manpowerPresentSummaryData?.summaryOfManPowerObject
+                  presentAPIData?.summaryOfManPowerObject
                 }
                 langEn={langEn}
                 isTabContent={true}
@@ -140,19 +141,18 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             ) : content === "equipments" ? (
               <EquipmentsList
                 data={
-                  equipmentPresentData?.proposalMiscellaneousPostDto
+                  presentAPIData?.proposalMiscellaneousPostDto
                     ?.miscellaneousPointDtoList || []
                 }
                 inventoryData={
-                  equipmentPresentData?.proposalInventoryTypeDto
+                  presentAPIData?.proposalInventoryTypeDto
                     ?.inventoryTypeDtoList || []
                 }
                 othersData={{
                   isInventoryOthers:
-                    equipmentPresentData?.proposalInventoryTypeDto
-                      ?.isInventoryOthers,
+                    presentAPIData?.proposalInventoryTypeDto?.isInventoryOthers,
                   inventoryOthersObject:
-                    equipmentPresentData?.proposalInventoryTypeDto
+                    presentAPIData?.proposalInventoryTypeDto
                       ?.inventoryOthersObject,
                 }}
                 langEn={langEn}
@@ -168,7 +168,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
               />
             ) : content === "attached_org" ? (
               <AttachedOrgList
-                data={currentData?.attachedOrganization || []}
+                data={presentAPIData?.attachedOrganization || []}
                 langEn={langEn}
                 isTabContent={true}
                 title={LABEL.CURRENT_ATTACHED_ORGANIZATION}
@@ -197,7 +197,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
         <div className="w-100 px-md-1">
           {content === "manpower" ? (
             <Manpower
-              dataList={nodeProposedManpowerList || []}
+              dataList={proposedAPIData || []}
               isEnamCommittee={false}
               isTabContent={true}
               title={LABEL.PROPOSED_MANPOWER}
@@ -219,13 +219,11 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
           ) : content === "summary_of_manpower" ? (
             <ManPowerList
               isLoading={false}
-              data={manpowerProposedSummaryData || []}
+              data={proposedAPIData || []}
               isSummaryOfManPowerObject={
-                manpowerProposedSummaryData?.isSummaryOfManPowerObject
+                proposedAPIData?.isSummaryOfManPowerObject
               }
-              summaryOfManPowerObject={
-                manpowerProposedSummaryData?.summaryOfManPowerObject
-              }
+              summaryOfManPowerObject={proposedAPIData?.summaryOfManPowerObject}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_SUMMARY_MANPOWER}
@@ -233,19 +231,18 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
           ) : content === "equipments" ? (
             <EquipmentsList
               data={
-                equipmentProposedData?.proposalMiscellaneousPostDto
+                proposedAPIData?.proposalMiscellaneousPostDto
                   ?.miscellaneousPointDtoList || []
               }
               inventoryData={
-                equipmentProposedData?.proposalInventoryTypeDto
+                proposedAPIData?.proposalInventoryTypeDto
                   ?.inventoryTypeDtoList || []
               }
               othersData={{
                 isInventoryOthers:
-                  equipmentProposedData?.proposalInventoryTypeDto
-                    ?.isInventoryOthers,
+                  proposedAPIData?.proposalInventoryTypeDto?.isInventoryOthers,
                 inventoryOthersObject:
-                  equipmentProposedData?.proposalInventoryTypeDto
+                  proposedAPIData?.proposalInventoryTypeDto
                     ?.inventoryOthersObject,
               }}
               langEn={langEn}
@@ -261,7 +258,7 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
             />
           ) : content === "attached_org" ? (
             <AttachedOrgList
-              data={proposeData || []}
+              data={proposedAPIData?.attachedOrganization || []}
               langEn={langEn}
               isTabContent={true}
               title={LABEL.PROPOSED_ATTACHED_ORGANIZATION}
