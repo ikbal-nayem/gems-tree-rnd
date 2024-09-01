@@ -1,5 +1,6 @@
 import { ContentPreloader, Tab, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -7,7 +8,6 @@ import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposed-organogram-view-component";
 import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
-import { OMSService } from "@services/api/OMS.service";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -108,7 +108,7 @@ const ProposedOrganogramView = () => {
             প্রস্তাবিত পরিবর্তনসমূহ
           </button>
           <ul
-            className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-4 border-top-0"
+            className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-1 border-top-0"
             aria-labelledby="listOfProposal"
           >
             {subjects?.map((p, idx) => {
@@ -179,7 +179,7 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.ATTACHED_ORGANIZATION ? (
                 <ContentComparision
-                  data={attachOrgData}
+                  organogramId={organogramId}
                   content="attached_org"
                 />
               ) : null}

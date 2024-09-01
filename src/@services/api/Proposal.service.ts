@@ -56,6 +56,20 @@ export const ProposalService = {
           id
       ),
 
+    attachOrganizationsPresentById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-proposal/get-proposal-present-attached-org-by-id/" +
+          id
+      ),
+
+    attachOrganizationsProposedById: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-proposal/get-proposal-attached-org-by-id/" +
+          id
+      ),
+
     nodeWiseManpowerById: async (id: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE +
