@@ -120,41 +120,20 @@ const UpdateForm = ({
                 errorMessage={errors?.slNo?.message as string}
               />
               <Input
-                label={"উপ ক্রমিক নম্বর"}
+                label={"প্রদর্শন ক্রম"}
                 type="number"
-                placeholder="উপ ক্রমিক নম্বর লিখুন"
+                placeholder="প্রদর্শন ক্রম লিখুন"
                 min={1}
+                isRequired
                 registerProperty={{
-                  ...register("subSl", {
-                    required: "উপ ক্রমিক নম্বর লিখুন",
+                  ...register("displayOrder", {
+                    required: "প্রদর্শন ক্রম লিখুন",
                     setValueAs: (v) => numBnToEn(v),
-                    // maxLength: {
-                    //   value: 1,
-                    //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                    // },
                   }),
                 }}
-                isRequired
-                isError={!!errors?.subSl}
-                errorMessage={errors?.subSl?.message as string}
+                isError={!!errors?.displayOrder}
+                errorMessage={errors?.displayOrder?.message as string}
               />
-              {/* <div className="col-12">
-              <Input
-                label="কোড"
-                placeholder="কোড লিখুন"
-                registerProperty={{
-                  ...register("code"),
-                }}
-              />
-            </div>
-            <div className="col-12">
-              <Checkbox
-                label="সক্রিয়"
-                registerProperty={{
-                  ...register("isActive"),
-                }}
-              />
-            </div> */}
             </div>
           </div>
         </DrawerBody>
