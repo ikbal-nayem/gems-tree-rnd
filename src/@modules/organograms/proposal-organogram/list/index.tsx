@@ -1,11 +1,10 @@
 import { TIME_PATTERN } from "@constants/common.constant";
 import { MENU } from "@constants/menu-titles.constant";
-import { useAuth } from "@context/Auth";
 import { PageTitle } from "@context/PageData";
 import {
-  Autocomplete,
   ConfirmationModal,
   DownloadMenu,
+  Input,
   Pagination,
   toast,
 } from "@gems/components";
@@ -21,14 +20,12 @@ import {
   topProgress,
   useDebounce,
 } from "@gems/utils";
-import { CoreService } from "@services/api/Core.service";
 import { OMSService } from "@services/api/OMS.service";
+import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import ProposalTable from "./Table";
 import { LABELS } from "./labels";
-import { ProposalService } from "@services/api/Proposal.service";
 
 const initMeta: IMeta = {
   page: 0,
@@ -43,8 +40,8 @@ const initMeta: IMeta = {
 
 const ProposalList = () => {
   const [dataList, setDataList] = useState<IObject[]>();
-  const [officeScopeList, setOfficeScopeList] = useState<IObject[]>();
-  const [proposalStatusList, setProposalStatusList] = useState<IObject[]>();
+  // const [officeScopeList, setOfficeScopeList] = useState<IObject[]>();
+  // const [proposalStatusList, setProposalStatusList] = useState<IObject[]>();
   const [respMeta, setRespMeta] = useState<IMeta>(initMeta);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
@@ -52,15 +49,12 @@ const ProposalList = () => {
   const [deleteData, setDeleteData] = useState<any>();
   const [searchParams, setSearchParams] = useSearchParams();
   const params: any = searchParamsToObject(searchParams);
-  const [officeScopeKey, setOfficeScopeKey] = useState<string>();
-  const [proposalStatusKey, setProposalStatusKey] = useState<string>();
+  // const [officeScopeKey, setOfficeScopeKey] = useState<string>();
+  // const [proposalStatusKey, setProposalStatusKey] = useState<string>();
   const [search, setSearch] = useState<string>(
     searchParams.get("searchKey") || ""
   );
   const searchKey = useDebounce(search, 500);
-  const { currentUser } = useAuth();
-  const formProps = useForm();
-  const { control } = formProps;
 
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
@@ -71,72 +65,78 @@ const ProposalList = () => {
 
   useEffect(() => {
     getDataList();
-  }, [searchParams, officeScopeKey, proposalStatusKey]);
+  }, [searchParams]);
 
-  useEffect(() => {
-    CoreService.getByMetaTypeList("OFFICE_SCOPE/asc").then((resp) => {
-      // Mopa: 77848f4b-3874-4cd5-b0a3-660660c046b3
-      if (
-        resp?.body &&
-        resp?.body.length > 0 &&
-        currentUser?.organizationId !== "77848f4b-3874-4cd5-b0a3-660660c046b3"
-      ) {
-        setOfficeScopeList(resp?.body.splice(1, 2));
-      } else {
-        setOfficeScopeList(resp?.body);
-      }
-    });
+  // useEffect(() => {
+  //   CoreService.getByMetaTypeList("OFFICE_SCOPE/asc").then((resp) => {
+  //     // Mopa: 77848f4b-3874-4cd5-b0a3-660660c046b3
+  //     if (
+  //       resp?.body &&
+  //       resp?.body.length > 0 &&
+  //       currentUser?.organizationId !== "77848f4b-3874-4cd5-b0a3-660660c046b3"
+  //     ) {
+  //       setOfficeScopeList(resp?.body.splice(1, 2));
+  //     } else {
+  //       setOfficeScopeList(resp?.body);
+  //     }
+  //   });
 
-    CoreService.getByMetaTypeList("PROPOSAL_STATUS/asc").then((resp) =>
-      setProposalStatusList(resp?.body)
-    );
-  }, []);
+  //   CoreService.getByMetaTypeList("PROPOSAL_STATUS/asc").then((resp) =>
+  //     setProposalStatusList(resp?.body)
+  //   );
+  // }, []);
 
-  const prepareFilterData = (sl: number, op: string) => {
-    if (sl === 1) {
-      if (op === "OFFICE_SCOPE_UNDER_OFFICE") return "UNDER";
-      if (op === "OFFICE_SCOPE_OWN_OFFICE") return "OWN";
-    }
-    if (sl === 2) {
-      if (op === "PROPOSAL_STATUS_PENDING_PROPOSAL") return "NEW";
-      if (op === "PROPOSAL_STATUS_RESOLVED_PROPOSAL") return "RESOLVED";
-    }
-    return null;
-  };
+  // const prepareFilterData = (sl: number, op: string) => {
+  //   if (sl === 1) {
+  //     if (op === "OFFICE_SCOPE_UNDER_OFFICE") return "UNDER";
+  //     if (op === "OFFICE_SCOPE_OWN_OFFICE") return "OWN";
+  //   }
+  //   if (sl === 2) {
+  //     if (op === "PROPOSAL_STATUS_PENDING_PROPOSAL") return "NEW";
+  //     if (op === "PROPOSAL_STATUS_RESOLVED_PROPOSAL") return "RESOLVED";
+  //   }
+  //   return null;
+  // };
 
-  const preparePayload = (reqMeta = null) => {
-    return {
-      meta: searchKey
-        ? reqMeta
-          ? { ...reqMeta, sort: null }
-          : { ...respMeta, page: 0, sort: null }
-        : reqMeta || respMeta,
-      body:
-        officeScopeKey && proposalStatusKey
-          ? {
-              officeScopeKey: officeScopeKey,
-              status: proposalStatusKey,
-            }
-          : officeScopeKey
-          ? {
-              officeScopeKey: officeScopeKey,
-            }
-          : proposalStatusKey
-          ? {
-              status: proposalStatusKey,
-            }
-          : {},
-    };
-  };
+  // const preparePayload = (reqMeta = null) => {
+  //   return {
+  //     meta: searchKey
+  //       ? reqMeta
+  //         ? { ...reqMeta, sort: null }
+  //         : { ...respMeta, page: 0, sort: null }
+  //       : reqMeta || respMeta,
+  //     body:
+  //       officeScopeKey && proposalStatusKey
+  //         ? {
+  //             officeScopeKey: officeScopeKey,
+  //             status: proposalStatusKey,
+  //           }
+  //         : officeScopeKey
+  //         ? {
+  //             officeScopeKey: officeScopeKey,
+  //           }
+  //         : proposalStatusKey
+  //         ? {
+  //             status: proposalStatusKey,
+  //           }
+  //         : {},
+  //   };
+  // };
 
   const getDataList = (reqMeta = null) => {
     topProgress.show();
     setLoading(true);
 
-    const payload = preparePayload(reqMeta);
-    const reqData = { ...payload, body: payload?.body };
+    const payload = {
+      meta: searchKey
+        ? reqMeta
+          ? { ...reqMeta, sort: null }
+          : { ...respMeta, page: 0, sort: null }
+        : reqMeta || respMeta,
+      body: { searchKey: searchKey || "" },
+    };
 
-    OMSService.FETCH.organogramProposalList(reqData)
+    OMSService.FETCH.organogramProposalList(payload)
       .then((resp) => {
         setDataList(resp?.body || []);
         setRespMeta(
@@ -155,12 +155,11 @@ const ProposalList = () => {
   };
 
   const getXLSXStoreList = (reqMeta = null) => {
-    const payload = preparePayload(reqMeta);
-    const reqData = { ...payload, body: payload?.body };
+    const reqData = { meta: reqMeta, body: { searchKey: searchKey } };
 
     OMSService.FETCH.organogramProposalList(reqData)
       .then((res) => {
-        exportXLSX(exportData(res?.body || []), "Template list");
+        exportXLSX(exportData(res?.body || []), "Proposal list");
       })
       .catch((err) => toast.error(err?.message));
   };
@@ -196,7 +195,7 @@ const ProposalList = () => {
       [LABELS.BN.SENDER]:
         d?.proposedOrganization?.nameBn || COMMON_LABELS.NOT_ASSIGN,
       [LABELS.BN.TOPIC]:
-        d?.subjects?.map((i) => i.titleBn).join(" , ") ||
+        d?.subjects?.map((i) => i.titleBn).join(", ") ||
         COMMON_LABELS.NOT_ASSIGN,
       [LABELS.BN.STATUS]:
         d?.status === "NEW"
@@ -213,17 +212,15 @@ const ProposalList = () => {
     <>
       <PageTitle> {MENU.BN.PROPOSAL_LIST} </PageTitle>
       <div className="card p-4">
-        {/* <Filter onFilter={onFilter} /> */}
-        {/* <Separator /> */}
         <div className="d-flex gap-3 mb-4">
-          {/* <Input
+          <Input
             type="search"
             noMargin
-            placeholder="প্রেরকের নাম অনুসন্ধান করুন ..."
+            placeholder="প্রতিষ্ঠান অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          /> */}
-          <span className="w-50">
+          />
+          {/* <span className="w-50">
             <Autocomplete
               placeholder="অফিসের পরিধি বাছাই করুন"
               options={officeScopeList || []}
@@ -248,7 +245,7 @@ const ProposalList = () => {
                 setProposalStatusKey(prepareFilterData(2, val?.metaKey) || null)
               }
             />
-          </span>
+          </span> */}
           <DownloadMenu
             fnDownloadExcel={() =>
               getXLSXStoreList({
