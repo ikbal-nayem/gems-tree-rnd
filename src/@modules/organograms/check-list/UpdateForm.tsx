@@ -106,7 +106,7 @@ const UpdateForm = ({
                 placeholder="ক্রমিক নম্বর লিখুন"
                 min={1}
                 registerProperty={{
-                  ...register("slNo", {
+                  ...register("chromicNo", {
                     required: "ক্রমিক নম্বর লিখুন",
                     setValueAs: (v) => numBnToEn(v),
                     // maxLength: {
@@ -116,8 +116,8 @@ const UpdateForm = ({
                   }),
                 }}
                 isRequired
-                isError={!!errors?.slNo}
-                errorMessage={errors?.slNo?.message as string}
+                isError={!!errors?.chromicNo}
+                errorMessage={errors?.chromicNo?.message as string}
               />
               <Input
                 label={"প্রদর্শন ক্রম"}
@@ -126,13 +126,13 @@ const UpdateForm = ({
                 min={1}
                 isRequired
                 registerProperty={{
-                  ...register("displayOrder", {
+                  ...register("serialNo", {
                     required: "প্রদর্শন ক্রম লিখুন",
                     setValueAs: (v) => numBnToEn(v),
                   }),
                 }}
-                isError={!!errors?.displayOrder}
-                errorMessage={errors?.displayOrder?.message as string}
+                isError={!!errors?.serialNo}
+                errorMessage={errors?.serialNo?.message as string}
               />
             </div>
           </div>
