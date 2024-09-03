@@ -37,7 +37,7 @@ const Form = ({
         ...updateData,
       });
     } else {
-      reset({ isActive: true });
+      reset({ isActive: true, haveChecklistForm: true });
     }
   }, [updateData, reset]);
 
@@ -109,6 +109,14 @@ const Form = ({
                 placeholder="কোড লিখুন"
                 registerProperty={{
                   ...register("code"),
+                }}
+              />
+            </div>
+            <div className="col-12">
+              <Checkbox
+                label="চেকলিস্ট ফরম"
+                registerProperty={{
+                  ...register("haveChecklistForm"),
                 }}
               />
             </div>
