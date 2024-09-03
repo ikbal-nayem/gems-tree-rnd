@@ -1,10 +1,10 @@
-import clsx from "clsx";
-import NewProposalModal from "./NewProposalModal";
-import { useState } from "react";
-import { OMSService } from "@services/api/OMS.service";
-import { toast } from "@gems/components";
-import { useNavigate } from "react-router-dom";
 import { ROUTE_L2 } from "@constants/internal-route.constant";
+import { toast } from "@gems/components";
+import { OMSService } from "@services/api/OMS.service";
+import clsx from "clsx";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import NewProposalModal from "./NewProposalModal";
 
 interface IMenu {
   organogramId: string;
@@ -54,37 +54,6 @@ export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
         >
           নতুন প্রস্তাব
         </span>
-        {/* <div
-          className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-700 menu-state-bg menu-state-primary fw-bold py-2 fs-6 w-200px"
-          data-kt-menu="true"
-        >
-          <div className="menu-item px-2">
-            <div className="menu-link">পদ সৃজন</div>
-          </div>
-
-          <div className="menu-item px-2">
-            <div className="menu-link">পদের মেয়াদ সংরক্ষণ</div>
-          </div>
-          <div className="menu-item px-2">
-            <div className="menu-link">পদ স্থায়ীকরণ</div>
-          </div>
-          <div className="menu-item px-2">
-            <div className="menu-link">পদ বিলুপ্ত করুন</div>
-          </div>
-          <div className="menu-item px-2">
-            <div className="menu-link">
-              যানবাহন, অফিস সরঞ্জাম টিওএন্ডই-তে অন্তর্ভুক্তিকরণ
-            </div>
-          </div>
-          <div className="menu-item px-2">
-            <div className="menu-link">
-              পদবি/পদনাম পরিবর্তন এবং পদমর্যাদা/বেতন স্কেল উন্নীতকরণ
-            </div>
-          </div>
-          <div className="menu-item px-2">
-            <div className="menu-link">১০% সংরক্ষিত শূন্যপদ পূরণ</div>
-          </div>
-        </div> */}
       </div>
       <NewProposalModal
         isOpen={isOpen}
