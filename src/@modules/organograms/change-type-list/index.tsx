@@ -198,8 +198,8 @@ const ChangeType = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "নাম (বাংলা)": d?.titleBN || COMMON_LABELS.NOT_ASSIGN,
-      "নাম (ইংরেজি)": d?.titleEN || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
       কোড: d?.code || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়:
         (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,

@@ -41,8 +41,8 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.titleBN || "-"} />
-              <TableCell text={data?.titleEN || "-"} />
+              <TableCell text={data?.titleBn || "-"} />
+              <TableCell text={data?.titleEn || "-"} />
               <TableCell text={data?.code || "-"} textAlign="center" />
               <TableCell isActive={data?.isActive} />
               <TableCell isActive={data?.haveChecklistForm} />

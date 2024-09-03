@@ -68,7 +68,7 @@ const UpdateForm = ({
               isRequired="পরিবর্তনের ধরণ বাছাই করুন"
               options={changeTypeList || []}
               name="organogramChangeTypeDto"
-              getOptionLabel={(op) => op.titleBN}
+              getOptionLabel={(op) => op.titleBn}
               getOptionValue={(op) => op.id}
               onChange={(op) => setValue("organogramChangeTypeId", op?.id)}
               control={control}
