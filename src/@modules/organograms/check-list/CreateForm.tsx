@@ -119,10 +119,6 @@ const CreateForm = ({
                         ...register(`checklist.${idx}.chromicNo`, {
                           required: "ক্রমিক নম্বর লিখুন",
                           setValueAs: (v) => numBnToEn(v),
-                          // maxLength: {
-                          //   value: 1,
-                          //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                          // },
                         }),
                       }}
                       isRequired
@@ -156,11 +152,8 @@ const CreateForm = ({
                       placeholder="নাম (ইংরেজি) লিখুন"
                       noMargin
                       registerProperty={{
-                        ...register(`checklist.${idx}.titleEn`, {
-                          // required: "নাম (ইংরেজি) লিখুন",
-                        }),
+                        ...register(`checklist.${idx}.titleEn`, {}),
                       }}
-                      // isRequired
                       isError={!!errors?.checklist?.[idx]?.titleEn}
                       errorMessage={
                         errors?.checklist?.[idx]?.titleEn?.message as string

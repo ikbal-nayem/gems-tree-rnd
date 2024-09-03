@@ -72,6 +72,7 @@ const UpdateForm = ({
               getOptionValue={(op) => op.id}
               onChange={(op) => setValue("organogramChangeTypeId", op?.id)}
               control={control}
+              isDisabled
               isError={!!errors?.organogramChangeTypeDTO}
               errorMessage={errors?.organogramChangeTypeDTO?.message as string}
             />
@@ -109,12 +110,9 @@ const UpdateForm = ({
                   ...register("chromicNo", {
                     required: "ক্রমিক নম্বর লিখুন",
                     setValueAs: (v) => numBnToEn(v),
-                    // maxLength: {
-                    //   value: 1,
-                    //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                    // },
                   }),
                 }}
+                disabled
                 isRequired
                 isError={!!errors?.chromicNo}
                 errorMessage={errors?.chromicNo?.message as string}
@@ -131,6 +129,7 @@ const UpdateForm = ({
                     setValueAs: (v) => numBnToEn(v),
                   }),
                 }}
+                disabled
                 isError={!!errors?.serialNo}
                 errorMessage={errors?.serialNo?.message as string}
               />
