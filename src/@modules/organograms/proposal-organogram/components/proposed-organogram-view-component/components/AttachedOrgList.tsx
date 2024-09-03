@@ -2,7 +2,7 @@ import { COMMON_LABELS, LABELS } from "@constants/common.constant";
 import { Separator } from "@gems/components";
 import { IObject } from "@gems/utils";
 import { isNotEmptyList } from "utility/utils";
-import "../style.scss"
+import "../style.scss";
 
 interface IAttachedOrgList {
   data: IObject[];
@@ -63,7 +63,9 @@ const AttachedOrgList = ({
   return (
     <div className="card border p-3">
       <div className="card-head d-flex justify-content-between align-items-center">
-        <h4 className="m-0">{LABEL.ATTACHED_OFFICE}</h4>
+        <h4 className={title ? "m-0 text-primary" : "m-0"}>
+          {isTabContent && title ? title : LABEL.MAIN_ACTIVITIES}
+        </h4>
       </div>
       <Separator className="mt-1 mb-2" />
       <div>

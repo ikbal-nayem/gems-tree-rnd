@@ -1,10 +1,10 @@
+import { Input } from "@components/Input";
 import { ERR_MSG, LABELS } from "@constants/common.constant";
 import {
   Autocomplete,
   Button,
   Checkbox,
   IconButton,
-  Input,
   Label,
   Modal,
   ModalBody,

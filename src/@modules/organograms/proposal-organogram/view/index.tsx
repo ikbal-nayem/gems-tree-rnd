@@ -1,5 +1,6 @@
 import { ContentPreloader, Tab, TabBlock, toast } from "@gems/components";
 import { IObject, isObjectNull } from "@gems/utils";
+import { OMSService } from "@services/api/OMS.service";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -7,7 +8,6 @@ import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposed-organogram-view-component";
 import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
-import { OMSService } from "@services/api/OMS.service";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -19,7 +19,6 @@ const ProposedOrganogramView = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
   const organogramId = state?.organogramId;
-  const previousOrganogramId = state?.previousOrganogramId;
   const subjects = state?.subjects;
 
   useEffect(() => {
@@ -34,29 +33,27 @@ const ProposedOrganogramView = () => {
   };
 
   const getOrganogramDetails = () => {
+    setIsLoading(true);
     ProposalService.FETCH.organogramDetailsByOrganogramId(organogramId)
       .then((resp) => setOrganogramData(resp?.body))
-      .catch((e) => toast.error(e?.message));
+      .catch((e) => toast.error(e?.message))
+      .finally(() => setIsLoading(false));
   };
 
   const getTemplateInventoryById = () => {
-    setIsLoading(true);
     ProposalService.FETCH.inventoryByOrganogramId(organogramId)
       .then((resp) => {
         setInventoryData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   const getManpowerSummaryById = () => {
-    setIsLoading(true);
     OMSService.getTemplateManpowerSummaryById(organogramId)
       .then((resp) => {
         setManpowerData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   // const getManpowerProposedSummaryById = () => {
@@ -70,13 +67,11 @@ const ProposedOrganogramView = () => {
   // };
 
   const getAttachedOrganizationById = () => {
-    setIsLoading(true);
     OMSService.getAttachedOrganizationById(organogramId)
       .then((resp) => {
         setAttachOrgData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   useEffect(() => {
@@ -86,15 +81,13 @@ const ProposedOrganogramView = () => {
   }, [organogramData]);
 
   const getParentOrganization = () => {
-    setIsLoading(true);
     ProposalService.FETCH.parentOrganizationByOrgId(
       organogramData?.organization?.id
     )
       .then((resp) => {
         setParentOrgData(resp?.body);
       })
-      .catch((e) => toast.error(e?.message))
-      .finally(() => setIsLoading(false));
+      .catch((e) => toast.error(e?.message));
   };
 
   const onProposalChange = (proposalKey: string) => {
@@ -115,7 +108,7 @@ const ProposedOrganogramView = () => {
             প্রস্তাবিত পরিবর্তনসমূহ
           </button>
           <ul
-            className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-4 border-top-0"
+            className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-1 border-top-0"
             aria-labelledby="listOfProposal"
           >
             {subjects?.map((p, idx) => {
@@ -176,10 +169,7 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision
-                  data={{
-                    inventoryData: inventoryData,
-                    data: organogramData?.miscellaneousPointDtoList,
-                  }}
+                  organogramId={organogramId}
                   content="equipments"
                 />
               ) : t?.key === TAB_KEY.ABBREVIATION ? (
@@ -189,7 +179,7 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.ATTACHED_ORGANIZATION ? (
                 <ContentComparision
-                  data={attachOrgData}
+                  organogramId={organogramId}
                   content="attached_org"
                 />
               ) : null}
