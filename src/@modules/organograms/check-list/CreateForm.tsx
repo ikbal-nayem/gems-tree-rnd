@@ -97,15 +97,14 @@ const CreateForm = ({
                       defaultValue={idx ? idx + 1 : 1}
                       min={1}
                       registerProperty={{
-                        ...register(`checklist.${idx}.displayOrder`, {
+                        ...register(`checklist.${idx}.serialNo`, {
                           required: "প্রদর্শন ক্রম লিখুন",
                           setValueAs: (v) => numBnToEn(v),
                         }),
                       }}
-                      isError={!!errors?.checklist?.[idx]?.displayOrder}
+                      isError={!!errors?.checklist?.[idx]?.serialNo}
                       errorMessage={
-                        errors?.checklist?.[idx]?.displayOrder
-                          ?.message as string
+                        errors?.checklist?.[idx]?.serialNo?.message as string
                       }
                     />
                   </div>
@@ -117,7 +116,7 @@ const CreateForm = ({
                       noMargin
                       min={1}
                       registerProperty={{
-                        ...register(`checklist.${idx}.slNo`, {
+                        ...register(`checklist.${idx}.chromicNo`, {
                           required: "ক্রমিক নম্বর লিখুন",
                           setValueAs: (v) => numBnToEn(v),
                           // maxLength: {
@@ -127,9 +126,9 @@ const CreateForm = ({
                         }),
                       }}
                       isRequired
-                      isError={!!errors?.checklist?.[idx]?.slNo}
+                      isError={!!errors?.checklist?.[idx]?.chromicNo}
                       errorMessage={
-                        errors?.checklist?.[idx]?.slNo?.message as string
+                        errors?.checklist?.[idx]?.chromicNo?.message as string
                       }
                     />
                   </div>
