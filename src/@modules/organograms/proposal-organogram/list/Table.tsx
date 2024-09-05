@@ -49,12 +49,12 @@ const ProposalTable: FC<TableProps> = ({
   ];
 
   const navigate = useNavigate();
-  const navigateToView = (item, subjects) => {
+  const navigateToView = (item, orgmChangeActionList) => {
     navigate(ROUTE_L2.OMS_ORGANOGRAM_PROPOSAL_VIEW, {
       state: {
         organogramId: item?.proposedOrganogram?.id || null,
         previousOrganogramId: item?.previousOrganogram?.id || null,
-        subjects: subjects || null,
+        orgmChangeActionList: orgmChangeActionList || null,
       },
     });
   };
@@ -113,10 +113,7 @@ const ProposalTable: FC<TableProps> = ({
                 subText={item?.proposedOrganization?.nameEn || null}
               />
               <TableCell
-                text={
-                  item?.subjects?.map((d) => d.titleBn).join(", ") ||
-                  COMMON_LABELS.NOT_ASSIGN
-                }
+                text={item?.subjects || COMMON_LABELS.NOT_ASSIGN}
                 // subText={item?.subjects?.map((i) => i.titleEn).join(" , ")  || null}
               />
               <TableCell>
@@ -145,7 +142,9 @@ const ProposalTable: FC<TableProps> = ({
                   id={item?.id}
                 >
                   <DropdownItem
-                    onClick={() => navigateToView(item, item?.subjects)}
+                    onClick={() =>
+                      navigateToView(item, item?.orgmChangeActionList)
+                    }
                   >
                     <Icon size={19} icon="visibility" />
                     <h6 className="mb-0 ms-3">দেখুন</h6>

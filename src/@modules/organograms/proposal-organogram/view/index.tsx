@@ -19,7 +19,7 @@ const ProposedOrganogramView = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
   const organogramId = state?.organogramId;
-  const subjects = state?.subjects;
+  const orgmChangeActionList = state?.orgmChangeActionList;
 
   useEffect(() => {
     getOrganogramDetails();
@@ -111,7 +111,7 @@ const ProposedOrganogramView = () => {
             className="dropdown-menu ms-1 rounded-4 border border-gray-700 border-1 border-top-0"
             aria-labelledby="listOfProposal"
           >
-            {subjects?.map((p, idx) => {
+            {orgmChangeActionList?.map((p, idx) => {
               return (
                 <li
                   className="dropdown-item text-hover-primary rounded-pill py-2 my-4 mx-1 fs-5 cursor-pointer w-150px"
