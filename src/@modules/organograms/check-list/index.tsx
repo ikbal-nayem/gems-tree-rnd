@@ -57,7 +57,7 @@ const CheckList = () => {
   // );
   // const params: any = searchParamsToObject(searchParams);
   // const searchKey = useDebounce(search, 500);
-  const [changeTypeFilterKey, setChangeTypeFilterKey] = useState<String>("");
+  const [changeTypeFilterId, setChangeTypeFilterId] = useState<String>("");
 
   // useEffect(() => {
   //   if (searchKey) params.searchKey = searchKey;
@@ -90,17 +90,17 @@ const CheckList = () => {
   useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, [changeTypeFilterKey]);
+  }, [changeTypeFilterId]);
 
   const getDataList = (reqMeta = null) => {
     const payload = {
-      meta: changeTypeFilterKey
+      meta: changeTypeFilterId
         ? reqMeta
           ? { ...reqMeta }
           : { ...respMeta, page: 0 }
         : reqMeta || respMeta,
       body: {
-        orgChangeType: changeTypeFilterKey || "",
+        organogramChangeTypeId: changeTypeFilterId || "",
       },
     };
 
@@ -216,7 +216,7 @@ const CheckList = () => {
         ],
       },
       body: {
-        orgChangeType: changeTypeFilterKey || "",
+        organogramChangeTypeId: changeTypeFilterId || "",
       },
     };
 
@@ -236,8 +236,8 @@ const CheckList = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "নাম (বাংলা)": d?.titleBN || COMMON_LABELS.NOT_ASSIGN,
-      "নাম (ইংরেজি)": d?.titleEN || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
       কোড: d?.code || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়:
         (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
@@ -272,7 +272,7 @@ const CheckList = () => {
               getOptionLabel={(op) => op.titleBn}
               getOptionValue={(op) => op.id}
               control={control}
-              onChange={(op) => setChangeTypeFilterKey(op?.id)}
+              onChange={(op) => setChangeTypeFilterId(op?.id)}
             />
           </div>
         </div>

@@ -43,7 +43,7 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.organogramChangeTypeDto?.titleBN || "-"} />
+              <TableCell text={data?.organogramChangeTypeDto?.titleBn || "-"} />
               <TableCell text={data?.titleBn || "-"} />
               <TableCell text={data?.titleEn || "-"} />
               {/* <TableCell isActive={data?.isActive} /> */}
