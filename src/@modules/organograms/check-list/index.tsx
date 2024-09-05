@@ -1,10 +1,10 @@
 import { MENU } from "@constants/menu-titles.constant";
 import { PageTitle, PageToolbarRight } from "@context/PageData";
 import {
+  Autocomplete,
   Button,
   ConfirmationModal,
   ContentPreloader,
-  Input,
   NoData,
   Pagination,
   toast,
@@ -16,13 +16,11 @@ import {
   exportXLSX,
   generatePDF,
   numEnToBn,
-  searchParamsToObject,
   topProgress,
-  useDebounce,
 } from "@gems/utils";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { isNotEmptyList } from "utility/utils";
 import CreateForm from "./CreateForm";
 import DataTable from "./Table";
@@ -52,19 +50,21 @@ const CheckList = () => {
   const [updateData, setUpdateData] = useState<any>({});
   const [changeTypeList, setChangeTypeList] = useState<IObject[]>([]);
   const [respMeta, setRespMeta] = useState<any>(initMeta);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState<string>(
-    searchParams.get("searchKey") || ""
-  );
-  const params: any = searchParamsToObject(searchParams);
-  const searchKey = useDebounce(search, 500);
+  const { control } = useForm();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const [search, setSearch] = useState<string>(
+  //   searchParams.get("searchKey") || ""
+  // );
+  // const params: any = searchParamsToObject(searchParams);
+  // const searchKey = useDebounce(search, 500);
+  const [changeTypeFilterId, setChangeTypeFilterId] = useState<String>("");
 
-  useEffect(() => {
-    if (searchKey) params.searchKey = searchKey;
-    else delete params.searchKey;
-    setSearchParams({ ...params });
-    // eslint-disable-next-line
-  }, [searchKey]);
+  // useEffect(() => {
+  //   if (searchKey) params.searchKey = searchKey;
+  //   else delete params.searchKey;
+  //   setSearchParams({ ...params });
+  //   // eslint-disable-next-line
+  // }, [searchKey]);
 
   useEffect(() => {
     const payload = {
@@ -90,17 +90,17 @@ const CheckList = () => {
   useEffect(() => {
     getDataList();
     // eslint-disable-next-line
-  }, [searchParams]);
+  }, [changeTypeFilterId]);
 
   const getDataList = (reqMeta = null) => {
     const payload = {
-      meta: searchKey
+      meta: changeTypeFilterId
         ? reqMeta
           ? { ...reqMeta }
           : { ...respMeta, page: 0 }
         : reqMeta || respMeta,
       body: {
-        searchKey: searchKey || null,
+        organogramChangeTypeId: changeTypeFilterId || "",
       },
     };
 
@@ -216,7 +216,7 @@ const CheckList = () => {
         ],
       },
       body: {
-        searchKey: searchKey || null,
+        organogramChangeTypeId: changeTypeFilterId || "",
       },
     };
 
@@ -236,8 +236,8 @@ const CheckList = () => {
   const exportData = (data: any[]) =>
     data.map((d, i) => ({
       "ক্রমিক নং": i + 1,
-      "নাম (বাংলা)": d?.titleBN || COMMON_LABELS.NOT_ASSIGN,
-      "নাম (ইংরেজি)": d?.titleEN || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (বাংলা)": d?.titleBn || COMMON_LABELS.NOT_ASSIGN,
+      "নাম (ইংরেজি)": d?.titleEn || COMMON_LABELS.NOT_ASSIGN,
       কোড: d?.code || COMMON_LABELS.NOT_ASSIGN,
       সক্রিয়:
         (d?.isActive ? "সক্রিয়" : "সক্রিয় নয়") || COMMON_LABELS.NOT_ASSIGN,
@@ -254,18 +254,27 @@ const CheckList = () => {
 
       <div className="card p-5">
         <div className="d-flex gap-3 mb-3">
-          <Input
+          {/* <Input
             type="search"
             noMargin
             placeholder="অনুসন্ধান করুন ... "
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          />
-
-          {/* <DownloadMenu
-            fnDownloadExcel={() => downloadFile("excel")}
-            fnDownloadPDF={() => downloadFile("pdf")}
           /> */}
+
+          <div className="min-w-250px">
+            <Autocomplete
+              label="পরিবর্তনের ধরণ"
+              placeholder="পরিবর্তনের ধরণ বাছাই করুন"
+              isRequired="পরিবর্তনের ধরণ বাছাই করুন"
+              options={changeTypeList || []}
+              name="organogramChangeTypeDto"
+              getOptionLabel={(op) => op.titleBn}
+              getOptionValue={(op) => op.id}
+              control={control}
+              onChange={(op) => setChangeTypeFilterId(op?.id)}
+            />
+          </div>
         </div>
         {isNotEmptyList(listData) && (
           <div className="d-flex justify-content-between gap-3 mb-6">
