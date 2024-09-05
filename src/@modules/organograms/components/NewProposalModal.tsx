@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 const payload = {
   meta: {
     page: 0,
-    limit: 10,
+    limit: 50,
     sort: [
       {
         field: "createdOn",
@@ -77,14 +77,14 @@ const NewProposalModal = ({
             placeholder="নতুন প্রস্তাবে অর্গানোগ্রামের পরিবর্তনসমূহ বাছাই করুন"
             isRequired="নতুন প্রস্তাবে অর্গানোগ্রামের পরিবর্তনসমূহ বাছাই করুন"
             options={organogramChangeActionList || []}
-            getOptionLabel={(op) => op?.titleBN}
-            getOptionValue={(op) => op?.titleEN}
+            getOptionLabel={(op) => op?.titleBn}
+            getOptionValue={(op) => op?.titleEn}
             isMulti
             closeMenuOnSelect={false}
-            name="subjects"
+            name="orgmChangeActionList"
             control={control}
-            isError={!!errors?.subjects}
-            errorMessage={errors?.subjects?.message as string}
+            isError={!!errors?.orgmChangeActionList}
+            errorMessage={errors?.orgmChangeActionList?.message as string}
           />
         </ModalBody>
 

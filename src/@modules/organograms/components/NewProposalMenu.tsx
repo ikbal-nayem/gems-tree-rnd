@@ -1,5 +1,6 @@
 import { ROUTE_L2 } from "@constants/internal-route.constant";
 import { toast } from "@gems/components";
+import { isListNull } from "@gems/utils";
 import { OMSService } from "@services/api/OMS.service";
 import clsx from "clsx";
 import { useState } from "react";
@@ -15,15 +16,17 @@ export const NewProposalMenu = ({ organogramId, organizationId }: IMenu) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onClose = () => setIsOpen(false);
   const navigate = useNavigate();
-  // alert(
-  //   "Organization Id:- " + organizationId +
-  //   "\n\nOrganogram Id:- " + organogramId
-  // );
   const onSubmit = (data) => {
     const reqPayload = {
       organizationId: organizationId,
       previousOrganogramId: organogramId,
-      subjects: data?.subjects?.length > 0 ? data?.subjects : null,
+      orgmChangeActionList: !isListNull(data?.orgmChangeActionList)
+        ? data?.orgmChangeActionList?.map((d) => ({
+            titleEn: d?.titleEn || "",
+            titleBn: d?.titleBn || "",
+            organogramChangeTypeId: d?.id || "",
+          }))
+        : null,
       proposedDate: new Date(),
       status: "NEW",
     };
