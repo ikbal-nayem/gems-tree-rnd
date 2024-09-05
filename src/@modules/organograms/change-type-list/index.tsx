@@ -119,12 +119,8 @@ const ChangeType = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    let payload = {
-      body: {
-        ids: [deleteData?.id || ""],
-      },
-    };
-    ProposalService.DELETE.organogramChangeType(payload)
+
+    ProposalService.DELETE.organogramChangeType(deleteData?.id || "")
       .then((res) => {
         toast.success(res?.message);
         getDataList();

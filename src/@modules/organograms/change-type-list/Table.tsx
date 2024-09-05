@@ -44,8 +44,8 @@ const DataTable: FC<DataTableProps> = ({
               <TableCell text={data?.titleBn || "-"} />
               <TableCell text={data?.titleEn || "-"} />
               <TableCell text={data?.code || "-"} textAlign="center" />
-              <TableCell isActive={data?.isActive} />
               <TableCell isActive={data?.haveChecklistForm} />
+              <TableCell isActive={data?.isActive} />
               <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
