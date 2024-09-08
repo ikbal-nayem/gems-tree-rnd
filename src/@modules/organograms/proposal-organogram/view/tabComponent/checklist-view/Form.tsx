@@ -42,13 +42,13 @@ const Form = ({ updateData }: IForm) => {
   console.log("orgmL", updateData);
 
   return (
-    <div className="card border p-3">
+    <div className="card border p-3 overflow-scroll">
       <form onSubmit={handleSubmit(onFormSubmit)}>
         {fields?.length > 0 &&
           fields.map((f: IObject, idx) => {
             return (
               <div
-                className={`d-flex align-items-top w-100 mt-1 border rounded px-3 my-1 bg-gray-100 `}
+                className={`d-flex align-items-top w-100 mt-1 border rounded px-3 my-1`}
                 key={idx}
               >
                 <div className={f?.serialNo === 1 ? "mt-8" : "mt-2"}>
@@ -58,7 +58,7 @@ const Form = ({ updateData }: IForm) => {
                   {f?.list?.length > 0 &&
                     f?.list?.map((d, lIndex) => {
                       return (
-                        <div className="ps-2 pt-2 row" key={lIndex}>
+                        <div className="ms-2 pt-2 row" key={lIndex}>
                           <div className="col-xl-4">
                             {idx === 0 && lIndex === 0 && (
                               <Label className="mb-0 fw-bold">বিষয়</Label>
@@ -79,25 +79,30 @@ const Form = ({ updateData }: IForm) => {
                               }}
                             />
                           </div>
-                          <div className="col-xl-3">
-                            {idx === 0 && lIndex === 0 && (
-                              <Label className="mb-0 fw-bold">সংযুক্তি</Label>
-                            )}
-                            <SingleFile
-                              isRequired="ফাইল আপলোড করুন"
-                              control={control}
-                              name={`orgmChangeList.${idx}.list.${lIndex}.attachmentFile`}
-                              isError={
-                                !!errors?.orgmChangeList?.[idx]?.list?.[lIndex]
-                                  ?.attachmentFile
-                              }
-                              errorMessage={
-                                errors?.orgmChangeList?.[idx]?.list?.[lIndex]
-                                  ?.attachmentFile?.message as string
-                              }
-                              // maxSize={3}
-                            />
-                          </div>
+                          {watch(
+                            `orgmChangeList.${idx}.list.${lIndex}.isAttachment`
+                          ) && (
+                            <div className="col-xl-3">
+                              {idx === 0 && lIndex === 0 && (
+                                <Label className="mb-0 fw-bold">সংযুক্তি</Label>
+                              )}
+                              <SingleFile
+                                isRequired="ফাইল আপলোড করুন"
+                                control={control}
+                                name={`orgmChangeList.${idx}.list.${lIndex}.attachmentFile`}
+                                isError={
+                                  !!errors?.orgmChangeList?.[idx]?.list?.[
+                                    lIndex
+                                  ]?.attachmentFile
+                                }
+                                errorMessage={
+                                  errors?.orgmChangeList?.[idx]?.list?.[lIndex]
+                                    ?.attachmentFile?.message as string
+                                }
+                                // maxSize={3}
+                              />
+                            </div>
+                          )}
                           <div className="col-xl-4">
                             {idx === 0 && lIndex === 0 && (
                               <Label className="mb-0 fw-bold">মন্তব্য</Label>
@@ -108,12 +113,7 @@ const Form = ({ updateData }: IForm) => {
                               noMargin
                               registerProperty={{
                                 ...register(
-                                  `orgmChangeList.${idx}.list.${lIndex}.note`,
-                                  {
-                                    required:
-                                      "sdf " +
-                                      `orgmChangeList.${idx}.list.${lIndex}.note`,
-                                  }
+                                  `orgmChangeList.${idx}.list.${lIndex}.note`
                                 ),
                               }}
                               isError={
