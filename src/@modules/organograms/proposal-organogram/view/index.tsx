@@ -98,7 +98,7 @@ const ProposedOrganogramView = () => {
   return (
     <div>
       <div className="d-flex bg-white rounded mb-3 fs-5 gap-5">
-        <div className="dropdown">
+        {/* <div className="dropdown">
           <button
             className="btn dropdown-toggle fs-5 fw-bold text-hover-info text-gray-700 overflow-auto"
             type="button"
@@ -124,8 +124,9 @@ const ProposedOrganogramView = () => {
               );
             })}
           </ul>
-        </div>
+        </div> */}
         <Tab
+          className="ms-4"
           tabs={sortBy(tabs)}
           activeIndex={activeTab}
           onChange={handleTabIndex}
