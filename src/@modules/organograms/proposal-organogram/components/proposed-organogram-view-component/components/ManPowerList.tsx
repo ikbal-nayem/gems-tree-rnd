@@ -168,9 +168,9 @@ const ManPowerList: FC<TableProps> = ({
                               className={`remove-padding ${
                                 isTabContent
                                   ? itr?.isModified
-                                    ? "text-underline-color-purple"
+                                    ? "text-underline-color-yellow"
                                     : itr?.isAddition
-                                    ? "text-decoration-underline"
+                                    ? "text-underline-color-black"
                                     : itr?.isDeleted
                                     ? "text-line-through-color-red"
                                     : ""
@@ -213,7 +213,19 @@ const ManPowerList: FC<TableProps> = ({
                                     COMMON_LABEL.NOT_ASSIGN}
                               </div>
                             </TableCell>
-                            <TableCell className="remove-padding text-center">
+                            <TableCell
+                              className={`remove-padding text-center ${
+                                isTabContent
+                                  ? itr?.isModified
+                                    ? "text-underline-color-yellow"
+                                    : itr?.isAddition
+                                    ? "text-underline-color-black"
+                                    : itr?.isDeleted
+                                    ? "text-line-through-color-red"
+                                    : ""
+                                  : ""
+                              }`}
+                            >
                               {itr?.gradeNameEN
                                 ? langEn
                                   ? itr?.gradeNameEN
@@ -221,7 +233,19 @@ const ManPowerList: FC<TableProps> = ({
                                 : COMMON_LABEL.NOT_ASSIGN}
                             </TableCell>
 
-                            <TableCell className="remove-padding text-center">
+                            <TableCell
+                              className={`remove-padding text-center ${
+                                isTabContent
+                                  ? itr?.isModified
+                                    ? "text-underline-color-yellow"
+                                    : itr?.isAddition
+                                    ? "text-underline-color-black"
+                                    : itr?.isDeleted
+                                    ? "text-line-through-color-red"
+                                    : ""
+                                  : ""
+                              }`}
+                            >
                               {itr?.serviceType
                                 ? langEn
                                   ? itr.serviceType === "SERVICE_TYPE_CADRE"
@@ -233,7 +257,19 @@ const ManPowerList: FC<TableProps> = ({
                                 : COMMON_LABEL.NOT_ASSIGN}
                             </TableCell>
 
-                            <TableCell className="remove-padding text-center">
+                            <TableCell
+                              className={`remove-padding text-center ${
+                                isTabContent
+                                  ? itr?.isModified
+                                    ? "text-underline-color-yellow"
+                                    : itr?.isAddition
+                                    ? "text-underline-color-black"
+                                    : itr?.isDeleted
+                                    ? "text-line-through-color-red"
+                                    : ""
+                                  : ""
+                              }`}
+                            >
                               {getPostTypeTitle(itr?.postType, langEn)}
                             </TableCell>
                           </TableRow>

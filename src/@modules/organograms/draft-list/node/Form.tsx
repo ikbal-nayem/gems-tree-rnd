@@ -1,3 +1,4 @@
+import { Input } from "@components/Input";
 import { COMMON_LABELS, ERR_MSG, LABELS } from "@constants/common.constant";
 import { PageTitle } from "@context/PageData";
 import {
@@ -5,7 +6,6 @@ import {
   Button,
   Checkbox,
   IconButton,
-  Input,
   Label,
   Select,
   Textarea,

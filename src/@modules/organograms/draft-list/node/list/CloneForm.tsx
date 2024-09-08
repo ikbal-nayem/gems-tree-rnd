@@ -2,9 +2,6 @@ import { ROUTE_L2 } from "@constants/internal-route.constant";
 import {
   Autocomplete,
   Button,
-  Checkbox,
-  DateInput,
-  Input,
   Modal,
   ModalBody,
   ModalFooter,
@@ -20,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { OMSService } from "../../../../../@services/api/OMS.service";
-import ManPowerList from "@modules/organogram-templates/components/template-view-component/components/ManPowerList";
+import { Input } from "@components/Input";
 
 interface IForm {
   cloneNodeId: string;

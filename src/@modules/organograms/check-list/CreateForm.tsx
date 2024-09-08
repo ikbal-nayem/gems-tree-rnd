@@ -6,9 +6,8 @@ import {
   DrawerFooter,
   IconButton,
   Input,
-  Label,
 } from "@gems/components";
-import { IObject, numBnToEn, numEnToBn } from "@gems/utils";
+import { IObject, numBnToEn } from "@gems/utils";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -69,7 +68,7 @@ const CreateForm = ({
                 isRequired="পরিবর্তনের ধরণ বাছাই করুন"
                 options={changeTypeList || []}
                 name="organogramChangeTypeDto"
-                getOptionLabel={(op) => op.titleBN}
+                getOptionLabel={(op) => op.titleBn}
                 getOptionValue={(op) => op.id}
                 onChange={(op) => setValue("organogramChangeTypeId", op?.id)}
                 control={control}
@@ -84,10 +83,52 @@ const CreateForm = ({
                 className={`d-flex align-items-top gap-3 w-100 border rounded mx-2 my-1 py-1 bg-gray-100`}
                 key={f?.id}
               >
-                <div className={idx < 1 ? "mt-9" : "mt-2"}>
+                {/* <div className={idx < 1 ? "mt-9" : "mt-2"}>
                   <Label className="mb-0"> {numEnToBn(idx + 1) + "।"} </Label>
-                </div>
+                </div> */}
                 <div className="row w-100">
+                  <div className="col-md-6 col-xl-2 px-1 pb-1 pb-md-0">
+                    <Input
+                      label={idx < 1 ? "প্রদর্শন ক্রম" : ""}
+                      placeholder="প্রদর্শন ক্রম লিখুন"
+                      noMargin
+                      isRequired
+                      type="number"
+                      defaultValue={idx ? idx + 1 : 1}
+                      min={1}
+                      registerProperty={{
+                        ...register(`checklist.${idx}.serialNo`, {
+                          required: "প্রদর্শন ক্রম লিখুন",
+                          setValueAs: (v) => numBnToEn(v),
+                        }),
+                      }}
+                      isError={!!errors?.checklist?.[idx]?.serialNo}
+                      errorMessage={
+                        errors?.checklist?.[idx]?.serialNo?.message as string
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6 col-xl-2 px-1 pb-1 pb-md-0">
+                    <Input
+                      label={idx < 1 ? "ক্রমিক নম্বর" : ""}
+                      type="number"
+                      placeholder="ক্রমিক নম্বর লিখুন"
+                      noMargin
+                      min={1}
+                      registerProperty={{
+                        ...register(`checklist.${idx}.chromicNo`, {
+                          required: "ক্রমিক নম্বর লিখুন",
+                          setValueAs: (v) => numBnToEn(v),
+                        }),
+                      }}
+                      isRequired
+                      isError={!!errors?.checklist?.[idx]?.chromicNo}
+                      errorMessage={
+                        errors?.checklist?.[idx]?.chromicNo?.message as string
+                      }
+                    />
+                  </div>
+
                   <div className="col-md-6 col-xl-4 px-1 pb-1 pb-xl-0">
                     <Input
                       label={idx < 1 ? "নাম (বাংলা)" : ""}
@@ -111,62 +152,11 @@ const CreateForm = ({
                       placeholder="নাম (ইংরেজি) লিখুন"
                       noMargin
                       registerProperty={{
-                        ...register(`checklist.${idx}.titleEn`, {
-                          // required: "নাম (ইংরেজি) লিখুন",
-                        }),
+                        ...register(`checklist.${idx}.titleEn`, {}),
                       }}
-                      // isRequired
                       isError={!!errors?.checklist?.[idx]?.titleEn}
                       errorMessage={
                         errors?.checklist?.[idx]?.titleEn?.message as string
-                      }
-                    />
-                  </div>
-                  <div className="col-md-6 col-xl-2 px-1 pb-1 pb-md-0">
-                    <Input
-                      label={idx < 1 ? "ক্রমিক নম্বর" : ""}
-                      type="number"
-                      placeholder="ক্রমিক নম্বর লিখুন"
-                      noMargin
-                      min={1}
-                      registerProperty={{
-                        ...register(`checklist.${idx}.slNo`, {
-                          required: "ক্রমিক নম্বর লিখুন",
-                          setValueAs: (v) => numBnToEn(v),
-                          // maxLength: {
-                          //   value: 1,
-                          //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                          // },
-                        }),
-                      }}
-                      isRequired
-                      isError={!!errors?.checklist?.[idx]?.slNo}
-                      errorMessage={
-                        errors?.checklist?.[idx]?.slNo?.message as string
-                      }
-                    />
-                  </div>
-                  <div className="col-md-6 col-xl-2 px-1 pb-1 pb-md-0">
-                    <Input
-                      label={idx < 1 ? "উপ ক্রমিক নম্বর" : ""}
-                      type="number"
-                      placeholder="উপ ক্রমিক নম্বর লিখুন"
-                      noMargin
-                      min={1}
-                      registerProperty={{
-                        ...register(`checklist.${idx}.subSl`, {
-                          required: "উপ ক্রমিক নম্বর লিখুন",
-                          setValueAs: (v) => numBnToEn(v),
-                          // maxLength: {
-                          //   value: 1,
-                          //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                          // },
-                        }),
-                      }}
-                      isRequired
-                      isError={!!errors?.checklist?.[idx]?.subSl}
-                      errorMessage={
-                        errors?.checklist?.[idx]?.subSl?.message as string
                       }
                     />
                   </div>

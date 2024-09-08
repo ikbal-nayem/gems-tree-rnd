@@ -15,6 +15,7 @@ const columns: ITableHeadColumn[] = [
   { title: "নাম (বাংলা)", minWidth: 100 },
   { title: "নাম (ইংরেজি)", minWidth: 100 },
   { title: "কোড", minWidth: 75, align: "center" },
+  { title: "চেকলিস্ট ফরম", minWidth: 75 },
   { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
   { title: COMMON_LABELS.ACTION, align: "end" },
 ];
@@ -40,9 +41,10 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.titleBN || "-"} />
-              <TableCell text={data?.titleEN || "-"} />
+              <TableCell text={data?.titleBn || "-"} />
+              <TableCell text={data?.titleEn || "-"} />
               <TableCell text={data?.code || "-"} textAlign="center" />
+              <TableCell isActive={data?.haveChecklistForm} />
               <TableCell isActive={data?.isActive} />
               <TableCell textAlign="end">
                 <Dropdown

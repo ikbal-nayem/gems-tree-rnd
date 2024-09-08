@@ -25,8 +25,15 @@ const MpBlock = ({ nodeData, isEnamCommittee, color }) => {
                   {mp?.postTitleBn || mp?.postTitleEn || mp?.manpower ? (
                     <span className="mb-0">
                       {numEnToBn(mp?.manpower + " " || 0)} x{" "}
-                      {(isEnamCommittee ? mp?.postTitleEn : mp?.postTitleBn) ||
-                        COMMON_LABELS.NOT_ASSIGN}
+                      {(isEnamCommittee
+                        ? mp?.postTitleEn +
+                          `${
+                            mp?.altPostTitleEn ? "/" + mp?.altPostTitleEn : ""
+                          }`
+                        : mp?.postTitleBn +
+                          `${
+                            mp?.altPostTitleBn ? "/" + mp?.altPostTitleBn : ""
+                          }`) || COMMON_LABELS.NOT_ASSIGN}
                     </span>
                   ) : null}
                 </span>

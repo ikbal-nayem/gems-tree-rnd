@@ -68,10 +68,11 @@ const UpdateForm = ({
               isRequired="পরিবর্তনের ধরণ বাছাই করুন"
               options={changeTypeList || []}
               name="organogramChangeTypeDto"
-              getOptionLabel={(op) => op.titleBN}
+              getOptionLabel={(op) => op.titleBn}
               getOptionValue={(op) => op.id}
               onChange={(op) => setValue("organogramChangeTypeId", op?.id)}
               control={control}
+              isDisabled
               isError={!!errors?.organogramChangeTypeDTO}
               errorMessage={errors?.organogramChangeTypeDTO?.message as string}
             />
@@ -106,55 +107,32 @@ const UpdateForm = ({
                 placeholder="ক্রমিক নম্বর লিখুন"
                 min={1}
                 registerProperty={{
-                  ...register("slNo", {
+                  ...register("chromicNo", {
                     required: "ক্রমিক নম্বর লিখুন",
                     setValueAs: (v) => numBnToEn(v),
-                    // maxLength: {
-                    //   value: 1,
-                    //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                    // },
                   }),
                 }}
+                disabled
                 isRequired
-                isError={!!errors?.slNo}
-                errorMessage={errors?.slNo?.message as string}
+                isError={!!errors?.chromicNo}
+                errorMessage={errors?.chromicNo?.message as string}
               />
               <Input
-                label={"উপ ক্রমিক নম্বর"}
+                label={"প্রদর্শন ক্রম"}
                 type="number"
-                placeholder="উপ ক্রমিক নম্বর লিখুন"
+                placeholder="প্রদর্শন ক্রম লিখুন"
                 min={1}
+                isRequired
                 registerProperty={{
-                  ...register("subSl", {
-                    required: "উপ ক্রমিক নম্বর লিখুন",
+                  ...register("serialNo", {
+                    required: "প্রদর্শন ক্রম লিখুন",
                     setValueAs: (v) => numBnToEn(v),
-                    // maxLength: {
-                    //   value: 1,
-                    //   message: COMMON_INSTRUCTION.MAX_CHAR(1),
-                    // },
                   }),
                 }}
-                isRequired
-                isError={!!errors?.subSl}
-                errorMessage={errors?.subSl?.message as string}
+                disabled
+                isError={!!errors?.serialNo}
+                errorMessage={errors?.serialNo?.message as string}
               />
-              {/* <div className="col-12">
-              <Input
-                label="কোড"
-                placeholder="কোড লিখুন"
-                registerProperty={{
-                  ...register("code"),
-                }}
-              />
-            </div>
-            <div className="col-12">
-              <Checkbox
-                label="সক্রিয়"
-                registerProperty={{
-                  ...register("isActive"),
-                }}
-              />
-            </div> */}
             </div>
           </div>
         </DrawerBody>

@@ -7,7 +7,7 @@ import {
   TableCell,
   TableRow,
 } from "@gems/components";
-import { COMMON_LABELS, generateRowNumBn } from "@gems/utils";
+import { COMMON_LABELS, generateRowNumBn, numEnToBn } from "@gems/utils";
 import { FC, ReactNode } from "react";
 
 const columns: ITableHeadColumn[] = [
@@ -15,6 +15,8 @@ const columns: ITableHeadColumn[] = [
   { title: "পরিবর্তনের ধরণ", minWidth: 100 },
   { title: "নাম (বাংলা)", minWidth: 100 },
   { title: "নাম (ইংরেজি)", minWidth: 100 },
+  { title: "ক্রমিক নম্বর", minWidth: 100 },
+  { title: "প্রদর্শন ক্রম", minWidth: 100 },
   // { title: "কোড", minWidth: 75, align: "center" },
   // { title: COMMON_LABELS.ACTIVE, minWidth: 75 },
   { title: COMMON_LABELS.ACTION, align: "end" },
@@ -41,10 +43,16 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableRow key={i}>
               <TableCell text={generateRowNumBn(i)} />
-              <TableCell text={data?.organogramChangeTypeDto?.titleBN || "-"} />
+              <TableCell text={data?.organogramChangeTypeDto?.titleBn || "-"} />
               <TableCell text={data?.titleBn || "-"} />
               <TableCell text={data?.titleEn || "-"} />
               {/* <TableCell isActive={data?.isActive} /> */}
+              <TableCell
+                text={data?.chromicNo ? numEnToBn(data?.chromicNo) : "-"}
+              />
+              <TableCell
+                text={data?.serialNo ? numEnToBn(data?.serialNo) : "-"}
+              />
               <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
