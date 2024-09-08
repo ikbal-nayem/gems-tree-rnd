@@ -1,4 +1,3 @@
-import { META_TYPE } from "@constants/common.constant";
 import {
   Autocomplete,
   Button,
@@ -7,10 +6,23 @@ import {
   ModalFooter,
 } from "@gems/components";
 import { COMMON_LABELS, IObject } from "@gems/utils";
-import { CoreService } from "@services/api/Core.service";
+import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
+const payload = {
+  meta: {
+    page: 0,
+    limit: 50,
+    sort: [
+      {
+        field: "createdOn",
+        order: "desc",
+      },
+    ],
+  },
+  body: {},
+};
 interface IForm {
   isOpen: boolean;
   onSubmit: (d) => void;
@@ -38,12 +50,13 @@ const NewProposalModal = ({
   } = formProps;
 
   useEffect(() => {
-    CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
-      (resp) => {
-        setOrganogramChangeActionList(resp?.body);
-      }
-    );
-  }, []);
+    if (isOpen)
+      ProposalService.FETCH.organogramChangeTypeList(payload)
+        .then((res) => {
+          setOrganogramChangeActionList(res?.body || []);
+        })
+        .catch((err) => console.log(err?.message));
+  }, [isOpen]);
 
   useEffect(() => {
     reset({});
@@ -68,10 +81,10 @@ const NewProposalModal = ({
             getOptionValue={(op) => op?.titleEn}
             isMulti
             closeMenuOnSelect={false}
-            name="subjects"
+            name="orgmChangeActionList"
             control={control}
-            isError={!!errors?.subjects}
-            errorMessage={errors?.subjects?.message as string}
+            isError={!!errors?.orgmChangeActionList}
+            errorMessage={errors?.orgmChangeActionList?.message as string}
           />
         </ModalBody>
 

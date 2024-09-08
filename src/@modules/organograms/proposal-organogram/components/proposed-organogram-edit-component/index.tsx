@@ -3,6 +3,7 @@ import {
   COMMON_LABELS,
   IObject,
   generateUUID,
+  isListNull,
   isObjectNull,
   notNullOrUndefined,
 } from "@gems/utils";
@@ -10,8 +11,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OrganizationTemplateTree from "./tree";
 // import { orgData } from "./Tree/data2";
-import { META_TYPE } from "@constants/common.constant";
-import { CoreService } from "@services/api/Core.service";
+import { ProposalService } from "@services/api/Proposal.service";
 import { focusById } from "utility/utils";
 import AbbreviationForm from "./components/AbbreviationForm";
 import ActivitiesForm from "./components/ActivitesForm";
@@ -23,6 +23,19 @@ import NotesForm from "./components/NotesForm";
 import SummaryOfManpowerForm from "./components/SummaryOfManpowerForm";
 import WorkSpaceComponent from "./components/WorkSpaceComponent";
 
+const payload = {
+  meta: {
+    page: 0,
+    limit: 50,
+    sort: [
+      {
+        field: "createdOn",
+        order: "desc",
+      },
+    ],
+  },
+  body: {},
+};
 interface IProposalOrganogramEditComponent {
   updateData?: IObject;
   onSubmit: (data) => void;
@@ -74,11 +87,11 @@ const ProposalOrganogramEditComponent = ({
   } = formProps;
 
   useEffect(() => {
-    CoreService.getByMetaTypeList(META_TYPE.ORGANOGRAM_CHANGE_ACTION).then(
-      (resp) => {
-        setOrganogramChangeActionList(resp?.body);
-      }
-    );
+    ProposalService.FETCH.organogramChangeTypeList(payload)
+      .then((res) => {
+        setOrganogramChangeActionList(res?.body || []);
+      })
+      .catch((err) => console.log(err?.message));
   }, []);
 
   useEffect(() => {
@@ -158,14 +171,14 @@ const ProposalOrganogramEditComponent = ({
     //     organizationNameBn: d?.nameBn || d?.organizationNameBn,
     //   })
     // );
-    if (data.organogramChangeActionDtoList?.length > 0) {
+    if (!isListNull(data.organogramChangeActionDtoList)) {
       data.organogramChangeActionDtoList =
-        data?.organogramChangeActionDtoList?.length > 0
-          ? data?.organogramChangeActionDtoList?.map((d) => ({
-              titleEn: d?.titleEn,
-              titleBn: d?.titleBn,
-            }))
-          : null;
+        data?.organogramChangeActionDtoList?.map((d) => ({
+          titleEn: d?.titleEn,
+          titleBn: d?.titleBn,
+          organogramChangeTypeId: d?.id || "",
+          organizationOrganogramId: updateData?.id || "",
+        }));
     }
 
     const reqPayload = {
@@ -320,9 +333,7 @@ const ProposalOrganogramEditComponent = ({
             />
           </div>
           <div className="col-12 mt-3">
-            <SummaryOfManpowerForm
-              formProps={formProps}
-            />
+            <SummaryOfManpowerForm formProps={formProps} />
           </div>
           {/* <div className="col-md-6 mt-3">
             <Organizations

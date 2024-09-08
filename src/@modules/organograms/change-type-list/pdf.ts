@@ -3,8 +3,8 @@ import { TDocumentDefinitions, numEnToBn } from "@gems/utils";
 
 const columns = [
   { nameBn: "ক্রমিক নং", key: null },
-  { nameBn: "নাম (বাংলা)", key: "titleBN" },
-  { nameBn: "নাম (ইংরেজি)", key: "titleEN" },
+  { nameBn: "নাম (বাংলা)", key: "titleBn" },
+  { nameBn: "নাম (ইংরেজি)", key: "titleEn" },
   { nameBn: "কোড", key: "code" },
   { nameBn: "সক্রিয়", key: "isActive" },
 ];
