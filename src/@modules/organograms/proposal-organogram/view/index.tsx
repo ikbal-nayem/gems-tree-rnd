@@ -8,6 +8,7 @@ import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposed-organogram-view-component";
 import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
+import ChecklistView from "./tabComponent/checklist-view";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -182,6 +183,8 @@ const ProposedOrganogramView = () => {
                   organogramId={organogramId}
                   content="attached_org"
                 />
+              ) : t?.key === TAB_KEY.CHECK_LIST ? (
+                <ChecklistView organogramId={organogramId} />
               ) : null}
             </TabBlock>
           ))}
