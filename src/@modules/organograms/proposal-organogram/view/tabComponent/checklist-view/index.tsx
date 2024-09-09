@@ -1,6 +1,7 @@
-import { Button, NoData } from "@gems/components";
-import { IObject } from "@gems/utils";
-import { useState } from "react";
+import { Button, NoData, toast } from "@gems/components";
+import { IObject, isObjectNull } from "@gems/utils";
+import { ProposalService } from "@services/api/Proposal.service";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Form from "./Form";
 
@@ -8,14 +9,21 @@ interface ICheckListView {
   organogramId: string;
 }
 
-const checkListView = (organogramId: ICheckListView) => {
-  const { state } = useLocation();
-  const changeActionList = state?.orgmChangeActionList;
-  const [selectedChangeType, setSelectedChangeType] = useState<IObject>(
-    changeActionList?.[0] || {}
-  );
+const checkListView = ({ organogramId }: ICheckListView) => {
+  const [changeTypeList, setChangeTypeList] = useState<IObject[]>([]);
+  const [selectedChangeType, setSelectedChangeType] = useState<IObject>({});
 
-  console.log(selectedChangeType);
+  useEffect(() => {
+    getChangeTypeList();
+  }, [organogramId]);
+
+  const getChangeTypeList = () => {
+    ProposalService.FETCH.changeTypesByOrganogramId(organogramId)
+      .then((resp) => {
+        setChangeTypeList(resp?.body || []);
+      })
+      .catch((e) => toast.error(e?.message));
+  };
 
   const dataSet = [
     {
@@ -33,10 +41,10 @@ const checkListView = (organogramId: ICheckListView) => {
 
   return (
     <div>
-      {changeActionList?.length > 0 ? (
+      {changeTypeList?.length > 0 ? (
         <>
           <div className="d-flex bg-white rounded mb-3 overflow-auto">
-            {changeActionList?.map((item, idx) => {
+            {changeTypeList?.map((item, idx) => {
               return (
                 <Button
                   onClick={() => setSelectedChangeType(item)}
@@ -54,9 +62,11 @@ const checkListView = (organogramId: ICheckListView) => {
               );
             })}
           </div>
-          <div>
-            <Form updateData={dataSet} />
-          </div>
+          {!isObjectNull(selectedChangeType) && (
+            <div>
+              <Form updateData={dataSet || []} />
+            </div>
+          )}
         </>
       ) : (
         <NoData details="কোনো চেকলিস্ট তথ্য নেই" />

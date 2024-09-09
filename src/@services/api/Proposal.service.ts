@@ -117,6 +117,13 @@ export const ProposalService = {
 
     organogramChecklist: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-check-list/get-list", payload),
+
+    changeTypesByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-change-action-type/get-all-change-type-by-orgmid/" +
+          id
+      ),
   },
 
   // ======================= SAVE API =================================
