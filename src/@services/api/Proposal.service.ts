@@ -145,6 +145,9 @@ export const ProposalService = {
 
     organogramChecklist: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-check-list/save", payload),
+
+    proposalChecklist: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "proposal-check-list/save", payload),
   },
 
   // ======================= UPDATE API =================================

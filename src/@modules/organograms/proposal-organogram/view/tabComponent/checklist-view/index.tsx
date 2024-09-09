@@ -12,6 +12,7 @@ const checkListView = ({ organogramId }: ICheckListView) => {
   const [changeTypeList, setChangeTypeList] = useState<IObject[]>([]);
   const [selectedChangeType, setSelectedChangeType] = useState<IObject>({});
   const [checkListData, setCheckListData] = useState<IObject[]>([]);
+  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getChangeTypeList();
@@ -37,22 +38,53 @@ const checkListView = ({ organogramId }: ICheckListView) => {
   };
 
   const onSubmit = (data) => {
-    console.log("yam", data);
-  };
+    setIsSubmitLoading(true);
+    let fileList =
+      (data?.orgmChangeList?.length > 0 &&
+        data?.orgmChangeList.flatMap(
+          (item) =>
+            item.orgChecklistDtoList?.length > 0 &&
+            item.orgChecklistDtoList
+              .filter(
+                (subItem) =>
+                  subItem.attachmentFile !== undefined ||
+                  !isObjectNull(subItem.attachmentFile)
+              )
+              ?.map((d) => {
+                if (d?.fileName) return d?.attachmentFile;
+                return;
+              })
+        )) ||
+      [];
 
-  // const dataSet = [
-  //   {
-  //     serialNo: 1,
-  //     list: [
-  //       {
-  //         titleBn:
-  //           "(খ) বিভিন্ন সময়ে সৃজিত/বিলুপ্তকৃত এবং বর্তমানে প্রস্তাবিত পদের তালিকা নিম্নের ছক অনুযায়ী মন্ত্রণালয়/বিভাগের সিনিয়র সচিব/সচিব মহোদয়ের স্বাক্ষরসহ প্রেরণ করা হয়েছে কিনা?",
-  //       },
-  //       { titleBn: "test 2" },
-  //     ],
-  //   },
-  //   { serialNo: 2, list: [{ titleBn: "test 11" }] },
-  // ];
+    console.log("sdsdsadad", fileList);
+
+    data?.orgmChangeList?.length > 0 &&
+      data?.orgmChangeList.forEach(
+        (item) =>
+          item.orgChecklistDtoList?.length > 0 &&
+          item.orgChecklistDtoList?.forEach((d) => {
+            if (d?.fileName) {
+              delete d.attachmentFile;
+            }
+          })
+      );
+
+    let fd = new FormData();
+    fd.append("orgmId", organogramId || "");
+    fd.append("body", JSON.stringify(data?.orgmChangeList));
+    fileList?.length > 0 &&
+      fileList.forEach((element) => {
+        fd.append("files", element);
+      });
+
+    ProposalService.SAVE.proposalChecklist(fd)
+      .then((res) => {
+        toast.success(res?.message);
+      })
+      .catch((error) => toast.error(error?.message))
+      .finally(() => setIsSubmitLoading(false));
+  };
 
   return (
     <div>
@@ -79,7 +111,11 @@ const checkListView = ({ organogramId }: ICheckListView) => {
           </div>
           {!isObjectNull(selectedChangeType) && !isListNull(checkListData) && (
             <div>
-              <Form data={checkListData || []} onSubmit={onSubmit} />
+              <Form
+                data={checkListData || []}
+                onSubmit={onSubmit}
+                isSubmitLoading={isSubmitLoading}
+              />
             </div>
           )}
         </>
