@@ -124,6 +124,11 @@ export const ProposalService = {
           "organogram-change-action-type/get-all-change-type-by-orgmid/" +
           id
       ),
+
+    checklistByChangeTypeId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + "org-check-list/get-grouping-by-change-type-id/" + id
+      ),
   },
 
   // ======================= SAVE API =================================

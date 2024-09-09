@@ -1,8 +1,7 @@
 import { Button, NoData, toast } from "@gems/components";
-import { IObject, isObjectNull } from "@gems/utils";
+import { IObject, isListNull, isObjectNull } from "@gems/utils";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import Form from "./Form";
 
 interface ICheckListView {
@@ -12,6 +11,7 @@ interface ICheckListView {
 const checkListView = ({ organogramId }: ICheckListView) => {
   const [changeTypeList, setChangeTypeList] = useState<IObject[]>([]);
   const [selectedChangeType, setSelectedChangeType] = useState<IObject>({});
+  const [checkListData, setCheckListData] = useState<IObject[]>([]);
 
   useEffect(() => {
     getChangeTypeList();
@@ -25,19 +25,34 @@ const checkListView = ({ organogramId }: ICheckListView) => {
       .catch((e) => toast.error(e?.message));
   };
 
-  const dataSet = [
-    {
-      serialNo: 1,
-      list: [
-        {
-          titleBn:
-            "(খ) বিভিন্ন সময়ে সৃজিত/বিলুপ্তকৃত এবং বর্তমানে প্রস্তাবিত পদের তালিকা নিম্নের ছক অনুযায়ী মন্ত্রণালয়/বিভাগের সিনিয়র সচিব/সচিব মহোদয়ের স্বাক্ষরসহ প্রেরণ করা হয়েছে কিনা?",
-        },
-        { titleBn: "test 2" },
-      ],
-    },
-    { serialNo: 2, list: [{ titleBn: "test 11" }] },
-  ];
+  const onChangeTypeChange = (item: IObject) => {
+    setSelectedChangeType(item);
+    if (item?.id) {
+      ProposalService.FETCH.checklistByChangeTypeId(item?.id)
+        .then((resp) => {
+          setCheckListData(resp?.body || []);
+        })
+        .catch((e) => toast.error(e?.message));
+    }
+  };
+
+  const onSubmit = (data) => {
+    console.log("yam", data);
+  };
+
+  // const dataSet = [
+  //   {
+  //     serialNo: 1,
+  //     list: [
+  //       {
+  //         titleBn:
+  //           "(খ) বিভিন্ন সময়ে সৃজিত/বিলুপ্তকৃত এবং বর্তমানে প্রস্তাবিত পদের তালিকা নিম্নের ছক অনুযায়ী মন্ত্রণালয়/বিভাগের সিনিয়র সচিব/সচিব মহোদয়ের স্বাক্ষরসহ প্রেরণ করা হয়েছে কিনা?",
+  //       },
+  //       { titleBn: "test 2" },
+  //     ],
+  //   },
+  //   { serialNo: 2, list: [{ titleBn: "test 11" }] },
+  // ];
 
   return (
     <div>
@@ -47,7 +62,7 @@ const checkListView = ({ organogramId }: ICheckListView) => {
             {changeTypeList?.map((item, idx) => {
               return (
                 <Button
-                  onClick={() => setSelectedChangeType(item)}
+                  onClick={() => onChangeTypeChange(item)}
                   key={idx}
                   variant="fill"
                 >
@@ -62,9 +77,9 @@ const checkListView = ({ organogramId }: ICheckListView) => {
               );
             })}
           </div>
-          {!isObjectNull(selectedChangeType) && (
+          {!isObjectNull(selectedChangeType) && !isListNull(checkListData) && (
             <div>
-              <Form updateData={dataSet || []} />
+              <Form data={checkListData || []} onSubmit={onSubmit} />
             </div>
           )}
         </>
