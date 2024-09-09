@@ -13,8 +13,9 @@ import { useFieldArray, useForm } from "react-hook-form";
 interface IForm {
   data: IObject[];
   onSubmit: (data) => void;
+  isSubmitLoading?: boolean;
 }
-const Form = ({ data, onSubmit }: IForm) => {
+const Form = ({ data, onSubmit, isSubmitLoading }: IForm) => {
   const {
     register,
     control,
@@ -36,13 +37,20 @@ const Form = ({ data, onSubmit }: IForm) => {
     });
   }, [data]);
 
-  const onFormSubmit = (data) => {
-    onSubmit(data);
+  // const onFormSubmit = (data) => {
+  //   onSubmit(data);
+  // };
+
+  const onFileChange = (e, idx, index) => {
+    setValue(
+      `orgmChangeList.${idx}.orgChecklistDtoList.${index}.fileName`,
+      e?.name || null
+    );
   };
 
   return (
     <div className="card border p-3">
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {fields?.length > 0 &&
           fields.map((f: IObject, idx) => {
             return (
@@ -80,23 +88,24 @@ const Form = ({ data, onSubmit }: IForm) => {
                                 noMargin
                                 registerProperty={{
                                   ...register(
-                                    `orgmChangeList.${idx}.orgChecklistDtoList.${index}.isAttachment`
+                                    `orgmChangeList.${idx}.orgChecklistDtoList.${index}.isSubject`
                                   ),
                                 }}
                               />
                             </div>
                           </div>
                           {watch(
-                            `orgmChangeList.${idx}.orgChecklistDtoList.${index}.isAttachment`
+                            `orgmChangeList.${idx}.orgChecklistDtoList.${index}.isSubject`
                           ) && (
                             <div className="col-xl-3">
                               {idx === 0 && index === 0 && (
-                                <Label className="mb-0 fw-bold">সংযুক্তি</Label>
+                                <Label className="mb-0 fw-bold" isRequired>সংযুক্তি</Label>
                               )}
                               <SingleFile
                                 isRequired="ফাইল আপলোড করুন"
                                 control={control}
                                 name={`orgmChangeList.${idx}.orgChecklistDtoList.${index}.attachmentFile`}
+                                onChange={(e) => onFileChange(e, idx, index)}
                                 isError={
                                   !!errors?.orgmChangeList?.[idx]
                                     ?.orgChecklistDtoList?.[index]
@@ -114,7 +123,7 @@ const Form = ({ data, onSubmit }: IForm) => {
                           <div
                             className={
                               watch(
-                                `orgmChangeList.${idx}.orgChecklistDtoList.${index}.isAttachment`
+                                `orgmChangeList.${idx}.orgChecklistDtoList.${index}.isSubject`
                               )
                                 ? "col-xl-4"
                                 : "col-xl-7"
@@ -129,16 +138,16 @@ const Form = ({ data, onSubmit }: IForm) => {
                               noMargin
                               registerProperty={{
                                 ...register(
-                                  `orgmChangeList.${idx}.orgChecklistDtoList.${index}.note`
+                                  `orgmChangeList.${idx}.orgChecklistDtoList.${index}.comment`
                                 ),
                               }}
                               isError={
                                 !!errors?.orgmChangeList?.[idx]
-                                  ?.orgChecklistDtoList?.[index]?.note
+                                  ?.orgChecklistDtoList?.[index]?.comment
                               }
                               errorMessage={
                                 errors?.orgmChangeList?.[idx]
-                                  ?.orgChecklistDtoList?.[index]?.note
+                                  ?.orgChecklistDtoList?.[index]?.comment
                                   ?.message as string
                               }
                             />
@@ -151,7 +160,7 @@ const Form = ({ data, onSubmit }: IForm) => {
             );
           })}
         <div className="d-flex gap-3 justify-content-center mt-3">
-          <Button color="primary" type="submit">
+          <Button color="primary" type="submit" isLoading={isSubmitLoading}>
             {Object.keys(data)?.length > 0 ? "হালনাগাদ করুন" : "সংরক্ষণ করুন"}
           </Button>
         </div>
