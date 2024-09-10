@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   ContentPreloader,
   Modal,
   ModalBody,
@@ -33,6 +34,7 @@ const PostApproveModel = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState<boolean>(false);
+  const [isRank, setIsRank] = useState<boolean>(false);
 
   const {
     register,
@@ -60,6 +62,7 @@ const PostApproveModel = ({
       postNameEn: postData?.newPostNameEn,
       postNameBn: postData?.newPostNameBn,
       id: selectedPost?.id || "",
+      isRank: isRank,
     };
     OMSService.SAVE.organogramApprovePost(payload)
       .then((res) => {
@@ -104,6 +107,8 @@ const PostApproveModel = ({
     ...(postData?.existingPostNameEn || []),
   ];
 
+  console.log(isRank);
+
   return (
     <>
       <Modal
@@ -118,6 +123,10 @@ const PostApproveModel = ({
             <ContentPreloader />
           ) : (
             <div className="p-2">
+              <Checkbox
+                label="প্রস্তাবিত পদবিটির পদনাম একই"
+                onChange={(e) => setIsRank(e?.target?.checked)}
+              />
               <div className="row">
                 <div className="col-12 text-center">
                   <Table>
