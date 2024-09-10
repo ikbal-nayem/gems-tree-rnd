@@ -107,8 +107,6 @@ const PostApproveModel = ({
     ...(postData?.existingPostNameEn || []),
   ];
 
-  console.log(isRank);
-
   return (
     <>
       <Modal
