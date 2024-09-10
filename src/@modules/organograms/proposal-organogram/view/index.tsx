@@ -91,13 +91,13 @@ const ProposedOrganogramView = () => {
       .catch((e) => toast.error(e?.message));
   };
 
-  const onProposalChange = (proposalKey: string) => {
-    console.log("proposal-Key: ", proposalKey);
-  };
+  // const onProposalChange = (proposalKey: string) => {
+  //   console.log("proposal-Key: ", proposalKey);
+  // };
 
   return (
     <div>
-      <div className="d-flex bg-white rounded mb-3 fs-5 gap-5">
+      <div className="bg-white rounded mb-3 fs-5">
         {/* <div className="dropdown">
           <button
             className="btn dropdown-toggle fs-5 fw-bold text-hover-info text-gray-700 overflow-auto"
@@ -126,7 +126,7 @@ const ProposedOrganogramView = () => {
           </ul>
         </div> */}
         <Tab
-          className="ms-4"
+          className="ms-2"
           tabs={sortBy(tabs)}
           activeIndex={activeTab}
           onChange={handleTabIndex}
