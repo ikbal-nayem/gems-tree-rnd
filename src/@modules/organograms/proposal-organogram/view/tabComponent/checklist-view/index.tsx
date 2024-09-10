@@ -1,4 +1,4 @@
-import { Button, NoData, toast } from "@gems/components";
+import { Button, ContentPreloader, NoData, toast } from "@gems/components";
 import { IObject, isListNull, isObjectNull } from "@gems/utils";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ const checkListView = ({ organogramId }: ICheckListView) => {
   const [selectedChangeType, setSelectedChangeType] = useState<IObject>({});
   const [checkListData, setCheckListData] = useState<IObject[]>([]);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+  const [isChecklistLoading, setIsChecklistLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getChangeTypeList();
@@ -29,11 +30,13 @@ const checkListView = ({ organogramId }: ICheckListView) => {
   const onChangeTypeChange = (item: IObject) => {
     setSelectedChangeType(item);
     if (item?.id) {
+      setIsChecklistLoading(true);
       ProposalService.FETCH.checklistByChangeTypeId(item?.id)
         .then((resp) => {
           setCheckListData(resp?.body || []);
         })
-        .catch((e) => toast.error(e?.message));
+        .catch((e) => toast.error(e?.message))
+        .finally(() => setIsChecklistLoading(false));
     }
   };
 
@@ -47,17 +50,13 @@ const checkListView = ({ organogramId }: ICheckListView) => {
             item.orgChecklistDtoList
               .filter(
                 (subItem) =>
-                  subItem.attachmentFile !== undefined ||
-                  !isObjectNull(subItem.attachmentFile)
+                  subItem?.attachmentFile !== undefined && subItem?.fileName
               )
               ?.map((d) => {
-                if (d?.fileName) return d?.attachmentFile;
-                return;
+                return d?.attachmentFile;
               })
         )) ||
       [];
-
-    console.log("sdsdsadad", fileList);
 
     data?.orgmChangeList?.length > 0 &&
       data?.orgmChangeList.forEach(
@@ -72,6 +71,7 @@ const checkListView = ({ organogramId }: ICheckListView) => {
 
     let fd = new FormData();
     fd.append("orgmId", organogramId || "");
+    fd.append("changeTypeId", selectedChangeType?.id || "");
     fd.append("body", JSON.stringify(data?.orgmChangeList));
     fileList?.length > 0 &&
       fileList.forEach((element) => {
@@ -109,15 +109,18 @@ const checkListView = ({ organogramId }: ICheckListView) => {
               );
             })}
           </div>
-          {!isObjectNull(selectedChangeType) && !isListNull(checkListData) && (
-            <div>
-              <Form
-                data={checkListData || []}
-                onSubmit={onSubmit}
-                isSubmitLoading={isSubmitLoading}
-              />
-            </div>
-          )}
+          {isChecklistLoading && <ContentPreloader />}
+          {!isObjectNull(selectedChangeType) &&
+            !isChecklistLoading &&
+            !isListNull(checkListData) && (
+              <div>
+                <Form
+                  data={checkListData || []}
+                  onSubmit={onSubmit}
+                  isSubmitLoading={isSubmitLoading}
+                />
+              </div>
+            )}
         </>
       ) : (
         <NoData details="কোনো চেকলিস্ট তথ্য নেই" />

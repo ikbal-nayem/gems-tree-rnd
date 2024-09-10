@@ -37,10 +37,6 @@ const Form = ({ data, onSubmit, isSubmitLoading }: IForm) => {
     });
   }, [data]);
 
-  // const onFormSubmit = (data) => {
-  //   onSubmit(data);
-  // };
-
   const onFileChange = (e, idx, index) => {
     setValue(
       `orgmChangeList.${idx}.orgChecklistDtoList.${index}.fileName`,
@@ -99,7 +95,9 @@ const Form = ({ data, onSubmit, isSubmitLoading }: IForm) => {
                           ) && (
                             <div className="col-xl-3">
                               {idx === 0 && index === 0 && (
-                                <Label className="mb-0 fw-bold" isRequired>সংযুক্তি</Label>
+                                <Label className="mb-0 fw-bold" isRequired>
+                                  সংযুক্তি
+                                </Label>
                               )}
                               <SingleFile
                                 isRequired="ফাইল আপলোড করুন"
