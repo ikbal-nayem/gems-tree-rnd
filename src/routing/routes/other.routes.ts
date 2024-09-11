@@ -23,14 +23,14 @@ let routeList: IAppRoutes[] = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_TYPE,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_TYPE,
-    element: lazy(() => import("@modules/organizations/organization-type-list")),
+    element: lazy(
+      () => import("@modules/organizations/organization-type-list")
+    ),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_GROUP,
     routeKey: ROUTE_KEY.OMS_ORGANIZATION_GROUP,
-    element: lazy(
-      () => import("@modules/organizations/organization-group")
-    ),
+    element: lazy(() => import("@modules/organizations/organization-group")),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_BRANCH,
@@ -46,6 +46,11 @@ let routeList: IAppRoutes[] = [
     link: ROUTE_L2.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
     routeKey: ROUTE_KEY.OMS_CONFIGURATION_ORGANOGRAM_POST_LIST,
     element: lazy(() => import("@modules/configurations/organogram-post")),
+  },
+  {
+    link: ROUTE_L2.OMS_CONFIGURATION_LETTER_BUILDER,
+    routeKey: ROUTE_KEY.OMS_CONFIGURATION_LETTER_BUILDER,
+    element: lazy(() => import("@modules/configurations/letter-builder")),
   },
   {
     link: ROUTE_L2.OMS_AUDIT_LOG_ORGANOGRAM_LOG,
@@ -70,7 +75,9 @@ const permiableRouteList: IAppRoutes[] = [
   {
     link: ROUTE_L2.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
     // routeKey: ROUTE_KEY.OMS_ORGANIZATION_BUSINESS_OF_ALLOCATION,
-    element: lazy(() => import("@modules/organizations/business-of-allocation")),
+    element: lazy(
+      () => import("@modules/organizations/business-of-allocation")
+    ),
   },
   {
     link: ROUTE_L2.OMS_ORGANIZATION_NODE_LIST,
