@@ -5,7 +5,7 @@ import {
   SingleFile,
   Textarea,
 } from "@gems/components";
-import { IObject, numEnToBn } from "@gems/utils";
+import { IObject, isListNull, numEnToBn } from "@gems/utils";
 import clsx from "clsx";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -32,10 +32,12 @@ const Form = ({ data, onSubmit, isSubmitLoading }: IForm) => {
   });
 
   useEffect(() => {
-    reset({
-      orgmChangeList: data,
-    });
-  }, [data]);
+    if (!isListNull(data))
+      reset({
+        orgmChangeList: data,
+      });
+    else reset({});
+  }, [data, reset]);
 
   const onFileChange = (e, idx, index) => {
     setValue(
