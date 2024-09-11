@@ -180,6 +180,12 @@ const menuData = [
         title: MENU.BN.ORGANOGRAM_POST,
         hasBullet: true,
       },
+      {
+        routeKey: ROUTE_KEY.OMS_CONFIGURATION_LETTER_BUILDER,
+        link: ROUTE_L2.OMS_CONFIGURATION_LETTER_BUILDER,
+        title: MENU.BN.LETTER_BUILDER,
+        hasBullet: true,
+      },
     ],
   },
   {
