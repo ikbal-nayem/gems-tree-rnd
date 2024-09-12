@@ -9,7 +9,7 @@ import Form from "./Form";
 let letterlistPayload = {
   meta: {
     page: 0,
-    limit: 20,
+    limit: 10000,
   },
   body: {},
 };
