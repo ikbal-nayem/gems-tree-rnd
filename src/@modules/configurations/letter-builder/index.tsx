@@ -102,7 +102,7 @@ const LetterBuilder = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    OMSService.DELETE.organogramApprover([deleteData?.id])
+    OMSService.DELETE.letterBuilder(deleteData?.id)
       .then((res) => {
         toast.success(res?.message);
         getDataList();

@@ -570,5 +570,8 @@ export const OMSService = {
 
     organogramPostDelete: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "user-create-post/delete-all", payload),
+
+    letterBuilder: async (id: string): Promise<any> =>
+      await axiosIns.delete(OMS_SERVICE + "letter-builder/delete/" + id),
   },
 };
