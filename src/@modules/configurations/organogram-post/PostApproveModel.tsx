@@ -45,6 +45,7 @@ const PostApproveModel = ({
   useEffect(() => {
     if (isOpen && selectedPost) {
       setIsLoading(true);
+      setIsRank(false);
       OMSService.FETCH.organogramApprovedPostList(selectedPost.id)
         .then((res) => {
           setPostData(res.body || {});
@@ -205,6 +206,7 @@ const PostApproveModel = ({
             <p>আপনি কি এই পদবি বাতিল করতে চান?</p>
             <Textarea
               label="মন্তব্য"
+              isRequired
               placeholder="মন্তব্য লিখুন"
               maxLength={500}
               registerProperty={register("remarks", {
