@@ -67,10 +67,6 @@ const List = () => {
 
   useEffect(() => {
     getDataList();
-  }, []);
-
-  useEffect(() => {
-    getDataList();
     // eslint-disable-next-line
   }, [searchParams]);
 
