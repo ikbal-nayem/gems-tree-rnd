@@ -9,6 +9,7 @@ import ProposedOrganogramViewComponent from "../components/proposed-organogram-v
 import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
 import ChecklistView from "./tabComponent/checklist-view";
+import DraftLetter from "./tabComponent/draft-letter";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -186,6 +187,8 @@ const ProposedOrganogramView = () => {
                 />
               ) : t?.key === TAB_KEY.CHECK_LIST ? (
                 <ChecklistView organogramId={organogramId} />
+              ) : t?.key === TAB_KEY.DRAFT ? (
+                <DraftLetter organogramId={organogramId} />
               ) : null}
             </TabBlock>
           ))}
