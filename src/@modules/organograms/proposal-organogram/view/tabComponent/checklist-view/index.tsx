@@ -31,7 +31,7 @@ const checkListView = ({ organogramId }: ICheckListView) => {
     setSelectedChangeType(item);
     if (item?.id) {
       setIsChecklistLoading(true);
-      ProposalService.FETCH.checklistByChangeTypeId(item?.id)
+      ProposalService.FETCH.checklistByChangeTypeId(item?.id, organogramId)
         .then((resp) => {
           setCheckListData(resp?.body || []);
         })
