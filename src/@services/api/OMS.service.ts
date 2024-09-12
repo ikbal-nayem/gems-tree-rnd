@@ -379,7 +379,7 @@ export const OMSService = {
           organogramId
       ),
 
-      getOrganogramCommentLogById: async (organogramId: string): Promise<any> =>
+    getOrganogramCommentLogById: async (organogramId: string): Promise<any> =>
       await axiosIns.get(
         OMS_SERVICE +
           "organization-organogram/get-oms-send-back-log-by-id/" +
@@ -391,6 +391,9 @@ export const OMSService = {
         OMS_SERVICE + "organization-organogram/get-organogram-suv-versions",
         payload
       ),
+
+    getLetterBuilderList: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "letter-builder/get-list", payload),
   },
 
   SAVE: {
@@ -440,6 +443,9 @@ export const OMSService = {
 
     organogramApprovePost: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "user-create-post/approve", payload),
+
+    letterBuilderCreate: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "letter-builder/create", payload),
   },
 
   UPDATE: {
@@ -499,6 +505,9 @@ export const OMSService = {
 
     organogramPostReject: async (payload): Promise<any> =>
       await axiosIns.put(OMS_SERVICE + "user-create-post/take-reject", payload),
+
+    letterBuilderUpdate: async (payload): Promise<any> =>
+      await axiosIns.put(OMS_SERVICE + "letter-builder/update", payload),
   },
 
   DELETE: {

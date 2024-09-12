@@ -49,10 +49,6 @@ const LetterBuilder = () => {
 
   useEffect(() => {
     getDataList();
-  }, []);
-
-  useEffect(() => {
-    getDataList();
     // eslint-disable-next-line
   }, [searchParams]);
 
@@ -67,7 +63,7 @@ const LetterBuilder = () => {
         searchKey: searchKey || null,
       },
     };
-    OMSService.FETCH.organogramApproverList(reqPayload)
+    OMSService.FETCH.getLetterBuilderList(reqPayload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -129,8 +125,8 @@ const LetterBuilder = () => {
       : data;
 
     const service = isUpdate
-      ? OMSService.UPDATE.organogramApprover
-      : OMSService.SAVE.organogramApprover;
+      ? OMSService.UPDATE.letterBuilderUpdate
+      : OMSService.SAVE.letterBuilderCreate;
     service(data)
       .then((res) => {
         toast.success(res?.message);
