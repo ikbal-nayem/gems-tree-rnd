@@ -73,15 +73,6 @@ const DraftLetter = ({ organogramId }: IDraftLetter) => {
       .finally(() => setIsSubmitLoading(false));
   };
 
-  // const prepareOptions = (op) => (
-  //   <div key={op?.id} className="d-flex justify-content-between  rounded">
-  //     <div className="fw-bold fs-6  opacity-75">{op?.title}</div>
-  //     <div className="text-end" onClick={() => console.log("ami pari")}>
-  //       sdfsdaf
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="card p-3">
       <div className="w-md-350px ">
