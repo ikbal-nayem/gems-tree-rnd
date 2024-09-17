@@ -8,6 +8,8 @@ import { sortBy } from "utility/utils";
 import ProposedOrganogramViewComponent from "../components/proposed-organogram-view-component";
 import ContentComparision from "../components/proposed-organogram-view-component/components/ContentComparision";
 import { TAB_KEY, tabs } from "./configs";
+import ChecklistView from "./tabComponent/checklist-view";
+import DraftLetter from "./tabComponent/draft-letter";
 
 const ProposedOrganogramView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -90,14 +92,14 @@ const ProposedOrganogramView = () => {
       .catch((e) => toast.error(e?.message));
   };
 
-  const onProposalChange = (proposalKey: string) => {
-    console.log("proposal-Key: ", proposalKey);
-  };
+  // const onProposalChange = (proposalKey: string) => {
+  //   console.log("proposal-Key: ", proposalKey);
+  // };
 
   return (
     <div>
-      <div className="d-flex bg-white rounded mb-3 fs-5 gap-5">
-        <div className="dropdown">
+      <div className="bg-white rounded mb-3 fs-5">
+        {/* <div className="dropdown">
           <button
             className="btn dropdown-toggle fs-5 fw-bold text-hover-info text-gray-700 overflow-auto"
             type="button"
@@ -123,8 +125,9 @@ const ProposedOrganogramView = () => {
               );
             })}
           </ul>
-        </div>
+        </div> */}
         <Tab
+          className="ms-2"
           tabs={sortBy(tabs)}
           activeIndex={activeTab}
           onChange={handleTabIndex}
@@ -182,6 +185,10 @@ const ProposedOrganogramView = () => {
                   organogramId={organogramId}
                   content="attached_org"
                 />
+              ) : t?.key === TAB_KEY.CHECK_LIST ? (
+                <ChecklistView organogramId={organogramId} />
+              ) : t?.key === TAB_KEY.DRAFT ? (
+                <DraftLetter organogramId={organogramId} />
               ) : null}
             </TabBlock>
           ))}

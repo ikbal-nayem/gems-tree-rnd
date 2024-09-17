@@ -1,6 +1,4 @@
-import { AbilityProvider } from "@context/Can";
 import "assets/sass/plugins.scss";
-import "assets/sass/style.react.scss";
 import "assets/sass/style.scss";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -19,9 +17,7 @@ if (container) {
 	createRoot(container).render(
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>
-				<AbilityProvider>
-					<AppRoutes />
-				</AbilityProvider>
+				<AppRoutes />
 			</AuthProvider>
 			{/* <ReactQueryDevtools initialIsOpen={false} /> */}
 		</QueryClientProvider>

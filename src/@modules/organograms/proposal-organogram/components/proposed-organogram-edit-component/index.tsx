@@ -171,12 +171,13 @@ const ProposalOrganogramEditComponent = ({
     //     organizationNameBn: d?.nameBn || d?.organizationNameBn,
     //   })
     // );
+
     if (!isListNull(data.organogramChangeActionDtoList)) {
       data.organogramChangeActionDtoList =
         data?.organogramChangeActionDtoList?.map((d) => ({
           titleEn: d?.titleEn,
           titleBn: d?.titleBn,
-          organogramChangeTypeId: d?.id || "",
+          organogramChangeTypeId: d?.organogramChangeTypeId || d?.id || "",
           organizationOrganogramId: updateData?.id || "",
         }));
     }

@@ -247,6 +247,7 @@ const ProposalList = () => {
             />
           </span> */}
           <DownloadMenu
+            className="pt-1"
             fnDownloadExcel={() =>
               getXLSXStoreList({
                 page: 0,

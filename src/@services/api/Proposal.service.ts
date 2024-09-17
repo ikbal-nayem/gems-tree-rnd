@@ -117,6 +117,30 @@ export const ProposalService = {
 
     organogramChecklist: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-check-list/get-list", payload),
+
+    changeTypesByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          "organogram-change-action-type/get-all-change-type-by-orgmid/" +
+          id
+      ),
+
+    checklistByChangeTypeId: async (
+      changeTypeId: string,
+      organogramId: string
+    ): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE +
+          `org-check-list/get-grouping-by-change-type-id/${changeTypeId}/${organogramId}`
+      ),
+
+    letterDetailsById: async (letterId: string): Promise<any> =>
+      await axiosIns.get(OMS_SERVICE + `letter-builder/get-by-id/${letterId}`),
+
+    getDraftLetterByOrganogramId: async (id: string): Promise<any> =>
+      await axiosIns.get(
+        OMS_SERVICE + `orgm-draft-letter-builder/get-by-orgm-id/${id}`
+      ),
   },
 
   // ======================= SAVE API =================================
@@ -133,6 +157,15 @@ export const ProposalService = {
 
     organogramChecklist: async (payload): Promise<any> =>
       await axiosIns.post(OMS_SERVICE + "org-check-list/save", payload),
+
+    proposalChecklist: async (payload): Promise<any> =>
+      await axiosIns.post(OMS_SERVICE + "proposal-check-list/save", payload),
+
+    draftLetterCreate: async (payload): Promise<any> =>
+      await axiosIns.post(
+        OMS_SERVICE + "orgm-draft-letter-builder/create",
+        payload
+      ),
   },
 
   // ======================= UPDATE API =================================

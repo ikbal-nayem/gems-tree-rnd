@@ -4,6 +4,7 @@ import {
   Button,
   ConfirmationModal,
   ContentPreloader,
+  Input,
   NoData,
   Pagination,
   toast,
@@ -21,7 +22,7 @@ const initMeta: IMeta = {
   limit: 20,
 };
 
-const List = () => {
+const LetterBuilder = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -39,25 +40,6 @@ const List = () => {
   const params: any = searchParamsToObject(searchParams);
   const searchKey = useDebounce(search, 500);
 
-  const payloadOf = (contentType: "ui" | "downloadFile", reqMeta = null) => {
-    return {
-      meta:
-        contentType === "downloadFile"
-          ? {
-              page: 0,
-              limit: respMeta.totalRecords,
-            }
-          : searchKey
-          ? reqMeta
-            ? { ...reqMeta, sort: null }
-            : { ...respMeta, page: 0, sort: null }
-          : reqMeta || respMeta,
-      body: {
-        searchKey: searchKey || null,
-      },
-    };
-  };
-
   useEffect(() => {
     if (searchKey) params.searchKey = searchKey;
     else delete params.searchKey;
@@ -71,7 +53,17 @@ const List = () => {
   }, [searchParams]);
 
   const getDataList = (reqMeta = null) => {
-    OMSService.FETCH.organogramApproverList(payloadOf("ui", reqMeta))
+    const reqPayload = {
+      meta: searchKey
+        ? reqMeta
+          ? { ...reqMeta, sort: null }
+          : { ...respMeta, page: 0, sort: null }
+        : reqMeta || respMeta,
+      body: {
+        searchKey: searchKey || null,
+      },
+    };
+    OMSService.FETCH.getLetterBuilderList(reqPayload)
       .then((res) => {
         setListData(res?.body || []);
         setRespMeta(
@@ -110,7 +102,7 @@ const List = () => {
   };
   const onConfirmDelete = () => {
     setIsDeleteLoading(true);
-    OMSService.DELETE.organogramApprover([deleteData?.id])
+    OMSService.DELETE.letterBuilder(deleteData?.id)
       .then((res) => {
         toast.success(res?.message);
         getDataList();
@@ -132,11 +124,9 @@ const List = () => {
         }
       : data;
 
-    // console.log("Group Data: ", data);
-
     const service = isUpdate
-      ? OMSService.UPDATE.organogramApprover
-      : OMSService.SAVE.organogramApprover;
+      ? OMSService.UPDATE.letterBuilderUpdate
+      : OMSService.SAVE.letterBuilderCreate;
     service(data)
       .then((res) => {
         toast.success(res?.message);
@@ -151,34 +141,30 @@ const List = () => {
 
   return (
     <>
-      <PageTitle>{MENU.BN.ORGANOGRAM_APPROVER}</PageTitle>
+      <PageTitle>{MENU.BN.LETTER_BUILDER}</PageTitle>
       <PageToolbarRight>
         <Button color="primary" onClick={() => setIsDrawerOpen(true)}>
           যুক্ত করুন
         </Button>
       </PageToolbarRight>
+
       <div className="card p-5">
         <div className="d-flex gap-3">
-          {/* <Input
+          <Input
             type="search"
             noMargin
             placeholder="অনুসন্ধান করুন ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          /> */}
-          {/* <DownloadMenu
-            fnDownloadExcel={() => downloadFile("excel")}
-            fnDownloadPDF={() => downloadFile("pdf")}
-          /> */}
+          />
         </div>
-
         {!!listData?.length && (
           <div className="d-flex justify-content-between gap-3">
             <h5 className="mt-3">
               <div className="d-flex justify-content">
-                মোট অর্গানোগ্রাম অনুমোদনকারী:
+                মোট লেটার:
                 <div className="ps-2 text-info">
-                  {numEnToBn(respMeta?.totalRecords)} জন
+                  {numEnToBn(respMeta?.totalRecords)} টি
                 </div>
               </div>
             </h5>
@@ -201,7 +187,7 @@ const List = () => {
           </DataTable>
           {isLoading && <ContentPreloader />}
           {!isLoading && !listData?.length && (
-            <NoData details="কোনো প্রতিষ্ঠান-শাখার তথ্য পাওয়া যায়নি!" />
+            <NoData details="কোনো লেটার বিল্ডার তথ্য পাওয়া যায়নি!" />
           )}
         </div>
 
@@ -224,10 +210,10 @@ const List = () => {
         isSubmitting={isDeleteLoading}
         onConfirmLabel={"মুছে ফেলুন"}
       >
-        আপনি কি আসলেই ব্যবহারকারী
-        <b> {deleteData?.userDTO?.nameBn || null}</b> মুছে ফেলতে চাচ্ছেন ?
+        আপনি কি আসলেই লেটার
+        <b> {deleteData?.title || null}</b> মুছে ফেলতে চাচ্ছেন ?
       </ConfirmationModal>
     </>
   );
 };
-export default List;
+export default LetterBuilder;

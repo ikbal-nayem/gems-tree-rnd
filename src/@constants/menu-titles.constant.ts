@@ -30,6 +30,7 @@ export const MENU = {
     ORGANOGRAM_POST: "অননুমোদিত পদবি",
     AUDIT_LOG: "অডিট লগ",
     ORGANOGRAM_LOG: "অর্গানোগ্রাম লগ",
+    LETTER_BUILDER: "লেটার বিল্ডার",
   },
 
   EN: {
@@ -63,5 +64,6 @@ export const MENU = {
     ORGANOGRAM_POST: "Unapproved Designation",
     AUDIT_LOG: "Audit Log",
     ORGANOGRAM_LOG: "Organogram Log",
+    LETTER_BUILDER: "Letter Builder",
   },
 };

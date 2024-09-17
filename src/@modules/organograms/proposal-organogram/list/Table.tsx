@@ -135,7 +135,7 @@ const ProposalTable: FC<TableProps> = ({
                 // }
               />
 
-              <TableCell textAlign="end" verticalAlign="top">
+              <TableCell textAlign="end">
                 <Dropdown
                   btnIcon={true}
                   btnContent={<Icon icon="more_vert" size={20} />}
