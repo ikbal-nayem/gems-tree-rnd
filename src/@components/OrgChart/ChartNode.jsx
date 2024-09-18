@@ -112,11 +112,9 @@ const ChartNode = ({
     if (!node) return;
     const isAncestorsCollapsed = node.firstChild.classList.contains("hidden");
     if (isAncestorsCollapsed) {
-      // 向上展开，只展开一级
       actionNode.classList.remove("isAncestorsCollapsed");
       node.firstChild.classList.remove("hidden");
     } else {
-      // 向下折叠，则折叠所有祖先节点以及祖先节点的兄弟节点
       const isSiblingsCollapsed = Array.from(
         actionNode.parentNode.children
       ).some((item) => item.classList.contains("hidden"));
@@ -130,7 +128,6 @@ const ChartNode = ({
         ).split(" ")
       );
       node.firstChild.classList.add("hidden");
-      // 如果还有展开的祖先节点，那继续折叠关闭之
       if (
         node.parentNode.closest("li") &&
         !node.parentNode.closest("li").firstChild.classList.contains("hidden")
@@ -158,7 +155,6 @@ const ChartNode = ({
       (item) => item.classList.contains("hidden")
     );
     actionNode.classList.toggle("isSiblingsCollapsed", !isSiblingsCollapsed);
-    // 先处理同级的兄弟节点
     while (node) {
       if (isSiblingsCollapsed) {
         node.classList.remove("hidden");
@@ -176,7 +172,6 @@ const ChartNode = ({
       }
       node = node.nextSibling;
     }
-    // 在展开兄弟节点的同时，还要展开父节点
     const isAncestorsCollapsed = actionNode.parentNode
       .closest("li")
       .firstChild.classList.contains("hidden");
@@ -232,7 +227,7 @@ const ChartNode = ({
     );
   };
 
-  const hasMoreChildren = datasource?.isLastNode && datasource?.children?.length > 5;
+  const hasMoreChildren = datasource?.isLastNode && datasource?.children?.length > 4;
 
   return (
     <li className="oc-hierarchy">
