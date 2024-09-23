@@ -1,5 +1,6 @@
 import { toast } from "@gems/components";
 import Manpower from "@modules/organograms/proposal-organogram/view/tabComponent/manpower";
+import { OMSService } from "@services/api/OMS.service";
 import { ProposalService } from "@services/api/Proposal.service";
 import { useEffect, useState } from "react";
 import { LABEL } from "../local-constants";
@@ -22,9 +23,16 @@ interface IForm {
     | "abbreviation"
     | "attached_org";
   organogramId?: string;
+  previousOrganogramId?: string;
 }
 
-const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
+const ContentComparision = ({
+  data,
+  langEn,
+  content,
+  organogramId,
+  previousOrganogramId,
+}: IForm) => {
   const [proposedAPIData, setProposedAPIData] = useState<any>();
   const [presentAPIData, setPresentAPIData] = useState<any>();
 
@@ -44,13 +52,13 @@ const ContentComparision = ({ data, langEn, content, organogramId }: IForm) => {
     }
 
     if (organogramId && content === "summary_of_manpower") {
-      ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
+      OMSService.getTemplateManpowerSummaryById(organogramId)
         .then((resp) => {
           setProposedAPIData(resp?.body || []);
         })
         .catch((e) => toast.error(e?.message));
 
-      ProposalService.FETCH.manpowerPresentSummaryById(organogramId)
+      OMSService.getTemplateManpowerSummaryById(previousOrganogramId)
         .then((resp) => {
           setPresentAPIData(resp?.body || []);
         })
