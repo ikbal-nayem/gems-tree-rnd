@@ -296,6 +296,22 @@ const ChartContainer = forwardRef(
           });
       },
     }));
+    useEffect(() => {
+      const timeOut = setTimeout(() => {
+        const container = chart.current;
+
+        if (container) {
+          // Scroll to the middle horizontally
+          const scrollWidth = container.scrollWidth; // Total width of the scrollable content
+          const containerWidth = container.clientWidth; // Width of the visible container
+          const scrollTo = (scrollWidth - containerWidth) / 2; // Center position
+          console.log("container", container);
+
+          container.scroll(3500, 0); // Smooth scrolling to center
+        }
+      }, 2000);
+      return clearTimeout(timeOut);
+    }, []);
 
     return (
       <div className="position-relative">

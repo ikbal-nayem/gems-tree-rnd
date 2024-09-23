@@ -26,43 +26,45 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
 
   let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
   let additionClass = nodeData?.isAddition ? "text-decoration-underline" : "";
+
   return (
     <div className={`position rounded border border-gray-400 border-1`}>
-      <div className="bg-light rounded-top d-flex justify-content-between">
-        {!nodeData?.isDeleted && (
+      <div className="bg-light rounded-top d-flex ">
+      {!nodeData?.isDeleted && (
           <div>
             <Icon
               icon="fact_check"
               variants="outlined"
               hoverTitle={LABEL.ACTIVITIES}
               size={20}
-              className="text-hover-warning"
+              className={`${nodeData?.postFunctionalityList?.length && 'text-hover-warning'} me-1`}
               color={
                 nodeData?.postFunctionalityList &&
                 nodeData?.postFunctionalityList?.length > 0
                   ? "primary"
-                  : "light"
+                  : "dark"
               }
-              onClick={() => onViewOrManPowertableView(nodeData, "view")}
+              disabled={true}
+              onClick={() =>
+                nodeData?.postFunctionalityList?.length &&
+                onViewOrManPowertableView(nodeData, "view")
+              }
             />
           </div>
         )}
-
-        <p
-          className={`mb-0 fs-8 text-hover-primary cursor-pointer text-start" ${deletedClass} ${additionClass}`}
-          onClick={() => onViewOrManPowertableView(nodeData, "manPower")}
-        >
-          {/* {(langEn ? nodeData.titleEn : nodeData.titleBn) + " | " + nodeData?.displayOrder} */}
-          {/* {longLineBreaker(langEn ? nodeData.titleEn : nodeData.titleBn, 17)} */}
-          {langEn
-            ? longLineBreaker(nodeData.titleEn || "", 17)
-            : nodeData.titleBn
-            ? longLineBreaker(nodeData.titleBn || "", 20)
-            : COMMON_LABELS.NOT_ASSIGN}
-        </p>
-        <p className={`mb-0 fs-8 ${deletedClass} ${additionClass}`}>
-          {manPower}
-        </p>
+        <div className="fs-8 text-start">
+          <span
+            className={`text-hover-primary cursor-pointer ${deletedClass} ${additionClass}`}
+            onClick={() => onViewOrManPowertableView(nodeData, "manPower")}
+          >
+            {langEn
+              ? longLineBreaker(nodeData.titleEn || "", 17)
+              : nodeData.titleBn
+              ? longLineBreaker(nodeData.titleBn || "", 20)
+              : COMMON_LABELS.NOT_ASSIGN}
+          </span>
+          <span> {manPower}</span>
+        </div>
       </div>
 
       <div
@@ -161,6 +163,66 @@ const MyNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
           <TextBlock value={nodeData?.commentNode} />
         </div>
       )}
+    </div>
+  );
+};
+
+export const ShortNode = ({ langEn, nodeData, onViewOrManPowertableView }) => {
+  let COMMON_LABEL = null,
+    LABEL,
+    manPower = nodeData?.nodeManpower + "/" + nodeData?.totalManpower;
+
+  if (langEn) {
+    COMMON_LABEL = COMMON_LABELS.EN;
+    LABEL = LABELS.EN;
+  } else {
+    LABEL = LABELS.BN;
+    COMMON_LABEL = COMMON_LABELS;
+    manPower = numEnToBn(manPower);
+  }
+
+  let deletedClass = nodeData?.isDeleted ? "text-line-through-color-red" : "";
+  let additionClass = nodeData?.isAddition ? "text-decoration-underline" : "";
+
+  return (
+    <div className={`position rounded border border-gray-400 border-1`}>
+      <div className="rounded-top d-flex">
+        {!nodeData?.isDeleted && (
+          <div>
+            <Icon
+              icon="fact_check"
+              variants="outlined"
+              hoverTitle={LABEL.ACTIVITIES}
+              size={20}
+              className={`${nodeData?.postFunctionalityList?.length && 'text-hover-warning'} me-1`}
+              color={
+                nodeData?.postFunctionalityList &&
+                nodeData?.postFunctionalityList?.length > 0
+                  ? "primary"
+                  : "light"
+              }
+              disabled={true}
+              onClick={() =>
+                nodeData?.postFunctionalityList?.length &&
+                onViewOrManPowertableView(nodeData, "view")
+              }
+            />
+          </div>
+        )}
+        <div className="fs-8 text-start">
+          <span
+            className={`text-hover-primary cursor-pointer ${deletedClass} ${additionClass}`}
+            onClick={() => onViewOrManPowertableView(nodeData, "manPower")}
+          >
+            {langEn
+              ? longLineBreaker(nodeData.titleEn || "", 17)
+              : nodeData.titleBn
+              ? longLineBreaker(nodeData.titleBn || "", 20)
+              : COMMON_LABELS.NOT_ASSIGN}
+          </span>
+          <span> {manPower}</span>
+        </div>
+      </div>
     </div>
   );
 };
