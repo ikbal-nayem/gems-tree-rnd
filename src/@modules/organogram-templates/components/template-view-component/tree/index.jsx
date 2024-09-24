@@ -2,7 +2,7 @@ import { Button, Icon, IconButton } from "@gems/components";
 import { useEffect, useRef, useState } from "react";
 import { ChartContainer } from "../../../../../@components/OrgChart/ChartContainer";
 import ManPowerDetails from "./ManPowerDetails";
-import MyNode from "./MyNode";
+import MyNode, { ShortNode } from "./MyNode";
 import NodeDetails from "./NodeDetails";
 
 const OrganizationTemplateTree = ({
@@ -13,6 +13,7 @@ const OrganizationTemplateTree = ({
   headerData,
   isPDFLoading,
   organogramView = false,
+  showDetails = false,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   const [manpowerListModalOpen, setManpowerListModalOpen] = useState(false);
@@ -41,7 +42,6 @@ const OrganizationTemplateTree = ({
     }, 1500);
   }, []);
 
-  const download = useRef();
   const onDownload = () => {
     onCapturePDF("pdf");
   };
@@ -54,20 +54,36 @@ const OrganizationTemplateTree = ({
     onCapturePDF("image-download");
   };
 
+  useEffect(() => {
+    const div = document?.querySelector(".orgchart___");
+    if (div) {
+      div.scroll(2000, 0);
+      div.classList.add("bg-dark");
+    }
+  }, []);
   return (
     <div className="position-relative">
       <ChartContainer
         datasource={treeData}
-        chartClass={"myChart " + pdfClass}
+        chartClass={"orgchart___ myChart " + pdfClass}
         NodeTemplate={({ nodeData }) => (
-          <MyNode
-            langEn={langEn}
-            nodeData={nodeData}
-            organogramView={organogramView}
-            onViewOrManPowertableView={onViewOrManPowertableView}
-          />
+          <>
+            {showDetails ? (
+              <MyNode
+                langEn={langEn}
+                nodeData={nodeData}
+                organogramView={organogramView}
+                onViewOrManPowertableView={onViewOrManPowertableView}
+              />
+            ) : (
+              <ShortNode
+                langEn={langEn}
+                nodeData={nodeData}
+                onViewOrManPowertableView={onViewOrManPowertableView}
+              />
+            )}
+          </>
         )}
-        ref={download}
         headerData={headerData}
         pan={true}
         zoom={true}

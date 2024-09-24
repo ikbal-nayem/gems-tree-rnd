@@ -1,4 +1,5 @@
 import Switch from "@components/Switch";
+// import * as GSwitch from  "@components/Switch";
 import {
   COMMON_LABELS as COMN_LABELS,
   LABELS,
@@ -9,6 +10,7 @@ import { ROLES, TEMPLATE_STATUS } from "@constants/template.constant";
 import {
   ACLWrapper,
   Button,
+  DotLoader,
   Icon,
   IconButton,
   Label,
@@ -29,7 +31,7 @@ import {
 import { OMSService } from "@services/api/OMS.service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { commonPDFFooter } from "utility/utils";
 import OrganizationTemplateTree from "./tree";
@@ -99,6 +101,7 @@ const TemplateViewComponent = ({
   const msg = langEn ? MSG.EN : MSG.BN;
   const modalBtnLabel = langEn ? BUTTON_LABEL.EN : BUTTON_LABEL.BN;
   const navigate = useNavigate();
+  const [isExpand, setIsExpand] = useState<boolean>(false);
 
   let organogramOrganizationView = stateOrganizationData?.organizationId
     ? true
@@ -384,6 +387,18 @@ const TemplateViewComponent = ({
     );
   };
 
+  const [isDomLoaded, setIsDomLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setIsDomLoaded(true);
+  }, []);
+  useEffect(() => {
+    if (isDomLoaded) {
+      setLoading(false);
+    }
+  }, [isDomLoaded]);
+
   return (
     <div>
       {isFormDraft && (
@@ -478,7 +493,7 @@ const TemplateViewComponent = ({
           )}
           <p className="fs-3 mb-0">{versionName}</p>
         </div>
-        {updateData?.businessAllocationDtoList?.length > 0 ? (
+        {/* {updateData?.businessAllocationDtoList?.length > 0 ? (
           <AllocationOfBusinessList
             data={updateData?.businessAllocationDtoList || []}
             langEn={langEn}
@@ -488,7 +503,7 @@ const TemplateViewComponent = ({
             data={updateData?.mainActivitiesDtoList || []}
             langEn={langEn}
           />
-        )}
+        )} */}
       </div>
       <div
         className="treeBlock"
@@ -531,6 +546,7 @@ const TemplateViewComponent = ({
         />
       </div>
       <div className="position-relative border border-secondary mb-3">
+        <DotLoader show={loading} />
         <OrganizationTemplateTree
           treeData={treeData}
           langEn={langEn}
@@ -546,7 +562,21 @@ const TemplateViewComponent = ({
             organizationHeader: updateData?.organizationHeader || null,
             organizationHeaderMsc: updateData?.organizationHeaderMsc || null,
           }}
+          showDetails={isExpand}
         />
+        <div
+          className="view-toggler position-absolute"
+          style={{ top: 10, left: 30 }}
+        >
+          <Switch
+            // label={''}
+            switchLabel="Details "
+            label={"Overview"}
+            noMargin
+            color="info"
+            onChange={(e) => setIsExpand(e?.target?.checked)}
+          />
+        </div>
         <div
           className="position-absolute"
           style={{ top: 10, right: organogramOrganizationView ? 225 : 125 }}
