@@ -21,7 +21,7 @@ const ProposedOrganogramView = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const { state } = useLocation();
   const organogramId = state?.organogramId;
-  const orgmChangeActionList = state?.orgmChangeActionList;
+  // const orgmChangeActionList = state?.orgmChangeActionList;
 
   useEffect(() => {
     getOrganogramDetails();
@@ -57,16 +57,6 @@ const ProposedOrganogramView = () => {
       })
       .catch((e) => toast.error(e?.message));
   };
-
-  // const getManpowerProposedSummaryById = () => {
-  //   setIsLoading(true);
-  //   ProposalService.FETCH.manpowerProposedSummaryById(organogramId)
-  //     .then((resp) => {
-  //       setManpowerProposedSummaryData(resp?.body || []);
-  //     })
-  //     .catch((e) => toast.error(e?.message))
-  //     .finally(() => setIsLoading(false));
-  // };
 
   const getAttachedOrganizationById = () => {
     OMSService.getAttachedOrganizationById(organogramId)
@@ -169,6 +159,7 @@ const ProposedOrganogramView = () => {
                 <ContentComparision
                   content="summary_of_manpower"
                   organogramId={organogramId}
+                  previousOrganogramId={state?.previousOrganogramId || ""}
                 />
               ) : t?.key === TAB_KEY.INVENTORY ? (
                 <ContentComparision
