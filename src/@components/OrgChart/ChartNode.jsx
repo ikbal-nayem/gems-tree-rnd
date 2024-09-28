@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
-import { dragNodeService, selectNodeService } from "./service";
-import "./ChartNode.css";
 import clsx from "clsx";
+import PropTypes from "prop-types";
+import { useEffect, useRef, useState } from "react";
+import "./ChartNode.css";
+import { dragNodeService, selectNodeService } from "./service";
 
 const propTypes = {
   datasource: PropTypes.object,
@@ -324,19 +324,37 @@ const ChartNode = ({
             'last-node-more-children': hasMoreChildren
           })}
         >
-          {datasource.children.map((node) => (
-            <ChartNode
-              datasource={node}
-              NodeTemplate={NodeTemplate}
-              id={node.id || node.nodeId}
-              key={node.id || node.nodeId}
-              draggable={draggable}
-              collapsible={collapsible}
-              multipleSelect={multipleSelect}
-              changeHierarchy={changeHierarchy}
-              onClickNode={onClickNode}
-            />
-          ))}
+          {(()=>{
+            const singleChildGroup = []
+            let renderNodeList = datasource.children.map((node) => {
+              const renderNode = <ChartNode
+                                    datasource={node}
+                                    NodeTemplate={NodeTemplate}
+                                    id={node.id || node.nodeId}
+                                    key={node.id || node.nodeId}
+                                    draggable={draggable}
+                                    collapsible={collapsible}
+                                    multipleSelect={multipleSelect}
+                                    changeHierarchy={changeHierarchy}
+                                    onClickNode={onClickNode}
+                                  />
+              if(!datasource?.isLastNode && !node.children.length) {singleChildGroup.push(renderNode); return <></>}
+              return renderNode
+            })
+            renderNodeList = singleChildGroup.length
+							? [
+									singleChildGroup.length > 2 ? (
+										<li>
+											<ul className='single-child-group'>{...singleChildGroup}</ul>
+										</li>
+									) : (
+										<>{...singleChildGroup}</>
+									),
+									...renderNodeList,
+							  ]
+							: renderNodeList;
+            return renderNodeList
+          })()}
         </ul>
       )}
     </li>
